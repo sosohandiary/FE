@@ -1,17 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Knowledge from "./Knowledge";
-import Notice from "./Notice";
-import TransfusionBoard from "./TransfusionBoard";
-import Navbar from "../components/Navbar";
+import Login from "./Login";
+import Test from "./Test";
 
 const Router = () => {
   return (
     <BrowserRouter>
-      <Navbar />
       <Routes>
-        <Route path="/notice" element={<Notice />} />
-        <Route path="/transfusion" element={<TransfusionBoard />} />
-        <Route path="/knowledge" element={<Knowledge />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/test" element={<Test />} />
       </Routes>
     </BrowserRouter>
   );
