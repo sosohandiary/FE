@@ -1,8 +1,9 @@
 import React from "react";
+import { LoginPhraseStyle } from "../../styles/LoginPhraseStyle";
 
 const LoginPhrase2 = () => {
   return (
-    <div>
+    <LoginPhraseStyle>
       <h1>
         일상을 공유하는 <br />
         소소한 다이어리 ,<br />
@@ -13,7 +14,7 @@ const LoginPhrase2 = () => {
         <br />
         여러분의 소중한 일상을 담아보세요2222
       </p>
-    </div>
+    </LoginPhraseStyle>
   );
 };
 
