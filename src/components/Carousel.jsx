@@ -5,6 +5,7 @@ import LoginPharse1 from "./login-phrases/LoginPharse1";
 import LoginPhrase2 from "./login-phrases/LoginPhrase2";
 import LoginPhrase3 from "./login-phrases/LoginPhrase3";
 import "../styles/loginCarouselDotsStyle.css";
+import styled from "styled-components";
 
 const Carousel = () => {
   const items = [
@@ -13,13 +14,22 @@ const Carousel = () => {
     <LoginPhrase3 className="item" data-value="3" />,
   ];
   return (
-    <AliceCarousel
-      key="carousel"
-      mouseTracking
-      disableButtonsControls
-      items={items}
-    />
+    <CarouselStyle>
+      <AliceCarousel
+        key="carousel"
+        mouseTracking
+        disableButtonsControls
+        items={items}
+      />
+    </CarouselStyle>
   );
 };
 
 export default Carousel;
+
+const CarouselStyle = styled.div`
+  .alice-carousel__dots {
+    margin-top: -50px;
+    margin-bottom: 50px;
+  }
+`;
