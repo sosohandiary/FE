@@ -6,6 +6,7 @@ import Test from "./Test";
 import Diary from "./Diary";
 import MainPage from "./MainPage";
 import OtherLogin from "./OtherLogin";
+import Profile from "./Profile";
 
 const Router = () => {
   return (
@@ -16,6 +17,7 @@ const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/otherlogin" element={<OtherLogin />} />
         <Route path="/test" element={<Test />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );
