@@ -7,7 +7,7 @@ import Profile from "./Profile";
 const Router = () => {
   return (
     <BrowserRouter>
-      {/* <Navigationbar /> */}
+      <Navigationbar />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
