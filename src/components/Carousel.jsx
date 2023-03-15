@@ -1,35 +1,53 @@
 import React, { useRef, useState } from "react";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
-import LoginPharse1 from "./login-phrases/LoginPharse1";
-import LoginPhrase2 from "./login-phrases/LoginPhrase2";
-import LoginPhrase3 from "./login-phrases/LoginPhrase3";
 import "../styles/loginCarouselDotsStyle.css";
 import styled from "styled-components";
+import BrandStory1 from "./main-brandstory/BrandStory1";
+import BrandStory2 from "./main-brandstory/BrandStory2";
+import BrandStory3 from "./main-brandstory/BrandStory3";
+import BrandStory4 from "./main-brandstory/BrandStory4";
 
 const Carousel = () => {
   const items = [
-    <LoginPharse1 className="item" data-value="1" />,
-    <LoginPhrase2 className="item" data-value="2" />,
-    <LoginPhrase3 className="item" data-value="3" />,
+    <CardStyle style={{ display: "flex", justifyContent: "center" }}>
+      <BrandStory1 className="item" data-value="1" />
+    </CardStyle>,
+    <CardStyle>
+      <BrandStory2 className="item" data-value="2" />
+    </CardStyle>,
+    <CardStyle>
+      <BrandStory3 className="item" data-value="3" />
+    </CardStyle>,
+    <CardStyle>
+      <BrandStory4 className="item" data-value="4" />
+    </CardStyle>,
   ];
   return (
-    <CarouselStyle>
+    <DotStyle>
       <AliceCarousel
         key="carousel"
         mouseTracking
         disableButtonsControls
         items={items}
       />
-    </CarouselStyle>
+    </DotStyle>
   );
 };
 
 export default Carousel;
 
-const CarouselStyle = styled.div`
+const CardStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 10vh;
+`;
+
+const DotStyle = styled.div`
   .alice-carousel__dots {
-    margin-top: -50px;
-    margin-bottom: 50px;
+    margin: 30px 0;
+  }
+  .alice-carousel__dots-item {
+    margin: 0 -15px;
   }
 `;

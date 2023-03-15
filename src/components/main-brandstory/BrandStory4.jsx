@@ -1,9 +1,9 @@
 import React from "react";
-import { LoginPhraseStyle } from "../../styles/LoginPhraseStyle";
+import { BrandStoryStyle } from "../../styles/BrandStoryStyle";
 
-const LoginPhrase3 = () => {
+const BrandStory4 = () => {
   return (
-    <LoginPhraseStyle>
+    <BrandStoryStyle>
       <h1>
         일상을 공유하는 <br />
         소소한 다이어리 ,<br />
@@ -14,8 +14,8 @@ const LoginPhrase3 = () => {
         <br />
         여러분의 소중한 일상을 담아보세요
       </p>
-    </LoginPhraseStyle>
+    </BrandStoryStyle>
   );
 };
 
-export default LoginPhrase3;
+export default BrandStory4;

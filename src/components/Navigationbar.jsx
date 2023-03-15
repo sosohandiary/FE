@@ -14,7 +14,6 @@ const Navigationbar = () => {
         <RxMagnifyingGlass className="RxMagnifyingGlass" />
         <RxPerson className="RxPerson" />
       </BottomBox>
-
       <PlusBox>
         <VscBlank className="VscBlank" />
         <BsPlusLg className="BsPlusLg" />
