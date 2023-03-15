@@ -42,7 +42,8 @@ function Profile() {
                 <Label>이름(별명)</Label>
                 <IconContainer>
                   <input type='text' />
-                  <ClearButton>
+                  {/*clearButton 클릭시 이름 input clear해주는 기능 넣을 것 */}
+                  <ClearButton disabled>
                     <HiOutlineXCircle color="#D0D0D0"/>
                   </ClearButton>
                 </IconContainer>
@@ -83,7 +84,7 @@ const ProfileArea = styled.div`
 
 const Title = styled.div`
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
   color: #fff;
 
   display: flex;
@@ -134,7 +135,7 @@ const Content = styled.div`
     outline: none;
     border-radius: 8px;
     padding: 0 10px;
-    font-size: 14px;
+    font-size: 16px;
     border: 1px solid #eee;
     background: #f5f5f5;
   }
@@ -145,7 +146,7 @@ const Content = styled.div`
     box-sizing: border-box;
     border-radius: 8px;
     padding: 12px;
-    font-size: 12px;
+    font-size: 16px;
     margin-bottom: 20px;
     background: #f5f5f5;
   }
@@ -153,7 +154,7 @@ const Content = styled.div`
 
 const Label = styled.div`
   color: #9a9696;
-  font-size: 12px;
+  font-size: 16px;
   display: block;
   font-weight: ${(props) => props.fontWeight};
   margin: 10px;
