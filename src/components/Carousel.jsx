@@ -50,4 +50,7 @@ const DotStyle = styled.div`
   .alice-carousel__dots-item {
     margin: 0 -15px;
   }
+  .alice-carousel__dots-item.__active {
+    background-color: #c6c6c6;
+  }
 `;
