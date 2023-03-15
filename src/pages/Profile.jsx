@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { HiPencil } from "react-icons/hi";
+import { HiPencil, HiOutlineXCircle } from "react-icons/hi";
 import { useRef } from "react";
 
 function Profile() {
@@ -40,10 +40,14 @@ function Profile() {
             <Container>
               <Content>
                 <Label>이름(별명)</Label>
-                <input type='text'/>
+                <IconContainer>
+                  <input type='text' />
+                  <ClearButton>
+                    <HiOutlineXCircle color="#D0D0D0"/>
+                  </ClearButton>
+                </IconContainer>
                 <Label>소개</Label>
                 <textarea />
-
               </Content>
             </Container>
           </form>
@@ -81,7 +85,7 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 14px;
   color: #fff;
-  
+
   display: flex;
   padding: 10px;
 `;
@@ -123,20 +127,20 @@ const Content = styled.div`
   padding: 50px;
   flex-direction: column;
 
-  input{
-  box-sizing: border-box;
-  height: 55px;
-  width: 100%;
-  outline: none;
-  border-radius: 8px;
-  padding: 0 10px;
-  font-size: 14px;
-  border: 1px solid #eee;
-  background: #f5f5f5;
+  input {
+    box-sizing: border-box;
+    height: 55px;
+    width: 100%;
+    outline: none;
+    border-radius: 8px;
+    padding: 0 10px;
+    font-size: 14px;
+    border: 1px solid #eee;
+    background: #f5f5f5;
   }
   textarea {
     width: 100%;
-    height: 50%;
+    height: 100px;
     border: 1px solid #eee;
     box-sizing: border-box;
     border-radius: 8px;
@@ -145,15 +149,27 @@ const Content = styled.div`
     margin-bottom: 20px;
     background: #f5f5f5;
   }
-
 `;
 
 const Label = styled.div`
-  color: #9A9696;
+  color: #9a9696;
   font-size: 12px;
   display: block;
   font-weight: ${(props) => props.fontWeight};
   margin: 10px;
 `;
 
+const IconContainer = styled.div`
+  position: relative;
+`;
 
+const ClearButton = styled.button`
+  position: absolute;
+  font-size: 18px;
+  top: 15px;
+  right: 10px;
+
+  border: none;
+  background: none;
+  cursor: pointer;
+`;
