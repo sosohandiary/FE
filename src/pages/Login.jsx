@@ -22,7 +22,7 @@ const Login = () => {
   };
 
   const goToSignup = () => {
-    alert("회원가입 페이지로");
+    navigate("/profile");
   };
 
   const goToFindIDPW = () => {
