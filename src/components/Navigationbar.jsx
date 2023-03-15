@@ -2,7 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { VscHome, VscBell, VscBlank } from "react-icons/vsc";
 import { RxMagnifyingGlass, RxPerson } from "react-icons/rx";
-import { BsPlusLg } from "react-icons/bs";
+import { BiPlus } from "react-icons/bi";
+import { FaCircle } from "react-icons/fa";
 
 const Navigationbar = () => {
   return (
@@ -10,14 +11,18 @@ const Navigationbar = () => {
       <BottomBox>
         <VscHome className="VscHome" />
         <VscBell className="VscBell" />
-        <BsPlusLg className="BsPlusLg" />
+        <BiPlus className="BiPlus" />
         <RxMagnifyingGlass className="RxMagnifyingGlass" />
         <RxPerson className="RxPerson" />
       </BottomBox>
-
+      <CircleBox>
+        <VscBlank className="VscBlank" />
+        <FaCircle className="FaCircle" />
+        <VscBlank className="VscBlank" />
+      </CircleBox>
       <PlusBox>
         <VscBlank className="VscBlank" />
-        <BsPlusLg className="BsPlusLg" />
+        <BiPlus className="BiPlus" />
         <VscBlank className="VscBlank" />
       </PlusBox>
     </>
@@ -31,7 +36,7 @@ const BottomBox = styled.div`
   bottom: 0%;
   width: 100%;
   z-index: 1;
-  background-color: #d4d4d4;
+  background-color: #ececec;
   display: flex;
   justify-content: space-evenly;
   .VscHome {
@@ -42,6 +47,11 @@ const BottomBox = styled.div`
     font-size: 30px;
     padding: 20px;
   }
+  .BiPlus {
+    font-size: 30px;
+    padding: 20px;
+    color: #ececec;
+  }
   .RxMagnifyingGlass {
     font-size: 30px;
     padding: 20px;
@@ -49,13 +59,6 @@ const BottomBox = styled.div`
   .RxPerson {
     font-size: 30px;
     padding: 20px;
-  }
-  .BsPlusLg {
-    font-size: 30px;
-    padding: 20px;
-    color: #d4d4d4;
-  }
-  &:hover {
   }
 `;
 
@@ -67,15 +70,35 @@ const PlusBox = styled.div`
   display: flex;
   justify-content: space-evenly;
   background-color: transparent;
-  .BsPlusLg {
-    font-size: 40px;
+  .BiPlus {
+    font-size: 35px;
     color: white;
-    background-color: #464646;
-    border-radius: 40px;
-    padding: 5px 5px 5px 5px;
+    background-color: #525252;
+    border-radius: 35px;
+    padding: 8px 8px 8px 8px;
   }
   .VscBlank {
-    font-size: 40px;
+    font-size: 35px;
+    color: white;
+  }
+`;
+
+const CircleBox = styled.div`
+  position: fixed;
+  bottom: 4.6%;
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  justify-content: space-evenly;
+  background-color: transparent;
+  .FaCircle {
+    font-size: 57px;
+    color: #bebebe;
+    background-color: #bebebe;
+    border-radius: 57px;
+  }
+  .VscBlank {
+    font-size: 35px;
     color: white;
   }
 `;
