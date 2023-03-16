@@ -72,13 +72,13 @@ function MyPage() {
 export default MyPage;
 
 const StLayout = styled.div`
-  background: #524f4f;
+  margin: 0 auto;
+  max-width: 720px;
 `;
 
 const StContainer = styled.div`
-  background: #fff;
-
-  border-radius: 50px 50px 0px 0px;
+  /* background: #fff;
+  border-radius: 50px 50px 0px 0px; */
   position: relative;
   overflow: hidden;
   display: flex;
@@ -100,6 +100,7 @@ const ProfileImg = {
   borderRadius: "50%",
   width: "80px",
   height: "80px",
+  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
 };
 
 const ProfileArea = styled.div`
@@ -161,7 +162,7 @@ const EachMenuBox = styled.div`
 `;
 
 const DiaryBox = styled.div`
-  border-radius: 6px;
+  border-radius: 23px;
   width: 90%;
   max-width: 500px;
   position: relative;
@@ -179,6 +180,7 @@ const ThumbnailBox = styled.div`
   box-sizing: border-box;
   background: white;
   padding: 20px;
+  border-radius: 18px;
 `;
 
 const LabelSpan = styled.span`
