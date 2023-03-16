@@ -7,15 +7,13 @@ import Diary from "./Diary";
 import MainPage from "./MainPage";
 import OtherLogin from "./OtherLogin";
 import Profile from "./Profile";
-
+import Signup from "./Signup";
+import Oauth from "./Oauth";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/notice" element={<Notice />} /> */}
-        {/* <Route path="/transfusion" element={<TransfusionBoard />} /> */}
-        {/* <Route path="/knowledge" element={<Knowledge />} /> */}
         <Route path="/search" element={<Search />} />
         <Route path="/" element={<MainPage />} />
         <Route path="/diary" element={<Diary />} />
@@ -23,6 +21,8 @@ const Router = () => {
         <Route path="/otherlogin" element={<OtherLogin />} />
         <Route path="/test" element={<Test />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/oauth" element={<Oauth />} />
       </Routes>
     </BrowserRouter>
   );
