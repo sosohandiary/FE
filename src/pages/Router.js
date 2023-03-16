@@ -8,6 +8,8 @@ import MainPage from "./MainPage";
 import OtherLogin from "./OtherLogin";
 import Profile from "./Profile";
 import Notification from "./Notification";
+import MyPage from "./MyPage";
+
 
 const Router = () => {
   return (
@@ -24,6 +26,7 @@ const Router = () => {
         <Route path="/test" element={<Test />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/notification" element={<Notification />} />
+        <Route path="/mypage" element={<MyPage />} />
       </Routes>
     </BrowserRouter>
   );
