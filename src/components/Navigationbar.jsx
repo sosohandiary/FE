@@ -4,8 +4,21 @@ import { VscHome, VscBell, VscBlank } from "react-icons/vsc";
 import { RxMagnifyingGlass, RxPerson } from "react-icons/rx";
 import { BiPlus } from "react-icons/bi";
 import { FaCircle } from "react-icons/fa";
+import Draggable from "react-draggable";
 
 const Navigationbar = () => {
+  const check = (e) => {
+    console.log(e);
+  };
+
+  const plusButtonOnStopHandler = (e, data) => {
+    console.log("Event: ", e);
+    console.log("Data: ", data);
+  };
+
+  const plusButtonOnStartHandler = () => {
+    console.log("dd");
+  };
   return (
     <>
       <BottomBox>
@@ -15,16 +28,25 @@ const Navigationbar = () => {
         <RxMagnifyingGlass className="RxMagnifyingGlass" />
         <RxPerson className="RxPerson" />
       </BottomBox>
+
       <CircleBox>
         <VscBlank className="VscBlank" />
         <FaCircle className="FaCircle" />
         <VscBlank className="VscBlank" />
       </CircleBox>
-      <PlusBox>
-        <VscBlank className="VscBlank" />
-        <BiPlus className="BiPlus" />
-        <VscBlank className="VscBlank" />
-      </PlusBox>
+
+      <Draggable
+        defaultPosition={{ x: 0, y: 0 }}
+        position={{ x: 0, y: 0 }}
+        onStart={plusButtonOnStartHandler}
+        onStop={plusButtonOnStopHandler}
+      >
+        <PlusBox onClick={check}>
+          <VscBlank className="VscBlank" />
+          <BiPlus className="BiPlus" />
+          <VscBlank className="VscBlank" />
+        </PlusBox>
+      </Draggable>
     </>
   );
 };
@@ -64,12 +86,14 @@ const BottomBox = styled.div`
 
 const PlusBox = styled.div`
   position: fixed;
-  bottom: 5%;
+  bottom: 0%;
+  margin-bottom: 45px;
   width: 100%;
   z-index: 1;
   display: flex;
   justify-content: space-evenly;
   background-color: transparent;
+
   .BiPlus {
     font-size: 35px;
     color: white;
@@ -85,7 +109,8 @@ const PlusBox = styled.div`
 
 const CircleBox = styled.div`
   position: fixed;
-  bottom: 4.6%;
+  bottom: 0%;
+  margin-bottom: 42px;
   width: 100%;
   z-index: 1;
   display: flex;
