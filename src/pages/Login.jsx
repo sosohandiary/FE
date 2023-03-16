@@ -6,15 +6,12 @@ import { kakaoLoginApi } from "../api/kakaoLogin";
 import { disableColor, subColor1, subColor2 } from "../constants/colorPalette";
 import { useForm } from "react-hook-form";
 import { LongButtonStyle } from "../styles/LongButtonStyle";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
   const kakaoLoginButtonHandler = () => {
     kakaoLoginApi();
-  };
-
-  const otherWayLoginButtonHandler = () => {
-    navigate("/otherlogin");
   };
 
   const goToHome = () => {
@@ -37,7 +34,12 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    alert("ID : " + data.userId + ", PW : " + data.userPassword);
+    const userInfo = { email: data.userId, password: data.userPassword };
+    console.log(userInfo);
+    axios
+      .post(`${process.env.REACT_APP_BASEURL}/login`, userInfo)
+      .then((res) => console.log(res))
+      .then((err) => console.log(err));
   };
 
   return (
@@ -50,7 +52,7 @@ const Login = () => {
       </LogoArea>
       <LoginArea>
         <LoginForm onSubmit={handleSubmit(onSubmit)}>
-          <InputArea style={{ textAlign: "left", margin: "20px" }}>
+          <InputArea style={{}}>
             <span>(ㅇ)</span>
             <input
               type="text"
@@ -62,11 +64,11 @@ const Login = () => {
             />
           </InputArea>
           {errors.userId && (
-            <small role="alert" style={{ color: "red", marginTop: "-2vh" }}>
+            <ValidationErrorMsg role="alert">
               {errors.userId.message}
-            </small>
+            </ValidationErrorMsg>
           )}
-          <InputArea style={{ textAlign: "left", margin: "20px" }}>
+          <InputArea>
             <span>(ㅇ)</span>
             <input
               type="password"
@@ -78,11 +80,11 @@ const Login = () => {
             />
           </InputArea>
           {errors.userPassword && (
-            <small role="alert" style={{ color: "red", marginTop: "-2vh" }}>
+            <ValidationErrorMsg role="alert">
               {errors.userPassword.message}
-            </small>
+            </ValidationErrorMsg>
           )}
-          <SubmitButtonStyle style={{ marginTop: "2vh" }}>
+          <SubmitButtonStyle>
             <input type="submit" value="로그인" disabled={isSubmitting} />
           </SubmitButtonStyle>
         </LoginForm>
@@ -90,9 +92,7 @@ const Login = () => {
         <FindIDPWArea onClick={goToFindIDPW}>
           아이디/비밀번호 찾기{">"}
         </FindIDPWArea>
-        <Underline
-          style={{ marginTop: "7vh", marginBottom: "3vh" }}
-        ></Underline>
+        <Underline></Underline>
         <div>
           <img
             src={kakaoLoginImage}
@@ -114,7 +114,7 @@ const WholeArea = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  height: 83vh;
+  height: 100%;
 `;
 
 const LogoArea = styled.div`
@@ -132,10 +132,6 @@ const LogoArea = styled.div`
 
 const LoginArea = styled.div`
   margin-top: 5px;
-  div {
-    text-align: center;
-    margin: 5px 0px;
-  }
 `;
 
 const LoginForm = styled.form`
@@ -144,11 +140,16 @@ const LoginForm = styled.form`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin-bottom: 2vh;
 `;
 
 const InputArea = styled.div`
+  text-align: left;
+  margin: 20px;
   border-bottom: 1px solid rgb(${disableColor});
   width: 76%;
+  text-align: left;
+  margin: 20px;
   input {
     width: 80%;
     border: none;
@@ -162,6 +163,7 @@ const InputArea = styled.div`
 `;
 
 const SubmitButtonStyle = styled.div`
+  margin-top: 2vh;
   background-color: rgb(${subColor1});
   width: 300px;
   height: 45px;
@@ -185,10 +187,19 @@ const SubmitButtonStyle = styled.div`
 `;
 
 const FindIDPWArea = styled.div`
+  margin-top: 2vh;
+  text-align: center;
   color: gray;
   font-size: 11px;
 `;
 
 const Underline = styled.div`
+  margin-top: 7vh;
+  margin-bottom: 3vh;
   border-bottom: 1px solid rgb(222, 222, 222);
+`;
+
+const ValidationErrorMsg = styled.small`
+  color: red;
+  margin-top: -2vh;
 `;
