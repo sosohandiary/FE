@@ -7,7 +7,7 @@ import Diary from "./Diary";
 import MainPage from "./MainPage";
 import OtherLogin from "./OtherLogin";
 import Profile from "./Profile";
-
+import Notification from "./Notification";
 
 const Router = () => {
   return (
@@ -23,6 +23,7 @@ const Router = () => {
         <Route path="/otherlogin" element={<OtherLogin />} />
         <Route path="/test" element={<Test />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/notification" element={<Notification />} />
       </Routes>
     </BrowserRouter>
   );
