@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
 import { LongButtonStyle } from "../styles/LongButtonStyle";
 
