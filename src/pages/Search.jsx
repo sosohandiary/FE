@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import Friendlist from "../components/Friendlist";
 import Navigationbar from "../components/Navigationbar";
 import Searchbox from "../components/Searchbox";
