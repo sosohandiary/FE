@@ -9,6 +9,7 @@ import OtherLogin from "./OtherLogin";
 import Profile from "./Profile";
 import Signup from "./Signup";
 import Oauth from "./Oauth";
+import SignupSuccess from "./SignupSuccess";
 
 const Router = () => {
   return (
@@ -22,6 +23,7 @@ const Router = () => {
         <Route path="/test" element={<Test />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/signup/success" element={<SignupSuccess />} />
         <Route path="/oauth" element={<Oauth />} />
       </Routes>
     </BrowserRouter>
