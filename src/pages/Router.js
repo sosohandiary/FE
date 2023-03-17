@@ -11,7 +11,7 @@ import Signup from "./Signup";
 import Oauth from "./Oauth";
 import Notification from "./Notification";
 import MyPage from "./MyPage";
-
+import Detail from "./Detail";
 
 const Router = () => {
   return (
@@ -28,6 +28,7 @@ const Router = () => {
         <Route path="/oauth" element={<Oauth />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/detail" element={<Detail />} />
       </Routes>
     </BrowserRouter>
   );
