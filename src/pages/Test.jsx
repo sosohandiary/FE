@@ -1,34 +1,21 @@
 import React from "react";
-import Draggable, { DraggableCore } from "react-draggable";
+import { Stage, Layer, RegularPolygon } from "react-konva";
 
 const Test = () => {
-  const eventLogger = (e, data) => {
-    console.log("Event: ", e);
-    console.log("Data: ", data);
-  };
-
-  const onStartHandler = () => {
-    console.log("onStart");
-  };
-
   return (
-    <div>
-      <Draggable
-        axis="both"
-        handle=".handle"
-        defaultPosition={{ x: 0, y: 0 }}
-        position={null}
-        scale={1}
-        onStart={onStartHandler}
-        onDrag={console.log("onDrag")}
-        onStop={console.log("onStop")}
-      >
-        <div className="handle">
-          <div>Drag from here</div>
-          <div>This readme is really dragging on...</div>
-        </div>
-      </Draggable>
-    </div>
+    <Stage width={window.innerWidth} height={window.innerHeight}>
+      <Layer>
+        <RegularPolygon
+          sides={10}
+          x={100}
+          y={100}
+          width={100}
+          height={100}
+          fill="red"
+          shadowBlur={5}
+        />
+      </Layer>
+    </Stage>
   );
 };
 

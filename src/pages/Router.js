@@ -12,6 +12,9 @@ import Oauth from "./Oauth";
 import SignupSuccess from "./SignupSuccess";
 import Notification from "./Notification";
 import MyPage from "./MyPage";
+import SignupSuccess from "./SignupSuccess";
+import Notification from "./Notification";
+import MyPage from "./MyPage";
 
 const Router = () => {
   return (

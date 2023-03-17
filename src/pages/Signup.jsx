@@ -1,7 +1,7 @@
 import React from "react";
-import { Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import { WholeAreaStyle } from "../styles/\bWholeAreaStyle";
 import {
   LongButtonStyle,
   LongButtonSubmitStyle,
@@ -15,9 +15,15 @@ const Signup = () => {
     console.log(data);
   };
 
+
+  const onXClickHandler = () => {
+    alert("X 버튼 클릭됨");
+  };
+
   return (
-    <WholeArea>
-      <CloseButton>X</CloseButton>
+    <WholeAreaStyle>
+      <CloseButton onClick={onXClickHandler}>X</CloseButton>
+
       <SignupTitle>회원가입</SignupTitle>
       <Greeting>
         처음 오셨네요!
@@ -56,7 +62,8 @@ const Signup = () => {
             style={{
               width: "20px",
               height: "20px",
-              margin: "5px 5px 5px 10px",
+              margin: "15px 5px 15px 10px",
+
             }}
           />
           남자
@@ -108,43 +115,36 @@ const Signup = () => {
             })}
           />
         </InputLine>
-        <LongButtonSubmitStyle style={{ margin: "5px 0px" }}>
+        <LongButtonSubmitStyle style={{ margin: "10px 0px" }}>
           <input type="submit" value="회원가입" />
         </LongButtonSubmitStyle>
       </InputForm>
-    </WholeArea>
+    </WholeAreaStyle>
+
   );
 };
 
 export default Signup;
 
-const WholeArea = styled.div`
-  margin: 0 10vw;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-`;
-
 const SignupTitle = styled.span`
-  text-align: center;
   font-weight: 700;
 `;
 
 const CloseButton = styled.div`
   position: relative;
-  top: 20px;
+  right: 42vw;
+  top: 3vh;
 `;
 
 const Greeting = styled.h2`
-  margin: 8vh 2vw;
+  margin-top: 4vh;
+  position: relative;
+  right: 30px;
 `;
 
 const InputForm = styled.form``;
 
 const InputLine = styled.div`
-  label {
-    margin-bottom: 50px;
-  }
   input {
     margin: 10px 0px;
     width: 300px;
