@@ -35,3 +35,4 @@ const WelcomeMsg = styled.div`
   margin-top: 2vh;
   margin-bottom: 8vh;
 `;
+

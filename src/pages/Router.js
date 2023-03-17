@@ -9,13 +9,12 @@ import OtherLogin from "./OtherLogin";
 import Profile from "./Profile";
 import Signup from "./Signup";
 import Oauth from "./Oauth";
-<<<<<<< HEAD
 import SignupSuccess from "./SignupSuccess";
-=======
 import Notification from "./Notification";
 import MyPage from "./MyPage";
-
->>>>>>> 6db85af8f74f6cf77eae6eb999c17ea62aadc0e0
+import SignupSuccess from "./SignupSuccess";
+import Notification from "./Notification";
+import MyPage from "./MyPage";
 
 const Router = () => {
   return (
