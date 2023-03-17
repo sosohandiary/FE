@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Navigationbar from "../components/Navigationbar";
 import { SlMagnifier } from "react-icons/sl";
 import { MdOutlineCancel } from "react-icons/md";
 
-function Searchbox() {
+function Searchbox({placeholder}) {
   return (
     <>
       <SearchTotalBox>
@@ -14,7 +14,7 @@ function Searchbox() {
             <Searchinput
               type="text"
               name="searchbox"
-              placeholder="친구 찾기 "
+              placeholder={placeholder}
             />
           </SearchStyle>
           <MdOutlineCancel className="MdOutlineCancel" />
@@ -65,4 +65,5 @@ const Searchinput = styled.input`
   font-weight: bold;
   background-color: transparent;
   border: none;
+  width: 300px;
 `;
