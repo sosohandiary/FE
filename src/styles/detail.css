@@ -1,0 +1,50 @@
+.formDiv {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+/* 댓글입력창 */
+.commentInput {
+  box-sizing: border-box;
+  height: 55px;
+  width: 342px;
+  /* width: 100%; */
+  outline: none;
+  border-radius: 8px;
+  padding: 0 10px;
+  font-size: 16px;
+  border: 1px solid #eee;
+  background: #f5f5f5;
+  margin-right: 10px;
+}
+
+/* 댓글추가버튼 */
+.addCommentBtn {
+  box-sizing: border-box;
+  height: 55px;
+  /* width: 100%; */
+  outline: none;
+  border-radius: 8px;
+  padding: 0 10px;
+  font-size: 16px;
+  border: 1px solid #eee;
+  background-color: rgb(242, 254, 250);
+}
+
+/* 댓글창 div */
+.commentBox {
+  margin-top: 20px;
+  margin-left: 25px;
+}
+
+/* 댓글 div */
+.commentDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  width: 30%;
+}
+.commentDiv > p {
+  font-size: 10px;
+}

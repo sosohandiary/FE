@@ -1,7 +1,14 @@
 import React from "react";
+import AddcommentForm from "../components/detail/AddcommentForm";
+import CommentList from "../components/detail/CommentList";
 
 const Detail = () => {
-  return <div>디에테이이일이리이릴</div>;
+  return (
+    <div>
+      <AddcommentForm />
+      <CommentList />
+    </div>
+  );
 };
 
 export default Detail;
