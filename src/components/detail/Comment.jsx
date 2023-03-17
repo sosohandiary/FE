@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../styles/detail.css";
-import { CiEraser, CiTrash } from "react-icons/ci";
+import { CiEraser, CiTrash, CiUndo, CiCircleCheck } from "react-icons/ci";
 
 const Comment = ({ id, userName, content, handleDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -32,8 +32,8 @@ const Comment = ({ id, userName, content, handleDelete }) => {
     return (
       <div className="commentDiv">
         <input type="text" value={updatedContent} onChange={handleContentChange} />
-        <button onClick={handleSaveClick}>Save</button>
-        <button onClick={handleCancelClick}>Cancel</button>
+        <CiCircleCheck onClick={handleSaveClick} />
+        <CiUndo onClick={handleCancelClick} />
       </div>
     );
   } else {
@@ -42,8 +42,8 @@ const Comment = ({ id, userName, content, handleDelete }) => {
         <p>
           {userName}: {content}
         </p>
-        <CiEraser onClick={handleEditClick}>Edit</CiEraser>
-        <CiTrash onClick={handleDeleteClick}></CiTrash>
+        <CiEraser onClick={handleEditClick} />
+        <CiTrash onClick={handleDeleteClick} />
       </div>
     );
   }
