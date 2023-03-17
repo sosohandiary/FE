@@ -52,7 +52,7 @@ function Profile() {
             </ProfileArea>
             <input
               type='file'
-              accept='img/*'
+              accept='image/*'
               // onChange={onImgPostHandler}
               ref={fileInput}
               style={{ display: "none" }}
