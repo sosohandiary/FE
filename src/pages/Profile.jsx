@@ -1,14 +1,34 @@
 import React from "react";
 import styled from "styled-components";
 import { HiPencil, HiOutlineXCircle } from "react-icons/hi";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import DeleteAccount from "../components/mypage/DeleteAccount";
 
 function Profile() {
   const fileInput = useRef();
 
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
   const onImgButton = (event) => {
     event.preventDefault();
     fileInput.current.click();
+  };
+
+  const handleOpenModal = (e) => {
+    e.preventDefault();
+    setConfirmDelete(true);
+  };
+
+  const handleCloseModal = (e) => {
+    e.preventDefault();
+    setConfirmDelete(false);
+  };
+
+
+  const handleDelete = () => {
+    //alert창 수정하기
+    alert("삭제 완료!");
+    // navigate(-1);
   };
 
   return (
@@ -32,7 +52,7 @@ function Profile() {
             </ProfileArea>
             <input
               type='file'
-              accept='img/*'
+              accept='image/*'
               // onChange={onImgPostHandler}
               ref={fileInput}
               style={{ display: "none" }}
@@ -42,13 +62,21 @@ function Profile() {
                 <Label>이름(별명)</Label>
                 <IconContainer>
                   <input type='text' />
-                  <ClearButton>
-                    <HiOutlineXCircle color="#D0D0D0"/>
+                  {/*clearButton 클릭시 이름 input clear해주는 기능 넣을 것 */}
+                  <ClearButton disabled>
+                    <HiOutlineXCircle color='#D0D0D0' />
                   </ClearButton>
                 </IconContainer>
                 <Label>소개</Label>
                 <textarea />
               </Content>
+              <DeActivate onClick={handleOpenModal}>회원 탈퇴</DeActivate>
+              <DeleteAccount
+                title='탈퇴하기'
+                isOpen={confirmDelete}
+                onClose={handleCloseModal}
+                handleDelete={handleDelete}
+              />
             </Container>
           </form>
         </ProfileLayout>
@@ -83,7 +111,7 @@ const ProfileArea = styled.div`
 
 const Title = styled.div`
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
   color: #fff;
 
   display: flex;
@@ -134,7 +162,7 @@ const Content = styled.div`
     outline: none;
     border-radius: 8px;
     padding: 0 10px;
-    font-size: 14px;
+    font-size: 16px;
     border: 1px solid #eee;
     background: #f5f5f5;
   }
@@ -145,7 +173,7 @@ const Content = styled.div`
     box-sizing: border-box;
     border-radius: 8px;
     padding: 12px;
-    font-size: 12px;
+    font-size: 16px;
     margin-bottom: 20px;
     background: #f5f5f5;
   }
@@ -153,7 +181,7 @@ const Content = styled.div`
 
 const Label = styled.div`
   color: #9a9696;
-  font-size: 12px;
+  font-size: 16px;
   display: block;
   font-weight: ${(props) => props.fontWeight};
   margin: 10px;
@@ -168,6 +196,16 @@ const ClearButton = styled.button`
   font-size: 18px;
   top: 15px;
   right: 10px;
+
+  border: none;
+  background: none;
+  cursor: pointer;
+`;
+
+const DeActivate = styled.button`
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
 
   border: none;
   background: none;

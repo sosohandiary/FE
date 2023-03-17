@@ -1,45 +1,33 @@
-import React, { useRef } from "react";
-import AliceCarousel from "react-alice-carousel";
-import "react-alice-carousel/lib/alice-carousel.css";
+import React from "react";
+import Draggable, { DraggableCore } from "react-draggable";
 
 const Test = () => {
-  const items = [
-    <div className="item" data-value="1">
-      1
-    </div>,
-    <div className="item" data-value="2">
-      2
-    </div>,
-    <div className="item" data-value="3">
-      3
-    </div>,
-    <div className="item" data-value="4">
-      4
-    </div>,
-    <div className="item" data-value="5">
-      5
-    </div>,
-  ];
-  const carousel = useRef(null);
+  const eventLogger = (e, data) => {
+    console.log("Event: ", e);
+    console.log("Data: ", data);
+  };
+
+  const onStartHandler = () => {
+    console.log("onStart");
+  };
+
   return (
     <div>
-      <AliceCarousel
-        key="carousel"
-        mouseTracking
-        disableDotsControls
-        disableButtonsControls
-        items={items}
-        ref={carousel}
-      />
-      <nav key="nav" className="b-refs-navs">
-        {items.map((item, i) => {
-          return <span key={i} onClick={() => carousel?.current?.slideTo(i)} />;
-        })}
-      </nav>
-      <div key="btns" className="b-refs-buttons">
-        <button onClick={(e) => carousel?.current?.slidePrev(e)}>Prev</button>
-        <button onClick={(e) => carousel?.current?.slideNext(e)}>Next</button>
-      </div>
+      <Draggable
+        axis="both"
+        handle=".handle"
+        defaultPosition={{ x: 0, y: 0 }}
+        position={null}
+        scale={1}
+        onStart={onStartHandler}
+        onDrag={console.log("onDrag")}
+        onStop={console.log("onStop")}
+      >
+        <div className="handle">
+          <div>Drag from here</div>
+          <div>This readme is really dragging on...</div>
+        </div>
+      </Draggable>
     </div>
   );
 };
