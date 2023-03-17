@@ -9,6 +9,7 @@ import OtherLogin from "./OtherLogin";
 import Profile from "./Profile";
 import Signup from "./Signup";
 import Oauth from "./Oauth";
+import SignupSuccess from "./SignupSuccess";
 import Notification from "./Notification";
 import MyPage from "./MyPage";
 import Detail from "./Detail";
@@ -25,6 +26,7 @@ const Router = () => {
         <Route path="/test" element={<Test />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/signup/success" element={<SignupSuccess />} />
         <Route path="/oauth" element={<Oauth />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/mypage" element={<MyPage />} />

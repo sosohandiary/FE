@@ -18,9 +18,9 @@ const Oauth = () => {
       });
   }, []);
 
-  useEffect(() => {
-    axios.get(`${process.env.REACT_APP_BASEURL}/login/kakao`);
-  }, []);
+  // useEffect(() => {
+  //   axios.get(`${process.env.REACT_APP_BASEURL}/login/kakao`);
+  // }, []);
   return <div>Oauth</div>;
 };
 
