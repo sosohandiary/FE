@@ -1,7 +1,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { WholeAreaStyle } from "../styles/\bWholeAreaStyle";
+import {
+  WholeAreaStyle,
+  WholeAreaWithMargin,
+} from "../styles/\bWholeAreaStyle";
 import {
   LongButtonStyle,
   LongButtonSubmitStyle,
@@ -15,13 +18,12 @@ const Signup = () => {
     console.log(data);
   };
 
-
   const onXClickHandler = () => {
     alert("X 버튼 클릭됨");
   };
 
   return (
-    <WholeAreaStyle>
+    <WholeAreaWithMargin>
       <CloseButton onClick={onXClickHandler}>X</CloseButton>
 
       <SignupTitle>회원가입</SignupTitle>
@@ -63,7 +65,6 @@ const Signup = () => {
               width: "20px",
               height: "20px",
               margin: "15px 5px 15px 10px",
-
             }}
           />
           남자
@@ -119,8 +120,7 @@ const Signup = () => {
           <input type="submit" value="회원가입" />
         </LongButtonSubmitStyle>
       </InputForm>
-    </WholeAreaStyle>
-
+    </WholeAreaWithMargin>
   );
 };
 
