@@ -12,7 +12,6 @@ import Oauth from "./Oauth";
 import SignupSuccess from "./SignupSuccess";
 import Notification from "./Notification";
 import MyPage from "./MyPage";
-import Detail from "./Detail";
 
 const Router = () => {
   return (
