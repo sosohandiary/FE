@@ -16,14 +16,14 @@ function Profile() {
       <StLayout>
         <ProfileLayout>
           <Title>프로필 편집</Title>
-          <form encType='multipart/form-data'>
+          <form encType="multipart/form-data">
             <ProfileArea>
               <StButton onClick={onImgButton}>
                 <img
                   style={ProfileImg}
                   //사진 여기로 전달 받기!
-                  src='https://avatars.githubusercontent.com/u/109452831?v=4'
-                  alt='profile image'
+                  src="https://avatars.githubusercontent.com/u/109452831?v=4"
+                  alt="profile image"
                 />
               </StButton>
               <EditPencilArea>
@@ -31,8 +31,8 @@ function Profile() {
               </EditPencilArea>
             </ProfileArea>
             <input
-              type='file'
-              accept='img/*'
+              type="file"
+              accept="img/*"
               // onChange={onImgPostHandler}
               ref={fileInput}
               style={{ display: "none" }}
@@ -41,10 +41,10 @@ function Profile() {
               <Content>
                 <Label>이름(별명)</Label>
                 <IconContainer>
-                  <input type='text' />
+                  <input type="text" />
                   {/*clearButton 클릭시 이름 input clear해주는 기능 넣을 것 */}
                   <ClearButton disabled>
-                    <HiOutlineXCircle color="#D0D0D0"/>
+                    <HiOutlineXCircle color="#D0D0D0" />
                   </ClearButton>
                 </IconContainer>
                 <Label>소개</Label>

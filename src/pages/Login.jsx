@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { kakaoLoginApi } from "../api/kakaoLogin";
 import { disableColor, subColor1, subColor2 } from "../constants/colorPalette";
 import { useForm } from "react-hook-form";
-import { LongButtonStyle } from "../styles/LongButtonStyle";
+import MintButtonLarge from "../styles/MintButtonLarge";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -86,7 +86,7 @@ const Login = () => {
             <input type="submit" value="로그인" disabled={isSubmitting} />
           </SubmitButtonStyle>
         </LoginForm>
-        <LongButtonStyle onClick={goToSignup}>회원가입</LongButtonStyle>
+        <MintButtonLarge onClick={goToSignup}>회원가입</MintButtonLarge>
         <FindIDPWArea onClick={goToFindIDPW}>
           아이디/비밀번호 찾기{">"}
         </FindIDPWArea>
