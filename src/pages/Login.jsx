@@ -5,13 +5,16 @@ import { useNavigate } from "react-router-dom";
 import { kakaoLoginApi } from "../api/kakaoLogin";
 import { disableColor, subColor1, subColor2 } from "../constants/colorPalette";
 import { useForm } from "react-hook-form";
-import { LongButtonStyle } from "../styles/LongButtonStyle";
-import axios from "axios";
+import MintButtonLarge from "../styles/MintButtonLarge";
 
 const Login = () => {
   const navigate = useNavigate();
   const kakaoLoginButtonHandler = () => {
     kakaoLoginApi();
+  };
+
+  const otherWayLoginButtonHandler = () => {
+    navigate("/otherlogin");
   };
 
   const goToHome = () => {
@@ -34,12 +37,7 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const userInfo = { email: data.userId, password: data.userPassword };
-    console.log(userInfo);
-    axios
-      .post(`${process.env.REACT_APP_BASEURL}/login`, userInfo)
-      .then((res) => console.log(res))
-      .then((err) => console.log(err));
+    alert("ID : " + data.userId + ", PW : " + data.userPassword);
   };
 
   return (
@@ -52,7 +50,7 @@ const Login = () => {
       </LogoArea>
       <LoginArea>
         <LoginForm onSubmit={handleSubmit(onSubmit)}>
-          <InputArea style={{}}>
+          <InputArea style={{ textAlign: "left", margin: "20px" }}>
             <span>(ㅇ)</span>
             <input
               type="text"
@@ -64,11 +62,11 @@ const Login = () => {
             />
           </InputArea>
           {errors.userId && (
-            <ValidationErrorMsg role="alert">
+            <small role="alert" style={{ color: "red", marginTop: "-2vh" }}>
               {errors.userId.message}
-            </ValidationErrorMsg>
+            </small>
           )}
-          <InputArea>
+          <InputArea style={{ textAlign: "left", margin: "20px" }}>
             <span>(ㅇ)</span>
             <input
               type="password"
@@ -80,19 +78,21 @@ const Login = () => {
             />
           </InputArea>
           {errors.userPassword && (
-            <ValidationErrorMsg role="alert">
+            <small role="alert" style={{ color: "red", marginTop: "-2vh" }}>
               {errors.userPassword.message}
-            </ValidationErrorMsg>
+            </small>
           )}
-          <SubmitButtonStyle>
+          <SubmitButtonStyle style={{ marginTop: "2vh" }}>
             <input type="submit" value="로그인" disabled={isSubmitting} />
           </SubmitButtonStyle>
         </LoginForm>
-        <LongButtonStyle onClick={goToSignup}>회원가입</LongButtonStyle>
+        <MintButtonLarge onClick={goToSignup}>회원가입</MintButtonLarge>
         <FindIDPWArea onClick={goToFindIDPW}>
           아이디/비밀번호 찾기{">"}
         </FindIDPWArea>
-        <Underline></Underline>
+        <Underline
+          style={{ marginTop: "7vh", marginBottom: "3vh" }}
+        ></Underline>
         <div>
           <img
             src={kakaoLoginImage}
@@ -114,7 +114,7 @@ const WholeArea = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  height: 100%;
+  height: 83vh;
 `;
 
 const LogoArea = styled.div`
@@ -132,6 +132,10 @@ const LogoArea = styled.div`
 
 const LoginArea = styled.div`
   margin-top: 5px;
+  div {
+    text-align: center;
+    margin: 5px 0px;
+  }
 `;
 
 const LoginForm = styled.form`
@@ -140,16 +144,11 @@ const LoginForm = styled.form`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-bottom: 2vh;
 `;
 
 const InputArea = styled.div`
-  text-align: left;
-  margin: 20px;
   border-bottom: 1px solid rgb(${disableColor});
   width: 76%;
-  text-align: left;
-  margin: 20px;
   input {
     width: 80%;
     border: none;
@@ -163,7 +162,6 @@ const InputArea = styled.div`
 `;
 
 const SubmitButtonStyle = styled.div`
-  margin-top: 2vh;
   background-color: rgb(${subColor1});
   width: 300px;
   height: 45px;
@@ -187,19 +185,10 @@ const SubmitButtonStyle = styled.div`
 `;
 
 const FindIDPWArea = styled.div`
-  margin-top: 2vh;
-  text-align: center;
   color: gray;
   font-size: 11px;
 `;
 
 const Underline = styled.div`
-  margin-top: 7vh;
-  margin-bottom: 3vh;
   border-bottom: 1px solid rgb(222, 222, 222);
-`;
-
-const ValidationErrorMsg = styled.small`
-  color: red;
-  margin-top: -2vh;
 `;
