@@ -31,7 +31,7 @@ const Router = () => {
         <Route path="/oauth" element={<Oauth />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/detail" element={<Detail />} />
+        {/* <Route path="/detail" element={<Detail />} /> */}
       </Routes>
     </BrowserRouter>
   );

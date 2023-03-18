@@ -1,14 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import {
-  WholeAreaStyle,
-  WholeAreaWithMargin,
-} from "../styles/\bWholeAreaStyle";
-import {
-  LongButtonStyle,
-  LongButtonSubmitStyle,
-} from "../styles/LongButtonStyle";
+import { WholeAreaStyle, WholeAreaWithMargin } from "../styles/WholeAreaStyle";
+import { LongButtonStyle, LongButtonSubmitStyle } from "../styles/LongButtonStyle";
 
 const Signup = () => {
   // form 관련

@@ -1,9 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  WholeAreaStyle,
-  WholeAreaWithMargin,
-} from "../styles/\bWholeAreaStyle";
+import { WholeAreaStyle, WholeAreaWithMargin } from "../styles/WholeAreaStyle";
 import { LongButtonStyle } from "../styles/LongButtonStyle";
 
 const SignupSuccess = () => {
