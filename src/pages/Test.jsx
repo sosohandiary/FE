@@ -13,6 +13,9 @@ const Test = () => {
           height={100}
           fill="red"
           shadowBlur={5}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
         />
       </Layer>
     </Stage>
