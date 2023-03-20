@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { HiOutlineXCircle } from "react-icons/hi";
 
-function InputBox(type) {
+const InputBox = ({ type }) => {
   return (
     <>
       <Content>
@@ -13,7 +13,7 @@ function InputBox(type) {
       </Content>
     </>
   );
-}
+};
 
 export default InputBox;
 

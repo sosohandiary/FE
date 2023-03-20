@@ -1,7 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { WholeAreaStyle, WholeAreaWithMargin } from "../styles/WholeAreaStyle";
+import { BackButtonTitle, CloseButtonTitle } from "../components/BackOrCloseButton";
+import InputBox from "../components/InputBox";
+import { WholeAreaStyle, WholeAreaWithMargin } from "../styles/\bWholeAreaStyle";
 import { LongButtonStyle, LongButtonSubmitStyle } from "../styles/LongButtonStyle";
 
 const Signup = () => {
@@ -12,15 +14,9 @@ const Signup = () => {
     console.log(data);
   };
 
-  const onXClickHandler = () => {
-    alert("X 버튼 클릭됨");
-  };
-
   return (
     <WholeAreaWithMargin>
-      <CloseButton onClick={onXClickHandler}>X</CloseButton>
-
-      <SignupTitle>회원가입</SignupTitle>
+      <BackButtonTitle title={"회원가입"}></BackButtonTitle>
       <Greeting>
         처음 오셨네요!
         <br />
@@ -30,6 +26,13 @@ const Signup = () => {
         <InputLine>
           <label>이름</label>
           <br />
+          <InputBox
+            useformfunc={{
+              ...register("name", {
+                required: "이름을 입력해주세요",
+              }),
+            }}
+          />
           <input
             type="text"
             {...register("name", {

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ProfilePicLarge = (src) => {
+export const ProfilePicLarge = ({ src }) => {
   return (
     <CirclePic size={"large"}>
       <Image src={src} width={120} height={120} size={"large"} />
