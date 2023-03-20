@@ -4,21 +4,8 @@ import { VscHome, VscBell, VscBlank } from "react-icons/vsc";
 import { RxMagnifyingGlass, RxPerson } from "react-icons/rx";
 import { BiPlus } from "react-icons/bi";
 import { FaCircle } from "react-icons/fa";
-import Draggable from "react-draggable";
 
 const Navigationbar = () => {
-  const check = (e) => {
-    console.log(e);
-  };
-
-  const plusButtonOnStopHandler = (e, data) => {
-    console.log("Event: ", e);
-    console.log("Data: ", data);
-  };
-
-  const plusButtonOnStartHandler = () => {
-    console.log("dd");
-  };
   return (
     <>
       <BottomBox>
@@ -35,18 +22,11 @@ const Navigationbar = () => {
         <VscBlank className="VscBlank" />
       </CircleBox>
 
-      <Draggable
-        defaultPosition={{ x: 0, y: 0 }}
-        position={{ x: 0, y: 0 }}
-        onStart={plusButtonOnStartHandler}
-        onStop={plusButtonOnStopHandler}
-      >
-        <PlusBox onClick={check}>
-          <VscBlank className="VscBlank" />
-          <BiPlus className="BiPlus" />
-          <VscBlank className="VscBlank" />
-        </PlusBox>
-      </Draggable>
+      <PlusBox>
+        <VscBlank className="VscBlank" />
+        <BiPlus className="BiPlus" />
+        <VscBlank className="VscBlank" />
+      </PlusBox>
     </>
   );
 };
@@ -93,7 +73,7 @@ const PlusBox = styled.div`
   display: flex;
   justify-content: space-evenly;
   background-color: transparent;
-
+ 
   .BiPlus {
     font-size: 35px;
     color: white;

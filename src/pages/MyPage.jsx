@@ -1,6 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { WholeArea, WholeAreaWithMargin } from "../styles/WholeAreaStyle";
+
+import {ProfilePicMedium, ProfilePicLarge} from "../components/ProfilePics"
 
 function MyPage() {
   const navigate = useNavigate();
@@ -10,81 +13,58 @@ function MyPage() {
   };
   return (
     <>
-      <StLayout>
-        <StContainer>
-          <Title size='18'>마이페이지</Title>
-          <ProfileArea>
-            <img
-              style={ProfileImg}
-              //사진 여기로 전달 받기!
-              //성별 구분하기? 이건 확인받기
-              src='https://avatars.githubusercontent.com/u/109452831?v=4'
-              alt='profile image'
-            />
-          </ProfileArea>
-          <Title size='22'>김소다</Title>
-          <NavButton onClick={navToProfile}>
-            <Label size='16'>프로필 편집</Label>
-          </NavButton>
-          <MenuBox>
-            <EachMenuBox boderRight='1px solid'>
-              <LabelSpan>친구</LabelSpan>
-              <div>10</div>
-            </EachMenuBox>
-            <EachMenuBox>
-              <LabelSpan>마일리지</LabelSpan>
-              <div>20</div>
-            </EachMenuBox>
-          </MenuBox>
-          <Label size='18' alignSelf='flex-start'>
-            내 다이어리
-          </Label>
+      <WholeArea>
+        <Title size='18'>마이페이지</Title>
+        <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
+        <Title size='22'>김소다</Title>
 
-          <DiaryBox>
-            <ThumbnailBox>??</ThumbnailBox>
-            <div style={{ marginLeft: "80px" }}>
-              <Title>같이 여행가자</Title>
-              <Label>개설일: 2023.02.10</Label>
-            </div>
-          </DiaryBox>
+        <NavButton onClick={navToProfile}>
+          <Label size='16'>프로필 편집</Label>
+        </NavButton>
 
-          <DiaryBox>
-            <ThumbnailBox>??</ThumbnailBox>
-            <div style={{ marginLeft: "80px" }}>
-              <Title>하드코딩</Title>
-              <Label>개설일: 2023.02.10</Label>
-            </div>
-          </DiaryBox>
+        <MenuBox>
+          <EachMenuBox boderRight='1px solid'>
+            <LabelSpan>친구</LabelSpan>
+            <div>10</div>
+          </EachMenuBox>
+          <EachMenuBox>
+            <LabelSpan>마일리지</LabelSpan>
+            <div>20</div>
+          </EachMenuBox>
+        </MenuBox>
+        <Label size='18' alignSelf='flex-start'>
+          내 다이어리
+        </Label>
 
-          <DiaryBox>
-            <ThumbnailBox>??</ThumbnailBox>
-            <div style={{ marginLeft: "80px" }}>
-              <Title>하드코딩</Title>
-              <Label>개설일: 2023.02.10</Label>
-            </div>
-          </DiaryBox>
-        </StContainer>
-      </StLayout>
+        <DiaryBox>
+          <ThumbnailBox>??</ThumbnailBox>
+          <div style={{ marginLeft: "80px" }}>
+            <Title>같이 여행가자</Title>
+            <Label>개설일: 2023.02.10</Label>
+          </div>
+        </DiaryBox>
+
+        <DiaryBox>
+          <ThumbnailBox>??</ThumbnailBox>
+          <div style={{ marginLeft: "80px" }}>
+            <Title>하드코딩</Title>
+            <Label>개설일: 2023.02.10</Label>
+          </div>
+        </DiaryBox>
+
+        <DiaryBox>
+          <ThumbnailBox>??</ThumbnailBox>
+          <div style={{ marginLeft: "80px" }}>
+            <Title>하드코딩</Title>
+            <Label>개설일: 2023.02.10</Label>
+          </div>
+        </DiaryBox>
+      </WholeArea>
     </>
   );
 }
 
 export default MyPage;
-
-const StLayout = styled.div`
-  margin: 0 auto;
-  max-width: 720px;
-`;
-
-const StContainer = styled.div`
-  /* background: #fff;
-  border-radius: 50px 50px 0px 0px; */
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
 
 const Title = styled.div`
   font-weight: bold;
@@ -93,20 +73,6 @@ const Title = styled.div`
 
   display: flex;
   padding: 10px;
-`;
-
-const ProfileImg = {
-  padding: "2px",
-  borderRadius: "50%",
-  width: "80px",
-  height: "80px",
-  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-};
-
-const ProfileArea = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
 `;
 
 const Label = styled.div`
@@ -148,13 +114,12 @@ const MenuBox = styled.div`
 `;
 
 const EachMenuBox = styled.div`
-
   cursor: pointer;
   flex: 1;
   line-height: 1.3rem;
   color: ${(props) => props.color};
   border-right: ${(props) => props.boderRight};
-  border-right-color: #9E9B9B;
+  border-right-color: #9e9b9b;
 
   text-align: center;
   align-items: center;
@@ -185,5 +150,4 @@ const ThumbnailBox = styled.div`
 
 const LabelSpan = styled.span`
   color: #858585;
-
 `;

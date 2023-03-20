@@ -24,7 +24,6 @@ function Profile() {
     setConfirmDelete(false);
   };
 
-
   const handleDelete = () => {
     //alert창 수정하기
     alert("삭제 완료!");
@@ -62,11 +61,11 @@ function Profile() {
                 <Label>이름(별명)</Label>
                 <IconContainer>
                   <input type='text' />
-                  {/*clearButton 클릭시 이름 input clear해주는 기능 넣을 것 */}
                   <ClearButton disabled>
                     <HiOutlineXCircle color='#D0D0D0' />
                   </ClearButton>
                 </IconContainer>
+
                 <Label>소개</Label>
                 <textarea />
               </Content>
@@ -113,7 +112,6 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 16px;
   color: #fff;
-
   display: flex;
   padding: 10px;
 `;
@@ -140,7 +138,6 @@ const StButton = styled.div`
 
 const Container = styled.div`
   background: #fff;
-
   height: 100vh;
   margin-top: 20px;
   border-radius: 50px 50px 0px 0px;
@@ -154,7 +151,6 @@ const Content = styled.div`
   display: flex;
   padding: 50px;
   flex-direction: column;
-
   input {
     box-sizing: border-box;
     height: 55px;
@@ -196,7 +192,6 @@ const ClearButton = styled.button`
   font-size: 18px;
   top: 15px;
   right: 10px;
-
   border: none;
   background: none;
   cursor: pointer;
@@ -206,7 +201,6 @@ const DeActivate = styled.button`
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-
   border: none;
   background: none;
   cursor: pointer;

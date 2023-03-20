@@ -5,13 +5,18 @@ import { useNavigate } from "react-router-dom";
 import { kakaoLoginApi } from "../api/kakaoLogin";
 import { disableColor, subColor1, subColor2 } from "../constants/colorPalette";
 import { useForm } from "react-hook-form";
-import { LongButtonStyle } from "../styles/LongButtonStyle";
+import { MintButtonLarge } from "../styles/Buttons";
+import { HiOutlineXCircle } from "react-icons/hi";
 import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
   const kakaoLoginButtonHandler = () => {
     kakaoLoginApi();
+  };
+
+  const otherWayLoginButtonHandler = () => {
+    navigate("/otherlogin");
   };
 
   const goToHome = () => {
@@ -34,12 +39,15 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const userInfo = { email: data.userId, password: data.userPassword };
-    console.log(userInfo);
+    console.log(data);
     axios
-      .post(`${process.env.REACT_APP_BASEURL}/login`, userInfo)
-      .then((res) => console.log(res))
-      .then((err) => console.log(err));
+      .post(`${process.env.REACT_APP_BASEURL}/login`, data)
+      .then((res) =>
+        localStorage.setItem("accessToken", res.headers.authorization)
+      )
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -52,47 +60,72 @@ const Login = () => {
       </LogoArea>
       <LoginArea>
         <LoginForm onSubmit={handleSubmit(onSubmit)}>
-          <InputArea style={{}}>
-            <span>(ㅇ)</span>
+          <Content>
             <input
               type="text"
               placeholder="아이디를 입력해주세요"
-              {...register("userId", {
-                required: "아이디를 입력해주세요",
+              {...register("email", {
+                required: "이메일을 입력해주세요",
                 minLength: { value: 2, message: "2자리 이상 입력하세요" },
               })}
             />
-          </InputArea>
+            <button>
+              <HiOutlineXCircle className="HiOutlineXCircle" />
+            </button>
+          </Content>
+          <span>(ㅇ)</span>
+          {/* <input
+              type="text"
+              placeholder="아이디를 입력해주세요"
+              {...register("email", {
+                required: "이메일을 입력해주세요",
+                minLength: { value: 2, message: "2자리 이상 입력하세요" },
+              })}
+            /> */}
+
           {errors.userId && (
-            <ValidationErrorMsg role="alert">
+            <small role="alert" style={{ color: "red", marginTop: "-2vh" }}>
               {errors.userId.message}
-            </ValidationErrorMsg>
+            </small>
           )}
-          <InputArea>
-            <span>(ㅇ)</span>
+          <span>(ㅇ)</span>
+          <Content>
             <input
               type="password"
               placeholder="비밀번호를 입력해주세요"
-              {...register("userPassword", {
+              {...register("password", {
                 required: "비밀번호를 입력해주세요",
                 minLength: { value: 2, message: "2자리 이상 입력하세요" },
               })}
             />
-          </InputArea>
+            <button>
+              <HiOutlineXCircle className="HiOutlineXCircle" />
+            </button>
+          </Content>
+          {/* <input
+            type="password"
+            placeholder="비밀번호를 입력해주세요"
+            {...register("password", {
+              required: "비밀번호를 입력해주세요",
+              minLength: { value: 2, message: "2자리 이상 입력하세요" },
+            })}
+          /> */}
           {errors.userPassword && (
-            <ValidationErrorMsg role="alert">
+            <small role="alert" style={{ color: "red", marginTop: "-2vh" }}>
               {errors.userPassword.message}
-            </ValidationErrorMsg>
+            </small>
           )}
-          <SubmitButtonStyle>
+          <SubmitButtonStyle style={{ marginTop: "2vh" }}>
             <input type="submit" value="로그인" disabled={isSubmitting} />
           </SubmitButtonStyle>
         </LoginForm>
-        <LongButtonStyle onClick={goToSignup}>회원가입</LongButtonStyle>
+        <MintButtonLarge onClick={goToSignup}>회원가입</MintButtonLarge>
         <FindIDPWArea onClick={goToFindIDPW}>
           아이디/비밀번호 찾기{">"}
         </FindIDPWArea>
-        <Underline></Underline>
+        <Underline
+          style={{ marginTop: "7vh", marginBottom: "3vh" }}
+        ></Underline>
         <div>
           <img
             src={kakaoLoginImage}
@@ -114,7 +147,7 @@ const WholeArea = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  height: 100%;
+  height: 83vh;
 `;
 
 const LogoArea = styled.div`
@@ -132,6 +165,10 @@ const LogoArea = styled.div`
 
 const LoginArea = styled.div`
   margin-top: 5px;
+  div {
+    text-align: center;
+    margin: 5px 0px;
+  }
 `;
 
 const LoginForm = styled.form`
@@ -140,16 +177,11 @@ const LoginForm = styled.form`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-bottom: 2vh;
 `;
 
 const InputArea = styled.div`
-  text-align: left;
-  margin: 20px;
   border-bottom: 1px solid rgb(${disableColor});
   width: 76%;
-  text-align: left;
-  margin: 20px;
   input {
     width: 80%;
     border: none;
@@ -163,7 +195,6 @@ const InputArea = styled.div`
 `;
 
 const SubmitButtonStyle = styled.div`
-  margin-top: 2vh;
   background-color: rgb(${subColor1});
   width: 300px;
   height: 45px;
@@ -187,19 +218,39 @@ const SubmitButtonStyle = styled.div`
 `;
 
 const FindIDPWArea = styled.div`
-  margin-top: 2vh;
-  text-align: center;
   color: gray;
   font-size: 11px;
 `;
 
 const Underline = styled.div`
-  margin-top: 7vh;
-  margin-bottom: 3vh;
   border-bottom: 1px solid rgb(222, 222, 222);
 `;
 
-const ValidationErrorMsg = styled.small`
-  color: red;
-  margin-top: -2vh;
+const Content = styled.div`
+  padding: 10px;
+  position: relative;
+  input {
+    box-sizing: border-box;
+    height: 30px;
+    width: 100%;
+    outline: none;
+    border-radius: 25px;
+    padding: 10px 10px 10px 25px;
+    font-size: 16px;
+    border: 1px solid #eee;
+    background: #f5f5f5;
+  }
+  button {
+    position: absolute;
+    font-size: 18px;
+    top: 21%;
+    right: 3%;
+    border: none;
+    background: none;
+    cursor: pointer;
+    .HiOutlineXCircle {
+      font-size: 150%;
+      color: #d0d0d0;
+    }
+  }
 `;

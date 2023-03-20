@@ -4,7 +4,7 @@ import Navigationbar from "../components/Navigationbar";
 import { SlMagnifier } from "react-icons/sl";
 import { MdOutlineCancel } from "react-icons/md";
 
-function Searchbox({placeholder}) {
+function Searchbox() {
   return (
     <>
       <SearchTotalBox>
@@ -14,7 +14,7 @@ function Searchbox({placeholder}) {
             <Searchinput
               type="text"
               name="searchbox"
-              placeholder={placeholder}
+              placeholder="아이디를 검색해 친구를 추가해보세요"
             />
           </SearchStyle>
           <MdOutlineCancel className="MdOutlineCancel" />
