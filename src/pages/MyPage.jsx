@@ -73,8 +73,8 @@ function MyPage() {
           return (
             
               <DiaryCards key={item.id}>
-                <ThumbnailBox>{item.img}</ThumbnailBox>
-                <div style={{ marginLeft: "60px" }}>
+                <ThumbnailBox><ThumbnailImg src={item.img}/></ThumbnailBox>
+                <div style={{ marginLeft: "70px" }}>
                   <StText fontWeight='bold' size='20'>{item.title}</StText>
                   <StText size='16' color='#B0B0B0'>개설일: {getDate(item.createdAt)} </StText>
                 </div>
@@ -164,12 +164,17 @@ const DiaryCards = styled.div`
 
 const ThumbnailBox = styled.div`
   position: absolute;
-  top: 20px;
+  top: 10px;
   left: 10px;
 
   box-sizing: border-box;
-  background: white;
-  padding: 30px;
+  border-radius: 18px;
+`;
+
+const ThumbnailImg = styled.img`
+  width: 80px;
+  height: 80px;
+  background: content-box;
   border-radius: 18px;
 `;
 
