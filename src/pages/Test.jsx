@@ -19,23 +19,23 @@ import MintButtonSmall from "../styles/MintButtonSmall";
 
 function Test() {
   return (
-    <WholeBox>
-      <BackButtonTitle />
-      <CancelButtonTitle />
-      <InputButtonStyle />
+    <Stage width={window.innerWidth} height={window.innerHeight}>
+      <Layer>
+        <RegularPolygon
+          sides={10}
+          x={100}
+          y={100}
+          width={100}
+          height={100}
+          fill="red"
+          shadowBlur={5}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        />
+      </Layer>
+    </Stage>
 
-      <ProfilePicLarge />
-      <ProfilePicMedium />
-      <ProfilePicSmall />
-
-      <GrayButtonLarge>저장</GrayButtonLarge>
-      <GrayButtonMedium>저장</GrayButtonMedium>
-      <GrayButtonSmall>저장</GrayButtonSmall>
-
-      <MintButtonLarge>저장</MintButtonLarge>
-      <MintButtonMedium>저장</MintButtonMedium>
-      <MintButtonSmall>저장</MintButtonSmall>
-    </WholeBox>
   );
 }
 
