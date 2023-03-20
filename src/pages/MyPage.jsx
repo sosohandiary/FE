@@ -17,7 +17,7 @@ function MyPage() {
   }
   return (
     <>
-      <WholeArea>
+      <WholeArea style={{margin:"30px auto", maxWidth:"720px"}}>
         <Title size='18'>마이페이지</Title>
         <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
         <Title size='22'>김소다</Title>
