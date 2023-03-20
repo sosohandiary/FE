@@ -10,6 +10,8 @@ import Notification from "./Notification";
 import MyPage from "./MyPage";
 import Signup from "./Signup";
 import SignupSuccess from "./SignupSuccess";
+import TestKonva from "./TestKonva";
+import Oauth from "./Oauth";
 import Detail from "./Detail";
 
 const Router = () => {
@@ -26,6 +28,8 @@ const Router = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/notification" element={<Notification />} />
+        <Route path="test-konva" element={<TestKonva />} />
+        <Route path="/oauth" element={<Oauth />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/detail" element={<Detail />} />
       </Routes>
