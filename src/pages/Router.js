@@ -8,21 +8,20 @@ import MainPage from "./MainPage";
 import OtherLogin from "./OtherLogin";
 import Profile from "./Profile";
 import Notification from "./Notification";
-import MyPage from "./MyPage";
+import Signup from "./Signup";
+import SignupSuccess from "./SignupSuccess";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/notice" element={<Notice />} /> */}
-        {/* <Route path="/transfusion" element={<TransfusionBoard />} /> */}
-        {/* <Route path="/knowledge" element={<Knowledge />} /> */}
         <Route path="/search" element={<Search />} />
         <Route path="/" element={<MainPage />} />
-        <Route path="/diary" element={<Diary />} />
+        <Route path="/diaries" element={<Diary />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup-success" element={<SignupSuccess />} />
         <Route path="/otherlogin" element={<OtherLogin />} />
-        <Route path="/test" element={<Test />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/mypage" element={<MyPage />} />

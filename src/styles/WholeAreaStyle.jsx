@@ -15,3 +15,7 @@ export const WholeArea = styled.div`
   align-items: center;
   flex-direction: column;
 `;
+
+export const WholeViewWidth = styled.div`
+  width: 100vw;
+`;

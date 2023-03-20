@@ -3,17 +3,17 @@ import styled from "styled-components";
 import { MdArrowBack } from "react-icons/md";
 import { VscBlank } from "react-icons/vsc";
 
-function BackButtonTitle() {
+const BackButtonTitle = ({ title }) => {
   return (
     <>
       <TopBox>
         <MdArrowBack className="MdArrowBack" />
-        <Textbox> ←버튼 + 타이틀</Textbox>
+        <Textbox>{title}</Textbox>
         <VscBlank className="VscBlank" />
       </TopBox>
     </>
   );
-}
+};
 
 export default BackButtonTitle;
 
