@@ -3,7 +3,7 @@ import { BrandStoryStyle } from "../../styles/BrandStoryStyle";
 
 const BrandStory1 = () => {
   return (
-    <BrandStoryStyle>
+    <BrandStoryStyle style={{ backgroundColor: "transparent" }}>
       <div style={{ height: "50%" }}></div>
       <h1>
         일상을 공유하는
