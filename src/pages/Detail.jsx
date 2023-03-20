@@ -1,10 +1,11 @@
 import React from "react";
-import AddCommentForm from "../components/detail/AddCommentForm";
+
+import CommentList from "../components/detail/CommentList";
 
 const Detail = () => {
   return (
     <div>
-      <AddCommentForm />
+      <CommentList />
     </div>
   );
 };
