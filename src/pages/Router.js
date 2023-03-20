@@ -11,6 +11,7 @@ import Notification from "./Notification";
 import MyPage from "./MyPage";
 import Signup from "./Signup";
 import SignupSuccess from "./SignupSuccess";
+import FriendsList from "./FriendsList";
 
 const Router = () => {
   return (
@@ -26,6 +27,7 @@ const Router = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/notification" element={<Notification />} />
+        <Route path="/friends-list" element={<FriendsList/>} />
       </Routes>
     </BrowserRouter>
   );

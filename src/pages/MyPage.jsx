@@ -11,6 +11,10 @@ function MyPage() {
   const navToProfile = () => {
     navigate("/profile");
   };
+
+  const navToFriendsList = () => {
+    navigate("/friends-list");
+  }
   return (
     <>
       <WholeArea>
@@ -18,13 +22,13 @@ function MyPage() {
         <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
         <Title size='22'>김소다</Title>
 
-        <NavButton onClick={navToProfile}>
+        <NavButton alignSelf='flex-end' onClick={navToProfile}>
           <Label size='16'>프로필 편집</Label>
         </NavButton>
 
         <MenuBox>
           <EachMenuBox boderRight='1px solid'>
-            <LabelSpan>친구</LabelSpan>
+            <NavButton onClick={navToFriendsList}><LabelSpan>친구</LabelSpan></NavButton>
             <div>10</div>
           </EachMenuBox>
           <EachMenuBox>
@@ -89,9 +93,11 @@ const Label = styled.div`
 const NavButton = styled.button`
   border: none;
   background: none;
+  font-size: 16px;
 
-  display: flex;
-  align-self: flex-end;
+  /* display: flex;
+  align-self: flex-end; */
+  align-self: ${({ alignSelf }) => alignSelf};
 `;
 
 const MenuBox = styled.div`
