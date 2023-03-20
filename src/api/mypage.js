@@ -35,3 +35,11 @@ export const deleteAccount = async (accessToken) => {
     headers: { Authorization: accessToken },
   });
 };
+
+
+//친구목록 조회
+export const getMyfriends = async (accessToken) => {
+  return await axios.get(`${process.env.REACT_APP_BASEURL}/mypage/friend/myfriends`, {
+    headers: { Authorization: accessToken },
+  });
+};
