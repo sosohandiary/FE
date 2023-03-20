@@ -1,22 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
 import styled from "styled-components";
-import { WholeArea, WholeAreaWithMargin } from "../styles/WholeAreaStyle";
+import axios from "axios";
 
-import {ProfilePicMedium, ProfilePicLarge} from "../components/ProfilePics"
+import { getMypage, getProfile } from "../api/mypage";
+import { WholeArea } from "../styles/WholeAreaStyle";
+import { ProfilePicMedium } from "../components/ProfilePics";
 
 function MyPage() {
+  const accessToken = localStorage.getItem("accessToken");
+
+  const { data:myPageData } = useQuery(["getMypage"], () =>
+    getMypage(accessToken)
+  );
+
+  const { data:profileData } = useQuery(["getProfile"], () => 
+    getProfile(accessToken)
+  );
+
+  const mypage = myPageData?.data;
+  const profile = profileData?.data;
+
   const navigate = useNavigate();
 
   const navToProfile = () => {
     navigate("/profile");
   };
+
   return (
     <>
-      <WholeArea>
+      <WholeArea style={{ margin: "30px auto", maxWidth: "720px" }}>
         <Title size='18'>마이페이지</Title>
-        <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
-        <Title size='22'>김소다</Title>
+        <ProfilePicMedium src='https://avatars.githubusercontent.com/u/109452831?v=4' />
+        <Title size='22'>{profile?.nickname}</Title>
 
         <NavButton onClick={navToProfile}>
           <Label size='16'>프로필 편집</Label>
@@ -36,29 +53,29 @@ function MyPage() {
           내 다이어리
         </Label>
 
-        <DiaryBox>
+        <DiaryCards>
           <ThumbnailBox>??</ThumbnailBox>
           <div style={{ marginLeft: "80px" }}>
-            <Title>같이 여행가자</Title>
+            <Title>맵돌리기</Title>
             <Label>개설일: 2023.02.10</Label>
           </div>
-        </DiaryBox>
+        </DiaryCards>
 
-        <DiaryBox>
+        <DiaryCards>
           <ThumbnailBox>??</ThumbnailBox>
           <div style={{ marginLeft: "80px" }}>
             <Title>하드코딩</Title>
             <Label>개설일: 2023.02.10</Label>
           </div>
-        </DiaryBox>
+        </DiaryCards>
 
-        <DiaryBox>
+        <DiaryCards>
           <ThumbnailBox>??</ThumbnailBox>
           <div style={{ marginLeft: "80px" }}>
             <Title>하드코딩</Title>
             <Label>개설일: 2023.02.10</Label>
           </div>
-        </DiaryBox>
+        </DiaryCards>
       </WholeArea>
     </>
   );
@@ -126,7 +143,7 @@ const EachMenuBox = styled.div`
   justify-content: center;
 `;
 
-const DiaryBox = styled.div`
+const DiaryCards = styled.div`
   border-radius: 23px;
   width: 90%;
   max-width: 500px;
