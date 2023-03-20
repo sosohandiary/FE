@@ -83,7 +83,9 @@ function Profile() {
                   placeholder="null 아닐때 다시시도"
                 />
               </Content>
+              <DeActivateBox>
               <DeActivate onClick={handleOpenModal}>회원 탈퇴</DeActivate>
+              </DeActivateBox>
               <DeleteAccount
                 title='탈퇴하기'
                 isOpen={confirmDelete}
@@ -214,9 +216,14 @@ const ClearButton = styled.button`
 
 const DeActivate = styled.button`
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
+
   border: none;
   background: none;
   cursor: pointer;
+`;
+
+const DeActivateBox = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
 `;
