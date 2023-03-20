@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { BackButtonTitle, CloseButtonTitle } from "../components/BackOrCloseButton";
 import InputBox from "../components/InputBox";
-import { WholeAreaStyle, WholeAreaWithMargin } from "../styles/\bWholeAreaStyle";
+import { WholeAreaStyle, WholeAreaWithMargin } from "../styles/WholeAreaStyle";
 import { LongButtonStyle, LongButtonSubmitStyle } from "../styles/LongButtonStyle";
 
 const Signup = () => {
