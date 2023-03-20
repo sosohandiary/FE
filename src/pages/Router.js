@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Login from "./Login";
 import Search from "./Search";
-import Test from "./Test";
 import Diary from "./Diary";
 import MainPage from "./MainPage";
 import OtherLogin from "./OtherLogin";
@@ -10,6 +9,7 @@ import Profile from "./Profile";
 import Notification from "./Notification";
 import Signup from "./Signup";
 import SignupSuccess from "./SignupSuccess";
+import MyPage from "./MyPage";
 
 const Router = () => {
   return (
