@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./Login";
 import Search from "./Search";
 import Diary from "./Diary";
-import MainPage from "./MainPage";
 import OtherLogin from "./OtherLogin";
 import Profile from "./Profile";
 import Notification from "./Notification";
@@ -13,13 +12,14 @@ import SignupSuccess from "./SignupSuccess";
 import TestKonva from "./TestKonva";
 import Oauth from "./Oauth";
 import Detail from "./Detail";
+import OnBoarding from "./OnBoarding";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/search" element={<Search />} />
-        <Route path="/" element={<MainPage />} />
+        <Route path="/onboarding" element={<OnBoarding />} />
         <Route path="/diaries" element={<Diary />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
