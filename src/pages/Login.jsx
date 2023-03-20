@@ -6,6 +6,8 @@ import { kakaoLoginApi } from "../api/kakaoLogin";
 import { disableColor, subColor1, subColor2 } from "../constants/colorPalette";
 import { useForm } from "react-hook-form";
 import { MintButtonLarge } from "../styles/Buttons";
+import { HiOutlineXCircle } from "react-icons/hi";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -37,7 +39,15 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    alert("ID : " + data.userId + ", PW : " + data.userPassword);
+    console.log(data);
+    axios
+      .post(`${process.env.REACT_APP_BASEURL}/login`, data)
+      .then((res) =>
+        localStorage.setItem("accessToken", res.headers.authorization)
+      )
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -50,33 +60,56 @@ const Login = () => {
       </LogoArea>
       <LoginArea>
         <LoginForm onSubmit={handleSubmit(onSubmit)}>
-          <InputArea style={{ textAlign: "left", margin: "20px" }}>
-            <span>(ㅇ)</span>
+          <Content>
             <input
               type="text"
               placeholder="아이디를 입력해주세요"
-              {...register("userId", {
-                required: "아이디를 입력해주세요",
+              {...register("email", {
+                required: "이메일을 입력해주세요",
                 minLength: { value: 2, message: "2자리 이상 입력하세요" },
               })}
             />
-          </InputArea>
+            <button>
+              <HiOutlineXCircle className="HiOutlineXCircle" />
+            </button>
+          </Content>
+          <span>(ㅇ)</span>
+          {/* <input
+              type="text"
+              placeholder="아이디를 입력해주세요"
+              {...register("email", {
+                required: "이메일을 입력해주세요",
+                minLength: { value: 2, message: "2자리 이상 입력하세요" },
+              })}
+            /> */}
+
           {errors.userId && (
             <small role="alert" style={{ color: "red", marginTop: "-2vh" }}>
               {errors.userId.message}
             </small>
           )}
-          <InputArea style={{ textAlign: "left", margin: "20px" }}>
-            <span>(ㅇ)</span>
+          <span>(ㅇ)</span>
+          <Content>
             <input
               type="password"
               placeholder="비밀번호를 입력해주세요"
-              {...register("userPassword", {
+              {...register("password", {
                 required: "비밀번호를 입력해주세요",
                 minLength: { value: 2, message: "2자리 이상 입력하세요" },
               })}
             />
-          </InputArea>
+            <button>
+              <HiOutlineXCircle className="HiOutlineXCircle" />
+            </button>
+          </Content>
+          {/* <input
+            type="password"
+            placeholder="비밀번호를 입력해주세요"
+            {...register("password", {
+              required: "비밀번호를 입력해주세요",
+              minLength: { value: 2, message: "2자리 이상 입력하세요" },
+            })}
+          /> */}
           {errors.userPassword && (
             <small role="alert" style={{ color: "red", marginTop: "-2vh" }}>
               {errors.userPassword.message}
@@ -191,4 +224,33 @@ const FindIDPWArea = styled.div`
 
 const Underline = styled.div`
   border-bottom: 1px solid rgb(222, 222, 222);
+`;
+
+const Content = styled.div`
+  padding: 10px;
+  position: relative;
+  input {
+    box-sizing: border-box;
+    height: 30px;
+    width: 100%;
+    outline: none;
+    border-radius: 25px;
+    padding: 10px 10px 10px 25px;
+    font-size: 16px;
+    border: 1px solid #eee;
+    background: #f5f5f5;
+  }
+  button {
+    position: absolute;
+    font-size: 18px;
+    top: 21%;
+    right: 3%;
+    border: none;
+    background: none;
+    cursor: pointer;
+    .HiOutlineXCircle {
+      font-size: 150%;
+      color: #d0d0d0;
+    }
+  }
 `;

@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Login from "./Login";
 import Search from "./Search";
-import Test from "./Test";
 import Diary from "./Diary";
 import MainPage from "./MainPage";
 import OtherLogin from "./OtherLogin";
@@ -11,6 +10,9 @@ import Notification from "./Notification";
 import MyPage from "./MyPage";
 import Signup from "./Signup";
 import SignupSuccess from "./SignupSuccess";
+import TestKonva from "./TestKonva";
+import Oauth from "./Oauth";
+import Detail from "./Detail";
 import FriendsList from "./FriendsList";
 
 const Router = () => {
@@ -27,7 +29,6 @@ const Router = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/notification" element={<Notification />} />
-        <Route path="/friends-list" element={<FriendsList/>} />
       </Routes>
     </BrowserRouter>
   );
