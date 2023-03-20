@@ -1,51 +1,53 @@
 import React from "react";
 import styled from "styled-components";
 import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
-import { WholeAreaStyle } from "../styles/\bWholeAreaStyle";
+import Thumbnail from "../components/Thumbnail";
 
 const Diary = () => {
   return (
-    <WholeAreaStyle>
-      <WelcomeMsg>
-        안녕하세요
-        <br />
-        소다님!
-      </WelcomeMsg>
-      <ProfileImg>
-        <img src={defaultProfileImg} />
-      </ProfileImg>
-      <Thumb></Thumb>
-      <Thumb></Thumb>
-      <Thumb></Thumb>
-    </WholeAreaStyle>
+    <WholeArea>
+      <WelcomeAndProfileArea>
+        <WelcomePhrase>
+          안녕하세요
+          <br />
+          소다님!
+        </WelcomePhrase>
+        <ProfileImg>
+          <img src={defaultProfileImg} />
+        </ProfileImg>
+      </WelcomeAndProfileArea>
+      <Thumbnail />
+      <Thumbnail />
+      <Thumbnail />
+    </WholeArea>
   );
 };
 
 export default Diary;
 
-const WelcomeMsg = styled.h2`
-  position: relative;
-  right: 90px;
+const WholeArea = styled.div`
+  margin: 20px;
+`;
+
+const WelcomeAndProfileArea = styled.div`
+  display: flex;
+  justify-content: space-between;
+  vertical-align: bottom;
+`;
+
+const WelcomePhrase = styled.h1`
+  margin-top: 8%;
 `;
 
 const ProfileImg = styled.div`
-  position: relative;
-  left: 120px;
-  bottom: 30px;
   width: 50px;
   height: 50px;
   border-radius: 70%;
   overflow: hidden;
+  margin-top: 19%;
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-`;
-
-const Thumb = styled.div`
-  background-color: gray;
-  width: 300px;
-  height: 200px;
-  margin-bottom: 10px;
 `;
