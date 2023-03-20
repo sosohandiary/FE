@@ -10,7 +10,6 @@ import Notification from "./Notification";
 import MyPage from "./MyPage";
 import Signup from "./Signup";
 import SignupSuccess from "./SignupSuccess";
-import MyPage from "./MyPage";
 
 const Router = () => {
   return (
