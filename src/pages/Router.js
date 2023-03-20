@@ -8,6 +8,7 @@ import MainPage from "./MainPage";
 import OtherLogin from "./OtherLogin";
 import Profile from "./Profile";
 import Notification from "./Notification";
+import MyPage from "./MyPage";
 
 const Router = () => {
   return (
@@ -24,11 +25,8 @@ const Router = () => {
         <Route path="/test" element={<Test />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/notification" element={<Notification />} />
-<<<<<<< HEAD
         <Route path="/mypage" element={<MyPage />} />
         {/* <Route path="/detail" element={<Detail />} /> */}
-=======
->>>>>>> 8483e729ca2d5415a3d8918121eec585076ba497
       </Routes>
     </BrowserRouter>
   );
