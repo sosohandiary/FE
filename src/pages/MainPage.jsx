@@ -1,8 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
-import { LongButtonStyle } from "../styles/LongButtonStyle";
-
+import MintButtonLarge from "../styles/MintButtonLarge";
 const MainPage = () => {
   const navigate = useNavigate();
   const goToLogin = () => {
@@ -12,9 +11,9 @@ const MainPage = () => {
     <div>
       <Carousel />
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <LongButtonStyle onClick={goToLogin}>
+        <MintButtonLarge onClick={goToLogin}>
           공유 다이어리 시작하기
-        </LongButtonStyle>
+        </MintButtonLarge>
       </div>
     </div>
   );
