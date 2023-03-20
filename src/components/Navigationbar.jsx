@@ -66,12 +66,14 @@ const BottomBox = styled.div`
 
 const PlusBox = styled.div`
   position: fixed;
-  bottom: 5%;
+  bottom: 0%;
+  margin-bottom: 45px;
   width: 100%;
   z-index: 1;
   display: flex;
   justify-content: space-evenly;
   background-color: transparent;
+ 
   .BiPlus {
     font-size: 35px;
     color: white;
@@ -87,7 +89,8 @@ const PlusBox = styled.div`
 
 const CircleBox = styled.div`
   position: fixed;
-  bottom: 4.6%;
+  bottom: 0%;
+  margin-bottom: 42px;
   width: 100%;
   z-index: 1;
   display: flex;

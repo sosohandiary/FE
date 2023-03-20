@@ -1,47 +1,49 @@
-import React, { useRef } from "react";
-import AliceCarousel from "react-alice-carousel";
-import "react-alice-carousel/lib/alice-carousel.css";
+// import React from "react";
+// import styled from "styled-components";
 
-const Test = () => {
-  const items = [
-    <div className="item" data-value="1">
-      1
-    </div>,
-    <div className="item" data-value="2">
-      2
-    </div>,
-    <div className="item" data-value="3">
-      3
-    </div>,
-    <div className="item" data-value="4">
-      4
-    </div>,
-    <div className="item" data-value="5">
-      5
-    </div>,
-  ];
-  const carousel = useRef(null);
-  return (
-    <div>
-      <AliceCarousel
-        key="carousel"
-        mouseTracking
-        disableDotsControls
-        disableButtonsControls
-        items={items}
-        ref={carousel}
-      />
-      <nav key="nav" className="b-refs-navs">
-        {items.map((item, i) => {
-          return <span key={i} onClick={() => carousel?.current?.slideTo(i)} />;
-        })}
-      </nav>
-      <div key="btns" className="b-refs-buttons">
-        <button onClick={(e) => carousel?.current?.slidePrev(e)}>Prev</button>
-        <button onClick={(e) => carousel?.current?.slideNext(e)}>Next</button>
-      </div>
-    </div>
-  );
-};
+// import BackButtonTitle from "../styles/BackButtonTitle";
+// import CancelButtonTitle from "../styles/CancelButtonTitle";
+// import InputButtonStyle from "../styles/InputButtonStyle";
 
-export default Test;
+// import ProfilePicLarge from "../styles/ProfilePicLarge";
+// import ProfilePicMedium from "../styles/ProfilePicMedium";
+// import ProfilePicSmall from "../styles/ProfilePicSmall";
+
+// import GrayButtonLarge from "../styles/GrayButtonLarge";
+// import GrayButtonMedium from "../styles/GrayButtonMedium";
+// import GrayButtonSmall from "../styles/GrayButtonSmall";
+
+// import MintButtonLarge from "../styles/MintButtonLarge";
+// import MintButtonMedium from "../styles/MintButtonMedium";
+// import MintButtonSmall from "../styles/MintButtonSmall";
+
+// function Test() {
+//   return (
+//     <Stage width={window.innerWidth} height={window.innerHeight}>
+//       <Layer>
+//         <RegularPolygon
+//           sides={10}
+//           x={100}
+//           y={100}
+//           width={100}
+//           height={100}
+//           fill="red"
+//           shadowBlur={5}
+//           onClick={(e) => {
+//             e.stopPropagation();
+//           }}
+//         />
+//       </Layer>
+//     </Stage>
+
+//   );
+// }
+
+// export default Test;
+
+// const WholeBox = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+//   margin: 0px auto;
+// `;
