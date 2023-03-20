@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
 import {
   WholeAreaWithMargin,
@@ -7,7 +7,6 @@ import {
 } from "../styles/\bWholeAreaStyle";
 import { MintButtonLarge } from "../styles/Buttons";
 import { LongButtonStyle } from "../styles/LongButtonStyle";
-
 const MainPage = () => {
   const navigate = useNavigate();
   const goToLogin = () => {

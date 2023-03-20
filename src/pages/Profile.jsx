@@ -1,34 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { HiPencil, HiOutlineXCircle } from "react-icons/hi";
-import { useRef, useState } from "react";
-import DeleteAccount from "../components/mypage/DeleteAccount";
+import { useRef } from "react";
 
 function Profile() {
   const fileInput = useRef();
 
-  const [confirmDelete, setConfirmDelete] = useState(false);
-
   const onImgButton = (event) => {
     event.preventDefault();
     fileInput.current.click();
-  };
-
-  const handleOpenModal = (e) => {
-    e.preventDefault();
-    setConfirmDelete(true);
-  };
-
-  const handleCloseModal = (e) => {
-    e.preventDefault();
-    setConfirmDelete(false);
-  };
-
-
-  const handleDelete = () => {
-    //alert창 수정하기
-    alert("삭제 완료!");
-    // navigate(-1);
   };
 
   return (
@@ -36,14 +16,14 @@ function Profile() {
       <StLayout>
         <ProfileLayout>
           <Title>프로필 편집</Title>
-          <form encType='multipart/form-data'>
+          <form encType="multipart/form-data">
             <ProfileArea>
               <StButton onClick={onImgButton}>
                 <img
                   style={ProfileImg}
                   //사진 여기로 전달 받기!
-                  src='https://avatars.githubusercontent.com/u/109452831?v=4'
-                  alt='profile image'
+                  src="https://avatars.githubusercontent.com/u/109452831?v=4"
+                  alt="profile image"
                 />
               </StButton>
               <EditPencilArea>
@@ -51,8 +31,8 @@ function Profile() {
               </EditPencilArea>
             </ProfileArea>
             <input
-              type='file'
-              accept='image/*'
+              type="file"
+              accept="img/*"
               // onChange={onImgPostHandler}
               ref={fileInput}
               style={{ display: "none" }}
@@ -61,22 +41,15 @@ function Profile() {
               <Content>
                 <Label>이름(별명)</Label>
                 <IconContainer>
-                  <input type='text' />
+                  <input type="text" />
                   {/*clearButton 클릭시 이름 input clear해주는 기능 넣을 것 */}
                   <ClearButton disabled>
-                    <HiOutlineXCircle color='#D0D0D0' />
+                    <HiOutlineXCircle color="#D0D0D0" />
                   </ClearButton>
                 </IconContainer>
                 <Label>소개</Label>
                 <textarea />
               </Content>
-              <DeActivate onClick={handleOpenModal}>회원 탈퇴</DeActivate>
-              <DeleteAccount
-                title='탈퇴하기'
-                isOpen={confirmDelete}
-                onClose={handleCloseModal}
-                handleDelete={handleDelete}
-              />
             </Container>
           </form>
         </ProfileLayout>
@@ -196,16 +169,6 @@ const ClearButton = styled.button`
   font-size: 18px;
   top: 15px;
   right: 10px;
-
-  border: none;
-  background: none;
-  cursor: pointer;
-`;
-
-const DeActivate = styled.button`
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
 
   border: none;
   background: none;
