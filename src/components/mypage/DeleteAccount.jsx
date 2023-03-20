@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
-import GrayButtonSmall from "../../styles/GrayButtonSmall"
-import MintButtonSmall from "../../styles/MintButtonSmall"
+import { GrayButtonSmall, MintButtonSmall } from "../../styles/Buttons";
+
 
 const DeleteAccount = ({
   isOpen,

@@ -2,7 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { WholeArea, WholeAreaWithMargin } from "../styles/WholeAreaStyle";
-import ProfilePicMedium from "../styles/ProfilePicMedium";
+
+import {ProfilePicMedium, ProfilePicLarge} from "../components/ProfilePics"
 
 function MyPage() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ function MyPage() {
     <>
       <WholeArea>
         <Title size='18'>마이페이지</Title>
-        <ProfilePicMedium />
+        <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
         <Title size='22'>김소다</Title>
 
         <NavButton onClick={navToProfile}>
