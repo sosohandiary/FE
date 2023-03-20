@@ -10,6 +10,7 @@ import Notification from "./Notification";
 import MyPage from "./MyPage";
 import Signup from "./Signup";
 import SignupSuccess from "./SignupSuccess";
+import Detail from "./Detail";
 
 const Router = () => {
   return (
@@ -26,7 +27,7 @@ const Router = () => {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/mypage" element={<MyPage />} />
-        {/* <Route path="/detail" element={<Detail />} /> */}
+        <Route path="/detail" element={<Detail />} />
       </Routes>
     </BrowserRouter>
   );
