@@ -1,7 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Line, Text, RegularPolygon } from "react-konva";
 
 const TestKonva = () => {
+  const A = [
+    {
+      tool: "pen",
+      points: [
+        633, 163, 633, 164, 633, 165, 633, 166, 632, 169, 630, 174, 628, 178,
+        627, 182, 624, 188, 621, 194, 616, 202, 611, 212, 608, 218, 601, 229,
+        596, 237, 591, 246, 582, 262, 578, 270, 573, 278, 569, 286, 560, 303,
+        558, 306, 558, 307, 557, 309, 557, 309,
+      ],
+    },
+    {
+      tool: "pen",
+      points: [
+        637, 165, 637, 165, 638, 166, 638, 167, 640, 168, 641, 170, 642, 172,
+        644, 175, 645, 177, 648, 182, 650, 186, 652, 189, 654, 193, 658, 200,
+        661, 206, 665, 212, 669, 221, 680, 241, 685, 253, 691, 263, 697, 274,
+        701, 282, 704, 287, 707, 291, 710, 297, 712, 301, 713, 303, 714, 305,
+        715, 307, 716, 308, 716, 309, 716, 310, 716, 311, 717, 311, 717, 312,
+        717, 312,
+      ],
+    },
+    {
+      tool: "pen",
+      points: [
+        595, 241, 595, 241, 595, 241, 596, 241, 597, 241, 599, 241, 601, 241,
+        603, 241, 606, 241, 612, 241, 615, 241, 620, 241, 625, 240, 629, 240,
+        634, 240, 639, 240, 645, 240, 651, 240, 656, 240, 657, 240, 662, 240,
+        666, 240, 668, 240, 671, 240, 672, 240, 673, 240, 673, 240, 673, 240,
+        674, 240, 674, 240,
+      ],
+    },
+  ];
+
   // 드래그하면 오버스크롤되는 이벤트 방지
   useEffect(() => {
     document.addEventListener(
@@ -13,9 +46,9 @@ const TestKonva = () => {
     );
   }, []);
 
-  const [tool, setTool] = React.useState("pen");
-  const [lines, setLines] = React.useState([]);
-  const isDrawing = React.useRef(false);
+  const [tool, setTool] = useState("pen");
+  const [lines, setLines] = useState(A);
+  const isDrawing = useRef(false);
 
   const handleMouseDown = (e) => {
     isDrawing.current = true;
