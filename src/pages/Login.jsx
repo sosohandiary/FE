@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { kakaoLoginApi } from "../api/kakaoLogin";
 import { disableColor, subColor1, subColor2 } from "../constants/colorPalette";
 import { useForm } from "react-hook-form";
-import MintButtonLarge from "../styles/MintButtonLarge";
+import { MintButtonLarge } from "../styles/Buttons";
 
 const Login = () => {
   const navigate = useNavigate();

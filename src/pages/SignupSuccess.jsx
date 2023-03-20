@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import {
-  WholeAreaStyle,
-  WholeAreaWithMargin,
-} from "../styles/\bWholeAreaStyle";
 import { LongButtonStyle } from "../styles/LongButtonStyle";
+import { WholeAreaWithMargin } from "../styles/WholeAreaStyle";
 
 const SignupSuccess = () => {
   const navigate = useNavigate();
