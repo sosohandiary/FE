@@ -5,7 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { kakaoLoginApi } from "../api/kakaoLogin";
 import { disableColor, subColor1, subColor2 } from "../constants/colorPalette";
 import { useForm } from "react-hook-form";
-import { MintButtonLarge } from "../styles/Buttons";
+import {
+  MintButtonLarge,
+  MintButtonLargeForSubmitInput,
+} from "../styles/Buttons";
 import { HiOutlineXCircle } from "react-icons/hi";
 import axios from "axios";
 
@@ -67,28 +70,21 @@ const Login = () => {
               {...register("email", {
                 required: "이메일을 입력해주세요",
                 minLength: { value: 2, message: "2자리 이상 입력하세요" },
+                pattern: {
+                  value: /\S+@\S+\.\S+/,
+                  message: "이메일 형식에 맞지 않습니다.",
+                },
               })}
             />
             <button>
               <HiOutlineXCircle className="HiOutlineXCircle" />
             </button>
           </Content>
-          <span>(ㅇ)</span>
-          {/* <input
-              type="text"
-              placeholder="아이디를 입력해주세요"
-              {...register("email", {
-                required: "이메일을 입력해주세요",
-                minLength: { value: 2, message: "2자리 이상 입력하세요" },
-              })}
-            /> */}
-
-          {errors.userId && (
-            <small role="alert" style={{ color: "red", marginTop: "-2vh" }}>
-              {errors.userId.message}
-            </small>
+          {errors.email && (
+            <ValidationAlert role="alert">
+              {errors.email.message}
+            </ValidationAlert>
           )}
-          <span>(ㅇ)</span>
           <Content>
             <input
               type="password"
@@ -102,22 +98,14 @@ const Login = () => {
               <HiOutlineXCircle className="HiOutlineXCircle" />
             </button>
           </Content>
-          {/* <input
-            type="password"
-            placeholder="비밀번호를 입력해주세요"
-            {...register("password", {
-              required: "비밀번호를 입력해주세요",
-              minLength: { value: 2, message: "2자리 이상 입력하세요" },
-            })}
-          /> */}
-          {errors.userPassword && (
-            <small role="alert" style={{ color: "red", marginTop: "-2vh" }}>
-              {errors.userPassword.message}
-            </small>
+          {errors.password && (
+            <ValidationAlert role="alert">
+              {errors.password.message}
+            </ValidationAlert>
           )}
-          <SubmitButtonStyle style={{ marginTop: "2vh" }}>
+          <MintButtonLargeForSubmitInput>
             <input type="submit" value="로그인" disabled={isSubmitting} />
-          </SubmitButtonStyle>
+          </MintButtonLargeForSubmitInput>
         </LoginForm>
         <MintButtonLarge onClick={goToSignup}>회원가입</MintButtonLarge>
         <FindIDPWArea onClick={goToFindIDPW}>
@@ -141,7 +129,6 @@ const Login = () => {
 export default Login;
 
 const WholeArea = styled.div`
-  background-color: #fffeee;
   padding: 3vh 0 4vh 0;
   display: flex;
   justify-content: center;
@@ -179,21 +166,6 @@ const LoginForm = styled.form`
   flex-direction: column;
 `;
 
-const InputArea = styled.div`
-  border-bottom: 1px solid rgb(${disableColor});
-  width: 76%;
-  input {
-    width: 80%;
-    border: none;
-    background: transparent;
-    caret-color: rgb(${subColor2});
-    font-size: 16px;
-    :focus {
-      outline: none;
-    }
-  }
-`;
-
 const SubmitButtonStyle = styled.div`
   background-color: rgb(${subColor1});
   width: 300px;
@@ -227,6 +199,7 @@ const Underline = styled.div`
 `;
 
 const Content = styled.div`
+  width: 300px;
   padding: 10px;
   position: relative;
   input {
@@ -253,4 +226,9 @@ const Content = styled.div`
       color: #d0d0d0;
     }
   }
+`;
+
+const ValidationAlert = styled.small`
+  color: red;
+  margin-top: -16px;
 `;

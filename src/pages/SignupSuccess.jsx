@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { LongButtonStyle } from "../styles/LongButtonStyle";
+import { MintButtonLarge } from "../styles/Buttons";
 import { WholeAreaWithMargin } from "../styles/WholeAreaStyle";
 
 const SignupSuccess = () => {
@@ -14,17 +14,20 @@ const SignupSuccess = () => {
     }
   }, 1000);
 
+  const { state } = useLocation();
+  const userName = state;
+
   return (
     <WholeAreaWithMargin>
       <CelebratingMsg>
-        소다님,
+        {userName}님,
         <br />
         회원가입을 축하합니다!
       </CelebratingMsg>
       <Circle></Circle>
       <WelcomeMsg>{countdown}초 후 홈으로 이동합니다</WelcomeMsg>
       <WelcomeMsg>이제부터 소소한 일상을 담아보세요!</WelcomeMsg>
-      <LongButtonStyle>홈으로 가기</LongButtonStyle>
+      <MintButtonLarge>홈으로 가기</MintButtonLarge>
     </WholeAreaWithMargin>
   );
 };

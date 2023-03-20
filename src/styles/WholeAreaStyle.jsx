@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const WholeAreaWithMargin = styled.div`
-  margin: 30px 8vw;
+  margin: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,7 +9,7 @@ export const WholeAreaWithMargin = styled.div`
 `;
 
 export const WholeArea = styled.div`
-  margin: 30px 0;
+  margin: 24px 0;
   display: flex;
   justify-content: center;
   align-items: center;

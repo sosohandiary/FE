@@ -1,23 +1,30 @@
+import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { HiOutlineXCircle } from "react-icons/hi";
+import { TbAlertCircle } from "react-icons/tb";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 
-
-import InputBox from "../components/InputBox";
-import { subColor1 } from "../constants/colorPalette";
 import BackButtonTitle from "../styles/BackButtonTitle";
-import { MintButtonLarge } from "../styles/Buttons";
-import { LongButtonSubmitStyle } from "../styles/LongButtonStyle";
+import { MintButtonLargeForSubmitInput } from "../styles/Buttons";
 import { WholeAreaWithMargin } from "../styles/WholeAreaStyle";
 
-
 const Signup = () => {
+  const navigate = useNavigate();
   // form 관련
-  const { register, handleSubmit, watch } = useForm();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { isSubmitting, errors },
+  } = useForm();
   const onSubmit = async (data) => {
     delete data.passwordConfirm;
     console.log(data);
+    axios
+      .post(`${process.env.REACT_APP_BASEURL}/join`, data)
+      .then(() => navigate("/signup-success", { state: data.name }))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -36,30 +43,43 @@ const Signup = () => {
           <input
             type="text"
             {...register("name", {
-              required: "생년월일를 입력해주세요",
+              required: "이름을 입력해주세요",
             })}
           />
-          <button>
-            <HiOutlineXCircle className="HiOutlineXCircle" />
-          </button>
+          <div>
+            {errors.name && <TbAlertCircle className="TbAlertCircle" />}
+          </div>
         </Content>
-        <label>생년월일</label>
+        {errors.name && (
+          <ValidationAlert role="alert">{errors.name.message}</ValidationAlert>
+        )}
+        <br />
+        <label>닉네임</label>
         <br />
         <Content>
           <input
-            type="date"
-            {...register("birthday", {
-              required: "생년월일를 입력해주세요",
+            type="text"
+            {...register("nickname", {
+              required: "닉네임을 입력해주세요",
             })}
           />
+          <div>
+            {errors.nickname && <TbAlertCircle className="TbAlertCircle" />}
+          </div>
         </Content>
+        {errors.nickname && (
+          <ValidationAlert role="alert">
+            {errors.nickname.message}
+          </ValidationAlert>
+        )}
+        <br />
         <label>성별</label>
         <br />
         <input
           type="radio"
           name="gender"
-          value="male"
-          {...register("gender", { required: "성별을 입력해주세요" })}
+          value="MALE"
+          {...register("gender", { required: "성별을 선택해주세요" })}
           style={{
             width: "20px",
             height: "20px",
@@ -70,28 +90,47 @@ const Signup = () => {
         <input
           type="radio"
           name="gender"
-          value="female"
-          {...register("gender", { required: "성별을 입력해주세요" })}
+          value="FEMALE"
+          {...register("gender", { required: "성별을 선택해주세요" })}
           style={{
             width: "20px",
             height: "20px",
             margin: "0px 5px 0px 10px",
           }}
         />
-        여자 <br />
+        여자
+        <ContentGender>
+          {errors.gender && (
+            <ValidationAlert role="alert">
+              {errors.gender.message}
+            </ValidationAlert>
+          )}
+          <div>
+            {errors.nickname && <TbAlertCircle className="TbAlertCircle" />}
+          </div>
+        </ContentGender>
+        <br />
         <label>이메일</label>
         <br />
         <Content>
           <input
-            type="email"
+            type="text"
             {...register("email", {
               required: "이메일을 입력해주세요",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "이메일 형식에 맞지 않습니다.",
+              },
             })}
           />
-          <button>
-            <HiOutlineXCircle className="HiOutlineXCircle" />
-          </button>
+          <div>
+            {errors.email && <TbAlertCircle className="TbAlertCircle" />}
+          </div>
         </Content>
+        {errors.email && (
+          <ValidationAlert role="alert">{errors.email.message}</ValidationAlert>
+        )}
+        <br />
         <label>비밀번호</label>
         <br />
         <Content>
@@ -101,10 +140,16 @@ const Signup = () => {
               required: "비밀번호를 입력해주세요",
             })}
           />
-          <button>
-            <HiOutlineXCircle className="HiOutlineXCircle" />
-          </button>
+          <div>
+            {errors.password && <TbAlertCircle className="TbAlertCircle" />}
+          </div>
         </Content>
+        {errors.email && (
+          <ValidationAlert role="alert">
+            {errors.password.message}
+          </ValidationAlert>
+        )}
+        <br />
         <label>비밀번호 확인</label>
         <br />
         <Content>
@@ -119,13 +164,21 @@ const Signup = () => {
               },
             })}
           />
-          <button>
-            <HiOutlineXCircle className="HiOutlineXCircle" />
-          </button>
+          <div>
+            {errors.passwordConfirm && (
+              <TbAlertCircle className="TbAlertCircle" />
+            )}
+          </div>
         </Content>
-        <MintButtonLargeInput>
-          <input type="submit" value="회원가입" />
-        </MintButtonLargeInput>
+        {errors.passwordConfirm && (
+          <ValidationAlert role="alert">
+            {errors.passwordConfirm.message}
+          </ValidationAlert>
+        )}
+        <br />
+        <MintButtonLargeForSubmitInput>
+          <input type="submit" value="회원가입" disabled={isSubmitting} />
+        </MintButtonLargeForSubmitInput>
       </InputForm>
     </WholeAreaWithMargin>
   );
@@ -141,17 +194,10 @@ const Greeting = styled.h2`
 
 const InputForm = styled.form``;
 
-const InputLine = styled.div`
-  input {
-    margin: 10px 0px;
-    width: 300px;
-    height: 30px;
-  }
-`;
-
 const Content = styled.div`
   padding: 10px;
   position: relative;
+  margin-bottom: 10px;
   input {
     box-sizing: border-box;
     height: 30px;
@@ -160,32 +206,36 @@ const Content = styled.div`
     border-radius: 25px;
     padding: 10px 10px 10px 25px;
     font-size: 16px;
-    border: 1px solid #eee;
-    background: #f5f5f5;
+    border: 1px solid #d0d0d0;
   }
-  button {
+  div {
     position: absolute;
     font-size: 18px;
-    top: 22%;
-    right: 3%;
+    top: 24%;
+    right: 4%;
     border: none;
     background: none;
     cursor: pointer;
-    .HiOutlineXCircle {
-      font-size: 150%;
-      color: #d0d0d0;
+    .TbAlertCircle {
+      font-size: 145%;
+      color: red;
     }
   }
 `;
 
-const MintButtonLargeInput = styled(MintButtonLarge)`
-  input {
-    background: none;
-    color: inherit;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
+const ContentGender = styled(Content)`
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  div {
+    top: -10px;
   }
+`;
+
+const ValidationAlert = styled.small`
+  display: flex;
+  justify-content: center;
+  position: relative;
+  color: red;
+  margin-top: -16px;
 `;
