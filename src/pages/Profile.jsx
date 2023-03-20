@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import { useQuery } from "react-query";
+
+import { getProfile } from "../api/mypage";
 import { HiPencil, HiOutlineXCircle } from "react-icons/hi";
-import { useRef, useState } from "react";
 import DeleteAccount from "../components/mypage/DeleteAccount";
 
 function Profile() {
+  const accessToken = localStorage.getItem("accessToken");
+
+  const { data: profileData } = useQuery(["getProfile"], () =>
+    getProfile(accessToken)
+  );
+
+  console.log(profileData?.data);
+  const profile = profileData?.data;
+
   const fileInput = useRef();
 
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -60,14 +71,17 @@ function Profile() {
               <Content>
                 <Label>이름(별명)</Label>
                 <IconContainer>
-                  <input type='text' />
+                  <StInput type='text' placeholder={profile?.nickname} />
                   <ClearButton disabled>
                     <HiOutlineXCircle color='#D0D0D0' />
                   </ClearButton>
                 </IconContainer>
 
                 <Label>소개</Label>
-                <textarea />
+                <StTextarea
+                  // placeholder={profile?.statusMessage}
+                  placeholder="null 아닐때 다시시도"
+                />
               </Content>
               <DeActivate onClick={handleOpenModal}>회원 탈퇴</DeActivate>
               <DeleteAccount
@@ -151,28 +165,29 @@ const Content = styled.div`
   display: flex;
   padding: 50px;
   flex-direction: column;
-  input {
-    box-sizing: border-box;
-    height: 55px;
-    width: 100%;
-    outline: none;
-    border-radius: 8px;
-    padding: 0 10px;
-    font-size: 16px;
-    border: 1px solid #eee;
-    background: #f5f5f5;
-  }
-  textarea {
-    width: 100%;
-    height: 100px;
-    border: 1px solid #eee;
-    box-sizing: border-box;
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 16px;
-    margin-bottom: 20px;
-    background: #f5f5f5;
-  }
+`;
+
+const StInput = styled.input`
+  box-sizing: border-box;
+  height: 55px;
+  width: 100%;
+  outline: none;
+  border-radius: 8px;
+  padding: 0 10px;
+  font-size: 16px;
+  border: 1px solid #eee;
+  background: #f5f5f5;
+`;
+const StTextarea = styled.textarea`
+  width: 100%;
+  height: 100px;
+  border: 1px solid #eee;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  background: #f5f5f5;
 `;
 
 const Label = styled.div`
