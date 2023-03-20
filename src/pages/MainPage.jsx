@@ -1,10 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
-import {
-  WholeAreaWithMargin,
-  WholeViewWidth,
-} from "../styles/\bWholeAreaStyle";
+import { WholeAreaWithMargin, WholeViewWidth } from "../styles/WholeAreaStyle";
 import { MintButtonLarge } from "../styles/Buttons";
 import { LongButtonStyle } from "../styles/LongButtonStyle";
 const MainPage = () => {

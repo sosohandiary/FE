@@ -4,7 +4,7 @@ import { MdArrowBack, MdOutlineClose } from "react-icons/md";
 import { VscBlank } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 
-export const BackButtonTitle = ({ title }) => {
+export const TitleAndBack = ({ title }) => {
   const navigate = useNavigate();
   const goBackRoute = () => {
     navigate(-1);

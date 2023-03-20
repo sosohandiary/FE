@@ -1,19 +1,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import {
-  BackButtonTitle,
-  CloseButtonTitle,
-} from "../components/BackOrCloseButton";
 import InputBox from "../components/InputBox";
-import {
-  WholeAreaStyle,
-  WholeAreaWithMargin,
-} from "../styles/\bWholeAreaStyle";
-import {
-  LongButtonStyle,
-  LongButtonSubmitStyle,
-} from "../styles/LongButtonStyle";
+import BackButtonTitle from "../styles/BackButtonTitle";
+import { LongButtonSubmitStyle } from "../styles/LongButtonStyle";
+import { WholeAreaWithMargin } from "../styles/WholeAreaStyle";
 
 const Signup = () => {
   // form 관련
