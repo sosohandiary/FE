@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
+import { GrayButtonSmall, MintButtonSmall } from "../../styles/Buttons";
+
 
 const DeleteAccount = ({
   isOpen,
@@ -28,12 +30,12 @@ const DeleteAccount = ({
           </p>
         </StText>
         <StButtonBox>
-          <StButton boderRight='1px solid' onClick={onClose}>
-            계속 사용할래요
-          </StButton>
-          <StButton color='#00b49b' onClick={handleConfirmClick} disabled>
+          <MintButtonSmall boderRight='1px solid' onClick={onClose}>
+           취소
+          </MintButtonSmall>
+          <GrayButtonSmall color='#00b49b' onClick={handleConfirmClick} disabled>
             탈퇴하기
-          </StButton>
+          </GrayButtonSmall>
         </StButtonBox>
       </StyledModalContent>
     </StyledModalOverlay>
@@ -58,8 +60,8 @@ const StyledModalContent = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 30px;
+  border-radius: 56px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
   z-index: 1000;
 
@@ -80,14 +82,22 @@ const StyledModalContent = styled.div`
 
 const StText = styled.div`
   padding: 36px 18px 21px;
+
+  text-align: center;
+  h2{
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
 `;
 
 const StButtonBox = styled.div`
   display: flex;
-  border-top: 1px solid;
-  border-top-color: #ecf0f2;
+  /* border-top: 1px solid;
+  border-top-color: #ecf0f2; */
   text-align: center;
 `;
+
+
 
 const StButton = styled.div`
   margin-top: 10px;

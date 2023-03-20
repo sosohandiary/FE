@@ -2,12 +2,15 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { HiOutlineXCircle } from "react-icons/hi";
 import styled from "styled-components";
+
+
 import InputBox from "../components/InputBox";
 import { subColor1 } from "../constants/colorPalette";
 import BackButtonTitle from "../styles/BackButtonTitle";
 import { MintButtonLarge } from "../styles/Buttons";
 import { LongButtonSubmitStyle } from "../styles/LongButtonStyle";
 import { WholeAreaWithMargin } from "../styles/WholeAreaStyle";
+
 
 const Signup = () => {
   // form 관련

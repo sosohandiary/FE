@@ -19,9 +19,7 @@ const MainPage = () => {
       <WholeViewWidth>
         <Carousel />
       </WholeViewWidth>
-      <MintButtonLarge onClick={goToLogin}>
-        공유 다이어리 시작하기
-      </MintButtonLarge>
+      <MintButtonLarge onClick={goToLogin}>공유 다이어리 시작하기</MintButtonLarge>
     </WholeAreaWithMargin>
   );
 };
