@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
   WholeAreaStyle,
@@ -7,6 +8,15 @@ import {
 import { LongButtonStyle } from "../styles/LongButtonStyle";
 
 const SignupSuccess = () => {
+  const navigate = useNavigate();
+  const [countdown, setCountdown] = useState(3);
+  setInterval(() => {
+    setCountdown(countdown - 1);
+    if (countdown === 1) {
+      navigate("/diaries");
+    }
+  }, 1000);
+
   return (
     <WholeAreaWithMargin>
       <CelebratingMsg>
@@ -15,7 +25,7 @@ const SignupSuccess = () => {
         회원가입을 축하합니다!
       </CelebratingMsg>
       <Circle></Circle>
-      <WelcomeMsg>3초후 홈으로 이동합니다</WelcomeMsg>
+      <WelcomeMsg>{countdown}초 후 홈으로 이동합니다</WelcomeMsg>
       <WelcomeMsg>이제부터 소소한 일상을 담아보세요!</WelcomeMsg>
       <LongButtonStyle>홈으로 가기</LongButtonStyle>
     </WholeAreaWithMargin>

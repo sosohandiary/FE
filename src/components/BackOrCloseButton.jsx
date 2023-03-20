@@ -2,12 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import { MdArrowBack, MdOutlineClose } from "react-icons/md";
 import { VscBlank } from "react-icons/vsc";
+import { useNavigate } from "react-router-dom";
 
-export const BackButtonTitle = (title) => {
+export const BackButtonTitle = ({ title }) => {
+  const navigate = useNavigate();
+  const goBackRoute = () => {
+    navigate(-1);
+  };
   return (
     <>
       <TopBox>
-        <MdArrowBack className="MdArrowBack" />
+        <MdArrowBack className="MdArrowBack" onClick={goBackRoute} />
         <Textbox>{title}</Textbox>
         <VscBlank className="VscBlank" />
       </TopBox>
@@ -44,14 +49,14 @@ const Textbox = styled.div`
   margin-top: 15px;
 `;
 
-export const CloseButtonTitle = (title) => {
-  return (
-    <>
-      <TopBox>
-        <MdOutlineClose className="MdOutlineClose" />
-        <Textbox>{title}</Textbox>
-        <VscBlank className="VscBlank" />
-      </TopBox>
-    </>
-  );
-};
+// export const CloseButtonTitle = ({ title }) => {
+//   return (
+//     <>
+//       <TopBox>
+//         <MdOutlineClose className="MdOutlineClose" />
+//         <Textbox>{title}</Textbox>
+//         <VscBlank className="VscBlank" />
+//       </TopBox>
+//     </>
+//   );
+// };

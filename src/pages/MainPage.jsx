@@ -1,6 +1,11 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
+import {
+  WholeAreaWithMargin,
+  WholeViewWidth,
+} from "../styles/\bWholeAreaStyle";
+import { MintButtonLarge } from "../styles/Buttons";
 import { LongButtonStyle } from "../styles/LongButtonStyle";
 
 const MainPage = () => {
@@ -9,14 +14,14 @@ const MainPage = () => {
     navigate("/login");
   };
   return (
-    <div>
-      <Carousel />
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <LongButtonStyle onClick={goToLogin}>
-          공유 다이어리 시작하기
-        </LongButtonStyle>
-      </div>
-    </div>
+    <WholeAreaWithMargin>
+      <WholeViewWidth>
+        <Carousel />
+      </WholeViewWidth>
+      <MintButtonLarge onClick={goToLogin}>
+        공유 다이어리 시작하기
+      </MintButtonLarge>
+    </WholeAreaWithMargin>
   );
 };
 
