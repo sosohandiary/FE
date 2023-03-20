@@ -27,8 +27,12 @@ const Router = () => {
         <Route path="/signup-success" element={<SignupSuccess />} />
         <Route path="/otherlogin" element={<OtherLogin />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/mypage" element={<MyPage />} />
         <Route path="/notification" element={<Notification />} />
+        <Route path="test-konva" element={<TestKonva />} />
+        <Route path="/oauth" element={<Oauth />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/detail" element={<Detail />} />
+        <Route path="/friends-list" element={<FriendsList />} />
       </Routes>
     </BrowserRouter>
   );
