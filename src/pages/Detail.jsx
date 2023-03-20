@@ -1,12 +1,11 @@
 import React from "react";
-import AddCommentForm from "../components/detail/AddCommentForm";
-import Sample from "../components/detail/Sample";
+
+import CommentList from "../components/detail/CommentList";
 
 const Detail = () => {
   return (
     <div>
-      <AddCommentForm />
-      <Sample />
+      <CommentList />
     </div>
   );
 };

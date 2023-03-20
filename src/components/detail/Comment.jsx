@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 const Comment = (props) => {
+  console.log(props);
+
   return (
     <CommentStyle>
       {/* username , comment 받아오기 */}
@@ -23,6 +25,7 @@ const CommentStyle = styled.div`
   flex-direction: column;
   justify-content: center;
   margin-bottom: 10px;
+  margin-left: 10px;
 `;
 
 const NameText = styled.span`
@@ -30,8 +33,10 @@ const NameText = styled.span`
   font-size: 12px;
   font-weight: bold;
   margin-bottom: 5px;
+  margin-left: 10px;
 `;
 
 const CommentText = styled.span`
   font-size: 14px;
+  margin-left: 10px;
 `;
