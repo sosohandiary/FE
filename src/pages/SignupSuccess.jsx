@@ -12,8 +12,9 @@ const SignupSuccess = () => {
         회원가입을 축하합니다!
       </CelebratingMsg>
       <Circle></Circle>
+      <WelcomeMsg>3초후 홈으로 이동합니다</WelcomeMsg>
       <WelcomeMsg>이제부터 소소한 일상을 담아보세요!</WelcomeMsg>
-      <LongButtonStyle>다이어리 쓰러 가기</LongButtonStyle>
+      <LongButtonStyle>홈으로 가기</LongButtonStyle>
     </WholeAreaWithMargin>
   );
 };
@@ -34,6 +35,6 @@ const Circle = styled.div`
 `;
 
 const WelcomeMsg = styled.div`
-  margin-top: 2vh;
-  margin-bottom: 8vh;
+  margin-top: -1vh;
+  margin-bottom: 4vh;
 `;
