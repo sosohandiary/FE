@@ -58,6 +58,18 @@ export const MintButtonLarge = styled.button`
   cursor: pointer;
 `;
 
+export const MintButtonLargeForSubmitInput = styled(MintButtonLarge)`
+  input {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+  }
+`;
+
 export const MintButtonMedium = styled.button`
   color: black;
   background-color: rgb(${subColor1});
