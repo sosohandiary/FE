@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
-import { WholeArea, WholeAreaStyle } from "../styles/\bWholeAreaStyle";
+import { WholeArea, WholeAreaStyle } from "../styles/WholeAreaStyle";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 

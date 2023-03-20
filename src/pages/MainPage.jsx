@@ -4,6 +4,11 @@ import Carousel from "../components/Carousel";
 import { WholeAreaWithMargin, WholeViewWidth } from "../styles/WholeAreaStyle";
 import { MintButtonLarge } from "../styles/Buttons";
 import { LongButtonStyle } from "../styles/LongButtonStyle";
+import {
+  ProfilePicLarge,
+  ProfilePicMedium,
+  ProfilePicSmall,
+} from "../components/ProfilePics";
 const MainPage = () => {
   const navigate = useNavigate();
   const goToLogin = () => {
@@ -14,9 +19,7 @@ const MainPage = () => {
       <WholeViewWidth>
         <Carousel />
       </WholeViewWidth>
-      <MintButtonLarge onClick={goToLogin}>
-        공유 다이어리 시작하기
-      </MintButtonLarge>
+      <MintButtonLarge onClick={goToLogin}>공유 다이어리 시작하기</MintButtonLarge>
     </WholeAreaWithMargin>
   );
 };

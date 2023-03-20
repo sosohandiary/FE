@@ -1,7 +1,12 @@
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
+import { CgKey } from "react-icons/cg";
 import { Stage, Layer, Line, Text, RegularPolygon } from "react-konva";
+import { useQuery } from "react-query";
 
 const TestKonva = () => {
+  const accessToken = localStorage.getItem("accessToken");
+
   const A = [
     {
       tool: "pen",
@@ -47,13 +52,16 @@ const TestKonva = () => {
   }, []);
 
   const [tool, setTool] = useState("pen");
+  const [color, setColor] = useState("#df4b26");
+  const [strokeWidth, setStrokeWidth] = useState(5);
   const [lines, setLines] = useState(A);
+  const [data, setData] = useState(null);
   const isDrawing = useRef(false);
 
   const handleMouseDown = (e) => {
     isDrawing.current = true;
     const pos = e.target.getStage().getPointerPosition();
-    setLines([...lines, { tool, points: [pos.x, pos.y] }]);
+    setLines([...lines, { tool, color, strokeWidth, points: [pos.x, pos.y] }]);
   };
 
   const handleMouseMove = (e) => {
@@ -76,13 +84,53 @@ const TestKonva = () => {
     isDrawing.current = false;
   };
 
-  const test = (target) => {
-    console.log(target);
+  const onSaveButtonHandler = () => {
+    const jsonifiedData = lines;
+    axios
+      .post(`${process.env.REACT_APP_BASEURL}/test/insert`, jsonifiedData, {
+        headers: { Authorization: accessToken },
+      })
+      .then((res) => console.log(res));
+    console.log(jsonifiedData);
+    console.log(lines);
   };
+
+  const changeColor = (color) => {
+    setColor(color);
+  };
+  const changeStrokeWidth = (width) => {
+    setStrokeWidth(width);
+  };
+
+  // const { data } = useQuery(["getDrawings"], () => {
+  //   return axios.get(`${process.env.REACT_APP_BASEURL}/test/insert/{id}`);
+  // });
+  // console.log(data);
+
+  useEffect(() => {
+    console.log(accessToken);
+    const dataTTT = axios
+      .get(`${process.env.REACT_APP_BASEURL}/test/insert/3`, {
+        headers: { Authorization: accessToken },
+      })
+      .then((res) => {
+        console.log(res.data.customJson);
+        const a = JSON.parse(res.data.customJson);
+        setData(a);
+        console.log(a);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div style={{ position: "fixed" }}>
-      <div style={{ border: "1px solid black" }}>dd</div>
+      <div style={{ border: "1px solid black" }}>
+        <button onClick={onSaveButtonHandler}>저장</button>
+        <button onClick={() => changeColor("#df4b26")}>RED</button>
+        <button onClick={() => changeColor("#2657df")}>BLUE</button>
+        <button onClick={() => changeStrokeWidth(5)}>두껍게</button>
+        <button onClick={() => changeStrokeWidth(1)}>얇게</button>
+      </div>
       <Stage
         width={window.innerWidth}
         height={window.innerHeight}
@@ -116,8 +164,8 @@ const TestKonva = () => {
             <Line
               key={i}
               points={line.points}
-              stroke="#df4b26"
-              strokeWidth={5}
+              stroke={line.color}
+              strokeWidth={line.strokeWidth}
               tension={0.5}
               lineCap="round"
               lineJoin="round"
@@ -126,6 +174,20 @@ const TestKonva = () => {
               }
             />
           ))}
+          {/* {data?.map((line, i) => (
+            <Line
+              key={i}
+              points={line.points}
+              stroke={line.color}
+              strokeWidth={line.strokeWidth}
+              tension={0.5}
+              lineCap="round"
+              lineJoin="round"
+              globalCompositeOperation={
+                line.tool === "eraser" ? "destination-out" : "source-over"
+              }
+            />
+          ))} */}
         </Layer>
       </Stage>
       <select
