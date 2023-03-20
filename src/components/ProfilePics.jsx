@@ -3,20 +3,20 @@ import styled from "styled-components";
 export const ProfilePicLarge = ({ src }) => {
   return (
     <CirclePic size={"large"}>
-      <Image src={src} width={120} height={120} size={"large"} />
+      <Image src={src} size={"large"} />
     </CirclePic>
   );
 };
 
-export const ProfilePicMedium = (src) => {
+export const ProfilePicMedium = ({ src }) => {
   return (
     <CirclePic size={"medium"}>
-      <Image src={src} width={80} height={80} size={"medium"} />
+      <Image src={src} size={"medium"} />
     </CirclePic>
   );
 };
 
-export const ProfilePicSmall = (src) => {
+export const ProfilePicSmall = ({ src }) => {
   return (
     <CirclePic size={"small"}>
       <Image src={src} size={"small"} />
@@ -25,25 +25,22 @@ export const ProfilePicSmall = (src) => {
 };
 
 const CirclePic = styled.div`
-  border-radius: ${({ size }) => {
-    size === "large" ? "60px" : "medium" ? "40px" : "28px";
-  }};
+  border-radius: 50%;
   overflow: hidden;
   width: ${({ size }) => {
-    size === "large" ? "120px" : "medium" ? "80px" : "56px";
+    return size === "large" ? "120px" : size === "medium" ? "80px" : "56px";
   }};
   height: ${({ size }) => {
-    size === "large" ? "120px" : "medium" ? "80px" : "56px";
+    return size === "large" ? "120px" : size === "medium" ? "80px" : "56px";
   }};
 `;
 
 const Image = styled.img`
   display: block;
   width: ${({ size }) => {
-    size === "large" ? "120px" : "medium" ? "80px" : "56px";
+    return size === "large" ? "120px" : size === "medium" ? "80px" : "56px";
   }};
   height: ${({ size }) => {
-    size === "large" ? "120px" : "medium" ? "80px" : "56px";
+    return size === "large" ? "120px" : size === "medium" ? "80px" : "56px";
   }};
-  max-width: auto;
 `;

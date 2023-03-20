@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { HiOutlineXCircle } from "react-icons/hi";
 
-const InputBox = ({ type }) => {
+const InputBox = () => {
   return (
     <>
       <Content>
-        <input type={type} required />
+        <input type="text" required />
         <button>
           <HiOutlineXCircle className="HiOutlineXCircle" />
         </button>
@@ -22,7 +22,7 @@ const Content = styled.div`
   position: relative;
   input {
     box-sizing: border-box;
-    height: 55px;
+    height: 30px;
     width: 100%;
     outline: none;
     border-radius: 25px;
@@ -34,7 +34,7 @@ const Content = styled.div`
   button {
     position: absolute;
     font-size: 18px;
-    top: 30%;
+    top: 21%;
     right: 3%;
     border: none;
     background: none;
