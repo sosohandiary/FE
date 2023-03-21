@@ -6,14 +6,16 @@ import { Stage, Layer, Star, Text, Line } from "react-konva";
 
 const Test = () => {
   const [mode, setMode] = useState("TEXT");
-  const [tool, setTool] = useState("pen");
+  const [lineTool, setLineTool] = useState("pen");
   const [lines, setLines] = useState([]);
+  const [lineColor, setLineColor] = useState("#df4b26");
+  const [lineWidth, setLineWidth] = useState(5);
   const isDrawing = useRef(false);
-
   const changeModeHandler = (target) => {
     setMode(target);
   };
 
+  // <-------------- 스티커 관련 -------------->
   function generateShapes() {
     return [...Array(10)].map((_, i) => ({
       id: i.toString(),
@@ -50,11 +52,15 @@ const Test = () => {
     );
   };
 
+  // <-------------- 그리기 관련 -------------->
   const handleMouseDown = (e) => {
     if (mode === "DRAW") {
       isDrawing.current = true;
       const pos = e.target.getStage().getPointerPosition();
-      setLines([...lines, { tool, points: [pos.x, pos.y] }]);
+      setLines([
+        ...lines,
+        { lineTool, lineColor, lineWidth, points: [pos.x, pos.y] },
+      ]);
     }
   };
 
@@ -78,6 +84,12 @@ const Test = () => {
     isDrawing.current = false;
   };
 
+  const changeColorHandler = (target) => {
+    console.log(target);
+    setLineColor(target);
+  };
+
+  //도구 모음 창
   const Toolbar = () => {
     return (
       <div>
@@ -86,15 +98,22 @@ const Test = () => {
         <button onClick={() => changeModeHandler("STICKER")}>
           스티커 모드
         </button>
+        <button onClick={() => changeColorHandler("#df4b26")}>빨간색</button>
+        <button onClick={() => changeColorHandler("#2645df")}>파란색</button>
+        <button onClick={() => changeColorHandler("rgba(0,0,0,0)")}>
+          지우개
+        </button>
       </div>
     );
   };
 
+  // 도화지
   return (
     <WholeAreaWithMargin>
       <Toolbar />
       <Style>
         <Textarea
+          label="Soda Diary"
           placeholder="Static rows, rows (4)"
           rows={30}
           width="100%"
@@ -139,8 +158,8 @@ const Test = () => {
             <Line
               key={i}
               points={line.points}
-              stroke="#df4b26"
-              strokeWidth={5}
+              stroke={line.lineColor}
+              strokeWidth={line.lineWidth}
               tension={0.5}
               lineCap="round"
               lineJoin="round"
