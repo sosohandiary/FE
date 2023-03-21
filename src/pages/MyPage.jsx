@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import styled from "styled-components";
 
-
 import {
   getFriendsCount,
   getMypage,
@@ -36,7 +35,7 @@ function MyPage() {
   const mypage = myPageData?.data;
   const profile = profileData?.data;
 
-  console.log(mypage)
+  console.log(mypage);
 
   const navigate = useNavigate();
 
@@ -46,12 +45,17 @@ function MyPage() {
 
   const navToFriendsList = () => {
     navigate("/myfriends");
-  }
+  };
   return (
     <>
-      <WholeArea style={{margin:"30px auto", maxWidth:"720px"}}>
+      <WholeArea style={{ margin: "30px auto", maxWidth: "720px" }}>
         <Title size='18'>마이페이지</Title>
-        <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
+        {profile?.gender === "MALE" ? (
+          <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
+        ) : (
+          <ProfilePicLarge src='https://velog.velcdn.com/images/icedlatte/post/26f8b2f4-3667-4c25-9a97-bc05c6659c88/image.jpeg' />
+        )}
+        {/* <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' /> */}
         <Title size='22'>{profile?.nickname}</Title>
 
         <NavButton alignSelf='flex-end' onClick={navToProfile}>
@@ -60,7 +64,9 @@ function MyPage() {
 
         <MenuBox>
           <EachMenuBox boderRight='1px solid'>
-            <NavButton onClick={navToFriendsList}><LabelSpan>친구</LabelSpan></NavButton>
+            <NavButton onClick={navToFriendsList}>
+              <LabelSpan>친구</LabelSpan>
+            </NavButton>
             <div>{friednsCount?.data?.myFriendCount}</div>
           </EachMenuBox>
           <EachMenuBox>
@@ -74,18 +80,21 @@ function MyPage() {
 
         {mypage?.map((item) => {
           return (
-            
-              <DiaryCards key={item.id}>
-                <ThumbnailBox><ThumbnailImg src={item.img}/></ThumbnailBox>
-                <div style={{ marginLeft: "70px" }}>
-                  <StText fontWeight='bold' size='20'>{item.title}</StText>
-                  <StText size='16' color='#B0B0B0'>개설일: {getDate(item.createdAt)} </StText>
-                </div>
-              </DiaryCards>
-            
+            <DiaryCards key={item.id}>
+              <ThumbnailBox>
+                <ThumbnailImg src={item.img} />
+              </ThumbnailBox>
+              <div style={{ marginLeft: "70px" }}>
+                <StText fontWeight='bold' size='20'>
+                  {item.title}
+                </StText>
+                <StText size='16' color='#B0B0B0'>
+                  개설일: {getDate(item.createdAt)}{" "}
+                </StText>
+              </div>
+            </DiaryCards>
           );
         })}
-
       </WholeArea>
     </>
   );
@@ -188,7 +197,7 @@ const LabelSpan = styled.span`
 `;
 
 const StText = styled.div`
-    font-weight: ${(props) => props.fontWeight};
-    font-size: ${({ size }) => `${size}px`};
-    color: ${(props) => props.color};
+  font-weight: ${(props) => props.fontWeight};
+  font-size: ${({ size }) => `${size}px`};
+  color: ${(props) => props.color};
 `;

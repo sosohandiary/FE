@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
 
@@ -31,14 +31,19 @@ const MyFriends = () => {
           친구 {friednsCount?.data?.myFriendCount}
         </Label>
         {friends?.map((item, index) => {
-          return(<ListCards key={index}>
-            <ProfilePicSmall src='https://avatars.githubusercontent.com/u/109452831?v=4' />
-            <ListContentBox>
-              <StText fontWeight='bold'>{item.nickname}</StText>
-              <StText>{item.statusMessage}</StText>
-            </ListContentBox>
-          </ListCards>
-          )
+          return (
+            <ListCards key={index}>
+              {item.gender === "MALE" ? (
+                <ProfilePicSmall src='https://avatars.githubusercontent.com/u/109452831?v=4' />
+              ) : (
+                <ProfilePicSmall src='https://velog.velcdn.com/images/icedlatte/post/26f8b2f4-3667-4c25-9a97-bc05c6659c88/image.jpeg' />
+              )}
+              <ListContentBox>
+                <StText fontWeight='bold'>{item.nickname}</StText>
+                <StText>{item.statusMessage}</StText>
+              </ListContentBox>
+            </ListCards>
+          );
         })}
       </WholeArea>
     </>

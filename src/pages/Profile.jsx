@@ -49,12 +49,21 @@ function Profile() {
           <form encType='multipart/form-data'>
             <ProfileArea>
               <StButton onClick={onImgButton}>
-                <img
-                  style={ProfileImg}
-                  //사진 여기로 전달 받기!
-                  src='https://avatars.githubusercontent.com/u/109452831?v=4'
-                  alt='profile image'
-                />
+                {profile?.gender === "MALE" ? (
+                  <img
+                    style={ProfileImg}
+                    //사진 여기로 전달 받기!
+                    src='https://avatars.githubusercontent.com/u/109452831?v=4'
+                    alt='profile image'
+                  />
+                ) : (
+                  <img
+                    style={ProfileImg}
+                    //사진 여기로 전달 받기!
+                    src='https://velog.velcdn.com/images/icedlatte/post/26f8b2f4-3667-4c25-9a97-bc05c6659c88/image.jpeg'
+                    alt='profile image'
+                  />
+                )}
               </StButton>
               <EditPencilArea>
                 <HiPencil />
@@ -80,11 +89,11 @@ function Profile() {
                 <Label>소개</Label>
                 <StTextarea
                   // placeholder={profile?.statusMessage}
-                  placeholder="null 아닐때 다시시도"
+                  placeholder='null 아닐때 다시시도'
                 />
               </Content>
               <DeActivateBox>
-              <DeActivate onClick={handleOpenModal}>회원 탈퇴</DeActivate>
+                <DeActivate onClick={handleOpenModal}>회원 탈퇴</DeActivate>
               </DeActivateBox>
               <DeleteAccount
                 title='탈퇴하기'
