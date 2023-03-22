@@ -1,8 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { CgKey } from "react-icons/cg";
 import { Stage, Layer, Line, Text, RegularPolygon } from "react-konva";
-import { useQuery } from "react-query";
 
 const TestKonva = () => {
   const accessToken = localStorage.getItem("accessToken");

@@ -1,104 +1,225 @@
-import React, { useRef, useState } from "react";
-import AliceCarousel from "react-alice-carousel";
-import "react-alice-carousel/lib/alice-carousel.css";
+import { Textarea, css } from "@nextui-org/react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
-import BrandStory1 from "./main-brandstory/BrandStory1";
-import BrandStory2 from "./main-brandstory/BrandStory2";
-import BrandStory3 from "./main-brandstory/BrandStory3";
-import BrandStory4 from "./main-brandstory/BrandStory4";
-import { TfiArrowRight } from "react-icons/tfi";
 import { WholeAreaWithMargin } from "../styles/WholeAreaStyle";
+import { Stage, Layer, Star, Text, Line } from "react-konva";
+import TestDraft from "./TestDraft";
 
-const Carousel = () => {
-  const items = [
-    <CardStyle style={{ display: "flex", justifyContent: "center" }}>
-      <BrandStory1 className="item" data-value="1" />
-    </CardStyle>,
-    <CardStyle>
-      <BrandStory2 className="item" data-value="2" />
-    </CardStyle>,
-    <CardStyle>
-      <BrandStory3 className="item" data-value="3" />
-    </CardStyle>,
-    <CardStyle>
-      <BrandStory4 className="item" data-value="4" />
-    </CardStyle>,
-  ];
-
-  const [mainIndex, setMainIndex] = useState(0);
-  const [animation, setAnimation] = useState(false);
-
-  const syncMainBeforeChange = (e) => {
-    console.log(e);
-    console.log("before");
-    setAnimation(true);
+const Test = () => {
+  const [mode, setMode] = useState("TEXT");
+  const [lineTool, setLineTool] = useState("pen");
+  const [lines, setLines] = useState([]);
+  const [lineColor, setLineColor] = useState("#df4b26");
+  const [lineWidth, setLineWidth] = useState(5);
+  const isDrawing = useRef(false);
+  const changeModeHandler = (target) => {
+    setMode(target);
   };
 
-  const syncMainAfterChange = (e) => {
-    setMainIndex(e.item);
-    console.log("after");
-    setAnimation(false);
+  // <-------------- 스티커 관련 -------------->
+  function generateShapes() {
+    return [...Array(5)].map((_, i) => ({
+      id: i.toString(),
+      shape: "star",
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      rotation: Math.random() * 180,
+      isDragging: false,
+    }));
+  }
+
+  const INITIAL_STATE = generateShapes();
+
+  const [stars, setStars] = useState(INITIAL_STATE);
+
+  const [stickers, setStickers] = useState(INITIAL_STATE);
+
+  const handleDragStart = (e) => {
+    const id = e.target.id();
+    setStickers(
+      stickers.map((sticker) => {
+        return {
+          ...sticker,
+          isDragging: sticker.id === id,
+        };
+      })
+    );
+  };
+  const handleDragEnd = (e) => {
+    setStickers(
+      stickers.map((sticker) => {
+        return {
+          ...sticker,
+          isDragging: false,
+        };
+      })
+    );
   };
 
-  const toNextSlide = () => {
-    if (!animation && mainIndex < items.length - 1) {
-      setAnimation(true);
-      setMainIndex(mainIndex + 1);
+  // <-------------- 그리기 관련 -------------->
+  const handleMouseDown = (e) => {
+    if (mode === "DRAW") {
+      isDrawing.current = true;
+      const pos = e.target.getStage().getPointerPosition();
+      setLines([
+        ...lines,
+        { lineTool, lineColor, lineWidth, points: [pos.x, pos.y] },
+      ]);
     }
-    console.log(mainIndex);
   };
 
+  const handleMouseMove = (e) => {
+    // no drawing - skipping
+    if (!isDrawing.current) {
+      return;
+    }
+    const stage = e.target.getStage();
+    const point = stage.getPointerPosition();
+    let lastLine = lines[lines.length - 1];
+    // add point
+    lastLine.points = lastLine.points.concat([point.x, point.y]);
+
+    // replace last
+    lines.splice(lines.length - 1, 1, lastLine);
+    setLines(lines.concat());
+  };
+
+  const handleMouseUp = () => {
+    isDrawing.current = false;
+  };
+
+  const changeColorHandler = (target) => {
+    setLineColor(target);
+  };
+  const changeWidthHandler = (target) => {
+    setLineWidth(target);
+  };
+  const changeLineTool = (target) => {
+    setLineTool(target);
+  };
+
+  const addStickerHandler = () => {};
+
+  //도구 모음 창
+  const Toolbar = () => {
+    return (
+      <div style={{ position: "sticky", zIndex: 10 }}>
+        <button onClick={() => changeModeHandler("TEXT")}>텍스트 모드</button>
+        <button onClick={() => changeModeHandler("DRAW")}>그리기 모드</button>
+        <button onClick={() => changeModeHandler("STICKER")}>
+          스티커 모드
+        </button>
+        <button onClick={() => changeColorHandler("#df4b26")}>빨간색</button>
+        <button onClick={() => changeColorHandler("#2645df")}>파란색</button>
+        <button onClick={() => changeWidthHandler(5)}>굵게</button>
+        <button onClick={() => changeWidthHandler(1)}>얇게</button>
+        <button onClick={() => changeLineTool("eraser")}>지우개</button>
+        <button onClick={() => changeLineTool("pen")}>펜</button>
+        <div>
+          스티커 관련
+          <div>
+            별<button onClick={() => addStickerHandler()}>큰 별 추가</button>
+            <button onClick={() => addStickerHandler()}>작은 별 추가</button>
+          </div>
+          <div>
+            원<button onClick={() => addStickerHandler()}>큰 원 추가</button>
+            <button onClick={() => addStickerHandler()}>작은 원 추가</button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const al = () => {
+    console.log(mode);
+  };
+  // 도화지
   return (
-    <div>
-      <DotStyle>
-        <AliceCarousel
-          activeIndex={mainIndex}
-          key="carousel"
-          mouseTracking={!animation}
-          disableButtonsControls
-          items={items}
-          autoPlay
-          autoPlayInterval={2000}
-          animationDuration={1000}
-          animationType="slide"
-          onSlideChange={syncMainBeforeChange}
-          onSlideChanged={syncMainAfterChange}
-        />
-      </DotStyle>
-      <WholeAreaWithMargin>
-        <NextArrow>
-          <TfiArrowRight className="TfiArrowRight" onClick={toNextSlide} />
-        </NextArrow>
-      </WholeAreaWithMargin>
-    </div>
+    <WholeAreaWithMargin>
+      <Toolbar />
+      <BackgroundStyle></BackgroundStyle>
+      <TextAreaStyle mode={mode}>
+        <TestDraft />
+        {/* <Textarea
+          label="Soda Diary"
+          placeholder="Static rows, rows (4)"
+          rows={30}
+          width="100%"
+          readOnly={mode !== "TEXT" ? true : false}
+          style={{
+            fontSize: "16px",
+          }}
+          css={{ $$inputColor: "rgba(0,0,0,0)" }}
+        /> */}
+      </TextAreaStyle>
+      <Stage
+        width={window.innerWidth}
+        height={window.innerHeight}
+        onMouseDown={handleMouseDown}
+        onMousemove={handleMouseMove}
+        onMouseup={handleMouseUp}
+        style={{ position: "absolute" }}
+      >
+        <Layer>
+          {lines.map((line, i) => (
+            <Line
+              key={i}
+              points={line.points}
+              stroke={line.lineColor}
+              strokeWidth={line.lineWidth}
+              tension={0.5}
+              lineCap="round"
+              lineJoin="round"
+              globalCompositeOperation={
+                line.lineTool === "eraser" ? "destination-out" : "source-over"
+              }
+            />
+          ))}
+          {stickers.map((sticker) => {
+            return (
+              <Star
+                key={sticker.id}
+                id={sticker.id}
+                x={sticker.x}
+                y={sticker.y}
+                numPoints={5}
+                innerRadius={20}
+                outerRadius={40}
+                fill="#89b717"
+                opacity={0.8}
+                draggable={mode === "STICKER" ? true : false}
+                rotation={sticker.rotation}
+                shadowColor="black"
+                shadowBlur={10}
+                shadowOpacity={0.6}
+                shadowOffsetX={sticker.isDragging ? 10 : 5}
+                shadowOffsetY={sticker.isDragging ? 10 : 5}
+                scaleX={sticker.isDragging ? 1.2 : 1}
+                scaleY={sticker.isDragging ? 1.2 : 1}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+              />
+            );
+          })}
+        </Layer>
+      </Stage>
+    </WholeAreaWithMargin>
   );
 };
 
-export default Carousel;
+export default Test;
 
-const CardStyle = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 10vh;
+const BackgroundStyle = styled.div`
+  position: absolute;
+  z-index: -10;
+  background-color: #e9e9e9;
+  width: 100%;
+  height: 1000px;
 `;
 
-const DotStyle = styled.div`
-  .alice-carousel__dots {
-    margin: -90px 0;
-  }
-  .alice-carousel__dots-item {
-    margin: 0 -15px;
-  }
-  .alice-carousel__dots-item.__active {
-    background-color: #c6c6c6;
-  }
-`;
-
-const NextArrow = styled.div`
-  .TfiArrowRight {
-    font-size: 40px;
-    position: relative;
-    top: 94px;
-    left: 130px;
-  }
+const TextAreaStyle = styled.div`
+  position: absolute;
+  top: 120px;
+  width: 100%;
+  z-index: ${({ mode }) => (mode === "TEXT" ? 1 : -1)};
 `;

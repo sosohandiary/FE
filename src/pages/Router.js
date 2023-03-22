@@ -14,6 +14,7 @@ import Detail from "./Detail";
 import OnBoarding from "./OnBoarding";
 import MainPage from "./MainPage";
 import Test from "./Test";
+import TestDraft from "./TestDraft";
 
 const Router = () => {
   return (
@@ -30,6 +31,7 @@ const Router = () => {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="test-konva" element={<TestKonva />} />
+        <Route path="test-draft" element={<TestDraft />} />
         <Route path="test" element={<Test />} />
         <Route path="/oauth" element={<Oauth />} />
         <Route path="/mypage" element={<MyPage />} />
