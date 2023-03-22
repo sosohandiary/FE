@@ -1,30 +1,45 @@
 import React from "react";
 import styled from "styled-components";
 import { CgProfile } from "react-icons/cg";
+import AliceCarousel from "react-alice-carousel";
+import "react-alice-carousel/lib/alice-carousel.css";
+import { WholeViewWidth, WholeAreaWithMargin } from "../styles/WholeAreaStyle";
 
 const Friendlist = () => {
+  const itemsLength = [
+    <div>ddd</div>,
+    <div>ddd</div>,
+    <div>ddd</div>,
+    <div>ddd</div>,
+    <div>ddd</div>,
+    <div>ddd</div>,
+    <div>ddd</div>,
+  ];
+
+  const items = itemsLength.map((item, index) => {
+    const style = { width: 80 };
+    return (
+      <Friend>
+        <CgProfile className="CgProfile item" style={style} />
+        <AcceptButton>+수락하기</AcceptButton>
+      </Friend>
+    );
+  });
   return (
-    <Style>
+    <WholeAreaWithMargin>
       <TextNotice>나를 추가했어요!</TextNotice>
-      <FriendList>
-        <Friend>
-          <CgProfile className="CgProfile" />
-          <AcceptButton>+수락하기</AcceptButton>
-        </Friend>
-        <Friend>
-          <CgProfile className="CgProfile" />
-          <AcceptButton>+수락하기</AcceptButton>
-        </Friend>
-        <Friend>
-          <CgProfile className="CgProfile" />
-          <AcceptButton>+수락하기</AcceptButton>
-        </Friend>
-        <Friend>
-          <CgProfile className="CgProfile" />
-          <AcceptButton>+수락하기</AcceptButton>
-        </Friend>
-      </FriendList>
-    </Style>
+      <WholeViewWidth>
+        <FriendList>
+          <AliceCarousel
+            autoWidth
+            mouseTracking
+            disableDotsControls
+            disableButtonsControls
+            items={items}
+          />
+        </FriendList>
+      </WholeViewWidth>
+    </WholeAreaWithMargin>
   );
 };
 
@@ -42,6 +57,7 @@ const AcceptButton = styled.button`
 const FriendList = styled.div`
   display: flex;
   flex-direction: row;
+  margin: 0px 24px;
 `;
 
 const Friend = styled.div`
@@ -56,12 +72,11 @@ const Friend = styled.div`
   }
 `;
 
-const Style = styled.div`
-  margin: 25px;
-`;
-
 const TextNotice = styled.div`
   font-size: 140%;
   font-weight: bold;
   padding-left: 10px;
+  display: flex;
+  position: relative;
+  right: 98px;
 `;

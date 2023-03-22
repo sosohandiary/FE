@@ -4,16 +4,27 @@ import { VscHome, VscBell, VscBlank } from "react-icons/vsc";
 import { RxMagnifyingGlass, RxPerson } from "react-icons/rx";
 import { BiPlus } from "react-icons/bi";
 import { FaCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Navigationbar = () => {
+  const navigate = useNavigate();
+  const goToPage = (to) => {
+    navigate(to);
+  };
   return (
     <>
       <BottomBox>
-        <VscHome className="VscHome" />
-        <VscBell className="VscBell" />
-        <BiPlus className="BiPlus" />
-        <RxMagnifyingGlass className="RxMagnifyingGlass" />
-        <RxPerson className="RxPerson" />
+        <VscHome className="VscHome" onClick={() => goToPage("/")} />
+        <VscBell
+          className="VscBell"
+          onClick={() => goToPage("/notification")}
+        />
+        <BiPlus className="BiPlus" onClick={() => goToPage("/")} />
+        <RxMagnifyingGlass
+          className="RxMagnifyingGlass"
+          onClick={() => goToPage("/search")}
+        />
+        <RxPerson className="RxPerson" onClick={() => goToPage("/mypage")} />
       </BottomBox>
 
       <CircleBox>
@@ -67,13 +78,13 @@ const BottomBox = styled.div`
 const PlusBox = styled.div`
   position: fixed;
   bottom: 0%;
-  margin-bottom: 45px;
+  margin-bottom: 10px;
   width: 100%;
   z-index: 1;
   display: flex;
   justify-content: space-evenly;
   background-color: transparent;
- 
+
   .BiPlus {
     font-size: 35px;
     color: white;
@@ -90,7 +101,7 @@ const PlusBox = styled.div`
 const CircleBox = styled.div`
   position: fixed;
   bottom: 0%;
-  margin-bottom: 42px;
+  margin-bottom: 7px;
   width: 100%;
   z-index: 1;
   display: flex;

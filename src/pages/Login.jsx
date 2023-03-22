@@ -11,15 +11,14 @@ import {
 } from "../styles/Buttons";
 import { HiOutlineXCircle } from "react-icons/hi";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setCurrentUser } from "../contexts/currentUserInfoSlice";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const kakaoLoginButtonHandler = () => {
     kakaoLoginApi();
-  };
-
-  const otherWayLoginButtonHandler = () => {
-    navigate("/otherlogin");
   };
 
   const goToHome = () => {
@@ -45,9 +44,15 @@ const Login = () => {
     console.log(data);
     axios
       .post(`${process.env.REACT_APP_BASEURL}/login`, data)
-      .then((res) =>
-        localStorage.setItem("accessToken", res.headers.authorization)
-      )
+      .then((res) => {
+        const userInfo = {
+          userName: res.data.name,
+          userNickname: res.data.nickname,
+        };
+        dispatch(setCurrentUser(userInfo));
+        localStorage.setItem("accessToken", res.headers.authorization);
+        navigate("/");
+      })
       .catch((err) => {
         console.log(err);
       });
