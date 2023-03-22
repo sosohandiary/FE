@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { WholeAreaWithMargin } from "../styles/WholeAreaStyle";
 import { Stage, Layer, Star, Text, Line } from "react-konva";
 import TestDraft from "./TestDraft";
-import Draggable from "react-draggable";
 
 const Test = () => {
   const [mode, setMode] = useState("TEXT");
@@ -119,10 +118,7 @@ const Test = () => {
         <div>
           스티커 관련
           <div>
-            별
-            <Draggable>
-              <button onClick={() => addStickerHandler()}>큰 별 추가</button>
-            </Draggable>
+            별<button onClick={() => addStickerHandler()}>큰 별 추가</button>
             <button onClick={() => addStickerHandler()}>작은 별 추가</button>
           </div>
           <div>
@@ -134,7 +130,9 @@ const Test = () => {
     );
   };
 
-  console.log(stickers);
+  const al = () => {
+    console.log(mode);
+  };
   // 도화지
   return (
     <WholeAreaWithMargin>
@@ -225,14 +223,3 @@ const TextAreaStyle = styled.div`
   width: 100%;
   z-index: ${({ mode }) => (mode === "TEXT" ? 1 : -1)};
 `;
-
-// {api: {배경지},
-
-// {0:"url",1:"url2",3:"url3"},
-
-// {그림 좌표,},
-// {텍스트 좌표,},
-// {스티커 좌표,},
-// }
-
-// 다합치기
