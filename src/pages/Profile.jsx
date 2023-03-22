@@ -49,21 +49,12 @@ function Profile() {
           <form encType='multipart/form-data'>
             <ProfileArea>
               <StButton onClick={onImgButton}>
-                {profile?.gender === "MALE" ? (
-                  <img
-                    style={ProfileImg}
-                    //사진 여기로 전달 받기!
-                    src='https://avatars.githubusercontent.com/u/109452831?v=4'
-                    alt='profile image'
-                  />
-                ) : (
-                  <img
-                    style={ProfileImg}
-                    //사진 여기로 전달 받기!
-                    src='https://velog.velcdn.com/images/icedlatte/post/26f8b2f4-3667-4c25-9a97-bc05c6659c88/image.jpeg'
-                    alt='profile image'
-                  />
-                )}
+                <img
+                  style={ProfileImg}
+                  //사진 여기로 전달 받기!
+                  src='https://avatars.githubusercontent.com/u/109452831?v=4'
+                  alt='profile image'
+                />
               </StButton>
               <EditPencilArea>
                 <HiPencil />
