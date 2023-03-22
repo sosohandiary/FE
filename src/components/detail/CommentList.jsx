@@ -37,12 +37,12 @@ const CommentList = () => {
     <form>
       <h2>CommentList</h2>
       {/* <input name="name" placeholder="작성자 이름을 입력하세요" value={name} onChange={inputChangeHandler} /> */}
-      <CommentInput name="content" placeholder="댓글을 입력하세요" value={content} onChange={inputChangeHandler} />
-      <CommentSubmitButton onClick={clickAddButtonHandler}>추가</CommentSubmitButton>
 
       {comments.map((comment) => {
         return <Comment key={comment.id} name={comment.name} comment={comment.comment} />;
       })}
+      <CommentInput name="content" placeholder="댓글을 입력하세요" value={content} onChange={inputChangeHandler} />
+      <CommentSubmitButton onClick={clickAddButtonHandler}>추가</CommentSubmitButton>
     </form>
   );
 };

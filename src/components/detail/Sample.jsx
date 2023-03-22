@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { IoChatbubblesOutline } from "react-icons/io5";
+import CommentList from "./CommentList";
 
 const Sample = () => {
   const [showComments, setShowComments] = useState(false);
@@ -15,7 +16,9 @@ const Sample = () => {
         <CommentIcon />
       </CommentButton>
       <CommentsContainer show={showComments}>
-        <p>댓글을 여기에 표시합니다.</p>
+        <p>
+          <CommentList />
+        </p>
       </CommentsContainer>
     </div>
   );
@@ -55,21 +58,4 @@ const CommentsContainer = styled.div`
     css`
       animation: ${CommetnslideUp} 0.3s ease-out forwards;
     `}
-`;
-const CommentList = styled.ul`
-  list-style-type: none;
-  padding: 0;
-`;
-
-const CommentItem = styled.li`
-  padding: 5px 0;
-`;
-
-const DeleteButton = styled.button`
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 0.8rem;
-  color: red;
-  margin-left: 10px;
 `;
