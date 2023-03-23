@@ -169,6 +169,7 @@ const Test = () => {
   const [lineColor, setLineColor] = useState("#df4b26");
   const [lineWidth, setLineWidth] = useState(5);
   const isDrawing = useRef(false);
+
   const changeModeHandler = (target) => {
     setMode(target);
   };
@@ -250,7 +251,7 @@ const Test = () => {
   const Toolbar = () => {
     return (
       <div style={{ position: "sticky", zIndex: 10 }}>
-        <button onClick={() => changeModeHandler("TEXT")}>텍스트 모드</button>
+        <button onClick={(e) => changeModeHandler("TEXT")}>텍스트 모드</button>
         <button onClick={() => changeModeHandler("DRAW")}>그리기 모드</button>
         <button onClick={() => changeModeHandler("STICKER")}>
           스티커 모드
