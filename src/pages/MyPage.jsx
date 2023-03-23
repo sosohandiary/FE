@@ -1,64 +1,100 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
 import styled from "styled-components";
-import { WholeArea, WholeAreaWithMargin } from "../styles/WholeAreaStyle";
 
-import {ProfilePicMedium, ProfilePicLarge} from "../components/ProfilePics"
+import {
+  getFriendsCount,
+  getMypage,
+  getProfile,
+  getDiaryCount,
+} from "../api/mypage";
+import { getDate } from "../utils/getDate";
+import { WholeArea } from "../styles/WholeAreaStyle";
+import { ProfilePicLarge } from "../components/ProfilePics";
 
 function MyPage() {
+  const accessToken = localStorage.getItem("accessToken");
+
+  const { data: myPageData } = useQuery(["getMypage"], () =>
+    getMypage(accessToken)
+  );
+
+  const { data: profileData } = useQuery(["getProfile"], () =>
+    getProfile(accessToken)
+  );
+
+  const { data: friednsCount } = useQuery(["getFriendsCount"], () =>
+    getFriendsCount(accessToken)
+  );
+
+  const { data: diaryCount } = useQuery(["getDiaryCount"], () =>
+    getDiaryCount(accessToken)
+  );
+
+  const mypage = myPageData?.data;
+  const profile = profileData?.data;
+
+  console.log(mypage);
+
   const navigate = useNavigate();
 
   const navToProfile = () => {
     navigate("/profile");
   };
+
+  const navToFriendsList = () => {
+    navigate("/myfriends");
+  };
   return (
     <>
-      <WholeArea>
+      <WholeArea style={{ margin: "30px auto", maxWidth: "720px" }}>
         <Title size='18'>마이페이지</Title>
-        <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
-        <Title size='22'>김소다</Title>
+        {profile?.gender === "MALE" ? (
+          <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
+        ) : (
+          <ProfilePicLarge src='https://velog.velcdn.com/images/icedlatte/post/26f8b2f4-3667-4c25-9a97-bc05c6659c88/image.jpeg' />
+        )}
+        {/* <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' /> */}
+        <Title size='22'>{profile?.nickname}</Title>
 
-        <NavButton onClick={navToProfile}>
+        <NavButton alignSelf='flex-end' onClick={navToProfile}>
           <Label size='16'>프로필 편집</Label>
         </NavButton>
 
         <MenuBox>
           <EachMenuBox boderRight='1px solid'>
-            <LabelSpan>친구</LabelSpan>
-            <div>10</div>
+            <NavButton onClick={navToFriendsList}>
+              <LabelSpan>친구</LabelSpan>
+            </NavButton>
+            <div>{friednsCount?.data?.myFriendCount}</div>
           </EachMenuBox>
           <EachMenuBox>
-            <LabelSpan>마일리지</LabelSpan>
-            <div>20</div>
+            <LabelSpan>다이어리</LabelSpan>
+            <div>{diaryCount?.data?.myDiaryCount}</div>
           </EachMenuBox>
         </MenuBox>
         <Label size='18' alignSelf='flex-start'>
           내 다이어리
         </Label>
 
-        <DiaryBox>
-          <ThumbnailBox>??</ThumbnailBox>
-          <div style={{ marginLeft: "80px" }}>
-            <Title>같이 여행가자</Title>
-            <Label>개설일: 2023.02.10</Label>
-          </div>
-        </DiaryBox>
-
-        <DiaryBox>
-          <ThumbnailBox>??</ThumbnailBox>
-          <div style={{ marginLeft: "80px" }}>
-            <Title>하드코딩</Title>
-            <Label>개설일: 2023.02.10</Label>
-          </div>
-        </DiaryBox>
-
-        <DiaryBox>
-          <ThumbnailBox>??</ThumbnailBox>
-          <div style={{ marginLeft: "80px" }}>
-            <Title>하드코딩</Title>
-            <Label>개설일: 2023.02.10</Label>
-          </div>
-        </DiaryBox>
+        {mypage?.map((item) => {
+          return (
+            <DiaryCards key={item.id}>
+              <ThumbnailBox>
+                <ThumbnailImg src={item.img} />
+              </ThumbnailBox>
+              <div style={{ marginLeft: "70px" }}>
+                <StText fontWeight='bold' size='20'>
+                  {item.title}
+                </StText>
+                <StText size='16' color='#B0B0B0'>
+                  개설일: {getDate(item.createdAt)}{" "}
+                </StText>
+              </div>
+            </DiaryCards>
+          );
+        })}
       </WholeArea>
     </>
   );
@@ -89,9 +125,11 @@ const Label = styled.div`
 const NavButton = styled.button`
   border: none;
   background: none;
+  font-size: 16px;
 
-  display: flex;
-  align-self: flex-end;
+  /* display: flex;
+  align-self: flex-end; */
+  align-self: ${({ alignSelf }) => alignSelf};
 `;
 
 const MenuBox = styled.div`
@@ -126,10 +164,11 @@ const EachMenuBox = styled.div`
   justify-content: center;
 `;
 
-const DiaryBox = styled.div`
+const DiaryCards = styled.div`
   border-radius: 23px;
-  width: 90%;
+  width: 80%;
   max-width: 500px;
+  padding: 30px;
   position: relative;
 
   background: #d9d9d9;
@@ -143,11 +182,22 @@ const ThumbnailBox = styled.div`
   left: 10px;
 
   box-sizing: border-box;
-  background: white;
-  padding: 20px;
+  border-radius: 18px;
+`;
+
+const ThumbnailImg = styled.img`
+  width: 80px;
+  height: 80px;
+  background: content-box;
   border-radius: 18px;
 `;
 
 const LabelSpan = styled.span`
   color: #858585;
+`;
+
+const StText = styled.div`
+  font-weight: ${(props) => props.fontWeight};
+  font-size: ${({ size }) => `${size}px`};
+  color: ${(props) => props.color};
 `;
