@@ -7,9 +7,12 @@ import { ProfilePicSmall } from "../components/ProfilePics";
 import Searchbox from "../components/Searchbox";
 import { WholeArea, WholeAreaWithMargin } from "../styles/WholeAreaStyle";
 import Filter from "../components/mypage/Filter";
+import { useParams } from "react-router-dom";
 
 const MyFriends = () => {
   const [searchFriends, setSearchFriends] = useState(null);
+
+  const { mode } = useParams();
 
   const accessToken = localStorage.getItem("accessToken");
 
@@ -52,6 +55,7 @@ const MyFriends = () => {
                   <StText fontWeight='bold'>{item.nickname}</StText>
                   <StText>{item.statusMessage}</StText>
                 </ListContentBox>
+                {mode === "add" ?  <button>추가하기</button> : null}
               </ListCards>
             );
           })}

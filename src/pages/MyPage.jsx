@@ -44,7 +44,7 @@ function MyPage() {
   };
 
   const navToFriendsList = () => {
-    navigate("/myfriends");
+    navigate("/myfriends/list");
   };
   return (
     <>
