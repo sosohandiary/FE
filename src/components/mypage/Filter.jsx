@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { SlMagnifier } from "react-icons/sl";
 import { MdOutlineCancel } from "react-icons/md";
@@ -11,6 +11,13 @@ const Filter = ({ setCards, existCards, placeholder }) => {
     setCards(existCards.filter((card) => card.nickname === e.target.value));
   };
 
+  const inputRef = useRef();
+
+  const clearButtonHandler = (e) => {
+    inputRef.current.value = "";
+    setCards(existCards);
+  }
+
   return (
     <>
       <SearchTotalBox>
@@ -21,9 +28,10 @@ const Filter = ({ setCards, existCards, placeholder }) => {
               type='text'
               onChange={handleOnChangeFilterInput}
               placeholder={placeholder}
+              ref={inputRef}
             />
           </SearchStyle>
-          <MdOutlineCancel className='MdOutlineCancel' />
+          <ClearButton onClick={clearButtonHandler}><MdOutlineCancel className='MdOutlineCancel' /></ClearButton>
         </SearchStyleBox>
       </SearchTotalBox>
 
@@ -72,4 +80,11 @@ const Searchinput = styled.input`
   background-color: transparent;
   border: none;
   width: 300px;
+`;
+
+const ClearButton = styled.button`
+  background: none;
+  border: none;
+
+  cursor: pointer;
 `;
