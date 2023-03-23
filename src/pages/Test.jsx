@@ -1,8 +1,9 @@
 import { Textarea, css } from "@nextui-org/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { WholeAreaWithMargin } from "../styles/WholeAreaStyle";
-import { Stage, Layer, Star, Text, Line } from "react-konva";
+import { Stage, Layer, Star, Text, Line, Rect, Transformer } from "react-konva";
 import TestDraft from "./TestDraft";
 import Draggable from "react-draggable";
 
@@ -18,22 +19,8 @@ const Test = () => {
   };
 
   // <-------------- 스티커 관련 -------------->
-  function generateShapes() {
-    return [...Array(5)].map((_, i) => ({
-      id: i.toString(),
-      shape: "star",
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      rotation: Math.random() * 180,
-      isDragging: false,
-    }));
-  }
 
-  const INITIAL_STATE = generateShapes();
-
-  const [stars, setStars] = useState(INITIAL_STATE);
-
-  const [stickers, setStickers] = useState(INITIAL_STATE);
+  const [stickers, setStickers] = useState([]);
 
   const handleDragStart = (e) => {
     const id = e.target.id();
@@ -134,7 +121,6 @@ const Test = () => {
     );
   };
 
-  console.log(stickers);
   // 도화지
   return (
     <WholeAreaWithMargin>
@@ -142,17 +128,6 @@ const Test = () => {
       <BackgroundStyle></BackgroundStyle>
       <TextAreaStyle mode={mode}>
         <TestDraft />
-        {/* <Textarea
-          label="Soda Diary"
-          placeholder="Static rows, rows (4)"
-          rows={30}
-          width="100%"
-          readOnly={mode !== "TEXT" ? true : false}
-          style={{
-            fontSize: "16px",
-          }}
-          css={{ $$inputColor: "rgba(0,0,0,0)" }}
-        /> */}
       </TextAreaStyle>
       <Stage
         width={window.innerWidth}
@@ -225,14 +200,3 @@ const TextAreaStyle = styled.div`
   width: 100%;
   z-index: ${({ mode }) => (mode === "TEXT" ? 1 : -1)};
 `;
-
-// {api: {배경지},
-
-// {0:"url",1:"url2",3:"url3"},
-
-// {그림 좌표,},
-// {텍스트 좌표,},
-// {스티커 좌표,},
-// }
-
-// 다합치기
