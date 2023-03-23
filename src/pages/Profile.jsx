@@ -35,14 +35,14 @@ function Profile() {
       <StLayout>
         <ProfileLayout>
           <Title>프로필 편집</Title>
-          <form encType='multipart/form-data'>
+          <form encType="multipart/form-data">
             <ProfileArea>
               <StButton onClick={onImgButton}>
                 <img
                   style={ProfileImg}
                   //사진 여기로 전달 받기!
-                  src='https://avatars.githubusercontent.com/u/109452831?v=4'
-                  alt='profile image'
+                  src="https://avatars.githubusercontent.com/u/109452831?v=4"
+                  alt="profile image"
                 />
               </StButton>
               <EditPencilArea>
@@ -50,8 +50,8 @@ function Profile() {
               </EditPencilArea>
             </ProfileArea>
             <input
-              type='file'
-              accept='image/*'
+              type="file"
+              accept="image/*"
               // onChange={onImgPostHandler}
               ref={fileInput}
               style={{ display: "none" }}
@@ -60,9 +60,9 @@ function Profile() {
               <Content>
                 <Label>이름(별명)</Label>
                 <IconContainer>
-                  <input type='text' />
+                  <input type="text" />
                   <ClearButton disabled>
-                    <HiOutlineXCircle color='#D0D0D0' />
+                    <HiOutlineXCircle color="#D0D0D0" />
                   </ClearButton>
                 </IconContainer>
 
@@ -71,7 +71,7 @@ function Profile() {
               </Content>
               <DeActivate onClick={handleOpenModal}>회원 탈퇴</DeActivate>
               <DeleteAccount
-                title='탈퇴하기'
+                title="탈퇴하기"
                 isOpen={confirmDelete}
                 onClose={handleCloseModal}
                 handleDelete={handleDelete}

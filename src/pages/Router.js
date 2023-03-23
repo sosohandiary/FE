@@ -1,27 +1,27 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Login from "./Login";
-import Search from "./Search";
 import OtherLogin from "./OtherLogin";
 import Profile from "./Profile";
 import Notification from "./Notification";
 import MyPage from "./MyPage";
 import Signup from "./Signup";
 import SignupSuccess from "./SignupSuccess";
-import TestKonva from "./TestKonva";
 import Oauth from "./Oauth";
 import Detail from "./Detail";
 import OnBoarding from "./OnBoarding";
 import MainPage from "./MainPage";
 import Test from "./Test";
-import TestDraft from "./TestDraft";
+import TestDraft from "../components/decorations/Draft";
 import BoxTest from "./BoxTest";
+import NewDiary from "./NewDiary";
+import NewFriend from "./NewFriend";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/search" element={<Search />} />
+        <Route path="/new-friend" element={<NewFriend />} />
         <Route path="/onboarding" element={<OnBoarding />} />
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<Login />} />
@@ -31,13 +31,13 @@ const Router = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/notification" element={<Notification />} />
-        <Route path="test-konva" element={<TestKonva />} />
         <Route path="test-draft" element={<TestDraft />} />
         <Route path="boxtest" element={<BoxTest />} />
         <Route path="test" element={<Test />} />
         <Route path="/oauth" element={<Oauth />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/detail" element={<Detail />} />
+        <Route path="/new-diary" element={<NewDiary />} />
       </Routes>
     </BrowserRouter>
   );

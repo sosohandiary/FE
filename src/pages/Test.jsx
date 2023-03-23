@@ -13,8 +13,8 @@ import {
   Transformer,
   Image,
 } from "react-konva";
-import TestDraft from "./TestDraft";
 import useImage from "use-image";
+import Draft from "../components/decorations/Draft";
 
 // <---------------변형 기능된 이미지 스티커 컴퍼넌트----------------->
 const ImageSticker = ({
@@ -284,7 +284,7 @@ const Test = () => {
       <Toolbar />
       <BackgroundStyle></BackgroundStyle>
       <TextAreaStyle mode={mode}>
-        <TestDraft />
+        <Draft />
       </TextAreaStyle>
       <Stage
         width={window.innerWidth}

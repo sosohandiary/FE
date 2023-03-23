@@ -11,7 +11,7 @@ import "draft-js/dist/Draft.css";
 
 const TEXT_EDITOR_ITEM = "draft-js-example-item";
 
-const TestDraft = () => {
+const Draft = () => {
   const data = localStorage.getItem(TEXT_EDITOR_ITEM);
   const initialState = data
     ? EditorState.createWithContent(convertFromRaw(JSON.parse(data)))
@@ -126,4 +126,4 @@ const TestDraft = () => {
   );
 };
 
-export default TestDraft;
+export default Draft;
