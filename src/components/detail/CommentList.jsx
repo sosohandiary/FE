@@ -7,7 +7,7 @@ const CommentList = (props) => {
   return (
     <>
       {comments.map((comment) => (
-        <Comment key={comment.id} name={comment.name} comment={comment.comment} />
+        <Comment key={comment.id} comment={comment.comment} />
       ))}
     </>
   );
