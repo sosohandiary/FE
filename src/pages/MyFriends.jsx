@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
 
@@ -6,8 +6,14 @@ import { getMyfriends, getFriendsCount } from "../api/mypage";
 import { ProfilePicSmall } from "../components/ProfilePics";
 import Searchbox from "../components/Searchbox";
 import { WholeArea, WholeAreaWithMargin } from "../styles/WholeAreaStyle";
+import Filter from "../components/mypage/Filter";
+import { useParams } from "react-router-dom";
 
 const MyFriends = () => {
+  const [searchFriends, setSearchFriends] = useState(null);
+
+  const { mode } = useParams();
+
   const accessToken = localStorage.getItem("accessToken");
 
   const { data: myFriends } = useQuery(["getMyFriends"], () =>
@@ -20,31 +26,39 @@ const MyFriends = () => {
 
   const friends = myFriends?.data;
 
-  console.log(myFriends?.data);
+  // console.log(friends);
+  // console.log(searchFriends);
+
+  useEffect(() => {
+    setSearchFriends(friends);
+  }, [friends]);
 
   return (
     <>
       <WholeArea style={{ margin: "30px auto", maxWidth: "720px" }}>
         <Title size='18'>친구</Title>
-        <Searchbox placeholder='친구 검색' />
+        {/* <Searchbox placeholder='친구 검색' /> */}
+        <Filter
+          setCards={setSearchFriends}
+          existCards={friends}
+          placeholder='친구 검색'
+        />
         <Label alignSelf='flex-start'>
           친구 {friednsCount?.data?.myFriendCount}
         </Label>
-        {friends?.map((item, index) => {
-          return (
-            <ListCards key={index}>
-              {item.gender === "MALE" ? (
+        {friends &&
+          searchFriends?.map((item, index) => {
+            return (
+              <ListCards key={index}>
                 <ProfilePicSmall src='https://avatars.githubusercontent.com/u/109452831?v=4' />
-              ) : (
-                <ProfilePicSmall src='https://velog.velcdn.com/images/icedlatte/post/26f8b2f4-3667-4c25-9a97-bc05c6659c88/image.jpeg' />
-              )}
-              <ListContentBox>
-                <StText fontWeight='bold'>{item.nickname}</StText>
-                <StText>{item.statusMessage}</StText>
-              </ListContentBox>
-            </ListCards>
-          );
-        })}
+                <ListContentBox>
+                  <StText fontWeight='bold'>{item.nickname}</StText>
+                  <StText>{item.statusMessage}</StText>
+                </ListContentBox>
+                {mode === "add" ?  <button>추가하기</button> : null}
+              </ListCards>
+            );
+          })}
       </WholeArea>
     </>
   );

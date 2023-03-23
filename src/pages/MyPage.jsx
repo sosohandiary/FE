@@ -44,18 +44,13 @@ function MyPage() {
   };
 
   const navToFriendsList = () => {
-    navigate("/myfriends");
+    navigate("/myfriends/list");
   };
   return (
     <>
       <WholeArea style={{ margin: "30px auto", maxWidth: "720px" }}>
         <Title size='18'>마이페이지</Title>
-        {profile?.gender === "MALE" ? (
-          <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
-        ) : (
-          <ProfilePicLarge src='https://velog.velcdn.com/images/icedlatte/post/26f8b2f4-3667-4c25-9a97-bc05c6659c88/image.jpeg' />
-        )}
-        {/* <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' /> */}
+        <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
         <Title size='22'>{profile?.nickname}</Title>
 
         <NavButton alignSelf='flex-end' onClick={navToProfile}>
