@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const Comment = (props) => {
-  console.log(props);
-
   return (
     <CommentStyle>
       {/* username , comment 받아오기 */}
