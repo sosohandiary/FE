@@ -2,28 +2,39 @@ import React, { useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { IoChatbubblesOutline } from "react-icons/io5";
 import CommentList from "./CommentList";
+import Comment from "./Comment";
+import { useQueryClient, useMutation } from "react-query";
+import { addComment } from "../../api/comment";
+import { useParams } from "react-router-dom";
 
 const CommentBox = () => {
   const [showComments, setShowComments] = useState(false);
-
   const toggleComments = () => {
     setShowComments((prev) => !prev);
   };
 
-  const [comments, setComments] = useState([
-    { id: 1, name: "손흥민", comment: "난 존잘이다ㅋ난 존잘이다ㅋ난 존잘이다ㅋ난 존잘이다ㅋ난 존잘이다ㅋ" },
-  ]);
+  const queryClient = useQueryClient();
+  const { id } = useParams();
+  const accessToken = localStorage.getItem("accessToken");
 
-  const [content, setContent] = useState("");
-  const [name, setName] = useState("");
+  const { mutate: addmutation } = useMutation(() => addComment(id, comment, accessToken), {
+    onSuccess: (data) => {
+      console.log("data", data);
+      queryClient.invalidateQueries("comment");
+    },
+  });
+
+  // const [comments, setComments] = useState([
+  //   { id: 1, name: "손흥민", comment: "난 존잘이다ㅋ난 존잘이다ㅋ난 존잘이다ㅋ난 존잘이다ㅋ난 존잘이다ㅋ" },
+  // ]);
+
+  const [comment, setComment] = useState({
+    comment: "",
+  });
 
   const inputChangeHandler = (event) => {
     const { name, value } = event.target;
-    if (name === "name") {
-      setName(value);
-    } else if (name === "content") {
-      setContent(value);
-    }
+    setComment({ ...comment, [name]: value });
   };
 
   const handleKeyDown = (event) => {
@@ -34,14 +45,17 @@ const CommentBox = () => {
 
   const clickAddButtonHandler = (event) => {
     event.preventDefault();
-    const newContent = {
-      id: comments.length + 1,
-      name,
-      comment: content,
-    };
-    setComments([...comments, newContent]);
-    setName("");
-    setContent("");
+    //   const newContent = {
+    //     id: comments.length + 1,
+    //     name,
+    //     comment: content,
+    //   };
+    //   setComments([...comments, newContent]);
+    //   setName("");
+    //   setContent("");
+    // };
+
+    addmutation();
   };
 
   return (
@@ -52,11 +66,11 @@ const CommentBox = () => {
 
       <CommentsContainer show={showComments}>
         <h3>댓글</h3>
-        <CommentList comments={comments} />
+        <Comment />
         <CommentInput
-          name="content"
+          name="comment"
           placeholder="댓글 달기"
-          value={content}
+          value={comment.comment}
           onChange={inputChangeHandler}
           onKeyDown={handleKeyDown}
         />
@@ -93,8 +107,6 @@ const CommentButton = styled.button`
 const CommentsContainer = styled.div`
   width: 375px;
   height: 643px;
-  /* left: 0px;
-  top: 172px; */
   display: ${(props) => (props.show ? "block" : "none")};
   border: none;
   background-color: #f7dcdc;
