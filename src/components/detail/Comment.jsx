@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
 import { getDate } from "../../utils/getDate";
+import { RiPencilFill, RiDeleteBin6Fill } from "react-icons/ri";
 
 const Comment = (props) => {
   return (
@@ -13,6 +14,10 @@ const Comment = (props) => {
           <span>username</span>
           <span>2023.03.23</span>
         </UserBox>
+        <IconStyle>
+          <EditIcon />
+          <DeleteIcon />
+        </IconStyle>
       </CommentStyle>
       <CommentText>{props.comment}</CommentText>
     </>
@@ -28,14 +33,15 @@ const CommentStyle = styled.div`
   display: flex;
   align-items: center;
   margin-left: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: -3px;
   /* background-color: #4a92d1; */
 `;
 const CommentText = styled.span`
   font-size: 14px;
+  /* font-weight: 600; */
   margin-left: 10px;
-  display: block; /* 추가 */
+  display: block;
 `;
 
 const UserBox = styled.div`
@@ -53,4 +59,23 @@ const UserBox = styled.div`
     font-size: 12px;
     color: gray;
   }
+`;
+
+const IconStyle = styled.div`
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  width: 118px;
+  height: 50px;
+  color: #a5a2a2;
+`;
+
+const EditIcon = styled(RiPencilFill)`
+  position: absolute;
+  right: -10px;
+`;
+
+const DeleteIcon = styled(RiDeleteBin6Fill)`
+  position: absolute;
+  right: -30px;
 `;

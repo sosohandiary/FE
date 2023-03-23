@@ -11,8 +11,7 @@ const CommentBox = () => {
   };
 
   const [comments, setComments] = useState([
-    { id: 1, name: "손흥민", comment: "난 존잘이다ㅋ" },
-    { id: 2, name: "한지윤", comment: "난 리액트 최강이다" },
+    { id: 1, name: "손흥민", comment: "난 존잘이다ㅋ난 존잘이다ㅋ난 존잘이다ㅋ난 존잘이다ㅋ난 존잘이다ㅋ" },
   ]);
 
   const [content, setContent] = useState("");
@@ -98,7 +97,7 @@ const CommentsContainer = styled.div`
   top: 172px; */
   display: ${(props) => (props.show ? "block" : "none")};
   border: none;
-  background-color: #dfdfdf;
+  background-color: #f7dcdc;
   border-radius: 30px 30px 0px 0px;
   padding: 10px;
   margin-top: 10px;
@@ -113,7 +112,7 @@ const CommentsContainer = styled.div`
     margin-bottom: 20px;
     font-style: normal;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 22px;
   }
 `;
