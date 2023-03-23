@@ -3,7 +3,7 @@ import styled, { keyframes, css } from "styled-components";
 import { IoChatbubblesOutline } from "react-icons/io5";
 import CommentList from "./CommentList";
 
-const Sample = () => {
+const CommentBox = () => {
   const [showComments, setShowComments] = useState(false);
 
   const toggleComments = () => {
@@ -68,7 +68,7 @@ const Sample = () => {
   );
 };
 
-export default Sample;
+export default CommentBox;
 
 const CommetnslideUp = keyframes`
   0% {
