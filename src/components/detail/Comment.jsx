@@ -4,7 +4,7 @@ import { ProfilePicSmall } from "../ProfilePics";
 import { getDate } from "../../utils/getDate";
 import { RiPencilFill, RiDeleteBin6Fill } from "react-icons/ri";
 
-const Comment = (props) => {
+const Comment = () => {
   return (
     <>
       <CommentStyle>
@@ -19,7 +19,7 @@ const Comment = (props) => {
           <DeleteIcon />
         </IconStyle>
       </CommentStyle>
-      <CommentText>{props.comment}</CommentText>
+      <CommentText>여기코멘트으으으으으으으으들어올거야아아아아아</CommentText>
     </>
   );
 };
