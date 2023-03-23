@@ -1,20 +1,15 @@
-import { Textarea, css } from "@nextui-org/react";
-import { useEffect, useRef, useState } from "react";
-import React from "react";
-import styled from "styled-components";
-import { WholeAreaWithMargin } from "../styles/WholeAreaStyle";
+import React, { useEffect, useState } from "react";
+import { createRoot } from "react-dom/client";
 import {
   Stage,
   Layer,
   Star,
   Text,
-  Line,
   Rect,
-  Transformer,
   Image,
+  Transformer,
 } from "react-konva";
 import useImage from "use-image";
-import Draft from "../components/decorations/Draft";
 
 // <---------------변형 기능된 이미지 스티커 컴퍼넌트----------------->
 const ImageSticker = ({
@@ -23,7 +18,6 @@ const ImageSticker = ({
   onSelect,
   onChange,
   sticker,
-  mode,
 }) => {
   const shapeRef = React.useRef();
   const trRef = React.useRef();
@@ -58,7 +52,7 @@ const ImageSticker = ({
         outerRadius={40}
         // fill="#89b717"
         opacity={0.8}
-        draggable={mode === "STICKER" ? true : false}
+        draggable
         rotation={sticker.rotation}
         shadowColor="black"
         shadowBlur={10}
@@ -162,24 +156,19 @@ const INITIAL_STATE = [
   },
 ];
 
-const Test = () => {
-  const [mode, setMode] = useState("TEXT");
-  const [lineTool, setLineTool] = useState("pen");
-  const [lines, setLines] = useState([]);
-  const [lineColor, setLineColor] = useState("#df4b26");
-  const [lineWidth, setLineWidth] = useState(5);
-  const isDrawing = useRef(false);
-
-  const changeModeHandler = (target) => {
-    setMode(target);
-  };
-
-  // <-------------- 스티커 관련 -------------->
-
-  const [stickers, setStickers] = useState([]);
+const BoxTest = () => {
+  const [stickers, setStickers] = React.useState(INITIAL_STATE);
 
   // 변형할 것 선택 관련
   const [selectedId, selectShape] = React.useState(null);
+
+  const checkDeselect = (e) => {
+    // deselect when clicked on empty area
+    const clickedOnEmpty = e.target === e.target.getStage();
+    if (clickedOnEmpty) {
+      selectShape(null);
+    }
+  };
 
   // 스티커 추가 관련
   const addStickerButtonHandler = (num) => {
@@ -198,130 +187,34 @@ const Test = () => {
     setStickers(newStickerList);
   };
 
-  // <-------------- 그리기 관련 -------------->
-  const handleMouseDown = (e) => {
-    //스티커 변형 초기화
-    const clickedOnEmpty = e.target === e.target.getStage();
-    if (clickedOnEmpty) {
-      selectShape(null);
-    }
-
-    //그리기 시작
-    if (mode === "DRAW") {
-      isDrawing.current = true;
-      const pos = e.target.getStage().getPointerPosition();
-      setLines([
-        ...lines,
-        { lineTool, lineColor, lineWidth, points: [pos.x, pos.y] },
-      ]);
-    }
-  };
-
-  const handleMouseMove = (e) => {
-    // no drawing - skipping
-    if (!isDrawing.current) {
-      return;
-    }
-    const stage = e.target.getStage();
-    const point = stage.getPointerPosition();
-    let lastLine = lines[lines.length - 1];
-    // add point
-    lastLine.points = lastLine.points.concat([point.x, point.y]);
-
-    // replace last
-    lines.splice(lines.length - 1, 1, lastLine);
-    setLines(lines.concat());
-  };
-
-  const handleMouseUp = () => {
-    isDrawing.current = false;
-  };
-
-  const changeColorHandler = (target) => {
-    setLineColor(target);
-  };
-  const changeWidthHandler = (target) => {
-    setLineWidth(target);
-  };
-  const changeLineTool = (target) => {
-    setLineTool(target);
-  };
-
-  //도구 모음 창
-  const Toolbar = () => {
-    return (
-      <div style={{ position: "sticky", zIndex: 10 }}>
-        <button onClick={(e) => changeModeHandler("TEXT")}>텍스트 모드</button>
-        <button onClick={() => changeModeHandler("DRAW")}>그리기 모드</button>
-        <button onClick={() => changeModeHandler("STICKER")}>
-          스티커 모드
-        </button>
-        <button onClick={() => changeColorHandler("#df4b26")}>빨간색</button>
-        <button onClick={() => changeColorHandler("#2645df")}>파란색</button>
-        <button onClick={() => changeWidthHandler(5)}>굵게</button>
-        <button onClick={() => changeWidthHandler(1)}>얇게</button>
-        <button onClick={() => changeLineTool("eraser")}>지우개</button>
-        <button onClick={() => changeLineTool("pen")}>펜</button>
-        <div>
-          스티커 관련
-          <button onClick={() => addStickerButtonHandler(0)}>
-            0번 스티커 추가
-          </button>
-          <button onClick={() => addStickerButtonHandler(1)}>
-            1번 스티커 추가
-          </button>
-          <button onClick={() => addStickerButtonHandler(2)}>
-            2번 스티커 추가
-          </button>
-        </div>
-      </div>
-    );
-  };
-
-  // 도화지
+  // 렌더링
   return (
-    <WholeAreaWithMargin>
-      <Toolbar />
-      <BackgroundStyle></BackgroundStyle>
-      <TextAreaStyle mode={mode}>
-        <Draft />
-      </TextAreaStyle>
+    <div>
+      <button onClick={() => addStickerButtonHandler(0)}>
+        0번 스티커 추가
+      </button>
+      <button onClick={() => addStickerButtonHandler(1)}>
+        1번 스티커 추가
+      </button>
+      <button onClick={() => addStickerButtonHandler(2)}>
+        2번 스티커 추가
+      </button>
       <Stage
         width={window.innerWidth}
         height={window.innerHeight}
-        onMouseDown={handleMouseDown}
-        onTouchStart={handleMouseDown}
-        onMousemove={handleMouseMove}
-        onMouseup={handleMouseUp}
-        style={{ position: "absolute" }}
+        onMouseDown={checkDeselect}
+        onTouchStart={checkDeselect}
       >
         <Layer>
-          {lines.map((line, i) => (
-            <Line
-              key={i}
-              points={line.points}
-              stroke={line.lineColor}
-              strokeWidth={line.lineWidth}
-              tension={0.5}
-              lineCap="round"
-              lineJoin="round"
-              globalCompositeOperation={
-                line.lineTool === "eraser" ? "destination-out" : "source-over"
-              }
-            />
-          ))}
           {stickers.map((sticker, i) => {
             return (
               <ImageSticker
                 key={i}
-                mode={mode}
                 shapeProps={sticker}
                 isSelected={sticker.id === selectedId}
                 sticker={sticker}
                 onSelect={() => {
-                  if (mode === "STICKER") {
-                    selectShape(sticker.id);
-                  }
+                  selectShape(sticker.id);
                 }}
                 onChange={(newAttrs) => {
                   const sticks = stickers.slice();
@@ -333,23 +226,8 @@ const Test = () => {
           })}
         </Layer>
       </Stage>
-    </WholeAreaWithMargin>
+    </div>
   );
 };
 
-export default Test;
-
-const BackgroundStyle = styled.div`
-  position: absolute;
-  z-index: -10;
-  background-color: #e9e9e9;
-  width: 100%;
-  height: 1000px;
-`;
-
-const TextAreaStyle = styled.div`
-  position: absolute;
-  top: 120px;
-  width: 100%;
-  z-index: ${({ mode }) => (mode === "TEXT" ? 1 : -1)};
-`;
+export default BoxTest;

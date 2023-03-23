@@ -11,12 +11,12 @@ import { useSelector } from "react-redux";
 const MainPage = () => {
   const currentLoginUser = useSelector((state) => state.currentUserInfoSlice);
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`${process.env.REACT_APP_BASEURL}/?page=1&size=5`)
-  //     .then((res) => console.log(res))
-  //     .catch((err) => console.log(err));
-  // }, []);
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_BASEURL}/?page=1&size=5`)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  }, []);
 
   // const { data } = useQuery(["getDiaries"], () => {
   //   return axios
