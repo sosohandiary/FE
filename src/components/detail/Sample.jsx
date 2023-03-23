@@ -15,10 +15,10 @@ const Sample = () => {
       <CommentButton onClick={toggleComments}>
         <CommentIcon />
       </CommentButton>
+
       <CommentsContainer show={showComments}>
-        <p>
-          <CommentList />
-        </p>
+        <h3>댓글</h3>
+        <CommentList />
       </CommentsContainer>
     </div>
   );
@@ -49,8 +49,14 @@ const CommentButton = styled.button`
   cursor: pointer;
 `;
 const CommentsContainer = styled.div`
+  width: 375px;
+  height: 643px;
+  /* left: 0px;
+  top: 172px; */
   display: ${(props) => (props.show ? "block" : "none")};
-  border: 1px solid #ccc;
+  border: none;
+  background-color: #dfdfdf;
+  border-radius: 30px 30px 0px 0px;
   padding: 10px;
   margin-top: 10px;
   ${(props) =>
@@ -58,4 +64,13 @@ const CommentsContainer = styled.div`
     css`
       animation: ${CommetnslideUp} 0.3s ease-out forwards;
     `}
+  h3 {
+    text-align: center;
+    line-height: 22px;
+    margin-bottom: 20px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 22px;
+  }
 `;

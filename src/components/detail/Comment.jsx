@@ -19,8 +19,8 @@ const CommentStyle = styled.div`
   background-color: #f4f4f4;
   border: none;
   border-radius: 5px;
-  width: 500px;
-  height: 50px;
+  width: 325px;
+  height: 34px;
   display: flex;
   flex-direction: column;
   justify-content: center;

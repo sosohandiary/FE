@@ -29,20 +29,28 @@ const CommentList = () => {
       comment: content,
     };
     setComments([...comments, newContent]);
-    setName(""); // 추가 후 name 값을 초기화
-    setContent(""); // 추가 후 content 값을 초기화
+    setName("");
+    setContent("");
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      clickAddButtonHandler(event);
+    }
   };
 
   return (
     <form>
-      <h2>CommentList</h2>
-      {/* <input name="name" placeholder="작성자 이름을 입력하세요" value={name} onChange={inputChangeHandler} /> */}
-
       {comments.map((comment) => {
         return <Comment key={comment.id} name={comment.name} comment={comment.comment} />;
       })}
-      <CommentInput name="content" placeholder="댓글을 입력하세요" value={content} onChange={inputChangeHandler} />
-      <CommentSubmitButton onClick={clickAddButtonHandler}>추가</CommentSubmitButton>
+      <CommentInput
+        name="content"
+        placeholder="댓글 달기"
+        value={content}
+        onChange={inputChangeHandler}
+        onKeyDown={handleKeyDown}
+      />
     </form>
   );
 };
@@ -50,23 +58,13 @@ const CommentList = () => {
 export default CommentList;
 
 const CommentInput = styled.input`
-  height: 30px;
-  width: 400px;
+  width: 327px;
+  height: 40px;
   margin-bottom: 10px;
   margin-left: 10px;
   padding: 5px;
   resize: none;
-  background-color: #f4f4f4;
+  background: #f0f0f0;
   border: none;
-  border-radius: 5px;
-`;
-
-const CommentSubmitButton = styled.button`
-  background-color: #f2fefa;
-  border: none;
-  border-radius: 5px;
-  color: #000000;
-  padding: 8px 16px;
-  margin-left: 20px;
-  cursor: pointer;
+  border-radius: 20px;
 `;
