@@ -11,19 +11,14 @@ import {
 } from "react-konva";
 import useImage from "use-image";
 
-function generateShapes() {
-  return [...Array(10)].map((_, i) => ({
-    id: i.toString(),
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    rotation: Math.random() * 180,
-    isDragging: false,
-    stickerUrl: "https://konvajs.org/assets/lion.png",
-  }));
-}
-
-// <---------------변형 관련----------------->
-const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
+// <---------------변형 기능된 이미지 스티커 컴퍼넌트----------------->
+const ImageSticker = ({
+  shapeProps,
+  isSelected,
+  onSelect,
+  onChange,
+  sticker,
+}) => {
   const shapeRef = React.useRef();
   const trRef = React.useRef();
 
@@ -35,19 +30,56 @@ const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
     }
   }, [isSelected]);
 
+  // 스티커 사전
+  const [imgUrl0] = useImage("https://konvajs.org/assets/lion.png");
+  const [imgUrl1] = useImage("https://konvajs.org/assets/yoda.jpg");
+  const [imgUrl2] = useImage(
+    "https://thumbs.dreamstime.com/b/beautiful-rain-forest-ang-ka-nature-trail-doi-inthanon-national-park-thailand-36703721.jpg"
+  );
+
+  const imgList = [imgUrl0, imgUrl1, imgUrl2];
+
   return (
     <React.Fragment>
-      <Rect
+      <Image
+        image={imgList[sticker.stickerUrlNum]}
+        key={sticker.id}
+        id={sticker.id}
+        x={sticker.x}
+        y={sticker.y}
+        numPoints={5}
+        innerRadius={20}
+        outerRadius={40}
+        // fill="#89b717"
+        opacity={0.8}
+        draggable
+        rotation={sticker.rotation}
+        shadowColor="black"
+        shadowBlur={10}
+        shadowOpacity={0.6}
+        shadowOffsetX={sticker.isDragging ? 10 : 5}
+        shadowOffsetY={sticker.isDragging ? 10 : 5}
+        scaleX={sticker.isDragging ? 1.2 : 1}
+        scaleY={sticker.isDragging ? 1.2 : 1}
+        onDragStart={(e) => {
+          onChange({
+            ...shapeProps,
+            x: e.target.x(),
+            y: e.target.y(),
+            isDragging: true,
+          });
+        }}
+        // onDragEnd={handleDragEnd}
         onClick={onSelect}
         onTap={onSelect}
         ref={shapeRef}
         {...shapeProps}
-        draggable
         onDragEnd={(e) => {
           onChange({
             ...shapeProps,
             x: e.target.x(),
             y: e.target.y(),
+            isDragging: false,
           });
         }}
         onTransformEnd={(e) => {
@@ -90,11 +122,14 @@ const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
 
 // <---------------------------------------->
 
+// 초기 스티커 값
 const INITIAL_STATE = [
   {
     id: 0,
     x: 100,
     y: 100,
+    width: 100,
+    height: 100,
     rotation: 30,
     isDragging: false,
     stickerUrlNum: 0,
@@ -103,6 +138,8 @@ const INITIAL_STATE = [
     id: 1,
     x: 200,
     y: 200,
+    width: 100,
+    height: 100,
     rotation: 60,
     isDragging: false,
     stickerUrlNum: 1,
@@ -111,6 +148,8 @@ const INITIAL_STATE = [
     id: 2,
     x: 300,
     y: 300,
+    width: 100,
+    height: 100,
     rotation: 90,
     isDragging: false,
     stickerUrlNum: 2,
@@ -120,7 +159,7 @@ const INITIAL_STATE = [
 const BoxTest = () => {
   const [stickers, setStickers] = React.useState(INITIAL_STATE);
 
-  // 변형 관련
+  // 변형할 것 선택 관련
   const [selectedId, selectShape] = React.useState(null);
 
   const checkDeselect = (e) => {
@@ -130,44 +169,15 @@ const BoxTest = () => {
       selectShape(null);
     }
   };
-  //
 
-  const handleDragStart = (e) => {
-    const id = e.target.id();
-    setStickers(
-      stickers.map((sticker) => {
-        return {
-          ...sticker,
-          isDragging: sticker.id === id,
-        };
-      })
-    );
-  };
-  const handleDragEnd = (e) => {
-    setStickers(
-      stickers.map((sticker) => {
-        return {
-          ...sticker,
-          isDragging: false,
-        };
-      })
-    );
-  };
-
-  // 스티커 사전
-  const [imgUrl0] = useImage("https://konvajs.org/assets/lion.png");
-  const [imgUrl1] = useImage("https://konvajs.org/assets/yoda.jpg");
-  const [imgUrl2] = useImage(
-    "https://thumbs.dreamstime.com/b/beautiful-rain-forest-ang-ka-nature-trail-doi-inthanon-national-park-thailand-36703721.jpg"
-  );
-
-  const imgList = [imgUrl0, imgUrl1, imgUrl2];
-
+  // 스티커 추가 관련
   const addStickerButtonHandler = (num) => {
     const newSticker = {
       id: stickers.length,
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
+      width: 100,
+      height: 100,
       rotation: 45,
       isDragging: false,
       stickerUrlNum: num,
@@ -177,6 +187,7 @@ const BoxTest = () => {
     setStickers(newStickerList);
   };
 
+  // 렌더링
   return (
     <div>
       <button onClick={() => addStickerButtonHandler(0)}>
@@ -188,32 +199,28 @@ const BoxTest = () => {
       <button onClick={() => addStickerButtonHandler(2)}>
         2번 스티커 추가
       </button>
-      <Stage width={window.innerWidth} height={window.innerHeight}>
+      <Stage
+        width={window.innerWidth}
+        height={window.innerHeight}
+        onMouseDown={checkDeselect}
+        onTouchStart={checkDeselect}
+      >
         <Layer>
-          {stickers.map((sticker) => {
+          {stickers.map((sticker, i) => {
             return (
-              <Image
-                image={imgList[sticker.stickerUrlNum]}
-                key={sticker.id}
-                id={sticker.id}
-                x={sticker.x}
-                y={sticker.y}
-                numPoints={5}
-                innerRadius={20}
-                outerRadius={40}
-                // fill="#89b717"
-                opacity={0.8}
-                draggable
-                rotation={sticker.rotation}
-                shadowColor="black"
-                shadowBlur={10}
-                shadowOpacity={0.6}
-                shadowOffsetX={sticker.isDragging ? 10 : 5}
-                shadowOffsetY={sticker.isDragging ? 10 : 5}
-                scaleX={sticker.isDragging ? 1.2 : 1}
-                scaleY={sticker.isDragging ? 1.2 : 1}
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
+              <ImageSticker
+                key={i}
+                shapeProps={sticker}
+                isSelected={sticker.id === selectedId}
+                sticker={sticker}
+                onSelect={() => {
+                  selectShape(sticker.id);
+                }}
+                onChange={(newAttrs) => {
+                  const sticks = stickers.slice();
+                  sticks[i] = newAttrs;
+                  setStickers(sticks);
+                }}
               />
             );
           })}
