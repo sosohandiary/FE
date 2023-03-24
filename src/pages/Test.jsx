@@ -1,20 +1,19 @@
-import { Textarea, css } from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
 import styled from "styled-components";
 import { WholeAreaWithMargin } from "../styles/WholeAreaStyle";
-import {
-  Stage,
-  Layer,
-  Star,
-  Text,
-  Line,
-  Rect,
-  Transformer,
-  Image,
-} from "react-konva";
+import { Stage, Layer, Line, Transformer, Image } from "react-konva";
 import useImage from "use-image";
-import Draft from "../components/decorations/Draft";
+import { useQuery } from "react-query";
+import axios from "axios";
+import {
+  Editor,
+  EditorState,
+  RichUtils,
+  convertToRaw,
+  convertFromRaw,
+} from "draft-js";
+import "draft-js/dist/Draft.css";
 
 // <---------------변형 기능된 이미지 스티커 컴퍼넌트----------------->
 const ImageSticker = ({
@@ -25,6 +24,22 @@ const ImageSticker = ({
   sticker,
   mode,
 }) => {
+  // 데이터 통신
+  const [imgDictList, setImgDictList] = useState([]);
+
+  const accessToken = localStorage.getItem("accessToken");
+  const { data } = useQuery(["getDecorationData"], () => {
+    return axios
+      .get(`${process.env.REACT_APP_BASEURL}/decoration/`, {
+        headers: { Authorization: accessToken },
+      })
+      .then((res) => {
+        setImgDictList(res.data);
+      })
+      .catch((err) => console.log(err));
+  });
+
+  // <--------------->
   const shapeRef = React.useRef();
   const trRef = React.useRef();
 
@@ -37,11 +52,13 @@ const ImageSticker = ({
   }, [isSelected]);
 
   // 스티커 사전
+
   const [imgUrl0] = useImage("https://konvajs.org/assets/lion.png");
   const [imgUrl1] = useImage("https://konvajs.org/assets/yoda.jpg");
-  const [imgUrl2] = useImage(
-    "https://thumbs.dreamstime.com/b/beautiful-rain-forest-ang-ka-nature-trail-doi-inthanon-national-park-thailand-36703721.jpg"
-  );
+  const [imgUrl2] = useImage("https://konvajs.org/assets/lion.png");
+  // const [imgUrl0] = useImage(imgDictList[0]?.imageURL);
+  // const [imgUrl1] = useImage(imgDictList[1]?.imageURL);
+  // const [imgUrl2] = useImage(imgDictList[2]?.imageURL);
 
   const imgList = [imgUrl0, imgUrl1, imgUrl2];
 
@@ -173,6 +190,25 @@ const Test = () => {
   const changeModeHandler = (target) => {
     setMode(target);
   };
+  // <=== 데이터 겟 테스트===>
+  const accessToken = localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_BASEURL}/diary/1/detail/5`, {
+        headers: { Authorization: accessToken },
+      })
+      .then((res) => {
+        const resJson = JSON.parse(res.data.customJson);
+        setStickers(resJson.stickers);
+        setLines(resJson.lines);
+        window.localStorage.setItem(
+          "draft-js-example-item",
+          JSON.stringify(resJson.texts)
+        );
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   // <-------------- 스티커 관련 -------------->
 
@@ -237,6 +273,101 @@ const Test = () => {
     isDrawing.current = false;
   };
 
+  // 텍스트 - Draft관련
+  const TEXT_EDITOR_ITEM = "draft-js-example-item";
+
+  const Draft = () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const data = localStorage.getItem(TEXT_EDITOR_ITEM);
+    const initialState = data
+      ? EditorState.createWithContent(convertFromRaw(JSON.parse(data)))
+      : EditorState.createEmpty();
+    const [editorState, setEditorState] = useState(initialState);
+
+    const handleKeyCommand = (command) => {
+      const newState = RichUtils.handleKeyCommand(editorState, command);
+      if (newState) {
+        setEditorState(newState);
+        return "handled";
+      }
+      return "not-handled";
+    };
+
+    const handleTogggleClick = (e, inlineStyle) => {
+      e.preventDefault();
+      setEditorState(RichUtils.toggleInlineStyle(editorState, inlineStyle));
+    };
+
+    // 저장 버튼 !!!!
+    const handleSave = () => {
+      const data = JSON.stringify(
+        convertToRaw(editorState.getCurrentContent())
+      );
+      localStorage.setItem(TEXT_EDITOR_ITEM, data);
+      const allData = {
+        stickers,
+        lines,
+        texts: convertToRaw(editorState.getCurrentContent()),
+      };
+
+      console.log("보내는 데이터 : ", allData);
+      const allJSON = JSON.stringify(allData);
+
+      const sendData = { content: "", customJson: allJSON };
+
+      axios
+        .post(`${process.env.REACT_APP_BASEURL}/diary/1/detail`, sendData, {
+          headers: { Authorization: accessToken },
+        })
+        .then((res) => {
+          console.log("res : ", res);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    return (
+      <div className="texteditor">
+        <button onMouseDown={(e) => handleTogggleClick(e, "BOLD")}>bold</button>
+        <button onMouseDown={(e) => handleTogggleClick(e, "UNDERLINE")}>
+          underline
+        </button>
+        <button onMouseDown={(e) => handleTogggleClick(e, "ITALIC")}>
+          italic
+        </button>
+        <button onMouseDown={(e) => handleTogggleClick(e, "STRIKETHROUGH")}>
+          strikthrough
+        </button>
+        <button
+          disabled={editorState.getUndoStack().size <= 0}
+          onMouseDown={() => setEditorState(EditorState.undo(editorState))}
+        >
+          UNDO
+        </button>
+        <button
+          disabled={editorState.getRedoStack().size <= 0}
+          onMouseDown={() => setEditorState(EditorState.redo(editorState))}
+        >
+          REDO
+        </button>
+        <Editor
+          editorState={editorState}
+          onChange={setEditorState}
+          handleKeyCommand={handleKeyCommand}
+        />
+        <button
+          className="save"
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            handleSave();
+          }}
+        >
+          save
+        </button>
+      </div>
+    );
+  };
+
   const changeColorHandler = (target) => {
     setLineColor(target);
   };
@@ -249,6 +380,13 @@ const Test = () => {
 
   //도구 모음 창
   const Toolbar = () => {
+    const onClickSaveStickerHandler = () => {
+      const accessToken = localStorage.getItem("accessToken");
+
+      axios.post(`${process.env.REACT_APP_BASEURL}/decoration/`, stickers, {
+        headers: { Authorization: accessToken },
+      });
+    };
     return (
       <div style={{ position: "sticky", zIndex: 10 }}>
         <button onClick={(e) => changeModeHandler("TEXT")}>텍스트 모드</button>
@@ -273,6 +411,7 @@ const Test = () => {
           <button onClick={() => addStickerButtonHandler(2)}>
             2번 스티커 추가
           </button>
+          <button onClick={onClickSaveStickerHandler}>스티커 저장</button>
         </div>
       </div>
     );
@@ -293,7 +432,7 @@ const Test = () => {
         onTouchStart={handleMouseDown}
         onMousemove={handleMouseMove}
         onMouseup={handleMouseUp}
-        style={{ position: "absolute" }}
+        style={{ position: "absolute", top: "40px" }}
       >
         <Layer>
           {lines.map((line, i) => (

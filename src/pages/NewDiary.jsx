@@ -4,8 +4,10 @@ import InputBox from "../components/InputBox";
 import { WholeAreaWithMargin } from "../styles/WholeAreaStyle";
 import { GrayButtonMedium, MintButtonSmall } from "../styles/Buttons";
 import { useDropzone } from "react-dropzone";
+import axios from "axios";
 
 const NewDiary = () => {
+  const accessToken = window.localStorage.getItem("accessToken");
   const thumbsContainer = {
     display: "flex",
     flexDirection: "row",
@@ -15,26 +17,22 @@ const NewDiary = () => {
 
   const thumb = {
     display: "inline-flex",
-    borderRadius: 2,
+    borderRadius: 15,
     border: "1px solid #eaeaea",
     marginBottom: 8,
     marginRight: 8,
     width: 100,
     height: 100,
-    padding: 4,
+    padding: 0,
     boxSizing: "border-box",
-  };
-
-  const thumbInner = {
-    display: "flex",
-    minWidth: 0,
-    overflow: "hidden",
   };
 
   const img = {
     display: "block",
-    width: "auto",
+    width: "100%",
     height: "100%",
+    objectFit: "cover",
+    borderRadius: 15,
   };
 
   const [files, setFiles] = useState([]);
@@ -55,16 +53,14 @@ const NewDiary = () => {
 
   const thumbs = files.map((file) => (
     <div style={thumb} key={file.name}>
-      <div style={thumbInner}>
-        <img
-          src={file.preview}
-          style={img}
-          // Revoke data uri after image is loaded
-          onLoad={() => {
-            URL.revokeObjectURL(file.preview);
-          }}
-        />
-      </div>
+      <img
+        src={file.preview}
+        style={img}
+        // Revoke data uri after image is loaded
+        onLoad={() => {
+          URL.revokeObjectURL(file.preview);
+        }}
+      />
     </div>
   ));
 
@@ -73,15 +69,50 @@ const NewDiary = () => {
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
   }, []);
 
+  const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
+
+  const createDiaryCover = () => {
+    console.log(title, desc);
+    console.log(files);
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: accessToken,
+      },
+    };
+    let fd = new FormData();
+    fd.append("title", title);
+    fd.append("");
+    fd.append("image", files[0]);
+    axios
+      .post(`${process.env.REACT_APP_BASEURL}`, { title, desc }, config)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
+  // 멤버 추가 관련
+  const members = [];
+
   return (
     <WholeAreaWithMargin>
       <div>다이어리 만들기</div>
       <aside style={thumbsContainer}>{thumbs}</aside>
       <NewMember>멤버 추가</NewMember>
       <label>제목</label>
-      <input type="text" />
+      <input
+        type="text"
+        onChange={(e) => {
+          setTitle(e.target.value);
+        }}
+      />
       <label>소개</label>
-      <input type="text" />
+      <input
+        type="text"
+        onChange={(e) => {
+          setDesc(e.target.value);
+        }}
+      />
       <label>표지 설정</label>
       <section className="container">
         <div {...getRootProps({ className: "dropzone" })}>
@@ -89,7 +120,7 @@ const NewDiary = () => {
           <GrayButtonMedium>사진으로 설정하기</GrayButtonMedium>
         </div>
       </section>
-      <MintButtonSmall>생성하기</MintButtonSmall>
+      <MintButtonSmall onClick={createDiaryCover}>생성하기</MintButtonSmall>
     </WholeAreaWithMargin>
   );
 };

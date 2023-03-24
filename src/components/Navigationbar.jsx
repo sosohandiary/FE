@@ -8,13 +8,19 @@ import { useNavigate } from "react-router-dom";
 
 const Navigationbar = () => {
   const navigate = useNavigate();
+
   const goToPage = (to) => {
+    console.log("to");
     navigate(to);
+  };
+
+  const test = () => {
+    console.log("dd");
   };
   return (
     <>
       <BottomBox>
-        <VscHome className="VscHome" onClick={() => goToPage("/")} />
+        <VscHome className="VscHome" onClick={test} />
         <VscBell
           className="VscBell"
           onClick={() => goToPage("/notification")}

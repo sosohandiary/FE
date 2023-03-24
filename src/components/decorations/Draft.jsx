@@ -3,7 +3,6 @@ import {
   Editor,
   EditorState,
   RichUtils,
-  AtomicBlockUtils,
   convertToRaw,
   convertFromRaw,
 } from "draft-js";
@@ -24,46 +23,6 @@ const Draft = () => {
     localStorage.setItem(TEXT_EDITOR_ITEM, data);
   };
 
-  const handleInsertImage = () => {
-    const src = prompt("Please enter the URL of your picture");
-    if (!src) {
-      return;
-    }
-    const contentState = editorState.getCurrentContent();
-    const contentStateWithEntity = contentState.createEntity(
-      "image",
-      "IMMUTABLE",
-      { src }
-    );
-    const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-    const newEditorState = EditorState.set(editorState, {
-      currentContent: contentStateWithEntity,
-    });
-    return setEditorState(
-      AtomicBlockUtils.insertAtomicBlock(newEditorState, entityKey, " ")
-    );
-  };
-
-  const handleAddLink = () => {
-    const selection = editorState.getSelection();
-    const link = prompt("Please enter the URL of your link");
-    if (!link) {
-      setEditorState(RichUtils.toggleLink(editorState, selection, null));
-      return;
-    }
-    const content = editorState.getCurrentContent();
-    const contentWithEntity = content.createEntity("LINK", "MUTABLE", {
-      url: link,
-    });
-    const newEditorState = EditorState.push(
-      editorState,
-      contentWithEntity,
-      "apply-entity"
-    );
-    const entityKey = contentWithEntity.getLastCreatedEntityKey();
-    setEditorState(RichUtils.toggleLink(newEditorState, selection, entityKey));
-  };
-
   const handleKeyCommand = (command) => {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
@@ -76,11 +35,6 @@ const Draft = () => {
   const handleTogggleClick = (e, inlineStyle) => {
     e.preventDefault();
     setEditorState(RichUtils.toggleInlineStyle(editorState, inlineStyle));
-  };
-
-  const handleBlockClick = (e, blockType) => {
-    e.preventDefault();
-    setEditorState(RichUtils.toggleBlockType(editorState, blockType));
   };
 
   return (

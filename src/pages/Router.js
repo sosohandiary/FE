@@ -16,6 +16,7 @@ import TestDraft from "../components/decorations/Draft";
 import BoxTest from "./BoxTest";
 import NewDiary from "./NewDiary";
 import NewFriend from "./NewFriend";
+import TestCrop from "./TestCrop";
 
 const Router = () => {
   return (
@@ -33,6 +34,7 @@ const Router = () => {
         <Route path="/notification" element={<Notification />} />
         <Route path="test-draft" element={<TestDraft />} />
         <Route path="boxtest" element={<BoxTest />} />
+        <Route path="/test-crop" element={<TestCrop />} />
         <Route path="test" element={<Test />} />
         <Route path="/oauth" element={<Oauth />} />
         <Route path="/mypage" element={<MyPage />} />
