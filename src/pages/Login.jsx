@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import kakaoLoginImage from "../assets/kakao_login_medium_wide.png";
 import { useNavigate } from "react-router-dom";
 import { kakaoLoginApi } from "../api/kakaoLogin";
-import { disableColor, subColor1, subColor2 } from "../constants/colorPalette";
+import { disableColor, subColor1 } from "../constants/colorPalette";
 import { useForm } from "react-hook-form";
 import {
   MintButtonLarge,
@@ -20,6 +20,14 @@ const Login = () => {
   const kakaoLoginButtonHandler = () => {
     kakaoLoginApi();
   };
+
+  //최초 방문 시 온보딩으로
+  // useEffect(() => {
+  //   const alreadySignedUp = localStorage.getItem("already signed up");
+  //   if (!alreadySignedUp) {
+  //     navigate("/onboarding");
+  //   }
+  // }, []);
 
   const goToHome = () => {
     navigate("/");

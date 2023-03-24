@@ -10,8 +10,8 @@ import { useNavigate } from "react-router-dom";
 
 const Carousel = () => {
   const navigate = useNavigate();
-  const goToHome = () => {
-    navigate("/");
+  const goToSignup = () => {
+    navigate("/signup");
   };
 
   const items = [
@@ -67,7 +67,7 @@ const Carousel = () => {
       <div>
         <BrandStoryStyle className="item" data-value="4"></BrandStoryStyle>
         <MintButtonArea>
-          <MintButtonLarge onClick={goToHome}>
+          <MintButtonLarge onClick={goToSignup}>
             공유 다이어리 시작하기
           </MintButtonLarge>
         </MintButtonArea>

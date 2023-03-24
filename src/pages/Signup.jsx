@@ -23,7 +23,10 @@ const Signup = () => {
     console.log(data);
     axios
       .post(`${process.env.REACT_APP_BASEURL}/join`, data)
-      .then(() => navigate("/signup-success", { state: data.name }))
+      .then(() => {
+        navigate("/signup-success", { state: data.name });
+        window.localStorage.setItem("already signed up", true);
+      })
       .catch((err) => console.log(err));
   };
 
