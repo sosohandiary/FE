@@ -1,10 +1,10 @@
 import React from "react";
-import Sample from "../components/detail/Sample";
+import CommentBox from "../components/detail/CommentBox";
 
 const Detail = () => {
   return (
     <div>
-      <Sample />
+      <CommentBox />
     </div>
   );
 };
