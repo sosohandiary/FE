@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { IoChatbubblesOutline } from "react-icons/io5";
-import CommentList from "./CommentList";
 import Comment from "./Comment";
 import { useQueryClient, useMutation } from "react-query";
 import { addComment } from "../../api/comment";
@@ -24,10 +23,6 @@ const CommentBox = () => {
     },
   });
 
-  // const [comments, setComments] = useState([
-  //   { id: 1, name: "손흥민", comment: "난 존잘이다ㅋ난 존잘이다ㅋ난 존잘이다ㅋ난 존잘이다ㅋ난 존잘이다ㅋ" },
-  // ]);
-
   const [comment, setComment] = useState({
     comment: "",
   });
@@ -37,26 +32,21 @@ const CommentBox = () => {
     setComment({ ...comment, [name]: value });
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = async (event) => {
     if (event.key === "Enter") {
-      clickAddButtonHandler(event);
+      event.preventDefault();
+      await addmutation();
+      setComment({ comment: "" });
     }
   };
+  // const clickAddButtonHandler = (event) => {
+  //   event.preventDefault();
 
-  const clickAddButtonHandler = (event) => {
-    event.preventDefault();
-    //   const newContent = {
-    //     id: comments.length + 1,
-    //     name,
-    //     comment: content,
-    //   };
-    //   setComments([...comments, newContent]);
-    //   setName("");
-    //   setContent("");
-    // };
-
-    addmutation();
-  };
+  //   addmutation();
+  //   setComment({
+  //     comment: "",
+  //   });
+  // };
 
   return (
     <div>
@@ -66,7 +56,7 @@ const CommentBox = () => {
 
       <CommentsContainer show={showComments}>
         <h3>댓글</h3>
-        <Comment />
+        {comment && <Comment comment={comment.comment} />}
         <CommentInput
           name="comment"
           placeholder="댓글 달기"

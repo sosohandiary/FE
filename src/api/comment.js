@@ -6,3 +6,10 @@ export const addComment = async (id, newComment, accessToken) => {
     headers: { Authorization: accessToken },
   });
 };
+
+//댓글 조회
+export const getComment = async (id, accessToken) => {
+  return await axios.get(`${process.env.REACT_APP_BASEURL}/detail/${id}/comments`, {
+    headers: { Authorization: accessToken },
+  });
+};
