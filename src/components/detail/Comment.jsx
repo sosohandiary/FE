@@ -4,23 +4,39 @@ import { ProfilePicSmall } from "../ProfilePics";
 import { getDate } from "../../utils/getDate";
 import { RiPencilFill, RiDeleteBin6Fill } from "react-icons/ri";
 import { getComment } from "../../api/comment";
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
 
-const Comment = ({ comment }) => {
+const Comment = () => {
+  const accessToken = localStorage.getItem("accessToken");
+  const { id } = useParams();
+
+  const { data: commentData } = useQuery(["getComment", id, accessToken], () => getComment(id, accessToken));
+
+  // console.log("받아옵니까", commentData);
+
+  const mycomment = commentData?.data;
+
   return (
     <>
-      <CommentStyle>
-        <ProfilePicSmall src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAyMTVfMTA5%2FMDAxNjc2NDMyNzA5NDIy.Di4Jca6bfg9LaSOaeeO3vwdHwRqMVt-14xV2Xat4raUg.xwfQrSJhrS0WuJUuaAdEalXb_Z1BEEOKx_my1FHX9d0g.JPEG.qmfosej%2FIMG_9285.jpg&type=a340" />
-        <UserBox>
-          {/* 데이터받아오기 */}
-          <span>username</span>
-          <span>2023.03.23</span>
-        </UserBox>
-        <IconStyle>
-          <EditIcon />
-          <DeleteIcon />
-        </IconStyle>
-      </CommentStyle>
-      <CommentText>{comment}</CommentText>
+      {mycomment?.map((comment) => {
+        return (
+          <>
+            <CommentStyle>
+              <ProfilePicSmall src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAyMTVfMTA5%2FMDAxNjc2NDMyNzA5NDIy.Di4Jca6bfg9LaSOaeeO3vwdHwRqMVt-14xV2Xat4raUg.xwfQrSJhrS0WuJUuaAdEalXb_Z1BEEOKx_my1FHX9d0g.JPEG.qmfosej%2FIMG_9285.jpg&type=a340" />
+              <UserBox>
+                <span>{comment.commentName}</span>
+                <span>{comment.createdAt}</span>
+              </UserBox>
+              <IconStyle>
+                <EditIcon />
+                <DeleteIcon />
+              </IconStyle>
+            </CommentStyle>
+            <CommentText>{comment.comment}</CommentText>
+          </>
+        );
+      })}
     </>
   );
 };
