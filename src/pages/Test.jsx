@@ -316,7 +316,7 @@ const Test = () => {
       const sendData = { content: "", customJson: allJSON };
 
       axios
-        .post(`${process.env.REACT_APP_BASEURL}/diary/1/detail`, sendData, {
+        .patch(`${process.env.REACT_APP_BASEURL}/diary/1/detail/1`, sendData, {
           headers: { Authorization: accessToken },
         })
         .then((res) => {
