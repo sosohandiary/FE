@@ -1,31 +1,46 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
-import Navigationbar from "../components/Navigationbar";
 import { SlMagnifier } from "react-icons/sl";
 import { MdOutlineCancel } from "react-icons/md";
 
-function Searchbox({placeholder}) {
+//test filter입니다. searchBox에 합치기?
+const Filter = ({ setCards, existCards, placeholder }) => {
+  // console.log(existCards);
+  const handleOnChangeFilterInput = (e) => {
+    if (e.target.value == "") return setCards(existCards);
+    setCards(existCards.filter((card) => card.nickname === e.target.value));
+  };
+
+  const inputRef = useRef();
+
+  const clearButtonHandler = (e) => {
+    inputRef.current.value = "";
+    setCards(existCards);
+  }
+
   return (
     <>
       <SearchTotalBox>
         <SearchStyleBox>
-          <SlMagnifier className="SlMagnifier" />
+          <SlMagnifier className='SlMagnifier' />
           <SearchStyle>
             <Searchinput
-              type="text"
-              name="searchbox"
+              type='text'
+              onChange={handleOnChangeFilterInput}
               placeholder={placeholder}
+              ref={inputRef}
             />
           </SearchStyle>
-          <MdOutlineCancel className="MdOutlineCancel" />
+          <ClearButton onClick={clearButtonHandler}><MdOutlineCancel className='MdOutlineCancel' /></ClearButton>
         </SearchStyleBox>
       </SearchTotalBox>
+
 
     </>
   );
 }
 
-export default Searchbox;
+export default Filter;
 
 const SearchTotalBox = styled.div`
   display: flex;
@@ -65,4 +80,11 @@ const Searchinput = styled.input`
   background-color: transparent;
   border: none;
   width: 300px;
+`;
+
+const ClearButton = styled.button`
+  background: none;
+  border: none;
+
+  cursor: pointer;
 `;

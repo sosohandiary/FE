@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Navigationbar from "../components/Navigationbar";
 import { SlMagnifier } from "react-icons/sl";
 import { MdOutlineCancel } from "react-icons/md";
+import axios from "axios";
 
-function Searchbox({placeholder}) {
+const NewFriend = () => {
+  const accessToken = window.localStorage.getItem("accessToken");
+  const [friendName, setFriendName] = useState("");
+
+  const findFriend = () => {
+    axios
+      .get(`${process.env.REACT_APP_BASEURL}/search?name=${friendName}`, {
+        headers: { Authorization: accessToken },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
   return (
     <>
       <SearchTotalBox>
@@ -14,18 +26,22 @@ function Searchbox({placeholder}) {
             <Searchinput
               type="text"
               name="searchbox"
-              placeholder={placeholder}
+              placeholder="아이디를 검색해 친구를 추가해보세요"
+              onChange={(e) => {
+                setFriendName(e.target.value);
+              }}
             />
           </SearchStyle>
-          <MdOutlineCancel className="MdOutlineCancel" />
+          <button onClick={findFriend}>찾기</button>
         </SearchStyleBox>
       </SearchTotalBox>
 
+      <Navigationbar />
     </>
   );
-}
+};
 
-export default Searchbox;
+export default NewFriend;
 
 const SearchTotalBox = styled.div`
   display: flex;

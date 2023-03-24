@@ -46,7 +46,7 @@ function Profile() {
       <StLayout>
         <ProfileLayout>
           <Title>프로필 편집</Title>
-          <form encType='multipart/form-data'>
+          <form encType="multipart/form-data">
             <ProfileArea>
               <StButton onClick={onImgButton}>
                 <img
@@ -61,8 +61,8 @@ function Profile() {
               </EditPencilArea>
             </ProfileArea>
             <input
-              type='file'
-              accept='image/*'
+              type="file"
+              accept="image/*"
               // onChange={onImgPostHandler}
               ref={fileInput}
               style={{ display: "none" }}
@@ -73,19 +73,21 @@ function Profile() {
                 <IconContainer>
                   <StInput type='text' placeholder={profile?.nickname} />
                   <ClearButton disabled>
-                    <HiOutlineXCircle color='#D0D0D0' />
+                    <HiOutlineXCircle color="#D0D0D0" />
                   </ClearButton>
                 </IconContainer>
 
                 <Label>소개</Label>
                 <StTextarea
                   // placeholder={profile?.statusMessage}
-                  placeholder="null 아닐때 다시시도"
+                  placeholder='null 아닐때 다시시도'
                 />
               </Content>
-              <DeActivate onClick={handleOpenModal}>회원 탈퇴</DeActivate>
+              <DeActivateBox>
+                <DeActivate onClick={handleOpenModal}>회원 탈퇴</DeActivate>
+              </DeActivateBox>
               <DeleteAccount
-                title='탈퇴하기'
+                title="탈퇴하기"
                 isOpen={confirmDelete}
                 onClose={handleCloseModal}
                 handleDelete={handleDelete}
@@ -214,9 +216,14 @@ const ClearButton = styled.button`
 
 const DeActivate = styled.button`
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
+
   border: none;
   background: none;
   cursor: pointer;
+`;
+
+const DeActivateBox = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
 `;

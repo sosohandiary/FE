@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import kakaoLoginImage from "../assets/kakao_login_medium_wide.png";
 import { useNavigate } from "react-router-dom";
 import { kakaoLoginApi } from "../api/kakaoLogin";
-import { disableColor, subColor1, subColor2 } from "../constants/colorPalette";
+import { disableColor, subColor1 } from "../constants/colorPalette";
 import { useForm } from "react-hook-form";
 import {
   MintButtonLarge,
@@ -11,16 +11,23 @@ import {
 } from "../styles/Buttons";
 import { HiOutlineXCircle } from "react-icons/hi";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setCurrentUser } from "../contexts/currentUserInfoSlice";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const kakaoLoginButtonHandler = () => {
     kakaoLoginApi();
   };
 
-  const otherWayLoginButtonHandler = () => {
-    navigate("/otherlogin");
-  };
+  //최초 방문 시 온보딩으로
+  // useEffect(() => {
+  //   const alreadySignedUp = localStorage.getItem("already signed up");
+  //   if (!alreadySignedUp) {
+  //     navigate("/onboarding");
+  //   }
+  // }, []);
 
   const goToHome = () => {
     navigate("/");
@@ -45,9 +52,15 @@ const Login = () => {
     console.log(data);
     axios
       .post(`${process.env.REACT_APP_BASEURL}/login`, data)
-      .then((res) =>
-        localStorage.setItem("accessToken", res.headers.authorization)
-      )
+      .then((res) => {
+        const userInfo = {
+          userName: res.data.name,
+          userNickname: res.data.nickname,
+        };
+        dispatch(setCurrentUser(userInfo));
+        localStorage.setItem("accessToken", res.headers.authorization);
+        navigate("/");
+      })
       .catch((err) => {
         console.log(err);
       });

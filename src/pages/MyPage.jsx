@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import styled from "styled-components";
 
-
 import {
   getFriendsCount,
   getMypage,
@@ -36,7 +35,7 @@ function MyPage() {
   const mypage = myPageData?.data;
   const profile = profileData?.data;
 
-  console.log(mypage)
+  console.log(mypage);
 
   const navigate = useNavigate();
 
@@ -44,6 +43,9 @@ function MyPage() {
     navigate("/profile");
   };
 
+  const navToFriendsList = () => {
+    navigate("/myfriends/list");
+  };
   return (
     <>
       <WholeArea style={{ margin: "30px auto", maxWidth: "720px" }}>
@@ -51,13 +53,15 @@ function MyPage() {
         <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
         <Title size='22'>{profile?.nickname}</Title>
 
-        <NavButton onClick={navToProfile}>
+        <NavButton alignSelf='flex-end' onClick={navToProfile}>
           <Label size='16'>프로필 편집</Label>
         </NavButton>
 
         <MenuBox>
           <EachMenuBox boderRight='1px solid'>
-            <LabelSpan>친구</LabelSpan>
+            <NavButton onClick={navToFriendsList}>
+              <LabelSpan>친구</LabelSpan>
+            </NavButton>
             <div>{friednsCount?.data?.myFriendCount}</div>
           </EachMenuBox>
           <EachMenuBox>
@@ -71,18 +75,21 @@ function MyPage() {
 
         {mypage?.map((item) => {
           return (
-            
-              <DiaryCards key={item.id}>
-                <ThumbnailBox><ThumbnailImg src={item.img}/></ThumbnailBox>
-                <div style={{ marginLeft: "70px" }}>
-                  <StText fontWeight='bold' size='20'>{item.title}</StText>
-                  <StText size='16' color='#B0B0B0'>개설일: {getDate(item.createdAt)} </StText>
-                </div>
-              </DiaryCards>
-            
+            <DiaryCards key={item.id}>
+              <ThumbnailBox>
+                <ThumbnailImg src={item.img} />
+              </ThumbnailBox>
+              <div style={{ marginLeft: "70px" }}>
+                <StText fontWeight='bold' size='20'>
+                  {item.title}
+                </StText>
+                <StText size='16' color='#B0B0B0'>
+                  개설일: {getDate(item.createdAt)}{" "}
+                </StText>
+              </div>
+            </DiaryCards>
           );
         })}
-
       </WholeArea>
     </>
   );
@@ -113,9 +120,11 @@ const Label = styled.div`
 const NavButton = styled.button`
   border: none;
   background: none;
+  font-size: 16px;
 
-  display: flex;
-  align-self: flex-end;
+  /* display: flex;
+  align-self: flex-end; */
+  align-self: ${({ alignSelf }) => alignSelf};
 `;
 
 const MenuBox = styled.div`
@@ -183,7 +192,7 @@ const LabelSpan = styled.span`
 `;
 
 const StText = styled.div`
-    font-weight: ${(props) => props.fontWeight};
-    font-size: ${({ size }) => `${size}px`};
-    color: ${(props) => props.color};
+  font-weight: ${(props) => props.fontWeight};
+  font-size: ${({ size }) => `${size}px`};
+  color: ${(props) => props.color};
 `;
