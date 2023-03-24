@@ -38,7 +38,7 @@ const Router = () => {
         <Route path="test" element={<Test />} />
         <Route path="/oauth" element={<Oauth />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/detail" element={<Detail />} />
+        <Route path="/detail/:id" element={<Detail />} />
         <Route path="/new-diary" element={<NewDiary />} />
         <Route path="/myfriends/:mode" element={<MyFriends />} />
       </Routes>
