@@ -1,16 +1,32 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import { useQuery } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 
-import { getProfile } from "../api/mypage";
+import { getProfile, editProfile } from "../api/mypage";
 import { HiPencil, HiOutlineXCircle } from "react-icons/hi";
+import { MintButtonMedium } from "../styles/Buttons";
 import DeleteAccount from "../components/mypage/DeleteAccount";
 
 function Profile() {
   const accessToken = localStorage.getItem("accessToken");
+  const queryClient = useQueryClient();
+
+  const [editData, setEditData] = useState({
+    nickname: "",
+    statusMessage: "",
+  });
 
   const { data: profileData } = useQuery(["getProfile"], () =>
     getProfile(accessToken)
+  );
+
+  const { mutate: editProfileMutate } = useMutation(
+    () => editProfile(editData, accessToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("getProfile");
+      },
+    }
   );
 
   console.log(profileData?.data);
@@ -41,12 +57,24 @@ function Profile() {
     // navigate(-1);
   };
 
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+    setEditData({
+      ...editData,
+      [name]: value,
+    });
+  };
+
+  const onSubmitHandler = () => {
+    editProfileMutate();
+  };
+
   return (
     <>
       <StLayout>
         <ProfileLayout>
           <Title>프로필 편집</Title>
-          <form encType="multipart/form-data">
+          <form encType='multipart/form-data' onSubmit={onSubmitHandler}>
             <ProfileArea>
               <StButton onClick={onImgButton}>
                 <img
@@ -61,8 +89,8 @@ function Profile() {
               </EditPencilArea>
             </ProfileArea>
             <input
-              type="file"
-              accept="image/*"
+              type='file'
+              accept='image/*'
               // onChange={onImgPostHandler}
               ref={fileInput}
               style={{ display: "none" }}
@@ -71,23 +99,30 @@ function Profile() {
               <Content>
                 <Label>이름(별명)</Label>
                 <IconContainer>
-                  <StInput type='text' placeholder={profile?.nickname} />
+                  <StInput
+                    type='text'
+                    name='nickname'
+                    placeholder={profile?.nickname}
+                    onChange={onChangeHandler}
+                  />
                   <ClearButton disabled>
-                    <HiOutlineXCircle color="#D0D0D0" />
+                    <HiOutlineXCircle color='#D0D0D0' />
                   </ClearButton>
                 </IconContainer>
 
                 <Label>소개</Label>
                 <StTextarea
-                  // placeholder={profile?.statusMessage}
-                  placeholder='null 아닐때 다시시도'
+                  name='statusMessage'
+                  onChange={onChangeHandler}
+                  placeholder={profile?.statusMessage}
                 />
               </Content>
+              <MintButtonMedium type='submit'>저장</MintButtonMedium>
               <DeActivateBox>
                 <DeActivate onClick={handleOpenModal}>회원 탈퇴</DeActivate>
               </DeActivateBox>
               <DeleteAccount
-                title="탈퇴하기"
+                title='탈퇴하기'
                 isOpen={confirmDelete}
                 onClose={handleCloseModal}
                 handleDelete={handleDelete}
