@@ -7,7 +7,7 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import ReactDOM from "react-dom";
 import Modal from "react-modal";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const NewDiary = () => {
   const navigate = useNavigate();
@@ -160,6 +160,35 @@ const NewDiary = () => {
     setIsOpen(false);
   }
 
+  const sendHandler = () => {
+    console.log(accessToken);
+    console.log(title, desc);
+
+    axios
+      .post(
+        `${process.env.REACT_APP_BASEURL}/diary`,
+        {},
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        }
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
+  //멤버 추가 관련
+  const [memberList, setMemberList] = useState([]);
+
+  const location = useLocation();
+  if (location.state !== null) {
+    setMemberList(location.state);
+  }
+  const goToFriendList = () => {
+    navigate("/myfriends/add", { state: memberList });
+  };
+
   return (
     <WholeAreaWithMargin>
       <div>다이어리 만들기</div>
@@ -194,27 +223,31 @@ const NewDiary = () => {
         name="profile_img"
         onChange={onChange}
       ></input>
+      <button onClick={sendHandler}>전송</button>
       <div>
         <Modal
           isOpen={modalIsOpen}
           onAfterOpen={afterOpenModal}
           onRequestClose={closeModal}
           style={customStyles}
-          contentLabel="Example Modal"
+          contentLabel="Friend Modal"
         >
           <ModalInnerArea>
             <div>멤버추가</div>
+            {memberList?.map((item) => (
+              <div>user ID : {item}</div>
+            ))}
             <ProfilePicLine>
-              <ProfilePicInModal>+</ProfilePicInModal>
-              <ProfilePicInModal></ProfilePicInModal>
-              <ProfilePicInModal></ProfilePicInModal>
-              <ProfilePicInModal></ProfilePicInModal>
+              <ProfilePicInModal onClick={goToFriendList}>+</ProfilePicInModal>
+              <ProfilePicInModal onClick={goToFriendList}></ProfilePicInModal>
+              <ProfilePicInModal onClick={goToFriendList}></ProfilePicInModal>
+              <ProfilePicInModal onClick={goToFriendList}></ProfilePicInModal>
             </ProfilePicLine>
             <ProfilePicLine>
-              <ProfilePicInModal></ProfilePicInModal>
-              <ProfilePicInModal></ProfilePicInModal>
-              <ProfilePicInModal></ProfilePicInModal>
-              <ProfilePicInModal></ProfilePicInModal>
+              <ProfilePicInModal onClick={goToFriendList}></ProfilePicInModal>
+              <ProfilePicInModal onClick={goToFriendList}></ProfilePicInModal>
+              <ProfilePicInModal onClick={goToFriendList}></ProfilePicInModal>
+              <ProfilePicInModal onClick={goToFriendList}></ProfilePicInModal>
             </ProfilePicLine>
           </ModalInnerArea>
         </Modal>

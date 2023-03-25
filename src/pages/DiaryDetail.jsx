@@ -1,10 +1,12 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ReactDOM from "react-dom";
 import ReactPaginate from "react-paginate";
 import HTMLFlipBook from "react-pageflip";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import curDiaryPageSlice, { syncCurPage } from "../contexts/curDiaryPageSlice";
 
 const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
@@ -70,6 +72,7 @@ const PaginatedItems = ({ itemsPerPage }) => {
 };
 
 const DiaryDetail = () => {
+  const dispatch = useDispatch();
   const accessToken = window.localStorage.getItem("accessToken");
   const [books, setBooks] = useState([]);
   useEffect(() => {
@@ -94,6 +97,12 @@ const DiaryDetail = () => {
   //   );
   // });
 
+  //플립 페이지 책 관련
+  const onFlip = useCallback((e) => {
+    console.log("Current page: " + e.data);
+    dispatch(syncCurPage(e.data));
+  }, []);
+
   return (
     <div>
       <CardStyle>
@@ -110,7 +119,7 @@ const DiaryDetail = () => {
           );
         })}
       </CardStyle>
-      <HTMLFlipBook width={300} height={500} id="flip-book">
+      <HTMLFlipBook width={300} height={500} onFlip={onFlip} id="flip-book">
         <div className="demoPage">Page 1</div>
         <div className="demoPage">Page 2</div>
         <div className="demoPage">Page 3</div>

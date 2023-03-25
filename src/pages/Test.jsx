@@ -195,7 +195,7 @@ const Test = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BASEURL}/diary/1/detail/5`, {
+      .get(`${process.env.REACT_APP_BASEURL}/diary/1/detail/1`, {
         headers: { Authorization: accessToken },
       })
       .then((res) => {
