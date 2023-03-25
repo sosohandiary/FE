@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { IoChatbubblesOutline } from "react-icons/io5";
-import CommentList from "./CommentList";
 import Comment from "./Comment";
 import { useQueryClient, useMutation } from "react-query";
 import { addComment } from "../../api/comment";
@@ -20,13 +19,9 @@ const CommentBox = () => {
   const { mutate: addmutation } = useMutation(() => addComment(id, comment, accessToken), {
     onSuccess: (data) => {
       console.log("data", data);
-      queryClient.invalidateQueries("comment");
+      queryClient.invalidateQueries("getComment");
     },
   });
-
-  // const [comments, setComments] = useState([
-  //   { id: 1, name: "손흥민", comment: "난 존잘이다ㅋ난 존잘이다ㅋ난 존잘이다ㅋ난 존잘이다ㅋ난 존잘이다ㅋ" },
-  // ]);
 
   const [comment, setComment] = useState({
     comment: "",
@@ -45,16 +40,6 @@ const CommentBox = () => {
 
   const clickAddButtonHandler = (event) => {
     event.preventDefault();
-    //   const newContent = {
-    //     id: comments.length + 1,
-    //     name,
-    //     comment: content,
-    //   };
-    //   setComments([...comments, newContent]);
-    //   setName("");
-    //   setContent("");
-    // };
-
     addmutation();
   };
 

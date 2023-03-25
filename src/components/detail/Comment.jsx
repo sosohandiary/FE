@@ -1,21 +1,31 @@
-import React from "react";
 import styled from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
 import { getDate } from "../../utils/getDate";
 import { RiPencilFill, RiDeleteBin6Fill } from "react-icons/ri";
-import { getComment } from "../../api/comment";
-import { useQuery } from "react-query";
+import { getComment, deleteComment } from "../../api/comment";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 
 const Comment = () => {
   const accessToken = localStorage.getItem("accessToken");
+  const queryClient = useQueryClient();
   const { id } = useParams();
 
-  const { data: commentData } = useQuery(["getComment", id, accessToken], () => getComment(id, accessToken));
+  const { data: commentData } = useQuery(["getComment"], () => getComment(id, accessToken));
 
   // console.log("받아옵니까", commentData);
 
+  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(id, commentId, accessToken), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("getComment");
+    },
+  });
+
   const mycomment = commentData?.data;
+
+  const onDeleteHandler = (commentId) => {
+    deleteCommentMutate(commentId);
+  };
 
   return (
     <>
@@ -30,7 +40,9 @@ const Comment = () => {
               </UserBox>
               <IconStyle>
                 <EditIcon />
-                <DeleteIcon />
+                <button onClick={() => onDeleteHandler(comment.commentId)}>
+                  <DeleteIcon />
+                </button>
               </IconStyle>
             </CommentStyle>
             <CommentText>{comment.comment}</CommentText>
