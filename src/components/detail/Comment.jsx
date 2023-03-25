@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
 import { getDate } from "../../utils/getDate";
 import { RiPencilFill, RiDeleteBin6Fill } from "react-icons/ri";
-import { getComment, deleteComment, updatedComment } from "../../api/comment";
+import { getComment, deleteComment, updatedComment } from "../../api/detail";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 import { useState } from "react";

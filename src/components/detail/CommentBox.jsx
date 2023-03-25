@@ -3,7 +3,7 @@ import styled, { keyframes, css } from "styled-components";
 import { IoChatbubblesOutline } from "react-icons/io5";
 import Comment from "./Comment";
 import { useQueryClient, useMutation } from "react-query";
-import { addComment } from "../../api/comment";
+import { addComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
 
 const CommentBox = () => {
