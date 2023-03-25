@@ -5,6 +5,7 @@ import Comment from "./Comment";
 import { useQueryClient, useMutation } from "react-query";
 import { addComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
+import Like from "./Like";
 
 const CommentBox = () => {
   const [showComments, setShowComments] = useState(false);
@@ -46,9 +47,12 @@ const CommentBox = () => {
 
   return (
     <div>
-      <CommentButton onClick={toggleComments}>
-        <CommentIcon />
-      </CommentButton>
+      <DetailElement>
+        <CommentIcon onClick={toggleComments} />
+        {/* 5 -> 댓글 및 좋아요수 받아오기 */}
+        5
+        <Like />5
+      </DetailElement>
 
       <CommentsContainer show={showComments}>
         <h3>댓글</h3>
@@ -80,11 +84,12 @@ const CommetnslideUp = keyframes`
   }
 `;
 
-const CommentIcon = styled(IoChatbubblesOutline)`
-  font-size: 2rem; // 원하는 크기로 조절
+const DetailElement = styled.div`
+  display: flex;
 `;
 
-const CommentButton = styled.button`
+const CommentIcon = styled(IoChatbubblesOutline)`
+  font-size: 1.8rem; // 원하는 크기로 조절
   display: flex;
   align-items: center;
   background-color: transparent;
