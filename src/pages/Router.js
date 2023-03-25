@@ -9,6 +9,7 @@ import Signup from "./Signup";
 import SignupSuccess from "./SignupSuccess";
 import Oauth from "./Oauth";
 import Detail from "./Detail";
+import MyFriends from "./MyFriends";
 import OnBoarding from "./OnBoarding";
 import MainPage from "./MainPage";
 import Test from "./Test";
@@ -31,7 +32,6 @@ const Router = () => {
         <Route path="/signup-success" element={<SignupSuccess />} />
         <Route path="/otherlogin" element={<OtherLogin />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/mypage" element={<MyPage />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="test-draft" element={<TestDraft />} />
         <Route path="boxtest" element={<BoxTest />} />
@@ -39,9 +39,10 @@ const Router = () => {
         <Route path="test" element={<Test />} />
         <Route path="/oauth" element={<Oauth />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/detail" element={<Detail />} />
+        <Route path="/detail/:id" element={<Detail />} />
         <Route path="/new-diary" element={<NewDiary />} />
         <Route path="/diary-detail" element={<DiaryDetail />} />
+        <Route path="/myfriends/:mode" element={<MyFriends />} />
       </Routes>
     </BrowserRouter>
   );
