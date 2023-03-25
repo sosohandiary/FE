@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useQuery } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery, queryClient } from "react-query";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import { getMyfriends, getFriendsCount } from "../api/mypage";
+import { getMyfriends, getFriendsCount, deleteFriend } from "../api/mypage";
 import { ProfilePicSmall } from "../components/ProfilePics";
 import Searchbox from "../components/Searchbox";
 import { WholeArea, WholeAreaWithMargin } from "../styles/WholeAreaStyle";
@@ -16,6 +16,10 @@ const MyFriends = () => {
 
   const [selectedFriends, setSelectedFriends] = useState([]);
 
+  const location = useLocation();
+
+  console.log(location.state);
+
   const { mode } = useParams();
   const navigate = useNavigate();
 
@@ -27,6 +31,16 @@ const MyFriends = () => {
 
   const { data: friednsCount } = useQuery(["getFriendsCount"], () =>
     getFriendsCount(accessToken)
+  );
+
+
+  //friend-id 넣어주기
+  const { mutate: deleteFriendMutate } = useMutation(
+    ()=> deleteFriend( accessToken),{
+      onSuccess: () => {
+        queryClient.invalidateQueries("getMyFriends");
+      },
+    }
   );
 
   const friends = myFriends?.data;
@@ -61,10 +75,15 @@ const MyFriends = () => {
   const handleSaveSelectedFriends = () => {
     // Save the selected friends to the navigate state and navigate to the other page
     navigate("/friends-list", { state: { selectedFriends } });
+    //주소 바꾸기
 
   };
 
   console.log(selectedFriends);
+
+  const onDeleteHandler = () => {
+    deleteFriendMutate();
+  }
 
   return (
     <>
@@ -102,6 +121,7 @@ const MyFriends = () => {
                   ):null}
                   <StText fontWeight='bold'>{item.nickname}</StText>
                   <StText>{item.statusMessage}</StText>
+                  <button onClick={onDeleteHandler}>삭제</button>
                 </ListContentBox>
               </ListCards>
             );

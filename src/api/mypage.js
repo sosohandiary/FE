@@ -55,3 +55,10 @@ export const getMyfriends = async (accessToken) => {
     }
   );
 };
+
+//친구 삭제
+export const deleteFriend = async (firendId, accessToken) => {
+  return await axios.delete(`${process.env.REACT_APP_BASEURL}/friend/list/${firendId}`, {
+    headers: { Authorization: accessToken },
+  });
+};
