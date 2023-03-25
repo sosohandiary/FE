@@ -52,7 +52,9 @@ const CommentBox = () => {
 
       <CommentsContainer show={showComments}>
         <h3>댓글</h3>
+
         <Comment />
+
         <CommentInput
           name="comment"
           placeholder="댓글 달기"

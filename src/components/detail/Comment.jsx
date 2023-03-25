@@ -2,9 +2,10 @@ import styled from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
 import { getDate } from "../../utils/getDate";
 import { RiPencilFill, RiDeleteBin6Fill } from "react-icons/ri";
-import { getComment, deleteComment } from "../../api/comment";
+import { getComment, deleteComment, updatedComment } from "../../api/comment";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 function getTimeAgo(createdAt) {
   const date = new Date(createdAt);
@@ -30,20 +31,51 @@ const Comment = () => {
   const queryClient = useQueryClient();
   const { id } = useParams();
 
+  const [editComment, setEditComment] = useState("");
+  const [editCommentId, setEditCommentId] = useState(null);
+
+  //get Mutation
   const { data: commentData } = useQuery(["getComment"], () => getComment(id, accessToken));
 
-  // console.log("받아옵니까", commentData);
+  const mycomment = commentData?.data;
 
+  //delete Mutation
   const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(id, commentId, accessToken), {
     onSuccess: () => {
       queryClient.invalidateQueries("getComment");
     },
   });
 
-  const mycomment = commentData?.data;
+  //edit Mutation
+  const { mutate: updatedCommentMutate } = useMutation(
+    (commentId, editeComment) => updatedComment(id, commentId, editeComment, accessToken),
+    {
+      onSuccess: () => {
+        setEditComment("");
+        setEditCommentId(null);
+        queryClient.invalidateQueries("getComment");
+      },
+    }
+  );
 
+  //Handler
   const onDeleteHandler = (commentId) => {
     deleteCommentMutate(commentId);
+  };
+
+  const onEditHandler = (commentId) => {
+    setEditCommentId(commentId);
+    setEditComment(mycomment.find((comment) => comment.commentId === commentId).comment);
+  };
+
+  const onCancelHandler = () => {
+    setEditComment("");
+    setEditCommentId(null);
+  };
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    updatedCommentMutate(editCommentId, editComment);
   };
 
   return (
@@ -59,7 +91,7 @@ const Comment = () => {
                 <span>{createdAtAgo}</span> {/* 변환된 날짜값 표시 */}
               </UserBox>
               <IconStyle>
-                <EditIcon />
+                <EditIcon onClick={() => onEditHandler(comment.commentId)} />
                 <DeleteIcon onClick={() => onDeleteHandler(comment.commentId)} />
               </IconStyle>
             </CommentStyle>

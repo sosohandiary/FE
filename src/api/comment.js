@@ -20,3 +20,10 @@ export const deleteComment = async (id, commentId, accessToken) => {
     headers: { Authorization: accessToken },
   });
 };
+
+//댓글 수정
+export const updatedComment = async (id, commentId, editComment, accessToken) => {
+  return await axios.patch(`${process.env.REACT_APP_BASEURL}/detail/${id}/comment/${commentId}`, editComment, {
+    headers: { Authorization: accessToken },
+  });
+};
