@@ -13,3 +13,10 @@ export const getComment = async (id, accessToken) => {
     headers: { Authorization: accessToken },
   });
 };
+
+//댓글 삭제
+export const deleteComment = async (id, commentId, accessToken) => {
+  return await axios.delete(`${process.env.REACT_APP_BASEURL}/detail/${id}/comment/${commentId}`, {
+    headers: { Authorization: accessToken },
+  });
+};
