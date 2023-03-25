@@ -6,6 +6,25 @@ import { getComment, deleteComment } from "../../api/comment";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 
+function getTimeAgo(createdAt) {
+  const date = new Date(createdAt);
+  const now = new Date();
+  const diff = Math.floor((now - date) / 1000); // 차이 초단위로 계산
+
+  if (diff < 60) {
+    return `${diff}초 전`;
+  } else if (diff < 60 * 60) {
+    const minutes = Math.floor(diff / 60);
+    return `${minutes}분 전`;
+  } else if (diff < 60 * 60 * 24) {
+    const hours = Math.floor(diff / (60 * 60));
+    return `${hours}시간 전`;
+  } else {
+    const days = Math.floor(diff / (60 * 60 * 24));
+    return `${days}일 전`;
+  }
+}
+
 const Comment = () => {
   const accessToken = localStorage.getItem("accessToken");
   const queryClient = useQueryClient();
@@ -30,19 +49,18 @@ const Comment = () => {
   return (
     <>
       {mycomment?.map((comment) => {
+        const createdAtAgo = getTimeAgo(comment.createdAt);
         return (
           <>
             <CommentStyle>
               <ProfilePicSmall src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAyMTVfMTA5%2FMDAxNjc2NDMyNzA5NDIy.Di4Jca6bfg9LaSOaeeO3vwdHwRqMVt-14xV2Xat4raUg.xwfQrSJhrS0WuJUuaAdEalXb_Z1BEEOKx_my1FHX9d0g.JPEG.qmfosej%2FIMG_9285.jpg&type=a340" />
               <UserBox>
                 <span>{comment.commentName}</span>
-                <span>{comment.createdAt}</span>
+                <span>{createdAtAgo}</span> {/* 변환된 날짜값 표시 */}
               </UserBox>
               <IconStyle>
                 <EditIcon />
-                <button onClick={() => onDeleteHandler(comment.commentId)}>
-                  <DeleteIcon />
-                </button>
+                <DeleteIcon onClick={() => onDeleteHandler(comment.commentId)} />
               </IconStyle>
             </CommentStyle>
             <CommentText>{comment.comment}</CommentText>
@@ -77,7 +95,7 @@ const UserBox = styled.div`
   font-size: 14px;
 
   span:first-child {
-    font-size: 20px;
+    font-size: 15px;
     font-weight: bold;
     margin-right: 5px;
     margin-left: 7px;
@@ -101,10 +119,12 @@ const IconStyle = styled.div`
 
 const EditIcon = styled(RiPencilFill)`
   position: absolute;
-  right: -10px;
+  right: -80px;
+  cursor: pointer;
 `;
 
 const DeleteIcon = styled(RiDeleteBin6Fill)`
   position: absolute;
-  right: -30px;
+  right: -100px;
+  cursor: pointer;
 `;

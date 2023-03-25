@@ -41,6 +41,7 @@ const CommentBox = () => {
   const clickAddButtonHandler = (event) => {
     event.preventDefault();
     addmutation();
+    setComment({ comment: "" });
   };
 
   return (
