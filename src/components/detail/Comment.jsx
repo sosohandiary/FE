@@ -94,17 +94,25 @@ const CommentText = styled.span`
 const UserBox = styled.div`
   font-size: 14px;
 
-  span:first-child {
-    font-size: 15px;
-    font-weight: bold;
-    margin-right: 5px;
-    margin-left: 7px;
-    color: #2b2a2a;
-  }
+  span {
+    &:first-of-type {
+      font-size: 15px;
+      font-weight: bold;
+      margin-left: 7px;
+      color: gray;
+    }
 
-  span:last-child {
-    font-size: 12px;
-    color: gray;
+    &:not(:last-of-type)::after {
+      content: "·";
+      margin-left: 5px;
+      margin-right: 5px;
+      color: gray;
+    }
+
+    &:last-of-type {
+      font-size: 12px;
+      color: gray;
+    }
   }
 `;
 
@@ -113,18 +121,18 @@ const IconStyle = styled.div`
   display: flex;
   align-items: flex-end;
   width: 118px;
-  height: 50px;
+  height: 40px;
   color: #a5a2a2;
 `;
 
 const EditIcon = styled(RiPencilFill)`
   position: absolute;
-  right: -80px;
+  right: -60px;
   cursor: pointer;
 `;
 
 const DeleteIcon = styled(RiDeleteBin6Fill)`
   position: absolute;
-  right: -100px;
+  right: -80px;
   cursor: pointer;
 `;
