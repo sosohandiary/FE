@@ -34,7 +34,6 @@ const Comment = () => {
   const [editComment, setEditComment] = useState("");
   const [editCommentId, setEditCommentId] = useState(null);
 
-  //get Mutation
   const { data: commentData } = useQuery(["getComment"], () => getComment(id, accessToken));
 
   const mycomment = commentData?.data;

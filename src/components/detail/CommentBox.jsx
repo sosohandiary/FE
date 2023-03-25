@@ -9,6 +9,10 @@ import Like from "./Like";
 
 const CommentBox = () => {
   const [showComments, setShowComments] = useState(false);
+  const [comment, setComment] = useState({
+    comment: "",
+  });
+
   const toggleComments = () => {
     setShowComments((prev) => !prev);
   };
@@ -22,10 +26,6 @@ const CommentBox = () => {
       console.log("data", data);
       queryClient.invalidateQueries("getComment");
     },
-  });
-
-  const [comment, setComment] = useState({
-    comment: "",
   });
 
   const inputChangeHandler = (event) => {
