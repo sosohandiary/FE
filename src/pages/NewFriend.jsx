@@ -7,16 +7,33 @@ import axios from "axios";
 
 const NewFriend = () => {
   const accessToken = window.localStorage.getItem("accessToken");
+  console.log(accessToken);
   const [friendName, setFriendName] = useState("");
+  const [list, setList] = useState([]);
 
   const findFriend = () => {
     axios
       .get(`${process.env.REACT_APP_BASEURL}/search?name=${friendName}`, {
         headers: { Authorization: accessToken },
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res.data);
+        setList(res.data);
+      })
       .catch((err) => console.log(err));
   };
+  console.log(list);
+
+  const addFriend = (id) => {
+    console.log(id);
+    axios
+      .get(`${process.env.REACT_APP_BASEURL}/friend/request/${id}`)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <>
       <SearchTotalBox>
@@ -35,6 +52,18 @@ const NewFriend = () => {
           <button onClick={findFriend}>찾기</button>
         </SearchStyleBox>
       </SearchTotalBox>
+      {list?.map((item) => (
+        <div>
+          <div>{item.member_id}</div>
+          <button
+            onClick={() => {
+              addFriend(item.member_id);
+            }}
+          >
+            추가하기
+          </button>
+        </div>
+      ))}
 
       <Navigationbar />
     </>

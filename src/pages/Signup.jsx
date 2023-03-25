@@ -20,7 +20,7 @@ const Signup = () => {
   } = useForm();
   const onSubmit = async (data) => {
     delete data.passwordConfirm;
-    console.log(data);
+    console.log("data", data);
     axios
       .post(`${process.env.REACT_APP_BASEURL}/join`, data)
       .then(() => {
@@ -75,43 +75,6 @@ const Signup = () => {
             {errors.nickname.message}
           </ValidationAlert>
         )}
-        <br />
-        <label>성별</label>
-        <br />
-        <input
-          type="radio"
-          name="gender"
-          value="MALE"
-          {...register("gender", { required: "성별을 선택해주세요" })}
-          style={{
-            width: "20px",
-            height: "20px",
-            margin: "15px 5px 15px 10px",
-          }}
-        />
-        남자
-        <input
-          type="radio"
-          name="gender"
-          value="FEMALE"
-          {...register("gender", { required: "성별을 선택해주세요" })}
-          style={{
-            width: "20px",
-            height: "20px",
-            margin: "0px 5px 0px 10px",
-          }}
-        />
-        여자
-        <ContentGender>
-          {errors.gender && (
-            <ValidationAlert role="alert">
-              {errors.gender.message}
-            </ValidationAlert>
-          )}
-          <div>
-            {errors.nickname && <TbAlertCircle className="TbAlertCircle" />}
-          </div>
-        </ContentGender>
         <br />
         <label>이메일</label>
         <br />
