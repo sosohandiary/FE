@@ -1,12 +1,8 @@
 import React from "react";
-import AddCommentForm from "../components/detail/AddCommentForm";
+import CommentBox from "../components/detail/CommentBox";
 
 const Detail = () => {
-  return (
-    <div>
-      <AddCommentForm />
-    </div>
-  );
+  return <CommentBox />;
 };
 
 export default Detail;
