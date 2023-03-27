@@ -3,11 +3,16 @@ import styled, { keyframes, css } from "styled-components";
 import { IoChatbubblesOutline } from "react-icons/io5";
 import Comment from "./Comment";
 import { useQueryClient, useMutation } from "react-query";
-import { addComment } from "../../api/comment";
+import { addComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
+import Like from "./Like";
 
 const CommentBox = () => {
   const [showComments, setShowComments] = useState(false);
+  const [comment, setComment] = useState({
+    comment: "",
+  });
+
   const toggleComments = () => {
     setShowComments((prev) => !prev);
   };
@@ -21,10 +26,6 @@ const CommentBox = () => {
       console.log("data", data);
       queryClient.invalidateQueries("getComment");
     },
-  });
-
-  const [comment, setComment] = useState({
-    comment: "",
   });
 
   const inputChangeHandler = (event) => {
@@ -41,17 +42,23 @@ const CommentBox = () => {
   const clickAddButtonHandler = (event) => {
     event.preventDefault();
     addmutation();
+    setComment({ comment: "" });
   };
 
   return (
     <div>
-      <CommentButton onClick={toggleComments}>
-        <CommentIcon />
-      </CommentButton>
+      <DetailElement>
+        <CommentIcon onClick={toggleComments} />
+        {/* 5 -> 댓글 및 좋아요수 받아오기 */}
+        5
+        <Like />5
+      </DetailElement>
 
       <CommentsContainer show={showComments}>
         <h3>댓글</h3>
+
         <Comment />
+
         <CommentInput
           name="comment"
           placeholder="댓글 달기"
@@ -77,11 +84,12 @@ const CommetnslideUp = keyframes`
   }
 `;
 
-const CommentIcon = styled(IoChatbubblesOutline)`
-  font-size: 2rem; // 원하는 크기로 조절
+const DetailElement = styled.div`
+  display: flex;
 `;
 
-const CommentButton = styled.button`
+const CommentIcon = styled(IoChatbubblesOutline)`
+  font-size: 1.8rem; // 원하는 크기로 조절
   display: flex;
   align-items: center;
   background-color: transparent;
