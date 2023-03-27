@@ -3,7 +3,6 @@ import styled, { keyframes, css } from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
 import { RiPencilFill, RiDeleteBin6Fill } from "react-icons/ri";
 import { IoChatbubblesOutline } from "react-icons/io5";
-
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
@@ -12,7 +11,7 @@ import Like from "./Like";
 function getTimeAgo(createdAt) {
   const date = new Date(createdAt);
   const now = new Date();
-  const diff = Math.floor((now - date) / 1000); // 차이 초단위로 계산
+  const diff = Math.floor((now - date) / 1000);
 
   if (diff < 60) {
     return `${diff}초 전`;
@@ -34,9 +33,6 @@ const CommentBox = () => {
     comment: "",
   });
 
-  const [editComment, setEditComment] = useState("");
-  const [editCommentId, setEditCommentId] = useState(null);
-
   const toggleComments = () => {
     setShowComments((prev) => !prev);
   };
@@ -52,7 +48,6 @@ const CommentBox = () => {
   //add
   const { mutate: addmutation } = useMutation(() => addComment(id, comment, accessToken), {
     onSuccess: (data) => {
-      console.log("data", data);
       queryClient.invalidateQueries("getComment");
     },
   });
@@ -66,11 +61,9 @@ const CommentBox = () => {
 
   //edit
   const { mutate: updatedCommentMutate } = useMutation(
-    (commentId, editeComment) => updatedComment(id, commentId, editeComment, accessToken),
+    (commentId, editedComment) => updatedComment(id, commentId, editedComment, accessToken),
     {
       onSuccess: () => {
-        setEditComment("");
-        setEditCommentId(null);
         queryClient.invalidateQueries("getComment");
       },
     }
@@ -84,11 +77,11 @@ const CommentBox = () => {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      clickAddButtonHandler(event);
+      onAddHandler(event);
     }
   };
 
-  const clickAddButtonHandler = (event) => {
+  const onAddHandler = (event) => {
     event.preventDefault();
     addmutation();
     setComment({ comment: "" });
@@ -96,24 +89,6 @@ const CommentBox = () => {
 
   const onDeleteHandler = (commentId) => {
     deleteCommentMutate(commentId);
-  };
-
-  const onSaveEditHandler = (event, commentId) => {
-    event.preventDefault();
-    updatedCommentMutate(commentId, editComment);
-    setEditComment("");
-    setEditCommentId(null);
-  };
-
-  const onCancelEditHandler = () => {
-    setEditComment("");
-    setEditCommentId(null);
-  };
-
-  const onEditHandler = (commentId) => {
-    setEditCommentId(commentId);
-    const comment = mycomment.find((c) => c.commentId === commentId);
-    setEditComment(comment.comment);
   };
 
   return (
@@ -138,27 +113,11 @@ const CommentBox = () => {
                   <span>{createdAtAgo}</span>
                 </UserBox>
                 <IconStyle>
-                  <EditIcon onClick={() => onEditHandler(comment.commentId)} />
+                  <EditIcon />
                   <DeleteIcon onClick={() => onDeleteHandler(comment.commentId)} />
                 </IconStyle>
               </CommentStyle>
-              {editCommentId === comment.commentId ? (
-                <CommentInput
-                  name="comment"
-                  placeholder="댓글 수정"
-                  value={editComment}
-                  onChange={(e) => setEditComment(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      onSaveEditHandler(e, comment.commentId);
-                    } else if (e.key === "Escape") {
-                      onCancelEditHandler();
-                    }
-                  }}
-                />
-              ) : (
-                <CommentText>{comment.comment}</CommentText>
-              )}
+              <CommentText>{comment.comment}</CommentText>
             </React.Fragment>
           );
         })}
