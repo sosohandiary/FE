@@ -44,7 +44,12 @@ const CommentBox = () => {
   const queryClient = useQueryClient();
   const { id } = useParams();
   const accessToken = localStorage.getItem("accessToken");
+  const { data: commentData } = useQuery(["getComment"], () => getComment(id, accessToken));
+  const mycomment = commentData?.data;
 
+  // <----Mutation----> //
+
+  //add
   const { mutate: addmutation } = useMutation(() => addComment(id, comment, accessToken), {
     onSuccess: (data) => {
       console.log("data", data);
@@ -52,6 +57,26 @@ const CommentBox = () => {
     },
   });
 
+  //delete
+  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(id, commentId, accessToken), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("getComment");
+    },
+  });
+
+  //edit
+  const { mutate: updatedCommentMutate } = useMutation(
+    (commentId, editeComment) => updatedComment(id, commentId, editeComment, accessToken),
+    {
+      onSuccess: () => {
+        setEditComment("");
+        setEditCommentId(null);
+        queryClient.invalidateQueries("getComment");
+      },
+    }
+  );
+
+  // <----Handler----> //
   const inputChangeHandler = (event) => {
     const { name, value } = event.target;
     setComment({ ...comment, [name]: value });
@@ -69,29 +94,6 @@ const CommentBox = () => {
     setComment({ comment: "" });
   };
 
-  const { data: commentData } = useQuery(["getComment"], () => getComment(id, accessToken));
-
-  const mycomment = commentData?.data;
-
-  //delete Mutation
-  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(id, commentId, accessToken), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("getComment");
-    },
-  });
-
-  //edit Mutation
-  const { mutate: updatedCommentMutate } = useMutation(
-    (commentId, editeComment) => updatedComment(id, commentId, editeComment, accessToken),
-    {
-      onSuccess: () => {
-        setEditComment("");
-        setEditCommentId(null);
-        queryClient.invalidateQueries("getComment");
-      },
-    }
-  );
-  //Handler
   const onDeleteHandler = (commentId) => {
     deleteCommentMutate(commentId);
   };
