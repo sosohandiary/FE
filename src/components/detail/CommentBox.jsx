@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
-import { RiPencilFill, RiDeleteBin6Fill } from "react-icons/ri";
+import { RiPencilFill, RiDeleteBin6Fill, RiCheckFill, RiCloseFill } from "react-icons/ri";
 import { IoChatbubblesOutline } from "react-icons/io5";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
@@ -32,6 +32,8 @@ const CommentBox = () => {
   const [comment, setComment] = useState({
     comment: "",
   });
+  const [editingComment, setEditingComment] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   const toggleComments = () => {
     setShowComments((prev) => !prev);
@@ -77,10 +79,13 @@ const CommentBox = () => {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      onAddHandler(event);
+      if (isEditing) {
+        onUpdateHandler();
+      } else {
+        onAddHandler(event);
+      }
     }
   };
-
   const onAddHandler = (event) => {
     event.preventDefault();
     addmutation();
@@ -89,6 +94,25 @@ const CommentBox = () => {
 
   const onDeleteHandler = (commentId) => {
     deleteCommentMutate(commentId);
+  };
+
+  const onEditHandler = (comment) => {
+    setIsEditing(true);
+    setEditingComment(comment);
+    setComment({ comment: comment.comment });
+  };
+
+  const onCancelEditHandler = () => {
+    setIsEditing(false);
+    setEditingComment(null);
+    setComment({ comment: "" });
+  };
+
+  const onUpdateHandler = () => {
+    updatedCommentMutate();
+    setIsEditing(false);
+    setEditingComment(null);
+    setComment({ comment: "" });
   };
 
   return (
@@ -113,8 +137,17 @@ const CommentBox = () => {
                   <span>{createdAtAgo}</span>
                 </UserBox>
                 <IconStyle>
-                  <EditIcon />
-                  <DeleteIcon onClick={() => onDeleteHandler(comment.commentId)} />
+                  {isEditing && editingComment.commentId === comment.commentId ? (
+                    <>
+                      <CancelIcon onClick={onCancelEditHandler} />
+                      <UpdateIcon onClick={onUpdateHandler} />
+                    </>
+                  ) : (
+                    <>
+                      <EditIcon onClick={() => onEditHandler(comment)} />
+                      <DeleteIcon onClick={() => onDeleteHandler(comment.commentId)} />
+                    </>
+                  )}
                 </IconStyle>
               </CommentStyle>
               <CommentText>{comment.comment}</CommentText>
@@ -124,7 +157,7 @@ const CommentBox = () => {
 
         <CommentInput
           name="comment"
-          placeholder="댓글 달기"
+          placeholder={isEditing ? "댓글 수정하기" : "댓글 달기"}
           value={comment.comment}
           onChange={inputChangeHandler}
           onKeyDown={handleKeyDown}
@@ -260,5 +293,17 @@ const EditIcon = styled(RiPencilFill)`
 const DeleteIcon = styled(RiDeleteBin6Fill)`
   position: absolute;
   right: -80px;
+  cursor: pointer;
+`;
+
+const CancelIcon = styled(RiCloseFill)`
+  position: absolute;
+  right: -80px;
+  cursor: pointer;
+`;
+
+const UpdateIcon = styled(RiCheckFill)`
+  position: absolute;
+  right: -60px;
   cursor: pointer;
 `;
