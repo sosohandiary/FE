@@ -63,7 +63,7 @@ const CommentBox = () => {
 
   //edit
   const { mutate: updatedCommentMutate } = useMutation(
-    (commentId, editedComment) => updatedComment(id, commentId, editedComment, accessToken),
+    (commentId) => updatedComment(id, commentId, editingComment, accessToken),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("getComment");
