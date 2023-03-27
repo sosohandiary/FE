@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useMutation, useQuery, queryClient } from "react-query";
+import { useMutation, useQuery,useQueryClient } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { getMyfriends, getFriendsCount, deleteFriend } from "../api/mypage";
@@ -33,20 +33,21 @@ const MyFriends = () => {
     getFriendsCount(accessToken)
   );
 
-
+  const queryClient = useQueryClient();
   //friend-id 넣어주기
   const { mutate: deleteFriendMutate } = useMutation(
-    ()=> deleteFriend( accessToken),{
+    (friendId)=> deleteFriend(friendId, accessToken),{
       onSuccess: () => {
         queryClient.invalidateQueries("getMyFriends");
+        queryClient.invalidateQueries("getFriendsCount");
       },
     }
   );
 
   const friends = myFriends?.data;
 
-  // console.log(friends);
-  // console.log(searchFriends);
+  console.log(friends);
+  console.log(searchFriends);
 
   useEffect(() => {
     setSearchFriends(friends);
@@ -75,14 +76,12 @@ const MyFriends = () => {
   const handleSaveSelectedFriends = () => {
     // Save the selected friends to the navigate state and navigate to the other page
     navigate("/friends-list", { state: { selectedFriends } });
-    //주소 바꾸기
-
   };
 
   console.log(selectedFriends);
 
-  const onDeleteHandler = () => {
-    deleteFriendMutate();
+  const onDeleteHandler = (friendId) => {
+    deleteFriendMutate(friendId);
   }
 
   return (
@@ -121,7 +120,7 @@ const MyFriends = () => {
                   ):null}
                   <StText fontWeight='bold'>{item.nickname}</StText>
                   <StText>{item.statusMessage}</StText>
-                  <button onClick={onDeleteHandler}>삭제</button>
+                  <button onClick={()=>{onDeleteHandler(item.friendListId)}}>삭제</button>
                 </ListContentBox>
               </ListCards>
             );
