@@ -34,6 +34,7 @@ const CommentBox = () => {
   });
   const [editingComment, setEditingComment] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [test, setTest] = useState(null);
 
   const toggleComments = () => {
     setShowComments((prev) => !prev);
@@ -63,7 +64,7 @@ const CommentBox = () => {
 
   //edit
   const { mutate: updatedCommentMutate } = useMutation(
-    (commentId) => updatedComment(id, commentId, editingComment, accessToken),
+    (commentId) => updatedComment(id, commentId, comment, accessToken),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("getComment");
@@ -86,6 +87,7 @@ const CommentBox = () => {
       }
     }
   };
+
   const onAddHandler = (event) => {
     event.preventDefault();
     addmutation();
@@ -97,9 +99,11 @@ const CommentBox = () => {
   };
 
   const onEditHandler = (comment) => {
+    console.log(comment);
     setIsEditing(true);
     setEditingComment(comment);
     setComment({ comment: comment.comment });
+    setTest(comment);
   };
 
   const onCancelEditHandler = () => {
@@ -109,7 +113,7 @@ const CommentBox = () => {
   };
 
   const onUpdateHandler = () => {
-    updatedCommentMutate();
+    updatedCommentMutate(test.commentId);
     setIsEditing(false);
     setEditingComment(null);
     setComment({ comment: "" });
