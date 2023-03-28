@@ -1,53 +1,82 @@
-import React from "react";
-import styled from "styled-components";
-import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
-import Thumbnail from "../components/Thumbnail";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components"; 
+import { VscBlank } from "react-icons/vsc";
+import { GrayButtonMedium, MintButtonSmall } from "../styles/Buttons"; 
+import axios from "axios";  
 
-const Diary = () => {
+function Diary() {
+
+   //파일 미리볼 url을 저장해줄 state
+  const [fileImage, setFileImage] = useState("");
+
+  // 파일 저장
+  const saveFileImage = (e) => {
+    setFileImage(URL.createObjectURL(e.target.files[0]));
+  };
+
   return (
-    <WholeArea>
-      <WelcomeAndProfileArea>
-        <WelcomePhrase>
-          안녕하세요
-          <br />
-          소다님!
-        </WelcomePhrase>
-        <ProfileImg>
-          <img src={defaultProfileImg} />
-        </ProfileImg>
-      </WelcomeAndProfileArea>
-      <Thumbnail />
-      <Thumbnail />
-      <Thumbnail />
-    </WholeArea>
+    <Wholebox>
+      <TopBox>
+        <VscBlank className="VscBlank" />
+        <Textbox>다이어리 만들기</Textbox>
+        <VscBlank className="VscBlank" />
+      </TopBox>
+      {fileImage && ( 
+        <img alt="sample" 
+        src={fileImage} 
+        style={{ margin: "auto", width: "300px", height: "300px", borderRadius: "25px" }}
+        />
+      )}
+      <label>제목</label>
+      <input
+        type="text"
+      />
+      <label>소개</label>
+      <input
+        type="text"
+      />
+      <label>표지 설정</label>
+       
+      <input
+      name="imgUpload"
+        type="file"
+        accept="image/jpg, image/png, image/jpeg" 
+        onChange={saveFileImage}
+      /> 
+
+      <GrayButtonMedium>사진으로 설정하기</GrayButtonMedium>
+      <MintButtonSmall >생성하기</MintButtonSmall>
+    </Wholebox>
   );
 };
 
-export default Diary;
+export default Diary; 
 
-const WholeArea = styled.div`
-  margin: 20px;
-`;
+const Wholebox = styled.div`
+  display: flex;
+  flex-direction: column; 
+`; 
 
-const WelcomeAndProfileArea = styled.div`
+const TopBox = styled.div`
+background-color: white;
+  position: sticky;
+  top: 0%;
+  width: 100%;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
-  vertical-align: bottom;
-`;
-
-const WelcomePhrase = styled.h1`
-  margin-top: 8%;
-`;
-
-const ProfileImg = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 70%;
-  overflow: hidden;
-  margin-top: 19%;
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .VscBlank {
+    font-size: 35px;
   }
+  .MdArrowBack {
+    font-size: 40px;
+    color: #afafaf;
+    padding: 10px;
+  }
+`;
+
+const Textbox = styled.div`
+  font-size: 140%;
+  font-weight: bolder;
+  margin: 15px;
 `;
