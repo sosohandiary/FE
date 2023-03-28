@@ -6,11 +6,10 @@ import axios from "axios";
 import "swiper/css";
 import "swiper/css/pagination";
 import { useInView } from "react-intersection-observer";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
-import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Navigationbar from "../components/Navigationbar";
 
 const MainPage = () => {
   // 원형 카로셀
@@ -150,10 +149,7 @@ const MainPage = () => {
   }, []);
 
   //무한스크롤
-  const { ref: refForSelfMadePrivate, inView: inViewForSelfMadePrivate } =
-    useInView({
-      threshold: 0,
-    });
+
   const { ref: refForPrivate, inView: inViewForPrivate } = useInView({
     threshold: 0,
   });
@@ -174,6 +170,10 @@ const MainPage = () => {
     {},
     {},
     {},
+    {},
+    {},
+    {},
+    {},
   ]);
   const [dataListForPrivate, setDataListForPrivate] = useState([]);
   const [dataListForPublic, setDataListForPublic] = useState([]);
@@ -182,28 +182,23 @@ const MainPage = () => {
 
   // api public에서 바꿔야 합니다.
   useEffect(() => {
-    if (inViewForSelfMadePrivate) {
-      setIsLoadingForSelfMadePrivate(true);
-      axios
-        .get(
-          `${process.env.REACT_APP_BASEURL}/private?page=${selfMadePrivatePage}&size=5`,
-          {
-            headers: { Authorization: accessToken },
-          }
-        )
-        .then((res) => {
-          setIsLoadingForSelfMadePrivate(false);
-          setDataListForSelfMadePrivate((prev) => [
-            ...prev,
-            ...res.data.content,
-          ]);
-          setSelfMadePrivatePage((prev) => prev + 1);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [inViewForSelfMadePrivate]);
+    setIsLoadingForSelfMadePrivate(true);
+    axios
+      .get(
+        `${process.env.REACT_APP_BASEURL}/private?page=${selfMadePrivatePage}&size=5`,
+        {
+          headers: { Authorization: accessToken },
+        }
+      )
+      .then((res) => {
+        setIsLoadingForSelfMadePrivate(false);
+        setDataListForSelfMadePrivate((prev) => [...prev, ...res.data.content]);
+        setSelfMadePrivatePage((prev) => prev + 1);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   // <------------------------------ api상 private에서 invite로 바꿔야 합니다.
   useEffect(() => {
@@ -270,7 +265,6 @@ const MainPage = () => {
 
   return (
     <div>
-      {/* 원형 카로셀 */}
       <CircularCarousel
         onTouchStart={carouselTouchStart}
         onTouchEnd={carouselTouchEnd}
@@ -293,40 +287,11 @@ const MainPage = () => {
           </div>
         </WelcomeArea>
         <div className="slider__container">
-          {dataListForSelfMadePrivate.map((item, i) => {
-            console.log(
-              "dataListForSelfMadePrivate : ",
-              dataListForSelfMadePrivate
-            );
-            return (
-              <div className="slide__container">
-                <div className="slide">
-                  cc{i} {item.name}
-                </div>
-              </div>
-            );
-          })}
-          <div className="slide__container">
-            <div className="slide" ref={refForSelfMadePrivate}>
-              cc End
+          {dataListForSelfMadePrivate.map((item, i) => (
+            <div key={i} className="slide__container">
+              <div className="slide">cc{i}</div>
             </div>
-          </div>
-
-          {/* <div className="slide__container">
-            <div className="slide">cc 0</div>
-          </div>
-          <div className="slide__container">
-            <div className="slide">cc 1</div>
-          </div>
-          <div className="slide__container">
-            <div className="slide">cc 2</div>
-          </div>
-          <div className="slide__container">
-            <div className="slide">cc 3</div>
-          </div>
-          <div className="slide__container">
-            <div className="slide">cc 4</div>
-          </div> */}
+          ))}
         </div>
       </CircularCarousel>
       <div style={{ display: "none" }}>
@@ -334,12 +299,12 @@ const MainPage = () => {
         <button className="next">next</button>
       </div>
 
-      <div style={{ margin: "10px" }}>
-        <div>공유 다이어리</div>
+      <div style={{ margin: "10px 10px 80px 10px" }}>
+        <Label>공유 다이어리</Label>
         <SwiperArea>
           <Swiper
             slidesPerView={"auto"}
-            spaceBetween={30}
+            spaceBetween={20}
             pagination={{
               clickable: true,
               dynamicBullets: true,
@@ -366,11 +331,11 @@ const MainPage = () => {
             </span>
           </Swiper>
         </SwiperArea>
-        <div>공개 다이어리</div>
+        <Label>공개 다이어리</Label>
         <SwiperArea>
           <Swiper
             slidesPerView={"auto"}
-            spaceBetween={30}
+            spaceBetween={20}
             pagination={{
               clickable: true,
               dynamicBullets: true,
@@ -398,6 +363,7 @@ const MainPage = () => {
           </Swiper>
         </SwiperArea>
       </div>
+      <Navigationbar />
     </div>
   );
 };
@@ -430,8 +396,8 @@ const CircularCarousel = styled.div`
     margin-left: auto;
     margin-right: auto;
     position: relative;
-    width: 50%;
-    margin-bottom: 20px;
+    width: 70%;
+    margin-bottom: 50px;
     bottom: 140px;
     &:after {
       content: "";
@@ -449,10 +415,11 @@ const CircularCarousel = styled.div`
         position: absolute;
         left: 50%;
         bottom: -90px;
-        width: 80px;
-        height: 80px;
+        width: 90px;
+        height: 126px;
+        border-radius: 25px;
         background-color: red;
-        background: rgba(red, 0.5);
+        /* background: rgba(red, 0.5); */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -462,8 +429,8 @@ const CircularCarousel = styled.div`
 
       &.slide--active {
         .slide {
-          width: 120px;
-          height: 120px;
+          width: 140px;
+          height: 196px;
         }
       }
     }
@@ -471,19 +438,6 @@ const CircularCarousel = styled.div`
 `;
 
 const SwiperArea = styled.div`
-  body {
-    position: relative;
-    height: 100%;
-  }
-
-  body {
-    background: #eee;
-    font-size: 14px;
-    color: #000;
-    margin: 0;
-    padding: 0;
-  }
-
   .swiper {
     width: 100%;
     height: 100%;
@@ -508,9 +462,14 @@ const SwiperArea = styled.div`
   }
 
   .swiper-slide {
-    height: 150px;
-    width: 30%;
+    height: 196px;
+    width: 140px;
   }
+`;
+
+const Label = styled.div`
+  margin: 10px;
+  font-weight: 800;
 `;
 
 const SlideOne = styled.div`

@@ -10,7 +10,7 @@ const Navigationbar = () => {
   const navigate = useNavigate();
 
   const goToPage = (to) => {
-    console.log("to");
+    console.log(to);
     navigate(to);
   };
 
@@ -19,21 +19,17 @@ const Navigationbar = () => {
   };
   return (
     <>
-      <BottomBox>
+      <BiPlus className="BiPlus" onClick={test} />
+
+      <BottomBox onClick={test}>
         <VscHome className="VscHome" onClick={test} />
-        <VscBell
-          className="VscBell"
-          onClick={() => goToPage("/notification")}
-        />
-        <BiPlus className="BiPlus" onClick={() => goToPage("/")} />
-        <RxMagnifyingGlass
-          className="RxMagnifyingGlass"
-          onClick={() => goToPage("/search")}
-        />
-        <RxPerson className="RxPerson" onClick={() => goToPage("/mypage")} />
+        <VscBell className="VscBell" onClick={test} />
+        <BiPlus className="BiPlus" onClick={test} />
+        <RxMagnifyingGlass className="RxMagnifyingGlass" onClick={test} />
+        <RxPerson className="RxPerson" onClick={test} />
       </BottomBox>
 
-      <CircleBox>
+      {/* <CircleBox>
         <VscBlank className="VscBlank" />
         <FaCircle className="FaCircle" />
         <VscBlank className="VscBlank" />
@@ -43,7 +39,7 @@ const Navigationbar = () => {
         <VscBlank className="VscBlank" />
         <BiPlus className="BiPlus" />
         <VscBlank className="VscBlank" />
-      </PlusBox>
+      </PlusBox> */}
     </>
   );
 };
@@ -51,10 +47,6 @@ const Navigationbar = () => {
 export default Navigationbar;
 
 const BottomBox = styled.div`
-  position: fixed;
-  bottom: 0%;
-  width: 100%;
-  z-index: 1;
   background-color: #ececec;
   display: flex;
   justify-content: space-evenly;
@@ -85,8 +77,6 @@ const PlusBox = styled.div`
   position: fixed;
   bottom: 0%;
   margin-bottom: 10px;
-  width: 100%;
-  z-index: 1;
   display: flex;
   justify-content: space-evenly;
   background-color: transparent;
@@ -108,8 +98,6 @@ const CircleBox = styled.div`
   position: fixed;
   bottom: 0%;
   margin-bottom: 7px;
-  width: 100%;
-  z-index: 1;
   display: flex;
   justify-content: space-evenly;
   background-color: transparent;
