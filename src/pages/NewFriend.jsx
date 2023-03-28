@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Navigationbar from "../components/Navigationbar";
 import { SlMagnifier } from "react-icons/sl";
 import { MdOutlineCancel } from "react-icons/md";
+import { ProfilePicSmall } from "../components/ProfilePics";
 import axios from "axios";
 
 const NewFriend = () => {
@@ -27,7 +28,9 @@ const NewFriend = () => {
   const addFriend = (id) => {
     console.log(id);
     axios
-      .get(`${process.env.REACT_APP_BASEURL}/friend/request/${id}`)
+      .post(`${process.env.REACT_APP_BASEURL}/friend/request/${id}`, {},{
+        headers: { Authorization: accessToken },
+      })
       .then((res) => {
         console.log(res);
       })
@@ -38,12 +41,12 @@ const NewFriend = () => {
     <>
       <SearchTotalBox>
         <SearchStyleBox>
-          <SlMagnifier className="SlMagnifier" />
+          <SlMagnifier className='SlMagnifier' />
           <SearchStyle>
             <Searchinput
-              type="text"
-              name="searchbox"
-              placeholder="아이디를 검색해 친구를 추가해보세요"
+              type='text'
+              name='searchbox'
+              placeholder='아이디를 검색해 친구를 추가해보세요'
               onChange={(e) => {
                 setFriendName(e.target.value);
               }}
@@ -53,16 +56,17 @@ const NewFriend = () => {
         </SearchStyleBox>
       </SearchTotalBox>
       {list?.map((item) => (
-        <div>
-          <div>{item.member_id}</div>
+        <ListCards key={item.memberId}>
+              <ProfilePicSmall src='https://avatars.githubusercontent.com/u/109452831?v=4' />
+          <ListContentBox>{item.name}</ListContentBox>
           <button
             onClick={() => {
-              addFriend(item.member_id);
+              addFriend(item.memberId);
             }}
           >
             추가하기
           </button>
-        </div>
+        </ListCards>
       ))}
 
       <Navigationbar />
@@ -110,4 +114,19 @@ const Searchinput = styled.input`
   background-color: transparent;
   border: none;
   width: 300px;
+`;
+
+
+const ListCards = styled.div`
+  display: flex;
+  align-self: flex-start;
+
+  padding: 10px;
+`;
+
+const ListContentBox = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-left: 10px;
 `;
