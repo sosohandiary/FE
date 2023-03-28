@@ -103,7 +103,7 @@ const CommentBox = () => {
     setIsEditing(true);
     setEditingComment(comment);
     setComment({ comment: comment.comment });
-    setTest(comment);
+    setTest(comment.commentId);
   };
 
   const onCancelEditHandler = () => {
@@ -113,7 +113,7 @@ const CommentBox = () => {
   };
 
   const onUpdateHandler = () => {
-    updatedCommentMutate(test.commentId);
+    updatedCommentMutate(test);
     setIsEditing(false);
     setEditingComment(null);
     setComment({ comment: "" });
