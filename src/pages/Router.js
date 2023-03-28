@@ -20,6 +20,7 @@ import NewFriend from "./NewFriend";
 import TestCrop from "./TestCrop";
 import DiaryDetail from "./DiaryDetail";
 import AcceptTest from "./AcceptTest";
+import SubPage from "./SubPage";
 
 const Router = () => {
   return (
@@ -45,6 +46,7 @@ const Router = () => {
         <Route path="/diary-detail" element={<DiaryDetail />} />
         <Route path="/myfriends/:mode" element={<MyFriends />} />
         <Route path="/acceptTest" element={<AcceptTest />} />
+        <Route path="/diaries/:diaryId" element={<SubPage/>} />
       </Routes>
     </BrowserRouter>
   );
