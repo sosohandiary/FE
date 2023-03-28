@@ -12,6 +12,8 @@ import {
 import { getDate } from "../utils/getDate";
 import { WholeArea } from "../styles/WholeAreaStyle";
 import { ProfilePicLarge } from "../components/ProfilePics";
+import { IoIosArrowForward } from "react-icons/io";
+
 
 function MyPage() {
   const accessToken = localStorage.getItem("accessToken");
@@ -87,6 +89,7 @@ function MyPage() {
                   개설일: {getDate(item.createdAt)}{" "}
                 </StText>
               </div>
+              <ConfirmButton disabled><IoIosArrowForward size={28} color="#959494"/></ConfirmButton>
             </DiaryCards>
           );
         })}
@@ -195,4 +198,15 @@ const StText = styled.div`
   font-weight: ${(props) => props.fontWeight};
   font-size: ${({ size }) => `${size}px`};
   color: ${(props) => props.color};
+`;
+
+const ConfirmButton = styled.button`
+    position: absolute;
+  top: 35px;
+  right: 45px;
+
+  background: none;
+  border: none;
+
+  cursor: pointer;
 `;

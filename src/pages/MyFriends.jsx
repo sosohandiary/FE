@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useQuery } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery,useQueryClient } from "react-query";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import { getMyfriends, getFriendsCount } from "../api/mypage";
+import { getMyfriends, getFriendsCount, deleteFriend } from "../api/mypage";
 import { ProfilePicSmall } from "../components/ProfilePics";
 import Searchbox from "../components/Searchbox";
 import { WholeArea, WholeAreaWithMargin } from "../styles/WholeAreaStyle";
@@ -15,6 +15,10 @@ const MyFriends = () => {
   const [searchFriends, setSearchFriends] = useState(null);
 
   const [selectedFriends, setSelectedFriends] = useState([]);
+
+  const location = useLocation();
+
+  console.log(location.state);
 
   const { mode } = useParams();
   const navigate = useNavigate();
@@ -29,10 +33,21 @@ const MyFriends = () => {
     getFriendsCount(accessToken)
   );
 
+  const queryClient = useQueryClient();
+  //friend-id 넣어주기
+  const { mutate: deleteFriendMutate } = useMutation(
+    (friendId)=> deleteFriend(friendId, accessToken),{
+      onSuccess: () => {
+        queryClient.invalidateQueries("getMyFriends");
+        queryClient.invalidateQueries("getFriendsCount");
+      },
+    }
+  );
+
   const friends = myFriends?.data;
 
-  // console.log(friends);
-  // console.log(searchFriends);
+  console.log(friends);
+  console.log(searchFriends);
 
   useEffect(() => {
     setSearchFriends(friends);
@@ -61,10 +76,13 @@ const MyFriends = () => {
   const handleSaveSelectedFriends = () => {
     // Save the selected friends to the navigate state and navigate to the other page
     navigate("/friends-list", { state: { selectedFriends } });
-
   };
 
   console.log(selectedFriends);
+
+  const onDeleteHandler = (friendId) => {
+    deleteFriendMutate(friendId);
+  }
 
   return (
     <>
@@ -102,6 +120,7 @@ const MyFriends = () => {
                   ):null}
                   <StText fontWeight='bold'>{item.nickname}</StText>
                   <StText>{item.statusMessage}</StText>
+                  <button onClick={()=>{onDeleteHandler(item.friendListId)}}>삭제</button>
                 </ListContentBox>
               </ListCards>
             );

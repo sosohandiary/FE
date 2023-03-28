@@ -22,25 +22,33 @@ const MainPage = () => {
 
   const currentLoginUser = useSelector((state) => state.currentUserInfoSlice);
 
-  console.log(accessToken);
-  useEffect(() => {
-    return axios.get(`${process.env.REACT_APP_BASEURL}/?page=0&size=5`, {
-      headers: { Authorization: accessToken },
-    });
-  }, []);
-  // const { data } = useQuery(["getDiaries"], () => {
+  // useEffect(() => {
   //   return axios
   //     .get(`${process.env.REACT_APP_BASEURL}/?page=0&size=5`, {
   //       headers: { Authorization: accessToken },
   //     })
   //     .then((res) => console.log(res))
   //     .catch((err) => console.log(err));
-  // });
-  // console.log(data);
+  // }, []);
+
+  // 데이터 수신
+  const { data, isLoading, isError, error } = useQuery(["getDiaries"], () => {
+    return axios.get(`${process.env.REACT_APP_BASEURL}/?page=1&size=5`, {
+      headers: { Authorization: accessToken },
+    });
+  });
+  if (isError) {
+    console.log(error);
+  } else if (isLoading) {
+    console.log("LOADING");
+  }
+
+  console.log(data);
+  const diaryList = data?.data;
+  console.log(diaryList);
 
   const onClickFilterButtonHandler = (val) => {
-    setFilterMode(val);
-    console.log(val);
+    filterMode = val;
   };
 
   return (
@@ -60,13 +68,16 @@ const MainPage = () => {
           전체보기
         </FilterButton>
         <FilterButton onClick={() => onClickFilterButtonHandler("PUBLIC")}>
-          필터
+          Public
         </FilterButton>
         <FilterButton onClick={() => onClickFilterButtonHandler("PRIVATE")}>
-          필터
+          Private
         </FilterButton>
       </FilterArea>
       <Thumb></Thumb>
+      {diaryList?.map((item, i) => {
+        return <div key={i}>{item.title}</div>;
+      })}
       <Thumb></Thumb>
       <Thumb></Thumb>
       <Navigationbar />

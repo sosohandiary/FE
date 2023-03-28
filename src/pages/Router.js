@@ -18,6 +18,8 @@ import BoxTest from "./BoxTest";
 import NewDiary from "./NewDiary";
 import NewFriend from "./NewFriend";
 import TestCrop from "./TestCrop";
+import DiaryDetail from "./DiaryDetail";
+import AcceptTest from "./AcceptTest";
 
 const Router = () => {
   return (
@@ -38,9 +40,11 @@ const Router = () => {
         <Route path="test" element={<Test />} />
         <Route path="/oauth" element={<Oauth />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/detail" element={<Detail />} />
+        <Route path="/detail/:id" element={<Detail />} />
         <Route path="/new-diary" element={<NewDiary />} />
+        <Route path="/diary-detail" element={<DiaryDetail />} />
         <Route path="/myfriends/:mode" element={<MyFriends />} />
+        <Route path="/acceptTest" element={<AcceptTest />} />
       </Routes>
     </BrowserRouter>
   );
