@@ -3,32 +3,26 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import styled, { css } from "styled-components";
 import { likePost } from "../../api/detail";
 import { useParams } from "react-router-dom";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 
 function Like() {
   const accessToken = localStorage.getItem("accessToken");
   const { id } = useParams();
-  const queryClient = useQueryClient();
 
   const [isLiked, setIsLiked] = useState(false);
 
-  const { mutate: likeMutation } = useMutation(() => likePost(id, accessToken), {
-    onSuccess: (data) => {
-      console.log("data?", data);
-      queryClient.invalidateQueries("likePost");
-      setIsLiked(!isLiked);
-    },
-  });
-
-  useEffect(() => {
-    likePost().then((response) => {
-      setIsLiked(response.data.isLiked);
-    });
-  }, []);
+  const { mutate: likeMutation } = useMutation(() => likePost(id, accessToken));
 
   const handleClick = () => {
+    setIsLiked(!isLiked);
     likeMutation();
   };
+
+  // useEffect(() => {
+  //   likePost(id, accessToken).then((response) => {
+  //     setIsLiked(response.data.isLiked);
+  //   });
+  // }, []);
 
   return (
     <HeartButton onClick={handleClick}>
@@ -46,7 +40,6 @@ function Like() {
 }
 
 export default Like;
-
 const HeartButton = styled.button`
   background-color: transparent;
   border: none;

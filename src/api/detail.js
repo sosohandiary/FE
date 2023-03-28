@@ -30,9 +30,13 @@ export const updatedComment = async (id, commentId, editedcomment, accessToken) 
 
 //좋아요
 export const likePost = async (id, accessToken) => {
-  return await axios.post(`${process.env.REACT_APP_BASEURL}/detail/${id}/like`, {
-    headers: { Authorization: accessToken },
-  });
+  return await axios.post(
+    `${process.env.REACT_APP_BASEURL}/detail/${id}/like`,
+    {},
+    {
+      headers: { Authorization: accessToken },
+    }
+  );
 };
 
 //다이어리속지 내용 상세 조회
