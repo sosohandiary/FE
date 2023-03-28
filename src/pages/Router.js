@@ -19,6 +19,7 @@ import NewDiary from "./NewDiary";
 import NewFriend from "./NewFriend";
 import TestCrop from "./TestCrop";
 import DiaryDetail from "./DiaryDetail";
+import TestAnimation from "./TestAnimation";
 import AcceptTest from "./AcceptTest";
 
 const Router = () => {
@@ -38,6 +39,7 @@ const Router = () => {
         <Route path="boxtest" element={<BoxTest />} />
         <Route path="/test-crop" element={<TestCrop />} />
         <Route path="test" element={<Test />} />
+        <Route path="/test-animation" element={<TestAnimation />} />
         <Route path="/oauth" element={<Oauth />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/detail/:id" element={<Detail />} />

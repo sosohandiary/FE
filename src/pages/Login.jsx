@@ -21,13 +21,12 @@ const Login = () => {
     kakaoLoginApi();
   };
 
-  //최초 방문 시 온보딩으로
-  // useEffect(() => {
-  //   const alreadySignedUp = localStorage.getItem("already signed up");
-  //   if (!alreadySignedUp) {
-  //     navigate("/onboarding");
-  //   }
-  // }, []);
+  useEffect(() => {
+    const alreadySignedUp = localStorage.getItem("already signed up");
+    if (!alreadySignedUp) {
+      navigate("/onboarding");
+    }
+  }, []);
 
   const goToHome = () => {
     navigate("/");
