@@ -55,7 +55,7 @@ function SubPage() {
 
   return (
     <>
-      <Title size="18">다이어리 상세보기</Title>
+      <Title size='18'>다이어리 상세보기</Title>
       {data?.map((item, index) => {
         return (
           <div key={item.id}>
@@ -79,16 +79,20 @@ function SubPage() {
             // }
           }}
           modules={[Pagination]}
-          className="mySwiper"
+          className='mySwiper'
         >
           {data?.map((item) => (
             <SwiperSlide key={item.id}>
               <img src={item.url} alt={item.title} />
               {/* <StButton onClick={()=>{navTest(item.id)}}><StPageCard>{item.customJson}</StPageCard></StButton> */}
               <Link to={`/detail/${item.id}`}>
-                <StPageCard></StPageCard>
+                <StPageCard>
+                  {" "}
+                  <DecorationBoard
+                    customJson={item.customJson}
+                  ></DecorationBoard>
+                </StPageCard>
               </Link>
-              <DecorationBoard customJson={item.customJson}></DecorationBoard>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -97,8 +101,8 @@ function SubPage() {
           onPageChange={handlePageClick}
           containerClassName={"pagination"}
           activeClassName={"active"}
-          previousLabel="<"
-          nextLabel=">"
+          previousLabel='<'
+          nextLabel='>'
         />
       </div>
     </>
@@ -119,7 +123,7 @@ const Title = styled.div`
 const StPageCard = styled.div`
   height: 600px;
   width: 200px;
-  background: #f9f9f9;
+  /* background: #f9f9f9; */
 `;
 
 const StyledPagination = styled(ReactPaginate)`
@@ -163,10 +167,4 @@ const StyledPagination = styled(ReactPaginate)`
     cursor: not-allowed;
     border-color: #ccc;
   }
-`;
-
-const StButton = styled.button`
-  border: none;
-  background: none;
-  padding: 0;
 `;
