@@ -1,225 +1,195 @@
-import { Textarea, css } from "@nextui-org/react";
-import { useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { WholeAreaWithMargin } from "../styles/WholeAreaStyle";
-import { Stage, Layer, Star, Text, Line } from "react-konva";
-import TestDraft from "./TestDraft";
+import { WholeArea } from "../styles/WholeAreaStyle";
 
-const Test = () => {
-  const [mode, setMode] = useState("TEXT");
-  const [lineTool, setLineTool] = useState("pen");
-  const [lines, setLines] = useState([]);
-  const [lineColor, setLineColor] = useState("#df4b26");
-  const [lineWidth, setLineWidth] = useState(5);
-  const isDrawing = useRef(false);
-  const changeModeHandler = (target) => {
-    setMode(target);
+const TestAnimation = () => {
+  const [prevItem, setPrevItem] = useState(0);
+  const [centerItem, setCenterItem] = useState(1);
+  const [nextItem, setNextItem] = useState(2);
+
+  const [carouselDeg, setCarouselDeg] = useState(17);
+  const [itemDeg, setItemDeg] = useState(-17);
+  const [carousel, setCarousel] = useState([
+    { name: "1", id: 0 },
+    { name: "2", id: 1 },
+    { name: "3", id: 2 },
+    { name: "4", id: 3 },
+    { name: "5", id: 4 },
+    { name: "6", id: 5 },
+    { name: "7", id: 6 },
+    { name: "8", id: 7 },
+    { name: "9", id: 8 },
+  ]);
+
+  const next = () => {
+    setCarouselDeg(carouselDeg - 36);
+    setItemDeg(itemDeg + 36);
+    setNextItem((prev) => (prev == 8 ? 0 : prev + 1));
+    setCenterItem((prev) => (prev == 8 ? 0 : prev + 1));
+    setPrevItem((prev) => (prev == 8 ? 0 : prev + 1));
   };
 
-  // <-------------- 스티커 관련 -------------->
-  function generateShapes() {
-    return [...Array(5)].map((_, i) => ({
-      id: i.toString(),
-      shape: "star",
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      rotation: Math.random() * 180,
-      isDragging: false,
-    }));
-  }
-
-  const INITIAL_STATE = generateShapes();
-
-  const [stars, setStars] = useState(INITIAL_STATE);
-
-  const [stickers, setStickers] = useState(INITIAL_STATE);
-
-  const handleDragStart = (e) => {
-    const id = e.target.id();
-    setStickers(
-      stickers.map((sticker) => {
-        return {
-          ...sticker,
-          isDragging: sticker.id === id,
-        };
-      })
-    );
-  };
-  const handleDragEnd = (e) => {
-    setStickers(
-      stickers.map((sticker) => {
-        return {
-          ...sticker,
-          isDragging: false,
-        };
-      })
-    );
+  const prev = () => {
+    setCarouselDeg(carouselDeg + 36);
+    setItemDeg(itemDeg - 36);
   };
 
-  // <-------------- 그리기 관련 -------------->
-  const handleMouseDown = (e) => {
-    if (mode === "DRAW") {
-      isDrawing.current = true;
-      const pos = e.target.getStage().getPointerPosition();
-      setLines([
-        ...lines,
-        { lineTool, lineColor, lineWidth, points: [pos.x, pos.y] },
-      ]);
+  const getCssClass = (id) => {
+    console.log(centerItem, nextItem, prevItem);
+    if (id === centerItem) {
+      return "center";
+    } else if (id === nextItem) {
+      return "next";
+    } else if (id === prevItem) {
+      return "prev";
     }
   };
 
-  const handleMouseMove = (e) => {
-    // no drawing - skipping
-    if (!isDrawing.current) {
-      return;
-    }
-    const stage = e.target.getStage();
-    const point = stage.getPointerPosition();
-    let lastLine = lines[lines.length - 1];
-    // add point
-    lastLine.points = lastLine.points.concat([point.x, point.y]);
-
-    // replace last
-    lines.splice(lines.length - 1, 1, lastLine);
-    setLines(lines.concat());
-  };
-
-  const handleMouseUp = () => {
-    isDrawing.current = false;
-  };
-
-  const changeColorHandler = (target) => {
-    setLineColor(target);
-  };
-  const changeWidthHandler = (target) => {
-    setLineWidth(target);
-  };
-  const changeLineTool = (target) => {
-    setLineTool(target);
-  };
-
-  const addStickerHandler = () => {};
-
-  //도구 모음 창
-  const Toolbar = () => {
-    return (
-      <div style={{ position: "sticky", zIndex: 10 }}>
-        <button onClick={() => changeModeHandler("TEXT")}>텍스트 모드</button>
-        <button onClick={() => changeModeHandler("DRAW")}>그리기 모드</button>
-        <button onClick={() => changeModeHandler("STICKER")}>
-          스티커 모드
-        </button>
-        <button onClick={() => changeColorHandler("#df4b26")}>빨간색</button>
-        <button onClick={() => changeColorHandler("#2645df")}>파란색</button>
-        <button onClick={() => changeWidthHandler(5)}>굵게</button>
-        <button onClick={() => changeWidthHandler(1)}>얇게</button>
-        <button onClick={() => changeLineTool("eraser")}>지우개</button>
-        <button onClick={() => changeLineTool("pen")}>펜</button>
-        <div>
-          스티커 관련
-          <div>
-            별<button onClick={() => addStickerHandler()}>큰 별 추가</button>
-            <button onClick={() => addStickerHandler()}>작은 별 추가</button>
-          </div>
-          <div>
-            원<button onClick={() => addStickerHandler()}>큰 원 추가</button>
-            <button onClick={() => addStickerHandler()}>작은 원 추가</button>
+  return (
+    <WholeArea>
+      <AllStyle>
+        <div className="App">
+          <button onClick={next}>Next</button>
+          <button onClick={prev}>Prev</button>
+          <div className="test" />
+          <div
+            className="carousel"
+            style={{ transform: `rotate(${carouselDeg}deg)` }}
+          >
+            {carousel.map((item, index) => (
+              <div
+                className={`item-carousel ${getCssClass(index)}`}
+                key={item.id}
+                id={item.id}
+                style={{ transform: `rotate(${itemDeg}deg)` }}
+              >
+                {item.name}
+              </div>
+            ))}
           </div>
         </div>
-      </div>
-    );
-  };
-
-  const al = () => {
-    console.log(mode);
-  };
-  // 도화지
-  return (
-    <WholeAreaWithMargin>
-      <Toolbar />
-      <BackgroundStyle></BackgroundStyle>
-      <TextAreaStyle mode={mode}>
-        <TestDraft />
-        {/* <Textarea
-          label="Soda Diary"
-          placeholder="Static rows, rows (4)"
-          rows={30}
-          width="100%"
-          readOnly={mode !== "TEXT" ? true : false}
-          style={{
-            fontSize: "16px",
-          }}
-          css={{ $$inputColor: "rgba(0,0,0,0)" }}
-        /> */}
-      </TextAreaStyle>
-      <Stage
-        width={window.innerWidth}
-        height={window.innerHeight}
-        onMouseDown={handleMouseDown}
-        onMousemove={handleMouseMove}
-        onMouseup={handleMouseUp}
-        style={{ position: "absolute" }}
-      >
-        <Layer>
-          {lines.map((line, i) => (
-            <Line
-              key={i}
-              points={line.points}
-              stroke={line.lineColor}
-              strokeWidth={line.lineWidth}
-              tension={0.5}
-              lineCap="round"
-              lineJoin="round"
-              globalCompositeOperation={
-                line.lineTool === "eraser" ? "destination-out" : "source-over"
-              }
-            />
-          ))}
-          {stickers.map((sticker) => {
-            return (
-              <Star
-                key={sticker.id}
-                id={sticker.id}
-                x={sticker.x}
-                y={sticker.y}
-                numPoints={5}
-                innerRadius={20}
-                outerRadius={40}
-                fill="#89b717"
-                opacity={0.8}
-                draggable={mode === "STICKER" ? true : false}
-                rotation={sticker.rotation}
-                shadowColor="black"
-                shadowBlur={10}
-                shadowOpacity={0.6}
-                shadowOffsetX={sticker.isDragging ? 10 : 5}
-                shadowOffsetY={sticker.isDragging ? 10 : 5}
-                scaleX={sticker.isDragging ? 1.2 : 1}
-                scaleY={sticker.isDragging ? 1.2 : 1}
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
-              />
-            );
-          })}
-        </Layer>
-      </Stage>
-    </WholeAreaWithMargin>
+      </AllStyle>
+    </WholeArea>
   );
 };
 
-export default Test;
+export default TestAnimation;
 
-const BackgroundStyle = styled.div`
-  position: absolute;
-  z-index: -10;
-  background-color: #e9e9e9;
-  width: 100%;
-  height: 1000px;
-`;
+const AllStyle = styled.div`
+  .App {
+    font-family: sans-serif;
+    overflow: hidden;
+    height: 100vh;
+  }
 
-const TextAreaStyle = styled.div`
-  position: absolute;
-  top: 120px;
-  width: 100%;
-  z-index: ${({ mode }) => (mode === "TEXT" ? 1 : -1)};
+  .carousel {
+    position: relative;
+    width: 140vw;
+    height: 140vw;
+    border: 2px solid;
+    border-radius: 50%;
+    transition: 0.5s;
+    transform: rotate(15deg);
+    transform-origin: center center;
+    background-color: #f3f3f3;
+  }
+  // .test {
+  //   position: absolute;
+  //   left: 600px;
+  //   width: 20px;
+  //   height: 364px;
+  //   background: #000;
+
+  //   &:before {
+  //     content: '';
+  //     position: absolute;
+  //     width: 20px;
+  //     height: 20px;
+  //     background: red;
+  //     z-index: 1111;
+  //     top: 50%;
+  //     transform: translateY(-50%);
+  //   }
+  // }
+  .carousel::before {
+    /* content: ""; */
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background: #000;
+    border-radius: 50% 0 0 50%;
+  }
+  // с = 2 Pr
+  .item-carousel {
+    position: absolute;
+    border-radius: 10%;
+    border: 1px solid red;
+    background: #fff;
+    width: 100px;
+    height: 141px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    margin: 2px;
+    bottom: 0;
+    transition: 0.5s;
+
+    &.next {
+      background: blue;
+      color: white;
+    }
+    &.prev {
+      background: green;
+      color: white;
+    }
+
+    &.center {
+      background: #000;
+      color: white;
+      width: 130px;
+      height: 183.3px;
+    }
+
+    &:nth-child(1) {
+      right: 300px;
+      top: 473px;
+    }
+    &:nth-child(2) {
+      right: 26vw;
+      top: 110vw;
+    }
+    &:nth-child(3) {
+      right: 30px;
+      top: 423px;
+    }
+    &:nth-child(4) {
+      right: 156px;
+      top: 337px;
+    }
+    &:nth-child(5) {
+      right: 263px;
+      top: 302px;
+    }
+    &:nth-child(6) {
+      right: 330px;
+      top: 210px;
+    }
+    &:nth-child(7) {
+      right: 330px;
+      top: 100px;
+    }
+    &:nth-child(8) {
+      right: 263px;
+      top: 7px;
+    }
+    &:nth-child(9) {
+      right: 156px;
+      top: -27px;
+    }
+    &:nth-child(10) {
+      right: 347px;
+      top: 524px;
+    }
+  }
 `;

@@ -55,3 +55,31 @@ export const getMyfriends = async (accessToken) => {
     }
   );
 };
+
+//친구 삭제
+export const deleteFriend = async (friendId, accessToken) => {
+  return await axios.delete(`${process.env.REACT_APP_BASEURL}/friend/list/${friendId}`, {
+    headers: { Authorization: accessToken },
+  });
+};
+
+//친구추가요청목록
+export const getRequested = async (accessToken) => {
+  return await axios.get(
+    `${process.env.REACT_APP_BASEURL}/friend/request`,
+    {
+      headers: { Authorization: accessToken },
+    }
+  );
+};
+
+
+//친구 추가 수락 테스트
+export const acceptFriend = async (friend_id, accessToken) => {
+  return await axios.put(
+    `${process.env.REACT_APP_BASEURL}/friend/request/accept/${friend_id}`,{},
+    {
+      headers: { Authorization: accessToken },
+    }
+  );
+};

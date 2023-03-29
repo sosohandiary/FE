@@ -12,9 +12,18 @@ const Oauth = () => {
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_BASEURL}/login/kakao?code=${code}`)
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+
+        window.localStorage.setItem("accessToken", "");
+      })
       .catch((err) => {
-        console.log(err);
+        console.log("err", err.response.headers.authorization);
+        window.localStorage.setItem(
+          "accessToken",
+          err.response.headers.authorization
+        );
+        navigate("/");
       });
   }, []);
 
