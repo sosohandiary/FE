@@ -56,3 +56,48 @@ const Detail = () => {
 };
 
 export default Detail;
+
+const StyledDerailPage = styled.div`
+  /* background-color: black; */
+  margin-top: 40px;
+`;
+
+const StyledGobackButton = styled(MdArrowBack)`
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-500%);
+  font-size: 40px;
+  color: #adaaaa;
+  cursor: pointer;
+`;
+
+const StyledDetailCardWrapper = styled(WholeViewWidth)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+`;
+
+const StyledDetailCard = styled.div`
+  display: flex;
+  width: 375px;
+  height: 100vh;
+  border: none;
+  background-color: #f1f1f1;
+  border-radius: 30px 30px 0px 0px;
+  padding: 10px;
+`;
+
+const DetailElement = styled.div`
+  display: flex;
+`;
+
+const CommentIcon = styled(IoChatbubblesOutline)`
+  font-size: 1.8rem; // 원하는 크기로 조절
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+`;
