@@ -6,22 +6,18 @@ import { IoChatbubblesOutline } from "react-icons/io5";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
-import Like from "./Like";
+
 import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
 
 const CommentBox = () => {
-  const [showComments, setShowComments] = useState(false);
+  const [showComments, setShowComments] = useState(true);
   const [comment, setComment] = useState({
     comment: "",
   });
   const [editingComment, setEditingComment] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [test, setTest] = useState(null);
-
-  const toggleComments = () => {
-    setShowComments((prev) => !prev);
-  };
 
   const queryClient = useQueryClient();
   const { id } = useParams();

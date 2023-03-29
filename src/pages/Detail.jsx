@@ -44,8 +44,9 @@ const Detail = () => {
           <DetailElement>
             <CommentIcon />
             {/* 5 -> 댓글 및 좋아요수 받아오기 */}
-            5
-            <Like />5
+            55
+            <Like />
+            500
           </DetailElement>
         }
         defaultSnap={({ snapPoints }) => snapPoints}
