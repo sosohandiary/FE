@@ -2,32 +2,42 @@ import React from "react";
 import CommentBox from "../components/detail/CommentBox";
 import { WholeAreaWithMargin, WholeViewWidth } from "../styles/WholeAreaStyle";
 import GetUser from "../components/detail/GetUser";
-
 import styled from "styled-components";
+import { MdArrowBack } from "react-icons/md";
 
 const Detail = () => {
   return (
     <>
-      <GetUser />
-      <div>
+      <StyledGobackButton />
+
+      <StyledDerailPage>
+        <GetUser />
         <WholeAreaWithMargin>
-          <StyledUserBoxWrapper></StyledUserBoxWrapper>
           <StyledDetailCardWrapper>
             <StyledDetailCard>일기데이터 받아오기</StyledDetailCard>
           </StyledDetailCardWrapper>
         </WholeAreaWithMargin>
         <CommentBox />
-      </div>
+      </StyledDerailPage>
     </>
   );
 };
 
 export default Detail;
 
-const StyledUserBoxWrapper = styled.div`
+const StyledDerailPage = styled.div`
+  /* background-color: black; */
+  margin-top: 40px;
+`;
+
+const StyledGobackButton = styled(MdArrowBack)`
   position: absolute;
-  top: 80px;
-  left: 620px;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-500%);
+  font-size: 40px;
+  color: #adaaaa;
+  cursor: pointer;
 `;
 
 const StyledDetailCardWrapper = styled(WholeViewWidth)`
