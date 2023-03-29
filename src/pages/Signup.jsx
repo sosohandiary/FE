@@ -24,27 +24,21 @@ const Signup = () => {
     axios
       .post(`${process.env.REACT_APP_BASEURL}/join`, data)
       .then(() => {
-        navigate("/signup-success");
+        navigate("/signup-success", { state: data.name });
         window.localStorage.setItem("already signed up", true);
       })
       .catch((err) => console.log(err));
   };
 
-  const xButtonClickHandler = () => {
-    navigate("/login");
-  };
-
   return (
     <WholeAreaWithMargin>
-      <XandTitle>
-        <Title>회원가입</Title>
-      </XandTitle>
-      <Xbutton onClick={xButtonClickHandler}>X</Xbutton>
+      <BackButtonTitle title={"회원가입"}></BackButtonTitle>
       <Greeting>
         처음 오셨네요!
         <br />
         간단한 정보를 알려주세요
       </Greeting>
+
       <InputForm onSubmit={handleSubmit(onSubmit)}>
         <label>이름</label>
         <br />
@@ -157,18 +151,6 @@ const Signup = () => {
 };
 
 export default Signup;
-
-const XandTitle = styled.div`
-  display: flex;
-`;
-
-const Xbutton = styled.div`
-  position: relative;
-  right: 120px;
-  bottom: 15px;
-`;
-
-const Title = styled.div``;
 
 const Greeting = styled.h2`
   margin-top: 4vh;

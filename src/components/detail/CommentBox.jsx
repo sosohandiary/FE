@@ -5,52 +5,29 @@ import { RiPencilFill, RiDeleteBin6Fill, RiCheckFill, RiCloseFill } from "react-
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
-
-import GetTimeAgo from "../GetTimeAgo";
-import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
+import Like from "./Like";
 
 const CommentBox = () => {
   const [showComments] = useState(true);
   const [comment, setComment] = useState({
     comment: "",
   });
-  const [editingComment, setEditingComment] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [test, setTest] = useState(null);
+
+  const toggleComments = () => {
+    setShowComments((prev) => !prev);
+  };
 
   const queryClient = useQueryClient();
   const { id } = useParams();
   const accessToken = localStorage.getItem("accessToken");
-  const { data: commentData } = useQuery(["getComment"], () => getComment(id, accessToken));
-  const mycomment = commentData?.data;
 
-  // <----Mutation----> //
-
-  //add
   const { mutate: addmutation } = useMutation(() => addComment(id, comment, accessToken), {
     onSuccess: (data) => {
+      console.log("data", data);
       queryClient.invalidateQueries("getComment");
     },
   });
 
-  //delete
-  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(id, commentId, accessToken), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("getComment");
-    },
-  });
-
-  //edit
-  const { mutate: updatedCommentMutate } = useMutation(
-    (commentId) => updatedComment(id, commentId, comment, accessToken),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("getComment");
-      },
-    }
-  );
-
-  // <----Handler----> //
   const inputChangeHandler = (event) => {
     const { name, value } = event.target;
     setComment({ ...comment, [name]: value });
@@ -58,42 +35,13 @@ const CommentBox = () => {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      if (isEditing) {
-        onUpdateHandler();
-      } else {
-        onAddHandler(event);
-      }
+      clickAddButtonHandler(event);
     }
   };
 
-  const onAddHandler = (event) => {
+  const clickAddButtonHandler = (event) => {
     event.preventDefault();
     addmutation();
-    setComment({ comment: "" });
-  };
-
-  const onDeleteHandler = (commentId) => {
-    deleteCommentMutate(commentId);
-  };
-
-  const onEditHandler = (comment) => {
-    console.log(comment);
-    setIsEditing(true);
-    setEditingComment(comment);
-    setComment({ comment: comment.comment });
-    setTest(comment.commentId);
-  };
-
-  const onCancelEditHandler = () => {
-    setIsEditing(false);
-    setEditingComment(null);
-    setComment({ comment: "" });
-  };
-
-  const onUpdateHandler = () => {
-    updatedCommentMutate(test);
-    setIsEditing(false);
-    setEditingComment(null);
     setComment({ comment: "" });
   };
 
@@ -161,6 +109,19 @@ const CommetnslideUp = keyframes`
   }
 `;
 
+const DetailElement = styled.div`
+  display: flex;
+`;
+
+const CommentIcon = styled(IoChatbubblesOutline)`
+  font-size: 1.8rem; // 원하는 크기로 조절
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+`;
+
 const CommentsContainer = styled.div`
   width: 375px;
   height: 600px;
@@ -198,8 +159,8 @@ const CommentInput = styled.input`
   /* resize: none; */
   border: none;
   border-radius: 20px;
-  background-color: #f1f1f1;
-  outline: none;
+  position: absolute;
+  bottom: 0;
 `;
 
 const CommentStyle = styled.div`

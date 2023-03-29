@@ -22,26 +22,15 @@ export const deleteComment = async (id, commentId, accessToken) => {
 };
 
 //댓글 수정
-export const updatedComment = async (id, commentId, editedcomment, accessToken) => {
-  return await axios.patch(`${process.env.REACT_APP_BASEURL}/detail/${id}/comment/${commentId}`, editedcomment, {
+export const updatedComment = async (id, commentId, editComment, accessToken) => {
+  return await axios.patch(`${process.env.REACT_APP_BASEURL}/detail/${id}/comment/${commentId}`, editComment, {
     headers: { Authorization: accessToken },
   });
 };
 
 //좋아요
 export const likePost = async (id, accessToken) => {
-  return await axios.post(
-    `${process.env.REACT_APP_BASEURL}/detail/${id}/like`,
-    {},
-    {
-      headers: { Authorization: accessToken },
-    }
-  );
-};
-
-//다이어리속지 내용 상세 조회
-export const getDiary = async (id, detailId, accessToken) => {
-  return await axios.get(`${process.env.REACT_APP_BASEURL}/diary/${id}/detail/${detailId}`, {
+  return await axios.post(`${process.env.REACT_APP_BASEURL}/detail/${id}/like`, {
     headers: { Authorization: accessToken },
   });
 };

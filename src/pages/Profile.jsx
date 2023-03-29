@@ -2,16 +2,14 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 
-import { getProfile, editProfile, deleteAccount } from "../api/mypage";
+import { getProfile, editProfile } from "../api/mypage";
 import { HiPencil, HiOutlineXCircle } from "react-icons/hi";
 import { MintButtonMedium } from "../styles/Buttons";
 import DeleteAccount from "../components/mypage/DeleteAccount";
-import { useNavigate } from "react-router-dom";
 
 function Profile() {
   const accessToken = localStorage.getItem("accessToken");
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const [editData, setEditData] = useState({
     nickname: "",
@@ -30,9 +28,6 @@ function Profile() {
       },
     }
   );
-
-    //delete Mutation
-    const { mutate: deleteAccountMutate } = useMutation(() => deleteAccount(accessToken));
 
   console.log(profileData?.data);
   const profile = profileData?.data;
@@ -58,10 +53,8 @@ function Profile() {
 
   const handleDelete = () => {
     //alert창 수정하기
-    alert("탈퇴 완료!");
-    deleteAccountMutate();
-    localStorage.removeItem("accessToken");
-    navigate('/login');
+    alert("삭제 완료!");
+    // navigate(-1);
   };
 
   const onChangeHandler = (e) => {

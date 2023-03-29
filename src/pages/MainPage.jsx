@@ -1,168 +1,41 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import $ from "jquery";
-import gsap from "gsap";
-import axios from "axios";
-import "swiper/css";
-import "swiper/css/pagination";
-import { useInView } from "react-intersection-observer";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper";
-import { useSelector } from "react-redux";
+import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
+import { WholeArea } from "../styles/WholeAreaStyle";
+import "react-alice-carousel/lib/alice-carousel.css";
 import Navigationbar from "../components/Navigationbar";
+import { useQuery } from "react-query";
+import axios from "axios";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const MainPage = () => {
   const navigate = useNavigate();
+  const accessToken = localStorage.getItem("accessToken");
+  // useEffect(() => {
+  //   if (!accessToken) {
+  //     navigate("/login");
+  //   }
+  // }, []);
 
-  //비로그인 -> 로그인창으로
-  const accessToken = window.localStorage.getItem("accessToken");
-  useEffect(() => {
-    if (accessToken === null) {
-      navigate("/login");
-    }
-  }, []);
+  const [filterMode, setFilterMode] = useState("ALL");
 
-  // 원형 카로셀
-  useEffect(() => {
-    const slides = $(".slide__container");
-    var activeSlideIndex = 2;
+  const currentLoginUser = useSelector((state) => state.currentUserInfoSlice);
 
-    for (let i = 0; i < slides.length; i++) {
-      gsap.set(".slide__container", {
-        opacity: 0,
-      });
-    }
+  // useEffect(() => {
+  //   return axios
+  //     .get(`${process.env.REACT_APP_BASEURL}/?page=0&size=5`, {
+  //       headers: { Authorization: accessToken },
+  //     })
+  //     .then((res) => console.log(res))
+  //     .catch((err) => console.log(err));
+  // }, []);
 
-    updateSlider(activeSlideIndex);
-
-    function updateSlider(way) {
-      var slideOnLeft,
-        slideOnRight,
-        slideOnCenter,
-        slideToLoad,
-        SlideToLoadRotation,
-        SlideToUnLoad,
-        SlideToUnLoadRotation;
-
-      if (way == "next") {
-        activeSlideIndex++;
-      } else if (way == "prev") {
-        activeSlideIndex--;
-      }
-      updateIndex();
-
-      slideOnCenter = slides[activeSlideIndex];
-
-      if (activeSlideIndex === slides.length - 1) {
-        slideOnRight = slides[0];
-      } else {
-        slideOnRight = slides[activeSlideIndex + 1];
-      }
-
-      if (activeSlideIndex === 0) {
-        slideOnLeft = slides[slides.length - 1];
-      } else {
-        slideOnLeft = slides[activeSlideIndex - 1];
-      }
-
-      if (way == "next") {
-        slideToLoad = slideOnRight;
-        SlideToLoadRotation = -90;
-        SlideToUnLoad = slides[activeSlideIndex - 2];
-        SlideToUnLoadRotation = 90;
-      } else if (way == "prev") {
-        slideToLoad = slideOnLeft;
-        SlideToLoadRotation = 90;
-        SlideToUnLoad = slides[activeSlideIndex + 2];
-        SlideToUnLoadRotation = -90;
-      }
-
-      if (activeSlideIndex === 0 && way == "next") {
-        SlideToUnLoad = slides[slides.length - 2];
-      }
-      if (activeSlideIndex === 1 && way == "next") {
-        SlideToUnLoad = slides[slides.length - 1];
-      }
-      if (activeSlideIndex === 0 && way == "prev") {
-        SlideToUnLoad = slides[2];
-      }
-      if (activeSlideIndex === 1 && way == "prev") {
-        SlideToUnLoad = slides[3];
-      }
-      if (activeSlideIndex === slides.length - 1 && way == "prev") {
-        SlideToUnLoad = slides[1];
-      }
-      if (activeSlideIndex === slides.length - 2 && way == "prev") {
-        SlideToUnLoad = slides[0];
-      }
-
-      $(".slide--active").removeClass("slide--active");
-      $(slideOnCenter).addClass("slide--active");
-
-      gsap
-        .timeline()
-        .to(SlideToUnLoad, {
-          rotate: SlideToUnLoadRotation,
-          opacity: 0,
-        })
-        .set(
-          slideToLoad,
-          {
-            rotate: SlideToLoadRotation,
-            opacity: 0,
-          },
-          "<"
-        )
-        .to(
-          slideOnCenter,
-
-          {
-            opacity: 1,
-            rotate: 0,
-          },
-          "<"
-        )
-        .to(
-          slideOnLeft,
-
-          {
-            opacity: 1,
-            rotate: 45,
-          },
-          "<"
-        )
-        .to(
-          slideOnRight,
-
-          {
-            opacity: 1,
-            rotate: -45,
-          },
-          "<"
-        );
-    }
-
-    function updateIndex() {
-      if (activeSlideIndex < 0) {
-        activeSlideIndex = slides.length - 1;
-      } else if (activeSlideIndex > slides.length - 1) {
-        activeSlideIndex = 0;
-      }
-    }
-
-    $(".prev").click(function () {
-      updateSlider("prev");
+  // 데이터 수신
+  const { data, isLoading, isError, error } = useQuery(["getDiaries"], () => {
+    return axios.get(`${process.env.REACT_APP_BASEURL}/?page=1&size=5`, {
+      headers: { Authorization: accessToken },
     });
-    $(".next").click(function () {
-      updateSlider("next");
-    });
-  }, []);
-
-  //무한스크롤
-
-  const { ref: refForPrivate, inView: inViewForPrivate } = useInView({
-    threshold: 0,
   });
   const { ref: refForPublic, inView: inViewForPublic } = useInView({
     threshold: 0,
@@ -183,64 +56,65 @@ const MainPage = () => {
   const [dataListForPublic, setDataListForPublic] = useState([]);
 
   // api public에서 바꿔야 합니다.
-  useEffect(() => {
-    setIsLoadingForSelfMadePrivate(true);
-    axios
-      .get(`${process.env.REACT_APP_BASEURL}/public?page=${0}&size=5`, {
-        headers: { Authorization: accessToken },
-      })
-      .then((res) => {
-        setIsLoadingForSelfMadePrivate(false);
-        setDataListForSelfMadePrivate((prev) => [...prev, ...res.data.content]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   setIsLoadingForSelfMadePrivate(true);
+  //   axios
+  //     .get(`${process.env.REACT_APP_BASEURL}/public?page=${0}&size=5`, {
+  //       headers: { Authorization: accessToken },
+  //     })
+  //     .then((res) => {
+  //       setIsLoadingForSelfMadePrivate(false);
+  //       console.log(res.data.content);
+  //       setDataListForSelfMadePrivate((prev) => [...prev, ...res.data.content]);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   // <------------------------------ api상 private에서 invite로 바꿔야 합니다.
-  useEffect(() => {
-    if (inViewForPrivate) {
-      setIsLoadingForPrivate(true);
-      axios
-        .get(
-          `${process.env.REACT_APP_BASEURL}/private?page=${privatePage}&size=5`,
-          {
-            headers: { Authorization: accessToken },
-          }
-        )
-        .then((res) => {
-          setIsLoadingForPrivate(false);
+  // useEffect(() => {
+  //   if (inViewForPrivate) {
+  //     setIsLoadingForPrivate(true);
+  //     axios
+  //       .get(
+  //         `${process.env.REACT_APP_BASEURL}/private?page=${privatePage}&size=5`,
+  //         {
+  //           headers: { Authorization: accessToken },
+  //         }
+  //       )
+  //       .then((res) => {
+  //         setIsLoadingForPrivate(false);
 
-          setDataListForPrivate((prev) => [...prev, ...res.data]);
-          setPrivatePage((prev) => prev + 1);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [inViewForPrivate]);
+  //         setDataListForPrivate((prev) => [...prev, ...res.data]);
+  //         setPrivatePage((prev) => prev + 1);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // }, [inViewForPrivate]);
 
-  useEffect(() => {
-    if (inViewForPublic) {
-      setIsLoadingForPublic(true);
-      axios
-        .get(
-          `${process.env.REACT_APP_BASEURL}/public?page=${publicPage}&size=5`,
-          {
-            headers: { Authorization: accessToken },
-          }
-        )
-        .then((res) => {
-          setIsLoadingForPublic(false);
-          setDataListForPublic((prev) => [...prev, ...res.data.content]);
-          setPublicPage((prev) => prev + 1);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [inViewForPublic]);
+  // useEffect(() => {
+  //   if (inViewForPublic) {
+  //     setIsLoadingForPublic(true);
+  //     axios
+  //       .get(
+  //         `${process.env.REACT_APP_BASEURL}/public?page=${publicPage}&size=5`,
+  //         {
+  //           headers: { Authorization: accessToken },
+  //         }
+  //       )
+  //       .then((res) => {
+  //         setIsLoadingForPublic(false);
+  //         setDataListForPublic((prev) => [...prev, ...res.data.content]);
+  //         setPublicPage((prev) => prev + 1);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // }, [inViewForPublic]);
 
   //원형 카로셀
   const [touchStartX, setTouchStartX] = useState(0);
@@ -258,13 +132,27 @@ const MainPage = () => {
     }
   };
 
-  const curUserNickname = useSelector(
-    (state) => state.currentUserInfoSlice.userNickname
-  );
 
-  const goToDiaryDetail = (id) => {
-    navigate(`/diaries/${id}`);
+  console.log(data);
+  const diaryList = data?.data;
+  console.log(diaryList);
+
+  const onClickFilterButtonHandler = (val) => {
+    filterMode = val;
   };
+
+  const [dataListForSelfMade, setDataListForSelfMade] = useState([
+    {},
+    {},
+    {},
+    {},
+    {},
+  ]);
+  axios
+    .get(`${process.env.REACT_APP_BASEURL}/public?page=${0}&size=5`, {
+      headers: { Authorization: accessToken },
+    })
+    .then((res) => console.log(res));
 
   return (
     <div>
@@ -290,7 +178,7 @@ const MainPage = () => {
           </div>
         </WelcomeArea>
         <div className="slider__container">
-          {dataListForSelfMadePrivate?.map((item, i) => (
+          {dataListForSelfMade?.map((item, i) => (
             <div key={i} className="slide__container">
               <div className="slide">{i}</div>
             </div>
@@ -376,31 +264,28 @@ const MainPage = () => {
           </Swiper>
         </SwiperArea>
       </div>
+
       <Navigationbar />
-    </div>
+    </WholeArea>
   );
 };
 
 export default MainPage;
 
-const WelcomeArea = styled.div`
-  display: flex;
-  justify-content: space-between;
-  z-index: 1;
-  position: absolute;
-  top: 5vh;
-  background-color: #c2e9f9;
-  width: 90vw;
+const WelcomeMsg = styled.h2`
+  position: relative;
+  right: 80px;
 `;
 
-const CircularCarousel = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: #ededed;
+const ProfileImg = styled.div`
+  position: relative;
+  left: 120px;
+  bottom: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 70%;
   overflow: hidden;
-
+  
   .slider__container {
     display: block;
     background-size: cover;
@@ -432,7 +317,7 @@ const CircularCarousel = styled.div`
         height: 126px;
         border-radius: 25px;
         background-color: red;
-        /* background: rgba(red, 0.5); */
+        background: rgba(red, 0.5);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -473,27 +358,25 @@ const SwiperArea = styled.div`
     height: 100%;
     object-fit: cover;
   }
-
-  .swiper-slide {
-    height: 196px;
-    width: 140px;
-  }
 `;
 
-const Label = styled.div`
-  margin: 10px;
-  font-weight: 800;
+const Thumb = styled.div`
+  background-color: gray;
+  width: 300px;
+  height: 200px;
+  margin-bottom: 10px;
 `;
 
-const SlideOne = styled.div`
-  border-radius: 25px;
-  font-weight: 700;
-  font-size: 10px;
-  color: #fff;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url(${({ imageUrl }) => imageUrl});
-  background-size: cover;
+const FilterArea = styled.div`
+  width: 280px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+`;
+
+const FilterButton = styled.div`
+  height: 20px;
+  padding: 0px 20px;
+  background-color: #d7d7d7;
+  border-radius: 20px;
 `;

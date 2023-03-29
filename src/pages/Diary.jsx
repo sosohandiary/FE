@@ -1,16 +1,14 @@
 import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import { GrayButtonMedium } from "../styles/Buttons";
-import { VscBlank } from "react-icons/vsc";
 import axios from "axios";
-
+import { VscBlank } from "react-icons/vsc";
 const Diary = () => {
   const accessToken = window.localStorage.getItem("accessToken");
   const [file, setFile] = useState();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [previewImage, setPreviewImage] = useState();
-
   const handleChange = useCallback((e) => {
     if (e.target.files === null) return;
     if (e.target.files[0]) {
@@ -59,7 +57,6 @@ const Diary = () => {
         <Textbox>다이어리 만들기</Textbox>
         <VscBlank className="VscBlank" />
       </TopBox>
-
       {previewImage && ( // 업로드하려는 이미지를 미리 보여줌
         <img
           alt="preview"
@@ -94,7 +91,7 @@ const Diary = () => {
 
         <input type={"file"} onChange={handleChange} />
         <GrayButtonMedium>사진으로 설정하기</GrayButtonMedium>
-        <button onClick={handleClick}>생성하기</button>
+        <button onClick={handleClick}>업로드 요청</button>
       </form>
     </Wholebox>
   );
@@ -169,3 +166,5 @@ const Textbox = styled.div`
   font-weight: bolder;
   margin: 15px;
 `;
+
+
