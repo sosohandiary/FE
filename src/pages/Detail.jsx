@@ -1,22 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import "react-spring-bottom-sheet/dist/style.css";
-
 import CommentBox from "../components/detail/CommentBox";
 import { IoChatbubblesOutline } from "react-icons/io5";
 import "react-spring-bottom-sheet/dist/style.css";
 import Like from "../components/detail/Like";
-
 import { WholeAreaWithMargin, WholeViewWidth } from "../styles/WholeAreaStyle";
 import GetUser from "../components/detail/GetUser";
 import styled from "styled-components";
 import { MdArrowBack } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const Detail = () => {
+  const navigate = useNavigate();
   const sheetRef = useRef();
   const [open, setOpen] = useState(false);
-
-  console.log(11111);
 
   useEffect(() => {
     sheetRef.current.click();
@@ -24,7 +22,7 @@ const Detail = () => {
 
   return (
     <>
-      <StyledGobackButton />
+      <StyledGobackButton onClick={() => navigate(-1)} />
 
       <StyledDerailPage>
         <GetUser />
@@ -35,9 +33,7 @@ const Detail = () => {
         </WholeAreaWithMargin>
       </StyledDerailPage>
 
-      <button style={{ display: "none" }} ref={sheetRef} onClick={() => setOpen(true)}>
-        Open
-      </button>
+      <button style={{ display: "none" }} ref={sheetRef} onClick={() => setOpen(true)}></button>
       <BottomSheet
         open={open}
         header={
@@ -50,7 +46,7 @@ const Detail = () => {
           </DetailElement>
         }
         defaultSnap={({ snapPoints }) => snapPoints}
-        snapPoints={({ minHeight, maxHeight }) => [60, maxHeight]}
+        snapPoints={({ minHeight, maxHeight }) => [60, 800]}
         blocking={false}
       >
         <CommentBox />

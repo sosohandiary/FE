@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
 import { RiPencilFill, RiDeleteBin6Fill, RiCheckFill, RiCloseFill } from "react-icons/ri";
-import { IoChatbubblesOutline } from "react-icons/io5";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
@@ -11,7 +10,7 @@ import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
 
 const CommentBox = () => {
-  const [showComments, setShowComments] = useState(true);
+  const [showComments] = useState(true);
   const [comment, setComment] = useState({
     comment: "",
   });
@@ -103,6 +102,7 @@ const CommentBox = () => {
       <WholeAreaWithMargin>
         <CommentsContainer show={showComments}>
           <h3>댓글</h3>
+
           {mycomment?.map((comment) => {
             const createdAtAgo = <GetTimeAgo createdAt={comment.createdAt} />;
             return (
@@ -113,6 +113,7 @@ const CommentBox = () => {
                     <span>{comment.commentName}</span>
                     <span>{createdAtAgo}</span>
                   </UserBox>
+
                   <IconStyle>
                     {isEditing && editingComment.commentId === comment.commentId ? (
                       <>
@@ -131,15 +132,17 @@ const CommentBox = () => {
               </React.Fragment>
             );
           })}
-
-          <CommentInput
-            name="comment"
-            placeholder={isEditing ? "댓글 수정하기" : "댓글 달기"}
-            value={comment.comment}
-            onChange={inputChangeHandler}
-            onKeyDown={handleKeyDown}
-          />
         </CommentsContainer>
+      </WholeAreaWithMargin>
+
+      <WholeAreaWithMargin>
+        <CommentInput
+          name="comment"
+          placeholder={isEditing ? "댓글 수정하기" : "댓글 달기"}
+          value={comment.comment}
+          onChange={inputChangeHandler}
+          onKeyDown={handleKeyDown}
+        />
       </WholeAreaWithMargin>
     </div>
   );
@@ -160,13 +163,17 @@ const CommetnslideUp = keyframes`
 
 const CommentsContainer = styled.div`
   width: 375px;
-  height: 100vh;
+  height: 600px;
   display: ${(props) => (props.show ? "block" : "none")};
   border: none;
-  background-color: #f1f1f1;
-  border-radius: 30px 30px 0px 0px;
+  /* background-color: #f1f1f1; */
+  /* border-radius: 30px 30px 0px 0px; */
   padding: 10px;
-  margin-top: 10px;
+  margin-top: -25px;
+  margin-bottom: -25px;
+  overflow-y: auto;
+  position: relative;
+
   ${(props) =>
     props.show &&
     css`
@@ -184,17 +191,15 @@ const CommentsContainer = styled.div`
 `;
 
 const CommentInput = styled.input`
-  width: 327px;
+  width: 360px;
   height: 40px;
-  margin-bottom: 10px;
-  margin-left: 10px;
+  /* margin-top: 10px; */
   padding: 5px;
-  resize: none;
-  background: #ffffff;
+  /* resize: none; */
   border: none;
   border-radius: 20px;
-  position: absolute;
-  bottom: 0;
+  background-color: #f1f1f1;
+  outline: none;
 `;
 
 const CommentStyle = styled.div`
