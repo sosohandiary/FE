@@ -183,64 +183,65 @@ const MainPage = () => {
   const [dataListForPublic, setDataListForPublic] = useState([]);
 
   // api public에서 바꿔야 합니다.
-  useEffect(() => {
-    setIsLoadingForSelfMadePrivate(true);
-    axios
-      .get(`${process.env.REACT_APP_BASEURL}/public?page=${0}&size=5`, {
-        headers: { Authorization: accessToken },
-      })
-      .then((res) => {
-        setIsLoadingForSelfMadePrivate(false);
-        setDataListForSelfMadePrivate((prev) => [...prev, ...res.data.content]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   setIsLoadingForSelfMadePrivate(true);
+  //   axios
+  //     .get(`${process.env.REACT_APP_BASEURL}/public?page=${0}&size=5`, {
+  //       headers: { Authorization: accessToken },
+  //     })
+  //     .then((res) => {
+  //       setIsLoadingForSelfMadePrivate(false);
+  //       console.log(res.data.content);
+  //       setDataListForSelfMadePrivate((prev) => [...prev, ...res.data.content]);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   // <------------------------------ api상 private에서 invite로 바꿔야 합니다.
-  useEffect(() => {
-    if (inViewForPrivate) {
-      setIsLoadingForPrivate(true);
-      axios
-        .get(
-          `${process.env.REACT_APP_BASEURL}/private?page=${privatePage}&size=5`,
-          {
-            headers: { Authorization: accessToken },
-          }
-        )
-        .then((res) => {
-          setIsLoadingForPrivate(false);
+  // useEffect(() => {
+  //   if (inViewForPrivate) {
+  //     setIsLoadingForPrivate(true);
+  //     axios
+  //       .get(
+  //         `${process.env.REACT_APP_BASEURL}/private?page=${privatePage}&size=5`,
+  //         {
+  //           headers: { Authorization: accessToken },
+  //         }
+  //       )
+  //       .then((res) => {
+  //         setIsLoadingForPrivate(false);
 
-          setDataListForPrivate((prev) => [...prev, ...res.data]);
-          setPrivatePage((prev) => prev + 1);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [inViewForPrivate]);
+  //         setDataListForPrivate((prev) => [...prev, ...res.data]);
+  //         setPrivatePage((prev) => prev + 1);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // }, [inViewForPrivate]);
 
-  useEffect(() => {
-    if (inViewForPublic) {
-      setIsLoadingForPublic(true);
-      axios
-        .get(
-          `${process.env.REACT_APP_BASEURL}/public?page=${publicPage}&size=5`,
-          {
-            headers: { Authorization: accessToken },
-          }
-        )
-        .then((res) => {
-          setIsLoadingForPublic(false);
-          setDataListForPublic((prev) => [...prev, ...res.data.content]);
-          setPublicPage((prev) => prev + 1);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [inViewForPublic]);
+  // useEffect(() => {
+  //   if (inViewForPublic) {
+  //     setIsLoadingForPublic(true);
+  //     axios
+  //       .get(
+  //         `${process.env.REACT_APP_BASEURL}/public?page=${publicPage}&size=5`,
+  //         {
+  //           headers: { Authorization: accessToken },
+  //         }
+  //       )
+  //       .then((res) => {
+  //         setIsLoadingForPublic(false);
+  //         setDataListForPublic((prev) => [...prev, ...res.data.content]);
+  //         setPublicPage((prev) => prev + 1);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // }, [inViewForPublic]);
 
   //원형 카로셀
   const [touchStartX, setTouchStartX] = useState(0);
@@ -266,6 +267,19 @@ const MainPage = () => {
     navigate(`/diaries/${id}`);
   };
 
+  const [dataListForSelfMade, setDataListForSelfMade] = useState([
+    {},
+    {},
+    {},
+    {},
+    {},
+  ]);
+  axios
+    .get(`${process.env.REACT_APP_BASEURL}/public?page=${0}&size=5`, {
+      headers: { Authorization: accessToken },
+    })
+    .then((res) => console.log(res));
+
   return (
     <div>
       <CircularCarousel
@@ -290,7 +304,7 @@ const MainPage = () => {
           </div>
         </WelcomeArea>
         <div className="slider__container">
-          {dataListForSelfMadePrivate?.map((item, i) => (
+          {dataListForSelfMade?.map((item, i) => (
             <div key={i} className="slide__container">
               <div className="slide">{i}</div>
             </div>
@@ -432,7 +446,7 @@ const CircularCarousel = styled.div`
         height: 126px;
         border-radius: 25px;
         background-color: red;
-        /* background: rgba(red, 0.5); */
+        background: rgba(red, 0.5);
         display: flex;
         justify-content: center;
         align-items: center;
