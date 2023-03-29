@@ -14,6 +14,7 @@ import { Pagination } from "swiper";
 import ReactPaginate from "react-paginate";
 
 import { getDate } from "../utils/getDate";
+import DecorationBoard from "../components/DecorationBoard";
 
 function SubPage() {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ function SubPage() {
 
   return (
     <>
-      <Title size='18'>다이어리 상세보기</Title>
+      <Title size="18">다이어리 상세보기</Title>
       {data?.map((item, index) => {
         return (
           <div key={item.id}>
@@ -78,15 +79,16 @@ function SubPage() {
             // }
           }}
           modules={[Pagination]}
-          className='mySwiper'
+          className="mySwiper"
         >
           {data?.map((item) => (
             <SwiperSlide key={item.id}>
               <img src={item.url} alt={item.title} />
               {/* <StButton onClick={()=>{navTest(item.id)}}><StPageCard>{item.customJson}</StPageCard></StButton> */}
               <Link to={`/detail/${item.id}`}>
-                <StPageCard>{item.customJson}</StPageCard>
+                <StPageCard></StPageCard>
               </Link>
+              <DecorationBoard customJson={item.customJson}></DecorationBoard>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -95,8 +97,8 @@ function SubPage() {
           onPageChange={handlePageClick}
           containerClassName={"pagination"}
           activeClassName={"active"}
-          previousLabel='<'
-          nextLabel='>'
+          previousLabel="<"
+          nextLabel=">"
         />
       </div>
     </>

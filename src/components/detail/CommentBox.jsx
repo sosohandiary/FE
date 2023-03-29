@@ -6,39 +6,18 @@ import { IoChatbubblesOutline } from "react-icons/io5";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
-import Like from "./Like";
 
-function getTimeAgo(createdAt) {
-  const date = new Date(createdAt);
-  const now = new Date();
-  const diff = Math.floor((now - date) / 1000);
-
-  if (diff < 60) {
-    return `${diff}초 전`;
-  } else if (diff < 60 * 60) {
-    const minutes = Math.floor(diff / 60);
-    return `${minutes}분 전`;
-  } else if (diff < 60 * 60 * 24) {
-    const hours = Math.floor(diff / (60 * 60));
-    return `${hours}시간 전`;
-  } else {
-    const days = Math.floor(diff / (60 * 60 * 24));
-    return `${days}일 전`;
-  }
-}
+import GetTimeAgo from "../GetTimeAgo";
+import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
 
 const CommentBox = () => {
-  const [showComments, setShowComments] = useState(false);
+  const [showComments, setShowComments] = useState(true);
   const [comment, setComment] = useState({
     comment: "",
   });
   const [editingComment, setEditingComment] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [test, setTest] = useState(null);
-
-  const toggleComments = () => {
-    setShowComments((prev) => !prev);
-  };
 
   const queryClient = useQueryClient();
   const { id } = useParams();
@@ -103,7 +82,7 @@ const CommentBox = () => {
     setIsEditing(true);
     setEditingComment(comment);
     setComment({ comment: comment.comment });
-    setTest(comment);
+    setTest(comment.commentId);
   };
 
   const onCancelEditHandler = () => {
@@ -113,7 +92,7 @@ const CommentBox = () => {
   };
 
   const onUpdateHandler = () => {
-    updatedCommentMutate(test.commentId);
+    updatedCommentMutate(test);
     setIsEditing(false);
     setEditingComment(null);
     setComment({ comment: "" });
@@ -121,52 +100,47 @@ const CommentBox = () => {
 
   return (
     <div>
-      <DetailElement>
-        <CommentIcon onClick={toggleComments} />
-        {/* 5 -> 댓글 및 좋아요수 받아오기 */}
-        5
-        <Like />5
-      </DetailElement>
+      <WholeAreaWithMargin>
+        <CommentsContainer show={showComments}>
+          <h3>댓글</h3>
+          {mycomment?.map((comment) => {
+            const createdAtAgo = <GetTimeAgo createdAt={comment.createdAt} />;
+            return (
+              <React.Fragment key={comment.commentId}>
+                <CommentStyle>
+                  <ProfilePicSmall src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAyMTVfMTA5%2FMDAxNjc2NDMyNzA5NDIy.Di4Jca6bfg9LaSOaeeO3vwdHwRqMVt-14xV2Xat4raUg.xwfQrSJhrS0WuJUuaAdEalXb_Z1BEEOKx_my1FHX9d0g.JPEG.qmfosej%2FIMG_9285.jpg&type=a340" />
+                  <UserBox>
+                    <span>{comment.commentName}</span>
+                    <span>{createdAtAgo}</span>
+                  </UserBox>
+                  <IconStyle>
+                    {isEditing && editingComment.commentId === comment.commentId ? (
+                      <>
+                        <CancelIcon onClick={onCancelEditHandler} />
+                        <UpdateIcon onClick={onUpdateHandler} />
+                      </>
+                    ) : (
+                      <>
+                        <EditIcon onClick={() => onEditHandler(comment)} />
+                        <DeleteIcon onClick={() => onDeleteHandler(comment.commentId)} />
+                      </>
+                    )}
+                  </IconStyle>
+                </CommentStyle>
+                <CommentText>{comment.comment}</CommentText>
+              </React.Fragment>
+            );
+          })}
 
-      <CommentsContainer show={showComments}>
-        <h3>댓글</h3>
-        {mycomment?.map((comment) => {
-          const createdAtAgo = getTimeAgo(comment.createdAt);
-          return (
-            <React.Fragment key={comment.commentId}>
-              <CommentStyle>
-                <ProfilePicSmall src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAyMTVfMTA5%2FMDAxNjc2NDMyNzA5NDIy.Di4Jca6bfg9LaSOaeeO3vwdHwRqMVt-14xV2Xat4raUg.xwfQrSJhrS0WuJUuaAdEalXb_Z1BEEOKx_my1FHX9d0g.JPEG.qmfosej%2FIMG_9285.jpg&type=a340" />
-                <UserBox>
-                  <span>{comment.commentName}</span>
-                  <span>{createdAtAgo}</span>
-                </UserBox>
-                <IconStyle>
-                  {isEditing && editingComment.commentId === comment.commentId ? (
-                    <>
-                      <CancelIcon onClick={onCancelEditHandler} />
-                      <UpdateIcon onClick={onUpdateHandler} />
-                    </>
-                  ) : (
-                    <>
-                      <EditIcon onClick={() => onEditHandler(comment)} />
-                      <DeleteIcon onClick={() => onDeleteHandler(comment.commentId)} />
-                    </>
-                  )}
-                </IconStyle>
-              </CommentStyle>
-              <CommentText>{comment.comment}</CommentText>
-            </React.Fragment>
-          );
-        })}
-
-        <CommentInput
-          name="comment"
-          placeholder={isEditing ? "댓글 수정하기" : "댓글 달기"}
-          value={comment.comment}
-          onChange={inputChangeHandler}
-          onKeyDown={handleKeyDown}
-        />
-      </CommentsContainer>
+          <CommentInput
+            name="comment"
+            placeholder={isEditing ? "댓글 수정하기" : "댓글 달기"}
+            value={comment.comment}
+            onChange={inputChangeHandler}
+            onKeyDown={handleKeyDown}
+          />
+        </CommentsContainer>
+      </WholeAreaWithMargin>
     </div>
   );
 };
@@ -184,25 +158,12 @@ const CommetnslideUp = keyframes`
   }
 `;
 
-const DetailElement = styled.div`
-  display: flex;
-`;
-
-const CommentIcon = styled(IoChatbubblesOutline)`
-  font-size: 1.8rem; // 원하는 크기로 조절
-  display: flex;
-  align-items: center;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-`;
-
 const CommentsContainer = styled.div`
   width: 375px;
-  height: 643px;
+  height: 100vh;
   display: ${(props) => (props.show ? "block" : "none")};
   border: none;
-  background-color: #f7dcdc;
+  background-color: #f1f1f1;
   border-radius: 30px 30px 0px 0px;
   padding: 10px;
   margin-top: 10px;
@@ -229,7 +190,7 @@ const CommentInput = styled.input`
   margin-left: 10px;
   padding: 5px;
   resize: none;
-  background: #f0f0f0;
+  background: #ffffff;
   border: none;
   border-radius: 20px;
   position: absolute;
