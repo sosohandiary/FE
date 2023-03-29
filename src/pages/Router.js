@@ -19,7 +19,6 @@ import NewDiary from "./NewDiary";
 import NewFriend from "./NewFriend";
 import TestCrop from "./TestCrop";
 import DiaryDetail from "./DiaryDetail";
-import TestAnimation from "./TestAnimation";
 import AcceptTest from "./AcceptTest";
 import SubPage from "./SubPage";
 import Diary from "./Diary";
@@ -41,7 +40,6 @@ const Router = () => {
         <Route path="boxtest" element={<BoxTest />} />
         <Route path="/test-crop" element={<TestCrop />} />
         <Route path="test" element={<Test />} />
-        <Route path="/test-animation" element={<TestAnimation />} />
         <Route path="/oauth" element={<Oauth />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/detail/:id" element={<Detail />} />
@@ -50,7 +48,7 @@ const Router = () => {
         <Route path="/diary-detail" element={<DiaryDetail />} />
         <Route path="/myfriends/:mode" element={<MyFriends />} />
         <Route path="/acceptTest" element={<AcceptTest />} />
-        <Route path="/diaries/:diaryId" element={<SubPage/>} />
+        <Route path="/diaries/:diaryId" element={<SubPage />} />
       </Routes>
     </BrowserRouter>
   );
