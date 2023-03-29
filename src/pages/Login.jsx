@@ -17,24 +17,28 @@ import { setCurrentUser } from "../contexts/currentUserInfoSlice";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const alreadySignedUp = window.localStorage.getItem("already signed up");
   const kakaoLoginButtonHandler = () => {
     kakaoLoginApi();
   };
 
-  //최초 방문 시 온보딩으로
-  // useEffect(() => {
-  //   const alreadySignedUp = localStorage.getItem("already signed up");
-  //   if (!alreadySignedUp) {
-  //     navigate("/onboarding");
-  //   }
-  // }, []);
+  useEffect(() => {
+    const alreadySignedUp = localStorage.getItem("already signed up");
+    if (!alreadySignedUp) {
+      navigate("/onboarding");
+    }
+  }, []);
 
   const goToHome = () => {
     navigate("/");
   };
 
   const goToSignup = () => {
-    navigate("/profile");
+    if (alreadySignedUp === true) {
+      navigate("/signup");
+    } else {
+      navigate("/onboarding");
+    }
   };
 
   const goToFindIDPW = () => {
@@ -177,6 +181,7 @@ const LoginForm = styled.form`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin-bottom: 12px;
 `;
 
 const SubmitButtonStyle = styled.div`
