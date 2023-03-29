@@ -7,25 +7,7 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
 import Like from "./Like";
-
-function getTimeAgo(createdAt) {
-  const date = new Date(createdAt);
-  const now = new Date();
-  const diff = Math.floor((now - date) / 1000);
-
-  if (diff < 60) {
-    return `${diff}초 전`;
-  } else if (diff < 60 * 60) {
-    const minutes = Math.floor(diff / 60);
-    return `${minutes}분 전`;
-  } else if (diff < 60 * 60 * 24) {
-    const hours = Math.floor(diff / (60 * 60));
-    return `${hours}시간 전`;
-  } else {
-    const days = Math.floor(diff / (60 * 60 * 24));
-    return `${days}일 전`;
-  }
-}
+import GetTimeAgo from "../GetTimeAgo";
 
 const CommentBox = () => {
   const [showComments, setShowComments] = useState(false);
@@ -131,7 +113,7 @@ const CommentBox = () => {
       <CommentsContainer show={showComments}>
         <h3>댓글</h3>
         {mycomment?.map((comment) => {
-          const createdAtAgo = getTimeAgo(comment.createdAt);
+          const createdAtAgo = <GetTimeAgo createdAt={comment.createdAt} />;
           return (
             <React.Fragment key={comment.commentId}>
               <CommentStyle>
@@ -199,7 +181,7 @@ const CommentIcon = styled(IoChatbubblesOutline)`
 
 const CommentsContainer = styled.div`
   width: 375px;
-  height: 643px;
+  height: 100vh;
   display: ${(props) => (props.show ? "block" : "none")};
   border: none;
   background-color: #f7dcdc;
