@@ -105,13 +105,6 @@ const CommentBox = () => {
   return (
     <div>
       <WholeAreaWithMargin>
-        <DetailElement>
-          <CommentIcon onClick={toggleComments} />
-          {/* 5 -> 댓글 및 좋아요수 받아오기 */}
-          5
-          <Like />5
-        </DetailElement>
-
         <CommentsContainer show={showComments}>
           <h3>댓글</h3>
           {mycomment?.map((comment) => {
@@ -169,25 +162,12 @@ const CommetnslideUp = keyframes`
   }
 `;
 
-const DetailElement = styled.div`
-  display: flex;
-`;
-
-const CommentIcon = styled(IoChatbubblesOutline)`
-  font-size: 1.8rem; // 원하는 크기로 조절
-  display: flex;
-  align-items: center;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-`;
-
 const CommentsContainer = styled.div`
   width: 375px;
   height: 100vh;
   display: ${(props) => (props.show ? "block" : "none")};
   border: none;
-  background-color: #f7dcdc;
+  background-color: #f1f1f1;
   border-radius: 30px 30px 0px 0px;
   padding: 10px;
   margin-top: 10px;
