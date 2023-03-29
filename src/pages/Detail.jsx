@@ -1,11 +1,27 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { BottomSheet } from "react-spring-bottom-sheet";
+import "react-spring-bottom-sheet/dist/style.css";
+
 import CommentBox from "../components/detail/CommentBox";
+import { IoChatbubblesOutline } from "react-icons/io5";
+import "react-spring-bottom-sheet/dist/style.css";
+import Like from "../components/detail/Like";
+
 import { WholeAreaWithMargin, WholeViewWidth } from "../styles/WholeAreaStyle";
 import GetUser from "../components/detail/GetUser";
 import styled from "styled-components";
 import { MdArrowBack } from "react-icons/md";
 
 const Detail = () => {
+  const sheetRef = useRef();
+  const [open, setOpen] = useState(false);
+
+  console.log(11111);
+
+  useEffect(() => {
+    sheetRef.current.click();
+  }, []);
+
   return (
     <>
       <StyledGobackButton />
@@ -17,8 +33,27 @@ const Detail = () => {
             <StyledDetailCard>일기데이터 받아오기</StyledDetailCard>
           </StyledDetailCardWrapper>
         </WholeAreaWithMargin>
-        <CommentBox />
       </StyledDerailPage>
+
+      <button style={{ display: "none" }} ref={sheetRef} onClick={() => setOpen(true)}>
+        Open
+      </button>
+      <BottomSheet
+        open={open}
+        header={
+          <DetailElement>
+            <CommentIcon />
+            {/* 5 -> 댓글 및 좋아요수 받아오기 */}
+            5
+            <Like />5
+          </DetailElement>
+        }
+        defaultSnap={({ snapPoints }) => snapPoints}
+        snapPoints={({ minHeight, maxHeight }) => [60, maxHeight]}
+        blocking={false}
+      >
+        <CommentBox />
+      </BottomSheet>
     </>
   );
 };
@@ -55,4 +90,17 @@ const StyledDetailCard = styled.div`
   background-color: #f1f1f1;
   border-radius: 30px 30px 0px 0px;
   padding: 10px;
+`;
+
+const DetailElement = styled.div`
+  display: flex;
+`;
+
+const CommentIcon = styled(IoChatbubblesOutline)`
+  font-size: 1.8rem; // 원하는 크기로 조절
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 `;
