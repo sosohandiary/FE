@@ -14,33 +14,19 @@ const Navigationbar = () => {
     navigate(to);
   };
 
-  const test = () => {
-    console.log("dd");
-  };
   return (
-    <>
-      <BiPlus className="BiPlus" onClick={test} />
-
-      <BottomBox onClick={test}>
-        <VscHome className="VscHome" onClick={test} />
-        <VscBell className="VscBell" onClick={test} />
-        <BiPlus className="BiPlus" onClick={test} />
-        <RxMagnifyingGlass className="RxMagnifyingGlass" onClick={test} />
-        <RxPerson className="RxPerson" onClick={test} />
-      </BottomBox>
-
-      {/* <CircleBox>
-        <VscBlank className="VscBlank" />
-        <FaCircle className="FaCircle" />
-        <VscBlank className="VscBlank" />
-      </CircleBox>
-
-      <PlusBox>
-        <VscBlank className="VscBlank" />
-        <BiPlus className="BiPlus" />
-        <VscBlank className="VscBlank" />
-      </PlusBox> */}
-    </>
+    <BottomBox>
+      <VscHome className="VscHome" onClick={() => goToPage("/")} />
+      <VscBell className="VscBell" onClick={() => goToPage("/notification")} />
+      <div style={{ fontSize: "50px" }} onClick={() => goToPage("/diary")}>
+        +
+      </div>
+      <RxMagnifyingGlass
+        className="RxMagnifyingGlass"
+        onClick={() => goToPage("/new-friend")}
+      />
+      <RxPerson className="RxPerson" onClick={() => goToPage("/mypage")} />
+    </BottomBox>
   );
 };
 
@@ -50,26 +36,64 @@ const BottomBox = styled.div`
   background-color: #ececec;
   display: flex;
   justify-content: space-evenly;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   .VscHome {
     font-size: 30px;
     padding: 20px;
+    transition-duration: 0.5s;
+    :hover {
+      background-color: #d4d4d4;
+    }
+    :active {
+      background-color: #919191;
+    }
   }
   .VscBell {
     font-size: 30px;
     padding: 20px;
+    transition-duration: 0.5s;
+    :hover {
+      background-color: #d4d4d4;
+    }
+    :active {
+      background-color: #919191;
+    }
   }
   .BiPlus {
     font-size: 30px;
     padding: 20px;
     color: #ececec;
+    transition-duration: 0.5s;
+    :hover {
+      background-color: #d4d4d4;
+    }
+    :active {
+      background-color: #919191;
+    }
   }
   .RxMagnifyingGlass {
     font-size: 30px;
     padding: 20px;
+    transition-duration: 0.5s;
+    :hover {
+      background-color: #d4d4d4;
+    }
+    :active {
+      background-color: #919191;
+    }
   }
   .RxPerson {
     font-size: 30px;
     padding: 20px;
+    transition-duration: 0.5s;
+    :hover {
+      background-color: #d4d4d4;
+    }
+    :active {
+      background-color: #919191;
+    }
   }
 `;
 

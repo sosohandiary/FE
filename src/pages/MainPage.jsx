@@ -10,8 +10,19 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import { useSelector } from "react-redux";
 import Navigationbar from "../components/Navigationbar";
+import { useNavigate } from "react-router-dom";
 
 const MainPage = () => {
+  const navigate = useNavigate();
+
+  //비로그인 -> 로그인창으로
+  const accessToken = window.localStorage.getItem("accessToken");
+  useEffect(() => {
+    if (accessToken === null) {
+      navigate("/login");
+    }
+  }, []);
+
   // 원형 카로셀
   useEffect(() => {
     const slides = $(".slide__container");
@@ -165,35 +176,22 @@ const MainPage = () => {
     useState(false);
   const [IsLoadingForPrivate, setIsLoadingForPrivate] = useState(false);
   const [IsLoadingForPublic, setIsLoadingForPublic] = useState(false);
-  const [dataListForSelfMadePrivate, setDataListForSelfMadePrivate] = useState([
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ]);
+  const [dataListForSelfMadePrivate, setDataListForSelfMadePrivate] = useState(
+    []
+  );
   const [dataListForPrivate, setDataListForPrivate] = useState([]);
   const [dataListForPublic, setDataListForPublic] = useState([]);
-
-  const accessToken = window.localStorage.getItem("accessToken");
 
   // api public에서 바꿔야 합니다.
   useEffect(() => {
     setIsLoadingForSelfMadePrivate(true);
     axios
-      .get(
-        `${process.env.REACT_APP_BASEURL}/private?page=${selfMadePrivatePage}&size=5`,
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
+      .get(`${process.env.REACT_APP_BASEURL}/public?page=${0}&size=5`, {
+        headers: { Authorization: accessToken },
+      })
       .then((res) => {
         setIsLoadingForSelfMadePrivate(false);
         setDataListForSelfMadePrivate((prev) => [...prev, ...res.data.content]);
-        setSelfMadePrivatePage((prev) => prev + 1);
       })
       .catch((err) => {
         console.log(err);
@@ -213,7 +211,8 @@ const MainPage = () => {
         )
         .then((res) => {
           setIsLoadingForPrivate(false);
-          setDataListForPrivate((prev) => [...prev, ...res.data.content]);
+
+          setDataListForPrivate((prev) => [...prev, ...res.data]);
           setPrivatePage((prev) => prev + 1);
         })
         .catch((err) => {
@@ -263,6 +262,10 @@ const MainPage = () => {
     (state) => state.currentUserInfoSlice.userNickname
   );
 
+  const goToDiaryDetail = (id) => {
+    navigate(`/diaries/${id}`);
+  };
+
   return (
     <div>
       <CircularCarousel
@@ -287,9 +290,9 @@ const MainPage = () => {
           </div>
         </WelcomeArea>
         <div className="slider__container">
-          {dataListForSelfMadePrivate.map((item, i) => (
+          {dataListForSelfMadePrivate?.map((item, i) => (
             <div key={i} className="slide__container">
-              <div className="slide">cc{i}</div>
+              <div className="slide">{i}</div>
             </div>
           ))}
         </div>
@@ -313,7 +316,12 @@ const MainPage = () => {
             className="mySwiper"
           >
             {dataListForPrivate.map((item) => (
-              <SwiperSlide key={item.id}>
+              <SwiperSlide
+                key={item.id}
+                onClick={() => {
+                  goToDiaryDetail(item.id);
+                }}
+              >
                 <SlideOne imageUrl={item.img}>
                   <h1>{item.title}</h1>
                   <h3>{item.name}</h3>
@@ -344,7 +352,12 @@ const MainPage = () => {
             className="mySwiper"
           >
             {dataListForPublic.map((item) => (
-              <SwiperSlide key={item.id}>
+              <SwiperSlide
+                key={item.id}
+                onClick={() => {
+                  goToDiaryDetail(item.id);
+                }}
+              >
                 <SlideOne imageUrl={item.img}>
                   <h1>{item.title}</h1>
                   <h3>{item.name}</h3>
