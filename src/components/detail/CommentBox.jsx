@@ -190,7 +190,7 @@ const CommentInput = styled.input`
   margin-left: 10px;
   padding: 5px;
   resize: none;
-  background: #f0f0f0;
+  background: #ffffff;
   border: none;
   border-radius: 20px;
   position: absolute;
