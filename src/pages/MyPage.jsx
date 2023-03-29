@@ -47,12 +47,6 @@ function MyPage() {
   const navToFriendsList = () => {
     navigate("/myfriends/list");
   };
-
-  const LogoutHandler = () => {
-    localStorage.removeItem("accessToken");
-    alert("로그아웃! 이 메세지 없애주세요");
-    navigate("/login");
-  };
   return (
     <>
       <WholeArea style={{ margin: "30px auto", maxWidth: "720px" }}>
@@ -101,9 +95,6 @@ function MyPage() {
           );
         })}
 
-        <StLogout>
-          <LougoutBtn onClick={LogoutHandler}>로그아웃</LougoutBtn>
-        </StLogout>
       </WholeArea>
     </>
   );
@@ -220,15 +211,4 @@ const ConfirmButton = styled.button`
   border: none;
 
   cursor: pointer;
-`;
-
-const StLogout = styled.div`
-  display: flex;
-  align-self: flex-end;
-  margin: 10px;
-`;
-
-const LougoutBtn = styled.button`
-  border: none;
-  background: none;
 `;

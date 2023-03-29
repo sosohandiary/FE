@@ -10,90 +10,74 @@ const Navigationbar = () => {
   const navigate = useNavigate();
 
   const goToPage = (to) => {
-    console.log(to);
+    console.log("to");
     navigate(to);
   };
 
+  const test = () => {
+    console.log("dd");
+  };
   return (
-    <BottomBox>
-      <VscHome className="VscHome" onClick={() => goToPage("/")} />
-      <VscBell className="VscBell" onClick={() => goToPage("/notification")} />
-      <div style={{ fontSize: "50px" }} onClick={() => goToPage("/diary")}>
-        +
-      </div>
-      <RxMagnifyingGlass
-        className="RxMagnifyingGlass"
-        onClick={() => goToPage("/new-friend")}
-      />
-      <RxPerson className="RxPerson" onClick={() => goToPage("/mypage")} />
-    </BottomBox>
+    <>
+      <BottomBox>
+        <VscHome className="VscHome" onClick={test} />
+        <VscBell
+          className="VscBell"
+          onClick={() => goToPage("/notification")}
+        />
+        <BiPlus className="BiPlus" onClick={() => goToPage("/")} />
+        <RxMagnifyingGlass
+          className="RxMagnifyingGlass"
+          onClick={() => goToPage("/search")}
+        />
+        <RxPerson className="RxPerson" onClick={() => goToPage("/mypage")} />
+      </BottomBox>
+
+      <CircleBox>
+        <VscBlank className="VscBlank" />
+        <FaCircle className="FaCircle" />
+        <VscBlank className="VscBlank" />
+      </CircleBox>
+
+      <PlusBox>
+        <VscBlank className="VscBlank" />
+        <BiPlus className="BiPlus" />
+        <VscBlank className="VscBlank" />
+      </PlusBox>
+    </>
   );
 };
 
 export default Navigationbar;
 
 const BottomBox = styled.div`
+  position: fixed;
+  bottom: 0%;
+  width: 100%;
+  z-index: 1;
   background-color: #ececec;
   display: flex;
   justify-content: space-evenly;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
   .VscHome {
     font-size: 30px;
     padding: 20px;
-    transition-duration: 0.5s;
-    :hover {
-      background-color: #d4d4d4;
-    }
-    :active {
-      background-color: #919191;
-    }
   }
   .VscBell {
     font-size: 30px;
     padding: 20px;
-    transition-duration: 0.5s;
-    :hover {
-      background-color: #d4d4d4;
-    }
-    :active {
-      background-color: #919191;
-    }
   }
   .BiPlus {
     font-size: 30px;
     padding: 20px;
     color: #ececec;
-    transition-duration: 0.5s;
-    :hover {
-      background-color: #d4d4d4;
-    }
-    :active {
-      background-color: #919191;
-    }
   }
   .RxMagnifyingGlass {
     font-size: 30px;
     padding: 20px;
-    transition-duration: 0.5s;
-    :hover {
-      background-color: #d4d4d4;
-    }
-    :active {
-      background-color: #919191;
-    }
   }
   .RxPerson {
     font-size: 30px;
     padding: 20px;
-    transition-duration: 0.5s;
-    :hover {
-      background-color: #d4d4d4;
-    }
-    :active {
-      background-color: #919191;
-    }
   }
 `;
 
@@ -101,6 +85,8 @@ const PlusBox = styled.div`
   position: fixed;
   bottom: 0%;
   margin-bottom: 10px;
+  width: 100%;
+  z-index: 1;
   display: flex;
   justify-content: space-evenly;
   background-color: transparent;
@@ -122,6 +108,8 @@ const CircleBox = styled.div`
   position: fixed;
   bottom: 0%;
   margin-bottom: 7px;
+  width: 100%;
+  z-index: 1;
   display: flex;
   justify-content: space-evenly;
   background-color: transparent;

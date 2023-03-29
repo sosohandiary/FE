@@ -53,15 +53,9 @@ const ImageSticker = ({
 
   // 스티커 사전
 
-  const [imgUrl0] = useImage(
-    "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FQI9l1%2Fbtr4t7oeBhs%2FMYKvXRiLsy4mINf9Egxb30%2Fimg.png"
-  );
-  const [imgUrl1] = useImage(
-    "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdXWxWU%2Fbtr4tOJkV2M%2FdYfSWPVUkDz5i7K0lZnJ80%2Fimg.png"
-  );
-  const [imgUrl2] = useImage(
-    "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fcl8BFN%2Fbtr4voJMOf7%2FdmfbZkelRI171YwUDcRdj0%2Fimg.png"
-  );
+  const [imgUrl0] = useImage("https://konvajs.org/assets/lion.png");
+  const [imgUrl1] = useImage("https://konvajs.org/assets/yoda.jpg");
+  const [imgUrl2] = useImage("https://konvajs.org/assets/lion.png");
   // const [imgUrl0] = useImage(imgDictList[0]?.imageURL);
   // const [imgUrl1] = useImage(imgDictList[1]?.imageURL);
   // const [imgUrl2] = useImage(imgDictList[2]?.imageURL);
@@ -201,7 +195,7 @@ const Test = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BASEURL}/diary/1/detail/2`, {
+      .get(`${process.env.REACT_APP_BASEURL}/diary/1/detail/1`, {
         headers: { Authorization: accessToken },
       })
       .then((res) => {
@@ -322,7 +316,7 @@ const Test = () => {
       const sendData = { content: "", customJson: allJSON };
 
       axios
-        .patch(`${process.env.REACT_APP_BASEURL}/diary/1/detail/2`, sendData, {
+        .patch(`${process.env.REACT_APP_BASEURL}/diary/1/detail/1`, sendData, {
           headers: { Authorization: accessToken },
         })
         .then((res) => {

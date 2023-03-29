@@ -15,25 +15,25 @@ function Like() {
   const [likeCount, setLikeCount] = useState(0);
 
   //좋아요 수 get api명세 추가시 활용할 것
-  // const { data: likeData } = useQuery(["likePost"], () => likePost(id, accessToken));
+  const { data: likeData } = useQuery(["likePost"], () => likePost(id, accessToken));
 
-  // const { mutate: likemutation } = useMutation(() => likePost(id, accessToken), {
-  //   onSuccess: (data) => {
-  //     console.log("data?", data);
-  //     queryClient.invalidateQueries("likePost");
-  //   },
-  // });
+  const { mutate: likemutation } = useMutation(() => likePost(id, accessToken), {
+    onSuccess: (data) => {
+      console.log("data?", data);
+      queryClient.invalidateQueries("likePost");
+    },
+  });
 
   const handleClick = () => {
     setIsLiked(!isLiked);
   };
 
-  // useEffect(() => {
-  //   // fetch like count from server on mount
-  //   likePost().then((response) => {
-  //     setLikeCount(response.data.likeCount);
-  //   });
-  // }, []);
+  useEffect(() => {
+    // fetch like count from server on mount
+    likePost().then((response) => {
+      setLikeCount(response.data.likeCount);
+    });
+  }, []);
 
   return (
     <HeartButton onClick={handleClick}>

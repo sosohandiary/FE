@@ -24,6 +24,17 @@ export const ProfilePicSmall = ({ src }) => {
   );
 };
 
+// const CirclePic = styled.div`
+//   border-radius: 50%;
+//   overflow: hidden;
+//   width: ${({ size }) => {
+//     return size === "large" ? "120px" : size === "medium" ? "80px" : "56px";
+//   }};
+//   height: ${({ size }) => {
+//     return size === "large" ? "120px" : size === "medium" ? "80px" : "56px";
+//   }};
+// `;
+
 const CirclePic = styled.div`
   border-radius: 50%;
   overflow: hidden;
