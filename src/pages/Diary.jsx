@@ -1,18 +1,56 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components"; 
+import React, { useState, useCallback } from "react";
+import styled from "styled-components";
+import { GrayButtonMedium } from "../styles/Buttons";
+import axios from "axios";
 import { VscBlank } from "react-icons/vsc";
-import { GrayButtonMedium, MintButtonSmall } from "../styles/Buttons"; 
-import axios from "axios";  
 
-function Diary() {
+const Diary = () => {
+  const accessToken = window.localStorage.getItem("accessToken");
+  const [file, setFile] = useState();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [previewImage, setPreviewImage] = useState();
 
-   //파일 미리볼 url을 저장해줄 state
-  const [fileImage, setFileImage] = useState("");
+  const handleChange = useCallback((e) => {
+    if (e.target.files === null) return;
+    if (e.target.files[0]) {
+      setFile(e.target.files[0]);
+      setPreviewImage(URL.createObjectURL(e.target.files[0]));
+    }
+  }, []);
 
-  // 파일 저장
-  const saveFileImage = (e) => {
-    setFileImage(URL.createObjectURL(e.target.files[0]));
-  };
+  const handleClick = useCallback(async () => {
+    if (!file) return;
+
+    const formData = new FormData();
+    console.log(file);
+    await formData.append("img", file);
+
+    const data = {
+      title: title,
+      description: description,
+      diaryCondition: "PUBLIC",
+    };
+
+    // for spring server
+    await formData.append(
+      "data",
+      new Blob([JSON.stringify(data)], { type: "application/json" })
+    );
+
+    const res = await axios.post(
+      `${process.env.REACT_APP_BASEURL}/diary`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: accessToken,
+        },
+      }
+    );
+    console.log(res);
+    if (res.status === 201) console.log(res.data);
+  }, [file]);
 
   return (
     <Wholebox>
@@ -21,50 +59,100 @@ function Diary() {
         <Textbox>다이어리 만들기</Textbox>
         <VscBlank className="VscBlank" />
       </TopBox>
-      {fileImage && ( 
-        <img alt="sample" 
-        src={fileImage} 
-        style={{ margin: "auto", width: "300px", height: "300px", borderRadius: "25px" }}
+      {previewImage && ( // 업로드하려는 이미지를 미리 보여줌
+        <img
+          alt="preview"
+          src={previewImage}
+          style={{
+            margin: "auto",
+            width: "230px",
+            height: "230px",
+            borderRadius: "25px",
+          }}
         />
       )}
-      <label>제목</label>
-      <input
-        type="text"
-      />
-      <label>소개</label>
-      <input
-        type="text"
-      />
-      <label>표지 설정</label>
-       
-      <input
-      name="imgUpload"
-        type="file"
-        accept="image/jpg, image/png, image/jpeg" 
-        onChange={saveFileImage}
-      /> 
+      <form onSubmit={handleClick}>
+        <TitleText>제목</TitleText>
+        <TitleContent>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </TitleContent>
 
-      <GrayButtonMedium>사진으로 설정하기</GrayButtonMedium>
-      <MintButtonSmall >생성하기</MintButtonSmall>
+        <TitleText>소개</TitleText>
+        <DescContent>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </DescContent>
+
+        <TitleText>표지 설정</TitleText>
+
+        <input type={"file"} onChange={handleChange} />
+        <GrayButtonMedium>사진으로 설정하기</GrayButtonMedium>
+        <button onClick={handleClick}>업로드 요청</button>
+      </form>
     </Wholebox>
   );
 };
 
-export default Diary; 
+export default Diary;
+
+const TitleContent = styled.div`
+  padding: 10px;
+  position: relative;
+  input {
+    box-sizing: border-box;
+    height: 50px;
+    width: 100%;
+    outline: none;
+    border-radius: 20px;
+    padding: 10px 10px 10px 25px;
+    font-size: 16px;
+    border: 1px solid #eee;
+    background: #f5f5f5;
+  }
+`;
+
+const DescContent = styled.div`
+  padding: 10px;
+  position: relative;
+  textarea {
+    box-sizing: border-box;
+    height: 100px;
+    width: 100%;
+    outline: none;
+    border-radius: 20px;
+    padding: 10px 10px 10px 25px;
+    font-size: 16px;
+    border: 1px solid #eee;
+    background: #f5f5f5;
+  }
+`;
+
+const TitleText = styled.div`
+  font-size: 120%;
+  color: gray;
+`;
 
 const Wholebox = styled.div`
   display: flex;
-  flex-direction: column; 
-`; 
+  flex-direction: column;
+  gap: 10px;
+`;
 
 const TopBox = styled.div`
-background-color: white;
+  background-color: white;
   position: sticky;
   top: 0%;
   width: 100%;
   z-index: 1;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 10px;
   .VscBlank {
     font-size: 35px;
   }
@@ -76,7 +164,7 @@ background-color: white;
 `;
 
 const Textbox = styled.div`
-  font-size: 140%;
+  font-size: 110%;
   font-weight: bolder;
   margin: 15px;
 `;
