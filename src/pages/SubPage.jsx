@@ -13,6 +13,8 @@ import "swiper/css/pagination";
 import { Pagination } from "swiper";
 import ReactPaginate from "react-paginate";
 
+import { getDate } from "../utils/getDate";
+
 function SubPage() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
@@ -50,45 +52,67 @@ function SubPage() {
 
   console.log(currentPage);
 
-  const navTest = (detailId) => {
-      navigate(`detail/${detailId}`)
-  }
-
   return (
-    <div>
-      <Swiper
-        slidesPerView={2}
-        spaceBetween={30}
-        pagination={{
-          clickable: true,
-          // renderBullet: (index,className )=>{
-          //   return '<span class="' + className + '">' + (index + 1) + '</span>';
-          // }
-        }}
-        modules={[Pagination]}
-        className='mySwiper'
-      >
-        {data?.map((item) => (
-          <SwiperSlide key={item.id}>
-            <img src={item.url} alt={item.title} />
-          {/* <StButton onClick={()=>{navTest(item.id)}}><StPageCard>{item.customJson}</StPageCard></StButton> */}
-          <Link to={`/detail/${item.id}`}><StPageCard>{item.customJson}</StPageCard></Link>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      <StyledPagination
-        pageCount={pageCount}
-        onPageChange={handlePageClick}
-        containerClassName={"pagination"}
-        activeClassName={"active"}
-        previousLabel='<'
-        nextLabel='>'
-      />
-    </div>
+    <>
+      <Title size='18'>다이어리 상세보기</Title>
+      {data?.map((item, index) => {
+        return (
+          <div key={item.id}>
+            {index === 0 && (
+              <>
+                <div>{item.diaryTitle}</div>
+                <div>{getDate(item.createdAt)}</div>
+              </>
+            )}
+          </div>
+        );
+      })}
+      <div>
+        <Swiper
+          slidesPerView={2}
+          spaceBetween={30}
+          pagination={{
+            clickable: true,
+            // renderBullet: (index,className )=>{
+            //   return '<span class="' + className + '">' + (index + 1) + '</span>';
+            // }
+          }}
+          modules={[Pagination]}
+          className='mySwiper'
+        >
+          {data?.map((item) => (
+            <SwiperSlide key={item.id}>
+              <img src={item.url} alt={item.title} />
+              {/* <StButton onClick={()=>{navTest(item.id)}}><StPageCard>{item.customJson}</StPageCard></StButton> */}
+              <Link to={`/detail/${item.id}`}>
+                <StPageCard>{item.customJson}</StPageCard>
+              </Link>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <StyledPagination
+          pageCount={pageCount}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination"}
+          activeClassName={"active"}
+          previousLabel='<'
+          nextLabel='>'
+        />
+      </div>
+    </>
   );
 }
 
 export default SubPage;
+
+const Title = styled.div`
+  font-weight: bold;
+  font-size: ${({ size }) => `${size}px`};
+  color: black;
+
+  display: flex;
+  padding: 10px;
+`;
 
 const StPageCard = styled.div`
   height: 600px;
@@ -123,6 +147,7 @@ const StyledPagination = styled(ReactPaginate)`
     color: #007bff;
     cursor: pointer;
     transition: all 0.3s ease;
+    color: black;
 
     &:hover {
       background-color: #007bff;
