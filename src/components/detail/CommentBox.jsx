@@ -8,6 +8,7 @@ import { addComment, getComment, deleteComment, updatedComment } from "../../api
 import { useParams } from "react-router-dom";
 import Like from "./Like";
 import GetTimeAgo from "../GetTimeAgo";
+import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
 
 const CommentBox = () => {
   const [showComments, setShowComments] = useState(false);
@@ -103,52 +104,54 @@ const CommentBox = () => {
 
   return (
     <div>
-      <DetailElement>
-        <CommentIcon onClick={toggleComments} />
-        {/* 5 -> 댓글 및 좋아요수 받아오기 */}
-        5
-        <Like />5
-      </DetailElement>
+      <WholeAreaWithMargin>
+        <DetailElement>
+          <CommentIcon onClick={toggleComments} />
+          {/* 5 -> 댓글 및 좋아요수 받아오기 */}
+          5
+          <Like />5
+        </DetailElement>
 
-      <CommentsContainer show={showComments}>
-        <h3>댓글</h3>
-        {mycomment?.map((comment) => {
-          const createdAtAgo = <GetTimeAgo createdAt={comment.createdAt} />;
-          return (
-            <React.Fragment key={comment.commentId}>
-              <CommentStyle>
-                <ProfilePicSmall src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAyMTVfMTA5%2FMDAxNjc2NDMyNzA5NDIy.Di4Jca6bfg9LaSOaeeO3vwdHwRqMVt-14xV2Xat4raUg.xwfQrSJhrS0WuJUuaAdEalXb_Z1BEEOKx_my1FHX9d0g.JPEG.qmfosej%2FIMG_9285.jpg&type=a340" />
-                <UserBox>
-                  <span>{comment.commentName}</span>
-                  <span>{createdAtAgo}</span>
-                </UserBox>
-                <IconStyle>
-                  {isEditing && editingComment.commentId === comment.commentId ? (
-                    <>
-                      <CancelIcon onClick={onCancelEditHandler} />
-                      <UpdateIcon onClick={onUpdateHandler} />
-                    </>
-                  ) : (
-                    <>
-                      <EditIcon onClick={() => onEditHandler(comment)} />
-                      <DeleteIcon onClick={() => onDeleteHandler(comment.commentId)} />
-                    </>
-                  )}
-                </IconStyle>
-              </CommentStyle>
-              <CommentText>{comment.comment}</CommentText>
-            </React.Fragment>
-          );
-        })}
+        <CommentsContainer show={showComments}>
+          <h3>댓글</h3>
+          {mycomment?.map((comment) => {
+            const createdAtAgo = <GetTimeAgo createdAt={comment.createdAt} />;
+            return (
+              <React.Fragment key={comment.commentId}>
+                <CommentStyle>
+                  <ProfilePicSmall src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAyMTVfMTA5%2FMDAxNjc2NDMyNzA5NDIy.Di4Jca6bfg9LaSOaeeO3vwdHwRqMVt-14xV2Xat4raUg.xwfQrSJhrS0WuJUuaAdEalXb_Z1BEEOKx_my1FHX9d0g.JPEG.qmfosej%2FIMG_9285.jpg&type=a340" />
+                  <UserBox>
+                    <span>{comment.commentName}</span>
+                    <span>{createdAtAgo}</span>
+                  </UserBox>
+                  <IconStyle>
+                    {isEditing && editingComment.commentId === comment.commentId ? (
+                      <>
+                        <CancelIcon onClick={onCancelEditHandler} />
+                        <UpdateIcon onClick={onUpdateHandler} />
+                      </>
+                    ) : (
+                      <>
+                        <EditIcon onClick={() => onEditHandler(comment)} />
+                        <DeleteIcon onClick={() => onDeleteHandler(comment.commentId)} />
+                      </>
+                    )}
+                  </IconStyle>
+                </CommentStyle>
+                <CommentText>{comment.comment}</CommentText>
+              </React.Fragment>
+            );
+          })}
 
-        <CommentInput
-          name="comment"
-          placeholder={isEditing ? "댓글 수정하기" : "댓글 달기"}
-          value={comment.comment}
-          onChange={inputChangeHandler}
-          onKeyDown={handleKeyDown}
-        />
-      </CommentsContainer>
+          <CommentInput
+            name="comment"
+            placeholder={isEditing ? "댓글 수정하기" : "댓글 달기"}
+            value={comment.comment}
+            onChange={inputChangeHandler}
+            onKeyDown={handleKeyDown}
+          />
+        </CommentsContainer>
+      </WholeAreaWithMargin>
     </div>
   );
 };

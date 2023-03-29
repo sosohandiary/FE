@@ -13,7 +13,7 @@ const Detail = () => {
         <WholeAreaWithMargin>
           <StyledUserBoxWrapper></StyledUserBoxWrapper>
           <StyledDetailCardWrapper>
-            <StyledDetailCard>일기</StyledDetailCard>
+            <StyledDetailCard>일기데이터 받아오기</StyledDetailCard>
           </StyledDetailCardWrapper>
         </WholeAreaWithMargin>
         <CommentBox />
