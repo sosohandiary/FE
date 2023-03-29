@@ -3,14 +3,12 @@ import styled from "styled-components";
 import { GrayButtonMedium } from "../styles/Buttons";
 import axios from "axios";
 import { VscBlank } from "react-icons/vsc";
-
 const Diary = () => {
   const accessToken = window.localStorage.getItem("accessToken");
   const [file, setFile] = useState();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [previewImage, setPreviewImage] = useState();
-
   const handleChange = useCallback((e) => {
     if (e.target.files === null) return;
     if (e.target.files[0]) {
@@ -168,3 +166,5 @@ const Textbox = styled.div`
   font-weight: bolder;
   margin: 15px;
 `;
+
+
