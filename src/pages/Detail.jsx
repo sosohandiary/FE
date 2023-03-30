@@ -38,33 +38,39 @@ const Detail = () => {
     <>
       <StyledGobackButton onClick={() => navigate(-1)} />
 
-      <StyledDerailPage>
-        <GetUser />
-        <WholeAreaWithMargin>
-          <StyledDetailCardWrapper>
-            <StyledDetailCard>일기데이터 받아오기</StyledDetailCard>
-          </StyledDetailCardWrapper>
-        </WholeAreaWithMargin>
-      </StyledDerailPage>
+      {myDiary && ( // myDiary 변수가 undefined가 아닐 때만 아래 내용을 실행함
+        <StyledDerailPage>
+          <GetUser createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
+          <WholeAreaWithMargin>
+            <StyledDetailCardWrapper>
+              <StyledDetailCard>{myDiary.customJson}</StyledDetailCard>
+            </StyledDetailCardWrapper>
+          </WholeAreaWithMargin>
+        </StyledDerailPage>
+      )}
 
       <button style={{ display: "none" }} ref={sheetRef} onClick={() => setOpen(true)}></button>
-      <BottomSheet
-        open={open}
-        header={
-          <DetailElement>
-            <CommentIcon />
-            {/* 5 -> 댓글 및 좋아요수 받아오기 */}
-            55
-            <Like />
-            500
-          </DetailElement>
-        }
-        defaultSnap={({ snapPoints }) => snapPoints}
-        snapPoints={({ minHeight, maxHeight }) => [60, 800]}
-        blocking={false}
-      >
-        <CommentBox />
-      </BottomSheet>
+
+      {myDiary ? ( // myDiary 변수가 undefined가 아닐 때만 BottomSheet 컴포넌트를 렌더링함
+        <BottomSheet
+          open={open}
+          header={
+            <DetailElement>
+              <CommentIcon />
+              {myDiary.commentCount}
+              <Like />
+              {myDiary.likeCount}
+            </DetailElement>
+          }
+          defaultSnap={({ snapPoints }) => snapPoints}
+          snapPoints={({ minHeight, maxHeight }) => [60, 800]}
+          blocking={false}
+        >
+          <CommentBox />
+        </BottomSheet>
+      ) : (
+        <div>Loading...</div> // myDiary 변수가 undefined일 때 로딩 중을 표시함
+      )}
     </>
   );
 };

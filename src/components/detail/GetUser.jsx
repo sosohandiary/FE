@@ -3,14 +3,15 @@ import styled from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
 import GetTimeAgo from "../GetTimeAgo";
 
-const GetUser = () => {
+const GetUser = ({ nickname, createdAt }) => {
+  const createdAtAgo = <GetTimeAgo createdAt={createdAt} />;
   return (
     <>
       <StyledUserBox>
         <ProfilePicSmall src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAyMTVfMTA5%2FMDAxNjc2NDMyNzA5NDIy.Di4Jca6bfg9LaSOaeeO3vwdHwRqMVt-14xV2Xat4raUg.xwfQrSJhrS0WuJUuaAdEalXb_Z1BEEOKx_my1FHX9d0g.JPEG.qmfosej%2FIMG_9285.jpg&type=a340" />
-        {/* 이름,시간(GetTimeAgo활용) 받아옵니다 */}
-        <span>희성짱</span>
-        <span>20년 전</span>
+
+        <span>{nickname}</span>
+        <span>{createdAtAgo}</span>
       </StyledUserBox>
     </>
   );
