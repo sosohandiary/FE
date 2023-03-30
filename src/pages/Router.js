@@ -44,13 +44,13 @@ const Router = () => {
         <Route path="/test-animation" element={<TestAnimation />} />
         <Route path="/oauth" element={<Oauth />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/detail/:id" element={<Detail />} />
+        <Route path="/diaries/:diaryId/:detailId" element={<Detail />} />
         <Route path="/new-diary" element={<NewDiary />} />
         <Route path="/diary" element={<Diary />} />
         <Route path="/diary-detail" element={<DiaryDetail />} />
         <Route path="/myfriends/:mode" element={<MyFriends />} />
         <Route path="/acceptTest" element={<AcceptTest />} />
-        <Route path="/diaries/:diaryId" element={<SubPage/>} />
+        <Route path="/diaries/:diaryId" element={<SubPage />} />
       </Routes>
     </BrowserRouter>
   );

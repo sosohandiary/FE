@@ -10,11 +10,25 @@ import GetUser from "../components/detail/GetUser";
 import styled from "styled-components";
 import { MdArrowBack } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
+import { getDiary } from "../api/detail";
 
 const Detail = () => {
   const navigate = useNavigate();
   const sheetRef = useRef();
   const [open, setOpen] = useState(false);
+  const { diaryId, detailId } = useParams();
+
+  const accessToken = localStorage.getItem("accessToken");
+
+  //get
+
+  const { data: diaryData } = useQuery(["getDiary"], () => getDiary(diaryId, detailId, accessToken));
+
+  const myDiary = diaryData?.data;
+
+  console.log("받아옵니까", myDiary);
 
   useEffect(() => {
     sheetRef.current.click();
