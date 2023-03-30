@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getDiary } from "../api/detail";
+import Spinner from "../styles/Spinner";
 
 const Detail = () => {
   const navigate = useNavigate();
@@ -69,7 +70,9 @@ const Detail = () => {
           <CommentBox />
         </BottomSheet>
       ) : (
-        <div>Loading...</div> // 로딩스피너넣기
+        <div>
+          <Spinner />
+        </div> // 로딩스피너넣기
       )}
     </>
   );
