@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import { GrayButtonMedium } from "../styles/Buttons";
-import { VscBlank } from "react-icons/vsc";
 import axios from "axios";
+import { VscBlank } from "react-icons/vsc";
 
 const Diary = () => {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -10,6 +10,11 @@ const Diary = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [previewImage, setPreviewImage] = useState();
+  const [diaryCondition, setDiaryCondition] = useState("PUBLIC");
+
+  const handleConditionChange = (event) => {
+    setDiaryCondition(event.target.value);
+  };
 
   const handleChange = useCallback((e) => {
     if (e.target.files === null) return;
@@ -29,7 +34,7 @@ const Diary = () => {
     const data = {
       title: title,
       description: description,
-      diaryCondition: "PUBLIC",
+      diaryCondition: diaryCondition,
     };
 
     // for spring server
@@ -59,7 +64,6 @@ const Diary = () => {
         <Textbox>다이어리 만들기</Textbox>
         <VscBlank className="VscBlank" />
       </TopBox>
-
       {previewImage && ( // 업로드하려는 이미지를 미리 보여줌
         <img
           alt="preview"
@@ -94,13 +98,61 @@ const Diary = () => {
 
         <input type={"file"} onChange={handleChange} />
         <GrayButtonMedium>사진으로 설정하기</GrayButtonMedium>
-        <button onClick={handleClick}>생성하기</button>
+        <Upbutton onClick={handleClick}>업로드</Upbutton>
+
+        <RadioWrapper>
+          <label>
+            <input
+              type="radio"
+              value="PUBLIC"
+              checked={diaryCondition === "PUBLIC"}
+              onChange={handleConditionChange}
+            />
+            <span>PUBLIC</span>
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="PRIVATE"
+              checked={diaryCondition === "PRIVATE"}
+              onChange={handleConditionChange}
+            />
+            <span>PRIVATE</span>
+          </label>
+        </RadioWrapper>
       </form>
     </Wholebox>
   );
 };
 
 export default Diary;
+
+const RadioWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  label {
+    display: flex;
+    align-items: center;
+  }
+
+  input[type="radio"] {
+    margin-right: 0.5rem;
+    cursor: pointer;
+  }
+`;
+
+const Upbutton = styled.button`
+  color: black;
+  background-color: #e8fefb;
+  width: 100px;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+  margin: 0px auto;
+  font-weight: 700;
+  font-size: 100%;
+  cursor: pointer;
+`;
 
 const TitleContent = styled.div`
   padding: 10px;
