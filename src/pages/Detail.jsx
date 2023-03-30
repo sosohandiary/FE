@@ -70,9 +70,9 @@ const Detail = () => {
           <CommentBox />
         </BottomSheet>
       ) : (
-        <div>
+        <div style={{ marginTop: "40vh", display: "flex", justifyContent: "center" }}>
           <Spinner />
-        </div> // 로딩스피너넣기
+        </div>
       )}
     </>
   );
