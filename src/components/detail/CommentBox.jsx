@@ -31,6 +31,7 @@ const CommentBox = () => {
   const { mutate: addmutation } = useMutation(() => addComment(diaryId, comment, accessToken), {
     onSuccess: (data) => {
       queryClient.invalidateQueries("getComment");
+      queryClient.invalidateQueries("getDiary");
     },
   });
 
@@ -38,6 +39,7 @@ const CommentBox = () => {
   const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(diaryId, commentId, accessToken), {
     onSuccess: () => {
       queryClient.invalidateQueries("getComment");
+      queryClient.invalidateQueries("getDiary");
     },
   });
 
@@ -47,6 +49,7 @@ const CommentBox = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("getComment");
+        queryClient.invalidateQueries("getDiary");
       },
     }
   );

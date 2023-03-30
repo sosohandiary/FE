@@ -43,7 +43,7 @@ const Detail = () => {
           <GetUser createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
           <WholeAreaWithMargin>
             <StyledDetailCardWrapper>
-              <StyledDetailCard>{myDiary.customJson}</StyledDetailCard>
+              <StyledDetailCard>야이씨 언제 나몰래 봄 왔냐 커플다망해라</StyledDetailCard>
             </StyledDetailCardWrapper>
           </WholeAreaWithMargin>
         </StyledDerailPage>
@@ -69,7 +69,7 @@ const Detail = () => {
           <CommentBox />
         </BottomSheet>
       ) : (
-        <div>Loading...</div> // myDiary 변수가 undefined일 때 로딩 중을 표시함
+        <div>Loading...</div> // 로딩스피너넣기
       )}
     </>
   );
