@@ -5,7 +5,6 @@ import { RiPencilFill, RiDeleteBin6Fill, RiCheckFill, RiCloseFill } from "react-
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
-
 import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
 
@@ -19,33 +18,38 @@ const CommentBox = () => {
   const [test, setTest] = useState(null);
 
   const queryClient = useQueryClient();
-  const { id } = useParams();
+  const { diaryId } = useParams();
   const accessToken = localStorage.getItem("accessToken");
-  const { data: commentData } = useQuery(["getComment"], () => getComment(id, accessToken));
+
+  // get
+  const { data: commentData } = useQuery(["getComment"], () => getComment(diaryId, accessToken));
   const mycomment = commentData?.data;
 
   // <----Mutation----> //
 
   //add
-  const { mutate: addmutation } = useMutation(() => addComment(id, comment, accessToken), {
+  const { mutate: addmutation } = useMutation(() => addComment(diaryId, comment, accessToken), {
     onSuccess: (data) => {
       queryClient.invalidateQueries("getComment");
+      queryClient.invalidateQueries("getDiary");
     },
   });
 
   //delete
-  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(id, commentId, accessToken), {
+  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(diaryId, commentId, accessToken), {
     onSuccess: () => {
       queryClient.invalidateQueries("getComment");
+      queryClient.invalidateQueries("getDiary");
     },
   });
 
   //edit
   const { mutate: updatedCommentMutate } = useMutation(
-    (commentId) => updatedComment(id, commentId, comment, accessToken),
+    (commentId) => updatedComment(diaryId, commentId, comment, accessToken),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("getComment");
+        queryClient.invalidateQueries("getDiary");
       },
     }
   );
