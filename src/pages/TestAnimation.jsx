@@ -1,27 +1,30 @@
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper";
+import React, { useRef } from "react";
+import html2canvas from "html2canvas";
 
-import { Swiper, SwiperSlide } from "swiper/react";
+function TestAnimation() {
+  const myRef = useRef(null);
 
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
+  const handleScreenshotClick = () => {
+    html2canvas(myRef.current).then((canvas) => {
+      console.log(canvas);
+      const dataURL = canvas.toDataURL();
 
-export default () => {
+      // Set the src attribute of an image tag to the data URL
+      const img = document.createElement("img");
+      img.src = dataURL;
+      // Do something with the canvas, like displaying it in an image tag or sending it to a server
+    });
+  };
+
   return (
-    <Swiper
-      // install Swiper modules
-      spaceBetween={50}
-      slidesPerView={3}
-      navigation
-      onSwiper={(swiper) => console.log(swiper)}
-      onSlideChange={() => console.log("slide change")}
-    >
-      <SwiperSlide>Slide 1</SwiperSlide>
-      <SwiperSlide>Slide 2</SwiperSlide>
-      <SwiperSlide>Slide 3</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
-    </Swiper>
+    <div>
+      <h1>Hello, World!</h1>
+      <div ref={myRef}>
+        <p>This is the content that will be captured in the screenshot</p>
+      </div>
+      <button onClick={handleScreenshotClick}>Take Screenshot</button>
+    </div>
   );
-};
+}
+
+export default TestAnimation;

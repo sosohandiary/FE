@@ -33,16 +33,23 @@ function Detail() {
     sheetRef.current.click();
   }, []);
 
+  const navToModify = () => {
+    navigate(`/test/${diaryId}/${detailId}`)
+  }
+
   return (
     <>
       <StyledGobackButton onClick={() => navigate(-1)} />
+      <button style={{float:"right"}} onClick={navToModify}>수정하기</button>
 
       {myDiary && (
         <StyledDerailPage>
           <GetUser createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
           <WholeAreaWithMargin>
             <StyledDetailCardWrapper>
-              <StyledDetailCard>야이씨 언제 나몰래 봄 왔냐 커플다망해라</StyledDetailCard>
+              <StyledDetailCard>
+                야이씨 언제 나몰래 봄 왔냐 커플다망해라 김민재선수는 왜 쏘니 차단했어요 가만안둬
+              </StyledDetailCard>
             </StyledDetailCardWrapper>
           </WholeAreaWithMargin>
         </StyledDerailPage>
