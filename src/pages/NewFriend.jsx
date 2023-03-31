@@ -1,25 +1,16 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
-
 import Navigationbar from "../components/Navigationbar";
-
-
 import { SlMagnifier } from "react-icons/sl";
 import { MdOutlineCancel } from "react-icons/md";
 import { ProfilePicSmall } from "../components/ProfilePics";
+import axios from "axios";
 
 const NewFriend = () => {
   const accessToken = window.localStorage.getItem("accessToken");
+  console.log(accessToken);
   const [friendName, setFriendName] = useState("");
   const [list, setList] = useState([]);
-  const [friendStatus, setFriendStatus] = useState("");
-
-  //로그인 할때 이름? 멤버아이디? 받으면 적용하기
-  // const state = useSelector((state) => {
-  //   console.log(state.currentUserInfoSlice);
-  // })
 
   const findFriend = () => {
     axios
@@ -32,32 +23,19 @@ const NewFriend = () => {
       })
       .catch((err) => console.log(err));
   };
-
-  // console.log(list);
+  console.log(list);
 
   const addFriend = (id) => {
     console.log(id);
     axios
-      .post(
-        `${process.env.REACT_APP_BASEURL}/friend/request/${id}`,
-        {},
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
+      .post(`${process.env.REACT_APP_BASEURL}/friend/request/${id}`, {},{
+        headers: { Authorization: accessToken },
+      })
       .then((res) => {
         console.log(res);
       })
       .catch((err) => console.log(err));
   };
-
-  useEffect(() => {
-    list?.map((item) => {
-      if (item.friendStatus === null) setFriendStatus("null");
-      if (item.friendStatus === "ACCEPTED") setFriendStatus("ACCEPTED");
-      if (item.friendStatus === "PENDING") setFriendStatus("PENDING");
-    });
-  }, [findFriend]);
 
   return (
     <>
@@ -79,17 +57,15 @@ const NewFriend = () => {
       </SearchTotalBox>
       {list?.map((item) => (
         <ListCards key={item.memberId}>
-          <ProfilePicSmall src='https://avatars.githubusercontent.com/u/109452831?v=4' />
+              <ProfilePicSmall src='https://avatars.githubusercontent.com/u/109452831?v=4' />
           <ListContentBox>{item.name}</ListContentBox>
-          {friendStatus !== "ACCEPTED" && (
-            <button
-              onClick={() => {
-                addFriend(item.memberId);
-              }}
-            >
-              추가하기
-            </button>
-          )}
+          <button
+            onClick={() => {
+              addFriend(item.memberId);
+            }}
+          >
+            추가하기
+          </button>
         </ListCards>
       ))}
 
@@ -139,6 +115,7 @@ const Searchinput = styled.input`
   border: none;
   width: 300px;
 `;
+
 
 const ListCards = styled.div`
   display: flex;
