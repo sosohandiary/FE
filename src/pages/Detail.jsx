@@ -10,11 +10,26 @@ import GetUser from "../components/detail/GetUser";
 import styled from "styled-components";
 import { MdArrowBack } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
+import { getDiary } from "../api/detail";
+import Spinner from "../styles/Spinner";
 
 const Detail = () => {
   const navigate = useNavigate();
   const sheetRef = useRef();
   const [open, setOpen] = useState(false);
+  const { diaryId, detailId } = useParams();
+
+  const accessToken = localStorage.getItem("accessToken");
+
+  //get
+
+  const { data: diaryData } = useQuery(["getDiary"], () => getDiary(diaryId, detailId, accessToken));
+
+  const myDiary = diaryData?.data;
+
+  console.log("받아옵니까", myDiary);
 
   useEffect(() => {
     sheetRef.current.click();
@@ -24,33 +39,41 @@ const Detail = () => {
     <>
       <StyledGobackButton onClick={() => navigate(-1)} />
 
-      <StyledDerailPage>
-        <GetUser />
-        <WholeAreaWithMargin>
-          <StyledDetailCardWrapper>
-            <StyledDetailCard>일기데이터 받아오기</StyledDetailCard>
-          </StyledDetailCardWrapper>
-        </WholeAreaWithMargin>
-      </StyledDerailPage>
+      {myDiary && ( // myDiary 변수가 undefined가 아닐 때만 아래 내용을 실행함
+        <StyledDerailPage>
+          <GetUser createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
+          <WholeAreaWithMargin>
+            <StyledDetailCardWrapper>
+              <StyledDetailCard>야이씨 언제 나몰래 봄 왔냐 커플다망해라</StyledDetailCard>
+            </StyledDetailCardWrapper>
+          </WholeAreaWithMargin>
+        </StyledDerailPage>
+      )}
 
       <button style={{ display: "none" }} ref={sheetRef} onClick={() => setOpen(true)}></button>
-      <BottomSheet
-        open={open}
-        header={
-          <DetailElement>
-            <CommentIcon />
-            {/* 5 -> 댓글 및 좋아요수 받아오기 */}
-            55
-            <Like />
-            500
-          </DetailElement>
-        }
-        defaultSnap={({ snapPoints }) => snapPoints}
-        snapPoints={({ minHeight, maxHeight }) => [60, 800]}
-        blocking={false}
-      >
-        <CommentBox />
-      </BottomSheet>
+
+      {myDiary ? ( // myDiary 변수가 undefined가 아닐 때만 BottomSheet 컴포넌트를 렌더링함
+        <BottomSheet
+          open={open}
+          header={
+            <DetailElement>
+              <CommentIcon />
+              {myDiary.commentCount}
+              <Like />
+              {myDiary.likeCount}
+            </DetailElement>
+          }
+          defaultSnap={({ snapPoints }) => snapPoints}
+          snapPoints={({ minHeight, maxHeight }) => [60, 800]}
+          blocking={false}
+        >
+          <CommentBox />
+        </BottomSheet>
+      ) : (
+        <div style={{ marginTop: "40vh", display: "flex", justifyContent: "center" }}>
+          <Spinner />
+        </div>
+      )}
     </>
   );
 };

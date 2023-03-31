@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import styled, { css } from "styled-components";
-import { likePost } from "../../api/detail";
+import { likePost, getDiary } from "../../api/detail";
 import { useParams } from "react-router-dom";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
 function Like() {
   const accessToken = localStorage.getItem("accessToken");
-  const { id } = useParams();
+  const { diaryId, detailId } = useParams();
 
   const [isLiked, setIsLiked] = useState(false);
 
-  const { mutate: likeMutation } = useMutation(() => likePost(id, accessToken));
+  const { data: diaryData } = useQuery(["getDiary"], () => getDiary(diaryId, detailId, accessToken));
+
+  // console.log("좋아요개수", diaryData.data.likeCount);
+
+  const likeCount = diaryData?.data.likeCount;
+
+  const { mutate: likeMutation } = useMutation(() => likePost(detailId, accessToken));
 
   const handleClick = () => {
     setIsLiked(!isLiked);
@@ -19,7 +25,7 @@ function Like() {
   };
 
   // useEffect(() => {
-  //   likePost(id, accessToken).then((response) => {
+  //   likePost(detailId, accessToken).then((response) => {
   //     setIsLiked(response.data.isLiked);
   //   });
   // }, []);
@@ -40,6 +46,7 @@ function Like() {
 }
 
 export default Like;
+
 const HeartButton = styled.button`
   background-color: transparent;
   border: none;
