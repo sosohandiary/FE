@@ -3,33 +3,33 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import styled, { css } from "styled-components";
 import { likePost, getDiary } from "../../api/detail";
 import { useParams } from "react-router-dom";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
-function Like() {
+function Like({ diaryData }) {
   const accessToken = localStorage.getItem("accessToken");
-  const { diaryId, detailId } = useParams();
+  const queryClient = useQueryClient();
+  const { detailId } = useParams();
 
   const [isLiked, setIsLiked] = useState(false);
 
-  const { data: diaryData } = useQuery(["getDiary"], () => getDiary(diaryId, detailId, accessToken));
+  const { mutate: likeMutation } = useMutation(() => likePost(detailId, accessToken), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("getDiary");
+    },
+  });
 
-  // console.log("좋아요개수", diaryData.data.likeCount);
-
-  const likeCount = diaryData?.data.likeCount;
-
-  const { mutate: likeMutation } = useMutation(() => likePost(detailId, accessToken));
+  useEffect(() => {
+    if (diaryData?.likeStatus) {
+      setIsLiked(true);
+    } else {
+      setIsLiked(false);
+    }
+  }, [diaryData]);
 
   const handleClick = () => {
     setIsLiked(!isLiked);
     likeMutation();
   };
-
-  // useEffect(() => {
-  //   likePost(detailId, accessToken).then((response) => {
-  //     setIsLiked(response.data.isLiked);
-  //   });
-  // }, []);
-
   return (
     <HeartButton onClick={handleClick}>
       {isLiked ? (
