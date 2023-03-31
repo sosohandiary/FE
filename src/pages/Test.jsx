@@ -41,8 +41,8 @@ const ImageSticker = ({
   });
 
   // <--------------->
-  const shapeRef = React.useRef();
-  const trRef = React.useRef();
+  const shapeRef = useRef();
+  const trRef = useRef();
 
   useEffect(() => {
     if (isSelected) {
@@ -80,7 +80,6 @@ const ImageSticker = ({
         numPoints={5}
         innerRadius={20}
         outerRadius={40}
-        // fill="#89b717"
         opacity={0.8}
         draggable={mode === "STICKER" ? true : false}
         rotation={sticker.rotation}
@@ -161,6 +160,10 @@ const Test = () => {
   const isDrawing = useRef(false);
   const { diaryid, paperid } = useParams();
 
+  const changeModeHandler = (target) => {
+    setMode(target);
+  };
+
   // <=== 데이터 겟 테스트===>
   const accessToken = localStorage.getItem("accessToken");
 
@@ -181,7 +184,6 @@ const Test = () => {
         }
       )
       .then((res) => {
-        console.log("CC", res.data.customJson);
         if (res.data.customJson.length > 10) {
           const resJson = JSON.parse(res.data.customJson);
           setStickers(resJson.stickers);
@@ -375,10 +377,6 @@ const Test = () => {
       axios.post(`${process.env.REACT_APP_BASEURL}/decoration/`, stickers, {
         headers: { Authorization: accessToken },
       });
-    };
-
-    const changeModeHandler = (target) => {
-      setMode(target);
     };
 
     return (

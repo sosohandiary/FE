@@ -23,7 +23,9 @@ function Detail() {
 
   const accessToken = localStorage.getItem("accessToken");
 
-  const { data: diaryData } = useQuery(["getDiary"], () => getDiary(diaryId, detailId, accessToken));
+  const { data: diaryData } = useQuery(["getDiary"], () =>
+    getDiary(diaryId, detailId, accessToken)
+  );
 
   const myDiary = diaryData?.data;
 
@@ -34,13 +36,15 @@ function Detail() {
   }, []);
 
   const navToModify = () => {
-    navigate(`/test/${diaryId}/${detailId}`)
-  }
+    navigate(`/test/${diaryId}/${detailId}`);
+  };
 
   return (
     <>
       <StyledGobackButton onClick={() => navigate(-1)} />
-      <button style={{float:"right"}} onClick={navToModify}>수정하기</button>
+      <button style={{ float: "right" }} onClick={navToModify}>
+        수정하기
+      </button>
 
       {myDiary && (
         <StyledDerailPage>
@@ -48,14 +52,18 @@ function Detail() {
           <WholeAreaWithMargin>
             <StyledDetailCardWrapper>
               <StyledDetailCard>
-                야이씨 언제 나몰래 봄 왔냐 커플다망해라 김민재선수는 왜 쏘니 차단했어요 가만안둬
+                <div>{myDiary.diaryTitle}</div>
               </StyledDetailCard>
             </StyledDetailCardWrapper>
           </WholeAreaWithMargin>
         </StyledDerailPage>
       )}
 
-      <button style={{ display: "none" }} ref={sheetRef} onClick={() => setOpen(true)}></button>
+      <button
+        style={{ display: "none" }}
+        ref={sheetRef}
+        onClick={() => setOpen(true)}
+      ></button>
 
       {myDiary ? (
         <BottomSheet
@@ -75,7 +83,13 @@ function Detail() {
           <CommentBox />
         </BottomSheet>
       ) : (
-        <div style={{ marginTop: "40vh", display: "flex", justifyContent: "center" }}>
+        <div
+          style={{
+            marginTop: "40vh",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Spinner />
         </div>
       )}
