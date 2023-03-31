@@ -13,6 +13,7 @@ import { getDate } from "../utils/getDate";
 import { WholeArea } from "../styles/WholeAreaStyle";
 import { ProfilePicLarge } from "../components/ProfilePics";
 import { IoIosArrowForward } from "react-icons/io";
+import Navigationbar from "../components/Navigationbar";
 
 
 function MyPage() {
@@ -111,7 +112,7 @@ function MyPage() {
           </LougoutBtn>
         </StLogout>
 
-     
+        <Navigationbar />
       </WholeArea>
     </>
   );
@@ -233,7 +234,8 @@ const ConfirmButton = styled.button`
 const StLogout = styled.div`
   display: flex;
   align-self: flex-end;
-  margin: 10px;
+  margin: 20px;
+  padding-bottom: 30px;
 `;
 
 const LougoutBtn = styled.button`
