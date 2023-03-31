@@ -36,7 +36,7 @@ const CommentBox = () => {
   });
 
   //delete
-  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(diaryId, commentId, accessToken), {
+  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(detailId, commentId, accessToken), {
     onSuccess: () => {
       queryClient.invalidateQueries("getComment");
       queryClient.invalidateQueries("getDiary");
@@ -45,7 +45,7 @@ const CommentBox = () => {
 
   //edit
   const { mutate: updatedCommentMutate } = useMutation(
-    (commentId) => updatedComment(diaryId, commentId, comment, accessToken),
+    (commentId) => updatedComment(detailId, commentId, comment, accessToken),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("getComment");
