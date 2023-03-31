@@ -34,13 +34,15 @@ function Detail() {
   }, []);
 
   const navToModify = () => {
-    navigate(`/test/${diaryId}/${detailId}`)
-  }
+    navigate(`/test/${diaryId}/${detailId}`);
+  };
 
   return (
     <>
       <StyledGobackButton onClick={() => navigate(-1)} />
-      <button style={{float:"right"}} onClick={navToModify}>수정하기</button>
+      <button style={{ float: "right" }} onClick={navToModify}>
+        수정하기
+      </button>
 
       {myDiary && (
         <StyledDerailPage>
