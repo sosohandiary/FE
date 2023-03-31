@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import $ from "jquery";
-import gsap from "gsap";
 import axios from "axios";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -35,7 +33,6 @@ const MainPage = () => {
   });
 
   //데이터 겟
-  const [selfMadePrivatePage, setSelfMadePrivatePage] = useState(0);
   const [privatePage, setPrivatePage] = useState(0);
   const [publicPage, setPublicPage] = useState(0);
   const [IsLoadingForSelfMadePrivate, setIsLoadingForSelfMadePrivate] =
@@ -48,7 +45,6 @@ const MainPage = () => {
   const [dataListForPrivate, setDataListForPrivate] = useState([]);
   const [dataListForPublic, setDataListForPublic] = useState([]);
 
-  // api public에서 바꿔야 합니다.
   useEffect(() => {
     setIsLoadingForSelfMadePrivate(true);
     axios
@@ -56,7 +52,6 @@ const MainPage = () => {
         headers: { Authorization: accessToken },
       })
       .then((res) => {
-        console.log(res);
         setIsLoadingForSelfMadePrivate(false);
         setDataListForSelfMadePrivate((prev) => [...prev, ...res.data]);
       })
@@ -65,7 +60,6 @@ const MainPage = () => {
       });
   }, []);
 
-  // <------------------------------ api상 private에서 invite로 바꿔야 합니다.
   useEffect(() => {
     if (inViewForPrivate) {
       setIsLoadingForPrivate(true);
@@ -109,6 +103,8 @@ const MainPage = () => {
     }
   }, [inViewForPublic]);
 
+  console.log(dataListForPublic);
+
   const curUserNickname = useSelector(
     (state) => state.currentUserInfoSlice.userNickname
   );
@@ -136,7 +132,7 @@ const MainPage = () => {
           사진
         </div>
       </WelcomeArea>
-      <Label>공유 다이어리</Label>
+      <Label>내가 만든 다이어리</Label>
       <SwiperArea>
         <Swiper
           slidesPerView={"auto"}
@@ -294,63 +290,6 @@ const WelcomeArea = styled.div`
 
   background-color: #c2e9f9;
   width: 90vw;
-`;
-
-const CircularCarousel = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: #ededed;
-  overflow: hidden;
-
-  .slider__container {
-    display: block;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    width: 70%;
-    margin-bottom: 50px;
-    bottom: 140px;
-    &:after {
-      content: "";
-      display: block;
-      padding-bottom: 100%;
-    }
-    .slide__container {
-      position: absolute;
-      background: rgba(green, 0.3);
-      border-radius: 50%;
-      width: 100%;
-      height: 100%;
-
-      .slide {
-        position: absolute;
-        left: 50%;
-        bottom: -90px;
-        width: 90px;
-        height: 126px;
-        border-radius: 25px;
-        background-color: red;
-        /* background: rgba(red, 0.5); */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transform: translate(-50%, 50%);
-        transition: all 0.5s ease-in-out;
-      }
-
-      &.slide--active {
-        .slide {
-          width: 140px;
-          height: 196px;
-        }
-      }
-    }
-  }
 `;
 
 const SwiperArea = styled.div`

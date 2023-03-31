@@ -73,6 +73,7 @@ function SubPage() {
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <>
       <Title size="18">다이어리 상세보기</Title>
