@@ -39,10 +39,10 @@ function Detail() {
 
   return (
     <>
-      <StyledGobackButton onClick={() => navigate(-1)} />
-      <button style={{ float: "right" }} onClick={navToModify}>
-        수정하기
-      </button>
+      <div>
+        <StyledGobackButton onClick={() => navigate(-1)} />
+        <button onClick={navToModify}>수정</button>
+      </div>
 
       {myDiary && (
         <StyledDerailPage>
