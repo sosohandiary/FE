@@ -52,7 +52,7 @@ function SubPage() {
   };
 
   const goToInnerPaperDetail = (paperId) => {
-    navigate(`/test/${diaryId}/${paperId}`);
+    navigate(`/diaries/${diaryId}/${paperId}`);
   };
   const newInnerPaper = () => {
     axios
@@ -135,8 +135,8 @@ function SubPage() {
           onPageChange={handlePageClick}
           containerClassName={"pagination"}
           activeClassName={"active"}
-          previousLabel="<"
-          nextLabel=">"
+          previousLabel='<'
+          nextLabel='>'
         />
       </div>
     </>
@@ -157,7 +157,7 @@ const Title = styled.div`
 const StPageCard = styled.div`
   height: 600px;
   width: 200px;
-  background: #f9f9f9;
+  /* background: #f9f9f9; */
 `;
 
 const StyledPagination = styled(ReactPaginate)`
