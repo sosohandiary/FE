@@ -15,7 +15,7 @@ import { useParams } from "react-router-dom";
 import { getDiary } from "../api/detail";
 import Spinner from "../styles/Spinner";
 
-const Detail = () => {
+function Detail() {
   const navigate = useNavigate();
   const sheetRef = useRef();
   const [open, setOpen] = useState(false);
@@ -23,13 +23,11 @@ const Detail = () => {
 
   const accessToken = localStorage.getItem("accessToken");
 
-  //get
-
   const { data: diaryData } = useQuery(["getDiary"], () => getDiary(diaryId, detailId, accessToken));
 
   const myDiary = diaryData?.data;
 
-  console.log("받아옵니까", myDiary);
+  console.log(myDiary);
 
   useEffect(() => {
     sheetRef.current.click();
@@ -39,7 +37,7 @@ const Detail = () => {
     <>
       <StyledGobackButton onClick={() => navigate(-1)} />
 
-      {myDiary && ( // myDiary 변수가 undefined가 아닐 때만 아래 내용을 실행함
+      {myDiary && (
         <StyledDerailPage>
           <GetUser createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
           <WholeAreaWithMargin>
@@ -52,14 +50,14 @@ const Detail = () => {
 
       <button style={{ display: "none" }} ref={sheetRef} onClick={() => setOpen(true)}></button>
 
-      {myDiary ? ( // myDiary 변수가 undefined가 아닐 때만 BottomSheet 컴포넌트를 렌더링함
+      {myDiary ? (
         <BottomSheet
           open={open}
           header={
             <DetailElement>
               <CommentIcon />
               {myDiary.commentCount}
-              <Like />
+              <Like diaryData={myDiary} />
               {myDiary.likeCount}
             </DetailElement>
           }
@@ -76,8 +74,7 @@ const Detail = () => {
       )}
     </>
   );
-};
-
+}
 export default Detail;
 
 const StyledDerailPage = styled.div`
