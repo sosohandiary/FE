@@ -18,17 +18,17 @@ const CommentBox = () => {
   const [test, setTest] = useState(null);
 
   const queryClient = useQueryClient();
-  const { diaryId } = useParams();
+  const { detailId } = useParams();
   const accessToken = localStorage.getItem("accessToken");
 
   // get
-  const { data: commentData } = useQuery(["getComment"], () => getComment(diaryId, accessToken));
+  const { data: commentData } = useQuery(["getComment"], () => getComment(detailId, accessToken));
   const mycomment = commentData?.data;
 
   // <----Mutation----> //
 
   //add
-  const { mutate: addmutation } = useMutation(() => addComment(diaryId, comment, accessToken), {
+  const { mutate: addmutation } = useMutation(() => addComment(detailId, comment, accessToken), {
     onSuccess: (data) => {
       queryClient.invalidateQueries("getComment");
       queryClient.invalidateQueries("getDiary");
@@ -36,7 +36,7 @@ const CommentBox = () => {
   });
 
   //delete
-  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(diaryId, commentId, accessToken), {
+  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(detailId, commentId, accessToken), {
     onSuccess: () => {
       queryClient.invalidateQueries("getComment");
       queryClient.invalidateQueries("getDiary");
@@ -45,7 +45,7 @@ const CommentBox = () => {
 
   //edit
   const { mutate: updatedCommentMutate } = useMutation(
-    (commentId) => updatedComment(diaryId, commentId, comment, accessToken),
+    (commentId) => updatedComment(detailId, commentId, comment, accessToken),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("getComment");
