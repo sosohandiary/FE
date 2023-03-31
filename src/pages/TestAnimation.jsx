@@ -1,27 +1,15 @@
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper";
+import React from "react";
+import HTMLFlipBook from "react-pageflip";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
-
-export default () => {
+const TestAnimation = () => {
   return (
-    <Swiper
-      // install Swiper modules
-      spaceBetween={50}
-      slidesPerView={3}
-      navigation
-      onSwiper={(swiper) => console.log(swiper)}
-      onSlideChange={() => console.log("slide change")}
-    >
-      <SwiperSlide>Slide 1</SwiperSlide>
-      <SwiperSlide>Slide 2</SwiperSlide>
-      <SwiperSlide>Slide 3</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
-    </Swiper>
+    <HTMLFlipBook width={300} height={500}>
+      <div className="demoPage">Page 1</div>
+      <div className="demoPage">Page 2</div>
+      <div className="demoPage">Page 3</div>
+      <div className="demoPage">Page 4</div>
+    </HTMLFlipBook>
   );
 };
+
+export default TestAnimation;
