@@ -18,17 +18,17 @@ const CommentBox = () => {
   const [test, setTest] = useState(null);
 
   const queryClient = useQueryClient();
-  const { diaryId } = useParams();
+  const { detailId } = useParams();
   const accessToken = localStorage.getItem("accessToken");
 
   // get
-  const { data: commentData } = useQuery(["getComment"], () => getComment(diaryId, accessToken));
+  const { data: commentData } = useQuery(["getComment"], () => getComment(detailId, accessToken));
   const mycomment = commentData?.data;
 
   // <----Mutation----> //
 
   //add
-  const { mutate: addmutation } = useMutation(() => addComment(diaryId, comment, accessToken), {
+  const { mutate: addmutation } = useMutation(() => addComment(detailId, comment, accessToken), {
     onSuccess: (data) => {
       queryClient.invalidateQueries("getComment");
       queryClient.invalidateQueries("getDiary");
