@@ -145,7 +145,7 @@ const CommentBox = () => {
           placeholder={isEditing ? "댓글 수정하기" : "댓글 달기"}
           value={comment.comment}
           onChange={inputChangeHandler}
-          onKeyDown={handleKeyDown}
+          onKeyPress={handleKeyDown}
         />
       </WholeAreaWithMargin>
     </div>

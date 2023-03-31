@@ -23,9 +23,7 @@ function Detail() {
 
   const accessToken = localStorage.getItem("accessToken");
 
-  const { data: diaryData } = useQuery(["getDiary"], () =>
-    getDiary(diaryId, detailId, accessToken)
-  );
+  const { data: diaryData } = useQuery(["getDiary"], () => getDiary(diaryId, detailId, accessToken));
 
   const myDiary = diaryData?.data;
 
@@ -41,8 +39,8 @@ function Detail() {
 
   return (
     <>
-      <StyledGobackButton onClick={() => navigate(-1)} />
-      <button style={{ float: "right" }} onClick={navToModify}>
+      <button onClick={navToModify}>
+        <StyledGobackButton onClick={() => navigate(-1)} />
         수정하기
       </button>
       {myDiary && (
@@ -58,11 +56,7 @@ function Detail() {
         </StyledDerailPage>
       )}
 
-      <button
-        style={{ display: "none" }}
-        ref={sheetRef}
-        onClick={() => setOpen(true)}
-      ></button>
+      <button style={{ display: "none" }} ref={sheetRef} onClick={() => setOpen(true)}></button>
 
       {myDiary ? (
         <BottomSheet
