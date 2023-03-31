@@ -26,7 +26,7 @@ function MyPage() {
     getProfile(accessToken)
   );
 
-  const { data: friednsCount } = useQuery(["getFriendsCount"], () =>
+  const { data: friendsCount } = useQuery(["getFriendsCount"], () =>
     getFriendsCount(accessToken)
   );
 
@@ -71,7 +71,7 @@ function MyPage() {
             <NavButton onClick={navToFriendsList}>
               <LabelSpan>친구</LabelSpan>
             </NavButton>
-            <div>{friednsCount?.data?.myFriendCount}</div>
+            <div>{friendsCount?.data?.myFriendCount}</div>
           </EachMenuBox>
           <EachMenuBox>
             <LabelSpan>다이어리</LabelSpan>

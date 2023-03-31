@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navigationbar from "../components/Navigationbar";
 import { SlMagnifier } from "react-icons/sl";
@@ -8,9 +8,10 @@ import axios from "axios";
 
 const NewFriend = () => {
   const accessToken = window.localStorage.getItem("accessToken");
-  console.log(accessToken);
   const [friendName, setFriendName] = useState("");
   const [list, setList] = useState([]);
+  const [nameNull, setNameNull] = useState(false);
+  const [friendStatus, setFriendStatus] = useState("");
 
   const findFriend = () => {
     axios
@@ -23,19 +24,32 @@ const NewFriend = () => {
       })
       .catch((err) => console.log(err));
   };
-  console.log(list);
+
+  // console.log(list);
 
   const addFriend = (id) => {
     console.log(id);
     axios
-      .post(`${process.env.REACT_APP_BASEURL}/friend/request/${id}`, {},{
-        headers: { Authorization: accessToken },
-      })
+      .post(
+        `${process.env.REACT_APP_BASEURL}/friend/request/${id}`,
+        {},
+        {
+          headers: { Authorization: accessToken },
+        }
+      )
       .then((res) => {
         console.log(res);
       })
       .catch((err) => console.log(err));
   };
+
+  useEffect(() => {
+    list?.map((item) => {
+      if (item.friendStatus === null) setFriendStatus("null");
+      if (item.friendStatus === "ACCEPTED") setFriendStatus("ACCEPTED");
+      if (item.friendStatus === "PENDING") setFriendStatus("PENDING");
+    });
+  }, [findFriend]);
 
   return (
     <>
@@ -57,15 +71,17 @@ const NewFriend = () => {
       </SearchTotalBox>
       {list?.map((item) => (
         <ListCards key={item.memberId}>
-              <ProfilePicSmall src='https://avatars.githubusercontent.com/u/109452831?v=4' />
+          <ProfilePicSmall src='https://avatars.githubusercontent.com/u/109452831?v=4' />
           <ListContentBox>{item.name}</ListContentBox>
-          <button
-            onClick={() => {
-              addFriend(item.memberId);
-            }}
-          >
-            추가하기
-          </button>
+          {friendStatus !== "ACCEPTED" && (
+            <button
+              onClick={() => {
+                addFriend(item.memberId);
+              }}
+            >
+              추가하기
+            </button>
+          )}
         </ListCards>
       ))}
 
@@ -115,7 +131,6 @@ const Searchinput = styled.input`
   border: none;
   width: 300px;
 `;
-
 
 const ListCards = styled.div`
   display: flex;
