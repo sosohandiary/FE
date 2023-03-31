@@ -14,6 +14,7 @@ import {
   convertFromRaw,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
+import { useParams, useSearchParams } from "react-router-dom";
 
 // <---------------변형 기능된 이미지 스티커 컴퍼넌트----------------->
 const ImageSticker = ({
@@ -192,6 +193,7 @@ const Test = () => {
   const [lineColor, setLineColor] = useState("#df4b26");
   const [lineWidth, setLineWidth] = useState(5);
   const isDrawing = useRef(false);
+  const { diaryid, paperid } = useParams();
 
   const changeModeHandler = (target) => {
     setMode(target);
@@ -201,17 +203,23 @@ const Test = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BASEURL}/diary/1/detail/2`, {
-        headers: { Authorization: accessToken },
-      })
+      .get(
+        `${process.env.REACT_APP_BASEURL}/diary/${diaryid}/detail/${paperid}`,
+        {
+          headers: { Authorization: accessToken },
+        }
+      )
       .then((res) => {
-        const resJson = JSON.parse(res.data.customJson);
-        setStickers(resJson.stickers);
-        setLines(resJson.lines);
-        window.localStorage.setItem(
-          "draft-js-example-item",
-          JSON.stringify(resJson.texts)
-        );
+        console.log("CC", res.data.customJson);
+        if (res.data.customJson.length > 10) {
+          const resJson = JSON.parse(res.data.customJson);
+          setStickers(resJson.stickers);
+          setLines(resJson.lines);
+          window.localStorage.setItem(
+            "draft-js-example-item",
+            JSON.stringify(resJson.texts)
+          );
+        }
       })
       .catch((err) => console.log(err));
   }, []);
@@ -322,9 +330,13 @@ const Test = () => {
       const sendData = { content: "", customJson: allJSON };
 
       axios
-        .patch(`${process.env.REACT_APP_BASEURL}/diary/1/detail/2`, sendData, {
-          headers: { Authorization: accessToken },
-        })
+        .patch(
+          `${process.env.REACT_APP_BASEURL}/diary/${diaryid}/detail/${paperid}`,
+          sendData,
+          {
+            headers: { Authorization: accessToken },
+          }
+        )
         .then((res) => {
           console.log("res : ", res);
         })
