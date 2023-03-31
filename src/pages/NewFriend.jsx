@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+
 import Navigationbar from "../components/Navigationbar";
+
+
 import { SlMagnifier } from "react-icons/sl";
 import { MdOutlineCancel } from "react-icons/md";
 import { ProfilePicSmall } from "../components/ProfilePics";
-import axios from "axios";
 
 const NewFriend = () => {
   const accessToken = window.localStorage.getItem("accessToken");
   const [friendName, setFriendName] = useState("");
   const [list, setList] = useState([]);
-  const [nameNull, setNameNull] = useState(false);
   const [friendStatus, setFriendStatus] = useState("");
+
+  //로그인 할때 이름? 멤버아이디? 받으면 적용하기
+  // const state = useSelector((state) => {
+  //   console.log(state.currentUserInfoSlice);
+  // })
 
   const findFriend = () => {
     axios

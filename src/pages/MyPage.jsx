@@ -49,6 +49,10 @@ function MyPage() {
     navigate("/myfriends/list");
   };
 
+  const navTodiary = (diaryId) => {
+    navigate(`/diaries/${diaryId}`);
+  }
+
 
   const LogoutHandler = () => {
     localStorage.removeItem("accessToken");
@@ -96,7 +100,7 @@ function MyPage() {
                   개설일: {getDate(item.createdAt)}{" "}
                 </StText>
               </div>
-              <ConfirmButton disabled><IoIosArrowForward size={28} color="#959494"/></ConfirmButton>
+              <ConfirmButton onClick={() => navTodiary(item.id)}><IoIosArrowForward size={28} color="#959494"/></ConfirmButton>
             </DiaryCards>
           );
         })}
