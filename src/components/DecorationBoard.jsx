@@ -14,7 +14,6 @@ import {
   convertFromRaw,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
-import { useParams } from "react-router-dom";
 
 // <---------------변형 기능된 이미지 스티커 컴퍼넌트----------------->
 const ImageSticker = ({
@@ -29,22 +28,12 @@ const ImageSticker = ({
   const [imgDictList, setImgDictList] = useState([]);
 
   const accessToken = localStorage.getItem("accessToken");
-  const { data } = useQuery(["getDecorationData"], () => {
-    return axios
-      .get(`${process.env.REACT_APP_BASEURL}/decoration/`, {
-        headers: { Authorization: accessToken },
-      })
-      .then((res) => {
-        setImgDictList(res.data);
-      })
-      .catch((err) => console.log(err));
-  });
 
   // <--------------->
-  const shapeRef = useRef();
-  const trRef = useRef();
+  const shapeRef = React.useRef();
+  const trRef = React.useRef();
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isSelected) {
       // we need to attach transformer manually
       trRef.current.nodes([shapeRef.current]);
@@ -80,6 +69,7 @@ const ImageSticker = ({
         numPoints={5}
         innerRadius={20}
         outerRadius={40}
+        // fill="#89b717"
         opacity={0.8}
         draggable={mode === "STICKER" ? true : false}
         rotation={sticker.rotation}
@@ -151,51 +141,19 @@ const ImageSticker = ({
 
 // <---------------------------------------->
 
-const Test = () => {
+const DecorationBoard = ({ customJson }) => {
   const [mode, setMode] = useState("TEXT");
   const [lineTool, setLineTool] = useState("pen");
   const [lines, setLines] = useState([]);
   const [lineColor, setLineColor] = useState("#df4b26");
   const [lineWidth, setLineWidth] = useState(5);
   const isDrawing = useRef(false);
-  const { diaryid, paperid } = useParams();
 
   const changeModeHandler = (target) => {
     setMode(target);
   };
-
   // <=== 데이터 겟 테스트===>
   const accessToken = localStorage.getItem("accessToken");
-
-  useEffect(() => {
-    function preventBehavior(e) {
-      e.preventDefault();
-    }
-
-    document.addEventListener("touchmove", preventBehavior, { passive: false });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(
-        `${process.env.REACT_APP_BASEURL}/diary/${diaryid}/detail/${paperid}`,
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
-      .then((res) => {
-        if (res.data.customJson.length > 10) {
-          const resJson = JSON.parse(res.data.customJson);
-          setStickers(resJson.stickers);
-          setLines(resJson.lines);
-          window.localStorage.setItem(
-            "draft-js-example-item",
-            JSON.stringify(resJson.texts)
-          );
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   // <-------------- 스티커 관련 -------------->
 
@@ -286,134 +244,31 @@ const Test = () => {
     };
 
     // 저장 버튼 !!!!
-    const handleSave = () => {
-      const data = JSON.stringify(
-        convertToRaw(editorState.getCurrentContent())
-      );
-      localStorage.setItem(TEXT_EDITOR_ITEM, data);
-
-      const allData = {
-        stickers,
-        lines,
-        texts: convertToRaw(editorState.getCurrentContent()),
-      };
-
-      const allJSON = JSON.stringify(allData);
-
-      const sendData = { thumbnail: "", customJson: allJSON };
-
-      axios
-        .patch(
-          `${process.env.REACT_APP_BASEURL}/diary/${diaryid}/detail/${paperid}`,
-          sendData,
-          {
-            headers: { Authorization: accessToken },
-          }
-        )
-        .then((res) => {
-          console.log("res : ", res);
-        })
-        .catch((err) => console.log(err));
-    };
 
     return (
       <div className="texteditor">
-        <button onMouseDown={(e) => handleTogggleClick(e, "BOLD")}>bold</button>
-        <button onMouseDown={(e) => handleTogggleClick(e, "UNDERLINE")}>
-          underline
-        </button>
-        <button onMouseDown={(e) => handleTogggleClick(e, "ITALIC")}>
-          italic
-        </button>
-        <button onMouseDown={(e) => handleTogggleClick(e, "STRIKETHROUGH")}>
-          strikthrough
-        </button>
-        <button
-          disabled={editorState.getUndoStack().size <= 0}
-          onMouseDown={() => setEditorState(EditorState.undo(editorState))}
-        >
-          UNDO
-        </button>
-        <button
-          disabled={editorState.getRedoStack().size <= 0}
-          onMouseDown={() => setEditorState(EditorState.redo(editorState))}
-        >
-          REDO
-        </button>
         <Editor
           editorState={editorState}
           onChange={setEditorState}
           handleKeyCommand={handleKeyCommand}
         />
-        <button
-          className="save"
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            handleSave();
-          }}
-        >
-          save
-        </button>
       </div>
     );
   };
 
-  const changeColorHandler = (target) => {
-    setLineColor(target);
-  };
-  const changeWidthHandler = (target) => {
-    setLineWidth(target);
-  };
-  const changeLineTool = (target) => {
-    setLineTool(target);
-  };
+  // 백엔드에서 겟 해오기
 
-  //도구 모음 창
-  const Toolbar = () => {
-    const onClickSaveStickerHandler = () => {
-      const accessToken = localStorage.getItem("accessToken");
+  const json = customJson.length < 20 ? "" : JSON.parse(customJson);
 
-      axios.post(`${process.env.REACT_APP_BASEURL}/decoration/`, stickers, {
-        headers: { Authorization: accessToken },
-      });
-    };
-
-    return (
-      <div style={{ position: "sticky", zIndex: 10 }}>
-        <button onClick={(e) => changeModeHandler("TEXT")}>텍스트 모드</button>
-        <button onClick={() => changeModeHandler("DRAW")}>그리기 모드</button>
-        <button onClick={() => changeModeHandler("STICKER")}>
-          스티커 모드
-        </button>
-        <button onClick={() => changeColorHandler("#df4b26")}>빨간색</button>
-        <button onClick={() => changeColorHandler("#2645df")}>파란색</button>
-        <button onClick={() => changeWidthHandler(5)}>굵게</button>
-        <button onClick={() => changeWidthHandler(1)}>얇게</button>
-        <button onClick={() => changeLineTool("eraser")}>지우개</button>
-        <button onClick={() => changeLineTool("pen")}>펜</button>
-        <div>
-          스티커 관련
-          <button onClick={() => addStickerButtonHandler(0)}>
-            0번 스티커 추가
-          </button>
-          <button onClick={() => addStickerButtonHandler(1)}>
-            1번 스티커 추가
-          </button>
-          <button onClick={() => addStickerButtonHandler(2)}>
-            2번 스티커 추가
-          </button>
-          <button onClick={onClickSaveStickerHandler}>스티커 저장</button>
-          <button>이미지로 저장</button>
-        </div>
-      </div>
-    );
-  };
+  if (json) {
+    const stickersReadOnly = json.stickers;
+    const linesReadOnly = json.lines;
+    const textsReadOnly = json.texts;
+  }
 
   // 도화지
   return (
     <WholeAreaWithMargin>
-      <Toolbar />
       <BackgroundStyle></BackgroundStyle>
       <TextAreaStyle mode={mode}>
         <Draft />
@@ -422,11 +277,9 @@ const Test = () => {
         width={window.innerWidth}
         height={window.innerHeight}
         onMouseDown={handleMouseDown}
+        onTouchStart={handleMouseDown}
         onMousemove={handleMouseMove}
         onMouseup={handleMouseUp}
-        onTouchStart={handleMouseDown}
-        onTouchMove={handleMouseMove}
-        onTouchEnd={handleMouseUp}
         style={{ position: "absolute", top: "40px" }}
       >
         <Layer>
@@ -471,14 +324,14 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default DecorationBoard;
 
 const BackgroundStyle = styled.div`
   position: absolute;
   z-index: -10;
   background-color: #e9e9e9;
   width: 100%;
-  height: 200px;
+  height: 1000px;
 `;
 
 const TextAreaStyle = styled.div`

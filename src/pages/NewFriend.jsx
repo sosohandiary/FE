@@ -1,15 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+
 import Navigationbar from "../components/Navigationbar";
+
 import { SlMagnifier } from "react-icons/sl";
 import { MdOutlineCancel } from "react-icons/md";
-import axios from "axios";
+import { ProfilePicSmall } from "../components/ProfilePics";
+import { useNavigate } from "react-router-dom";
 
 const NewFriend = () => {
   const accessToken = window.localStorage.getItem("accessToken");
-  console.log(accessToken);
   const [friendName, setFriendName] = useState("");
   const [list, setList] = useState([]);
+  const [friendStatus, setFriendStatus] = useState("");
+  const navigate = useNavigate();
+
+  //로그인 할때 이름? 멤버아이디? 받으면 적용하기
+  // const state = useSelector((state) => {
+  //   console.log(state.currentUserInfoSlice);
+  // })
 
   const findFriend = () => {
     axios
@@ -22,18 +33,36 @@ const NewFriend = () => {
       })
       .catch((err) => console.log(err));
   };
-  console.log(list);
+
+  // console.log(list);
 
   const addFriend = (id) => {
     console.log(id);
     axios
-      .get(`${process.env.REACT_APP_BASEURL}/friend/request/${id}`)
+      .post(
+        `${process.env.REACT_APP_BASEURL}/friend/request/${id}`,
+        {},
+        {
+          headers: { Authorization: accessToken },
+        }
+      )
       .then((res) => {
         console.log(res);
       })
       .catch((err) => console.log(err));
   };
 
+  useEffect(() => {
+    list?.map((item) => {
+      if (item.friendStatus === null) setFriendStatus("null");
+      if (item.friendStatus === "ACCEPTED") setFriendStatus("ACCEPTED");
+      if (item.friendStatus === "PENDING") setFriendStatus("PENDING");
+    });
+  }, [findFriend]);
+
+  const goToAcceptFriend = () => {
+    navigate("/acceptTest");
+  };
   return (
     <>
       <SearchTotalBox>
@@ -52,17 +81,21 @@ const NewFriend = () => {
           <button onClick={findFriend}>찾기</button>
         </SearchStyleBox>
       </SearchTotalBox>
+      <button onClick={goToAcceptFriend}>친구 수락</button>
       {list?.map((item) => (
-        <div>
-          <div>{item.member_id}</div>
-          <button
-            onClick={() => {
-              addFriend(item.member_id);
-            }}
-          >
-            추가하기
-          </button>
-        </div>
+        <ListCards key={item.memberId}>
+          <ProfilePicSmall src="https://avatars.githubusercontent.com/u/109452831?v=4" />
+          <ListContentBox>{item.name}</ListContentBox>
+          {friendStatus !== "ACCEPTED" && (
+            <button
+              onClick={() => {
+                addFriend(item.memberId);
+              }}
+            >
+              추가하기
+            </button>
+          )}
+        </ListCards>
       ))}
 
       <Navigationbar />
@@ -110,4 +143,18 @@ const Searchinput = styled.input`
   background-color: transparent;
   border: none;
   width: 300px;
+`;
+
+const ListCards = styled.div`
+  display: flex;
+  align-self: flex-start;
+
+  padding: 10px;
+`;
+
+const ListContentBox = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-left: 10px;
 `;

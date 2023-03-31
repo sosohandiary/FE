@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useQuery } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import { getMyfriends, getFriendsCount } from "../api/mypage";
+import { getMyfriends, getFriendsCount, deleteFriend } from "../api/mypage";
 import { ProfilePicSmall } from "../components/ProfilePics";
 import Searchbox from "../components/Searchbox";
 import { WholeArea, WholeAreaWithMargin } from "../styles/WholeAreaStyle";
@@ -16,6 +16,12 @@ const MyFriends = () => {
 
   const [selectedFriends, setSelectedFriends] = useState([]);
 
+  const [friendStatus, setFriendStatus] = useState("");
+
+  const location = useLocation();
+
+  console.log(location.state);
+
   const { mode } = useParams();
   const navigate = useNavigate();
 
@@ -25,19 +31,30 @@ const MyFriends = () => {
     getMyfriends(accessToken)
   );
 
-  const { data: friednsCount } = useQuery(["getFriendsCount"], () =>
+  const { data: friendsCount } = useQuery(["getFriendsCount"], () =>
     getFriendsCount(accessToken)
+  );
+
+  console.log(friendsCount)
+
+  const queryClient = useQueryClient();
+  //friend-id 넣어주기
+  const { mutate: deleteFriendMutate } = useMutation(
+    (friendId) => deleteFriend(friendId, accessToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("getMyFriends");
+        queryClient.invalidateQueries("getFriendsCount");
+      },
+    }
   );
 
   const friends = myFriends?.data;
 
-  // console.log(friends);
-  // console.log(searchFriends);
-
+  console.log(friends);
   useEffect(() => {
     setSearchFriends(friends);
   }, [friends]);
-
 
   const handleAddFriend = (friend) => {
     setSelectedFriends((prevSelectedFriends) => {
@@ -61,10 +78,13 @@ const MyFriends = () => {
   const handleSaveSelectedFriends = () => {
     // Save the selected friends to the navigate state and navigate to the other page
     navigate("/friends-list", { state: { selectedFriends } });
-
   };
 
   console.log(selectedFriends);
+
+  const onDeleteHandler = (friendId) => {
+    deleteFriendMutate(friendId);
+  };
 
   return (
     <>
@@ -77,32 +97,41 @@ const MyFriends = () => {
           placeholder='친구 검색'
         />
         <Label alignSelf='flex-start'>
-          친구 {friednsCount?.data?.myFriendCount}
+          친구 {friendsCount?.data?.myFriendCount}
         </Label>
         {selectedFriends.length > 0 && (
-          <button onClick={handleSaveSelectedFriends}>
-            친구 추가 완료
-          </button>
+          <button onClick={handleSaveSelectedFriends}>친구 추가 완료</button>
         )}
         {friends &&
           searchFriends?.map((item, index) => {
             return (
               <ListCards key={index}>
-                <ProfilePicSmall src='https://avatars.githubusercontent.com/u/109452831?v=4' />
-                <ListContentBox>
-                  {mode === "add" && !selectedFriends.includes(item) ? (
-                    <button onClick={() => handleAddFriend(item)}>
-                      추가
-                    </button>
-                  ) : null}
-                  {mode === "add" && selectedFriends.includes(item) ?(
-                      <button onClick={() => handleRemoveFriend(item)}>
-                      취소
-                    </button>
-                  ):null}
-                  <StText fontWeight='bold'>{item.nickname}</StText>
-                  <StText>{item.statusMessage}</StText>
-                </ListContentBox>
+                {item.friendStatus === "ACCEPTED" && (
+                  <>
+                    <ProfilePicSmall src='https://avatars.githubusercontent.com/u/109452831?v=4' />
+                    <ListContentBox>
+                      {mode === "add" && !selectedFriends.includes(item) ? (
+                        <button onClick={() => handleAddFriend(item)}>
+                          추가
+                        </button>
+                      ) : null}
+                      {mode === "add" && selectedFriends.includes(item) ? (
+                        <button onClick={() => handleRemoveFriend(item)}>
+                          취소
+                        </button>
+                      ) : null}
+                      <StText fontWeight='bold'>{item.nickname}</StText>
+                      <StText>{item.statusMessage}</StText>
+                      <button
+                        onClick={() => {
+                          onDeleteHandler(item.friendListId);
+                        }}
+                      >
+                        삭제
+                      </button>
+                    </ListContentBox>
+                  </>
+                )}
               </ListCards>
             );
           })}

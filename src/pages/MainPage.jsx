@@ -1,129 +1,341 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
-import { WholeArea } from "../styles/WholeAreaStyle";
-import "react-alice-carousel/lib/alice-carousel.css";
-import Navigationbar from "../components/Navigationbar";
-import { useQuery } from "react-query";
 import axios from "axios";
+import "swiper/css";
+import "swiper/css/pagination";
+import { useInView } from "react-intersection-observer";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper";
 import { useSelector } from "react-redux";
+import Navigationbar from "../components/Navigationbar";
 import { useNavigate } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accessToken");
-  // useEffect(() => {
-  //   if (!accessToken) {
-  //     navigate("/login");
-  //   }
-  // }, []);
 
-  const [filterMode, setFilterMode] = useState("ALL");
+  //비로그인 -> 로그인창으로
+  const accessToken = window.localStorage.getItem("accessToken");
+  useEffect(() => {
+    if (accessToken === null) {
+      navigate("/login");
+    }
+  }, []);
 
-  const currentLoginUser = useSelector((state) => state.currentUserInfoSlice);
+  //무한스크롤
 
-  // useEffect(() => {
-  //   return axios
-  //     .get(`${process.env.REACT_APP_BASEURL}/?page=0&size=5`, {
-  //       headers: { Authorization: accessToken },
-  //     })
-  //     .then((res) => console.log(res))
-  //     .catch((err) => console.log(err));
-  // }, []);
-
-  // 데이터 수신
-  const { data, isLoading, isError, error } = useQuery(["getDiaries"], () => {
-    return axios.get(`${process.env.REACT_APP_BASEURL}/?page=1&size=5`, {
-      headers: { Authorization: accessToken },
-    });
+  const { ref: refForPrivate, inView: inViewForPrivate } = useInView({
+    threshold: 0,
   });
-  if (isError) {
-    console.log(error);
-  } else if (isLoading) {
-    console.log("LOADING");
-  }
+  const { ref: refForPublic, inView: inViewForPublic } = useInView({
+    threshold: 0,
+  });
 
-  console.log(data);
-  const diaryList = data?.data;
-  console.log(diaryList);
+  //데이터 겟
+  const [privatePage, setPrivatePage] = useState(0);
+  const [publicPage, setPublicPage] = useState(0);
+  const [IsLoadingForSelfMadePrivate, setIsLoadingForSelfMadePrivate] =
+    useState(false);
+  const [IsLoadingForPrivate, setIsLoadingForPrivate] = useState(false);
+  const [IsLoadingForPublic, setIsLoadingForPublic] = useState(false);
+  const [dataListForSelfMadePrivate, setDataListForSelfMadePrivate] = useState(
+    []
+  );
+  const [dataListForPrivate, setDataListForPrivate] = useState([]);
+  const [dataListForPublic, setDataListForPublic] = useState([]);
 
-  const onClickFilterButtonHandler = (val) => {
-    filterMode = val;
+  useEffect(() => {
+    setIsLoadingForSelfMadePrivate(true);
+    axios
+      .get(`${process.env.REACT_APP_BASEURL}/private`, {
+        headers: { Authorization: accessToken },
+      })
+      .then((res) => {
+        setIsLoadingForSelfMadePrivate(false);
+        setDataListForSelfMadePrivate((prev) => [...prev, ...res.data]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (inViewForPrivate) {
+      setIsLoadingForPrivate(true);
+      axios
+        .get(
+          `${process.env.REACT_APP_BASEURL}/private?page=${privatePage}&size=5`,
+          {
+            headers: { Authorization: accessToken },
+          }
+        )
+        .then((res) => {
+          setIsLoadingForPrivate(false);
+
+          setDataListForPrivate((prev) => [...prev, ...res.data]);
+          setPrivatePage((prev) => prev + 1);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [inViewForPrivate]);
+
+  useEffect(() => {
+    if (inViewForPublic) {
+      setIsLoadingForPublic(true);
+      axios
+        .get(
+          `${process.env.REACT_APP_BASEURL}/public?page=${publicPage}&size=5`,
+          {
+            headers: { Authorization: accessToken },
+          }
+        )
+        .then((res) => {
+          setIsLoadingForPublic(false);
+          setDataListForPublic((prev) => [...prev, ...res.data.content]);
+          setPublicPage((prev) => prev + 1);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [inViewForPublic]);
+
+  console.log(dataListForPublic);
+
+  const curUserNickname = useSelector(
+    (state) => state.currentUserInfoSlice.userNickname
+  );
+
+  const goToDiaryDetail = (id) => {
+    navigate(`/diaries/${id}`);
   };
 
   return (
-    <WholeArea>
-      <WelcomeMsg>
-        {currentLoginUser.userNickname === ""
-          ? "좋은 하루입니다"
-          : currentLoginUser.userNickname + "님"}
-        <br />
-        안녕하세요
-      </WelcomeMsg>
-      <ProfileImg>
-        <img src={defaultProfileImg} />
-      </ProfileImg>
-      <FilterArea>
-        <FilterButton onClick={() => onClickFilterButtonHandler("ALL")}>
-          전체보기
-        </FilterButton>
-        <FilterButton onClick={() => onClickFilterButtonHandler("PUBLIC")}>
-          Public
-        </FilterButton>
-        <FilterButton onClick={() => onClickFilterButtonHandler("PRIVATE")}>
-          Private
-        </FilterButton>
-      </FilterArea>
-      <Thumb></Thumb>
-      {diaryList?.map((item, i) => {
-        return <div key={i}>{item.title}</div>;
-      })}
-      <Thumb></Thumb>
-      <Thumb></Thumb>
+    <div>
+      <WelcomeArea>
+        <div>
+          안녕하세요
+          <br />
+          {curUserNickname}님!
+        </div>
+        <div
+          style={{
+            backgroundColor: "skyblue",
+            borderRadius: "50%",
+            height: "40px",
+            width: "40px",
+          }}
+        >
+          사진
+        </div>
+      </WelcomeArea>
+      <Label>내가 만든 다이어리</Label>
+      <SwiperArea>
+        <Swiper
+          slidesPerView={"auto"}
+          spaceBetween={20}
+          pagination={{
+            clickable: true,
+            dynamicBullets: true,
+          }}
+          modules={[Pagination]}
+          className="mySwiper"
+        >
+          {dataListForSelfMadePrivate.map((item) => (
+            <SwiperSlide
+              key={item.id}
+              onClick={() => {
+                goToDiaryDetail(item.id);
+              }}
+            >
+              <SlideOne imageUrl={item.img}>
+                <h1>{item.title}</h1>
+                <h3>{item.name}</h3>
+                <p>{item.modifiedAt}</p>
+              </SlideOne>
+            </SwiperSlide>
+          ))}
+          {IsLoadingForPrivate ? (
+            <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+          ) : (
+            ""
+          )}
+          <span
+            slot="wrapper-end"
+            ref={refForPrivate}
+            style={{ margin: "0px 10px" }}
+          >
+            <Skeleton width={140} height={196} borderRadius={25} />
+          </span>
+          <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
+            <Skeleton width={140} height={196} borderRadius={25} />
+          </span>
+          <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
+            <Skeleton width={140} height={196} borderRadius={25} />
+          </span>
+        </Swiper>
+      </SwiperArea>
+      <div style={{ display: "none" }}>
+        <button className="prev">prev</button>
+        <button className="next">next</button>
+      </div>
+      <div style={{ margin: "10px 10px 80px 10px" }}>
+        <Label>공유 다이어리</Label>
+        <SwiperArea>
+          <Swiper
+            slidesPerView={"auto"}
+            spaceBetween={20}
+            pagination={{
+              clickable: true,
+              dynamicBullets: true,
+            }}
+            modules={[Pagination]}
+            className="mySwiper"
+          >
+            {dataListForPrivate.map((item) => (
+              <SwiperSlide
+                key={item.id}
+                onClick={() => {
+                  goToDiaryDetail(item.id);
+                }}
+              >
+                <SlideOne imageUrl={item.img}>
+                  <h1>{item.title}</h1>
+                  <h3>{item.name}</h3>
+                  <p>{item.modifiedAt}</p>
+                </SlideOne>
+              </SwiperSlide>
+            ))}
+            {IsLoadingForPrivate ? (
+              <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+            ) : (
+              ""
+            )}
+            <span
+              slot="wrapper-end"
+              ref={refForPrivate}
+              style={{ margin: "0px 10px 0px 0px" }}
+            >
+              <Skeleton width={140} height={196} borderRadius={25} />
+            </span>
+            <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
+              <Skeleton width={140} height={196} borderRadius={25} />
+            </span>
+            <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
+              <Skeleton width={140} height={196} borderRadius={25} />
+            </span>
+          </Swiper>
+        </SwiperArea>
+        <Label>공개 다이어리</Label>
+        <SwiperArea>
+          <Swiper
+            slidesPerView={"auto"}
+            spaceBetween={20}
+            pagination={{
+              clickable: true,
+              dynamicBullets: true,
+            }}
+            modules={[Pagination]}
+            className="mySwiper"
+          >
+            {dataListForPublic.map((item) => (
+              <SwiperSlide
+                key={item.id}
+                onClick={() => {
+                  goToDiaryDetail(item.id);
+                }}
+              >
+                <SlideOne imageUrl={item.img}>
+                  <h1>{item.title}</h1>
+                  <h3>{item.name}</h3>
+                  <p>{item.modifiedAt}</p>
+                </SlideOne>
+              </SwiperSlide>
+            ))}
+            {IsLoadingForPublic ? (
+              <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+            ) : (
+              ""
+            )}
+            <span
+              slot="wrapper-end"
+              ref={refForPublic}
+              style={{ margin: "0px 10px" }}
+            >
+              <Skeleton width={140} height={196} borderRadius={25} />
+            </span>
+            <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
+              <Skeleton width={140} height={196} borderRadius={25} />
+            </span>
+            <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
+              <Skeleton width={140} height={196} borderRadius={25} />
+            </span>
+          </Swiper>
+        </SwiperArea>
+      </div>
       <Navigationbar />
-    </WholeArea>
+    </div>
   );
 };
 
 export default MainPage;
 
-const WelcomeMsg = styled.h2`
-  position: relative;
-  right: 80px;
+const WelcomeArea = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 20px auto;
+
+  background-color: #c2e9f9;
+  width: 90vw;
 `;
 
-const ProfileImg = styled.div`
-  position: relative;
-  left: 120px;
-  bottom: 30px;
-  width: 50px;
-  height: 50px;
-  border-radius: 70%;
-  overflow: hidden;
-  img {
+const SwiperArea = styled.div`
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+
+    /* Center slide text vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper-slide img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
+
+  .swiper-slide {
+    height: 196px;
+    width: 140px;
+  }
 `;
 
-const Thumb = styled.div`
-  background-color: gray;
-  width: 300px;
-  height: 200px;
-  margin-bottom: 10px;
+const Label = styled.div`
+  margin: 10px;
+  font-weight: 800;
 `;
 
-const FilterArea = styled.div`
-  width: 280px;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
-`;
-
-const FilterButton = styled.div`
-  height: 20px;
-  padding: 0px 20px;
-  background-color: #d7d7d7;
-  border-radius: 20px;
+const SlideOne = styled.div`
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 10px;
+  color: #fff;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url(${({ imageUrl }) => imageUrl});
+  background-size: cover;
 `;

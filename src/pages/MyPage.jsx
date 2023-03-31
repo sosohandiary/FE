@@ -13,6 +13,7 @@ import { getDate } from "../utils/getDate";
 import { WholeArea } from "../styles/WholeAreaStyle";
 import { ProfilePicLarge } from "../components/ProfilePics";
 import { IoIosArrowForward } from "react-icons/io";
+import Navigationbar from "../components/Navigationbar";
 
 
 function MyPage() {
@@ -26,7 +27,7 @@ function MyPage() {
     getProfile(accessToken)
   );
 
-  const { data: friednsCount } = useQuery(["getFriendsCount"], () =>
+  const { data: friendsCount } = useQuery(["getFriendsCount"], () =>
     getFriendsCount(accessToken)
   );
 
@@ -48,6 +49,17 @@ function MyPage() {
   const navToFriendsList = () => {
     navigate("/myfriends/list");
   };
+
+  const navTodiary = (diaryId) => {
+    navigate(`/diaries/${diaryId}`);
+  }
+
+
+  const LogoutHandler = () => {
+    localStorage.removeItem("accessToken");
+    alert("로그아웃! 이 메세지 없애주세요");
+    navigate("/login");
+  };
   return (
     <>
       <WholeArea style={{ margin: "30px auto", maxWidth: "720px" }}>
@@ -64,7 +76,7 @@ function MyPage() {
             <NavButton onClick={navToFriendsList}>
               <LabelSpan>친구</LabelSpan>
             </NavButton>
-            <div>{friednsCount?.data?.myFriendCount}</div>
+            <div>{friendsCount?.data?.myFriendCount}</div>
           </EachMenuBox>
           <EachMenuBox>
             <LabelSpan>다이어리</LabelSpan>
@@ -89,10 +101,18 @@ function MyPage() {
                   개설일: {getDate(item.createdAt)}{" "}
                 </StText>
               </div>
-              <ConfirmButton disabled><IoIosArrowForward size={28} color="#959494"/></ConfirmButton>
+              <ConfirmButton onClick={() => navTodiary(item.id)}><IoIosArrowForward size={28} color="#959494"/></ConfirmButton>
             </DiaryCards>
           );
         })}
+ 
+        <StLogout>
+          <LougoutBtn onClick={LogoutHandler}>
+            로그아웃
+          </LougoutBtn>
+        </StLogout>
+
+        <Navigationbar />
       </WholeArea>
     </>
   );
@@ -209,4 +229,16 @@ const ConfirmButton = styled.button`
   border: none;
 
   cursor: pointer;
+`;
+
+const StLogout = styled.div`
+  display: flex;
+  align-self: flex-end;
+  margin: 20px;
+  padding-bottom: 30px;
+`;
+
+const LougoutBtn = styled.button`
+  border: none;
+  background: none;
 `;

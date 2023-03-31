@@ -33,7 +33,7 @@ const DeleteAccount = ({
           <MintButtonSmall boderRight='1px solid' onClick={onClose}>
            취소
           </MintButtonSmall>
-          <GrayButtonSmall color='#00b49b' onClick={handleConfirmClick} disabled>
+          <GrayButtonSmall color='#00b49b' onClick={handleConfirmClick}>
             탈퇴하기
           </GrayButtonSmall>
         </StButtonBox>
