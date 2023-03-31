@@ -4,6 +4,8 @@ import { GrayButtonMedium } from "../styles/Buttons";
 import axios from "axios";
 import { VscBlank } from "react-icons/vsc";
 
+import Navigationbar from "../components/Navigationbar";
+
 const Diary = () => {
   const accessToken = window.localStorage.getItem("accessToken");
   const [file, setFile] = useState();
@@ -121,6 +123,7 @@ const Diary = () => {
           </label>
         </RadioWrapper>
       </form>
+      <Navigationbar/>
     </Wholebox>
   );
 };
