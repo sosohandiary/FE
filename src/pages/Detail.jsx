@@ -33,9 +33,14 @@ function Detail() {
     sheetRef.current.click();
   }, []);
 
+  const navToModify = () => {
+    navigate(`/test/${diaryId}/${detailId}`)
+  }
+
   return (
     <>
       <StyledGobackButton onClick={() => navigate(-1)} />
+      <button style={{float:"right"}} onClick={navToModify}>수정하기</button>
 
       {myDiary && (
         <StyledDerailPage>

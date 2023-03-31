@@ -52,7 +52,7 @@ function SubPage() {
   };
 
   const goToInnerPaperDetail = (paperId) => {
-    navigate(`/test/${diaryId}/${paperId}`);
+    navigate(`/diaries/${diaryId}/${paperId}`);
   };
   const newInnerPaper = () => {
     axios
