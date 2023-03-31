@@ -71,7 +71,7 @@ function Detail() {
             </DetailElement>
           }
           defaultSnap={({ snapPoints }) => snapPoints}
-          snapPoints={({ minHeight, maxHeight }) => [60, 800]}
+          snapPoints={({ minHeight, maxHeight }) => [60, maxHeight]}
           blocking={false}
         >
           <CommentBox />
