@@ -2,10 +2,10 @@ import styled from "styled-components";
 
 export const WholeAreaWithMargin = styled.div`
   margin: 24px;
-  /* display: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column; */
+  flex-direction: column;
 `;
 
 export const WholeArea = styled.div`
