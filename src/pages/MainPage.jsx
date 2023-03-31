@@ -11,6 +11,8 @@ import { Pagination } from "swiper";
 import { useSelector } from "react-redux";
 import Navigationbar from "../components/Navigationbar";
 import { useNavigate } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -21,142 +23,6 @@ const MainPage = () => {
     if (accessToken === null) {
       navigate("/login");
     }
-  }, []);
-
-  // 원형 카로셀
-  useEffect(() => {
-    const slides = $(".slide__container");
-    var activeSlideIndex = 2;
-
-    for (let i = 0; i < slides.length; i++) {
-      gsap.set(".slide__container", {
-        opacity: 0,
-      });
-    }
-
-    updateSlider(activeSlideIndex);
-
-    function updateSlider(way) {
-      var slideOnLeft,
-        slideOnRight,
-        slideOnCenter,
-        slideToLoad,
-        SlideToLoadRotation,
-        SlideToUnLoad,
-        SlideToUnLoadRotation;
-
-      if (way == "next") {
-        activeSlideIndex++;
-      } else if (way == "prev") {
-        activeSlideIndex--;
-      }
-      updateIndex();
-
-      slideOnCenter = slides[activeSlideIndex];
-
-      if (activeSlideIndex === slides.length - 1) {
-        slideOnRight = slides[0];
-      } else {
-        slideOnRight = slides[activeSlideIndex + 1];
-      }
-
-      if (activeSlideIndex === 0) {
-        slideOnLeft = slides[slides.length - 1];
-      } else {
-        slideOnLeft = slides[activeSlideIndex - 1];
-      }
-
-      if (way == "next") {
-        slideToLoad = slideOnRight;
-        SlideToLoadRotation = -90;
-        SlideToUnLoad = slides[activeSlideIndex - 2];
-        SlideToUnLoadRotation = 90;
-      } else if (way == "prev") {
-        slideToLoad = slideOnLeft;
-        SlideToLoadRotation = 90;
-        SlideToUnLoad = slides[activeSlideIndex + 2];
-        SlideToUnLoadRotation = -90;
-      }
-
-      if (activeSlideIndex === 0 && way == "next") {
-        SlideToUnLoad = slides[slides.length - 2];
-      }
-      if (activeSlideIndex === 1 && way == "next") {
-        SlideToUnLoad = slides[slides.length - 1];
-      }
-      if (activeSlideIndex === 0 && way == "prev") {
-        SlideToUnLoad = slides[2];
-      }
-      if (activeSlideIndex === 1 && way == "prev") {
-        SlideToUnLoad = slides[3];
-      }
-      if (activeSlideIndex === slides.length - 1 && way == "prev") {
-        SlideToUnLoad = slides[1];
-      }
-      if (activeSlideIndex === slides.length - 2 && way == "prev") {
-        SlideToUnLoad = slides[0];
-      }
-
-      $(".slide--active").removeClass("slide--active");
-      $(slideOnCenter).addClass("slide--active");
-
-      gsap
-        .timeline()
-        .to(SlideToUnLoad, {
-          rotate: SlideToUnLoadRotation,
-          opacity: 0,
-        })
-        .set(
-          slideToLoad,
-          {
-            rotate: SlideToLoadRotation,
-            opacity: 0,
-          },
-          "<"
-        )
-        .to(
-          slideOnCenter,
-
-          {
-            opacity: 1,
-            rotate: 0,
-          },
-          "<"
-        )
-        .to(
-          slideOnLeft,
-
-          {
-            opacity: 1,
-            rotate: 45,
-          },
-          "<"
-        )
-        .to(
-          slideOnRight,
-
-          {
-            opacity: 1,
-            rotate: -45,
-          },
-          "<"
-        );
-    }
-
-    function updateIndex() {
-      if (activeSlideIndex < 0) {
-        activeSlideIndex = slides.length - 1;
-      } else if (activeSlideIndex > slides.length - 1) {
-        activeSlideIndex = 0;
-      }
-    }
-
-    $(".prev").click(function () {
-      updateSlider("prev");
-    });
-    $(".next").click(function () {
-      updateSlider("next");
-    });
   }, []);
 
   //무한스크롤
@@ -186,12 +52,13 @@ const MainPage = () => {
   useEffect(() => {
     setIsLoadingForSelfMadePrivate(true);
     axios
-      .get(`${process.env.REACT_APP_BASEURL}/public?page=${0}&size=5`, {
+      .get(`${process.env.REACT_APP_BASEURL}/private`, {
         headers: { Authorization: accessToken },
       })
       .then((res) => {
+        console.log(res);
         setIsLoadingForSelfMadePrivate(false);
-        setDataListForSelfMadePrivate((prev) => [...prev, ...res.data.content]);
+        setDataListForSelfMadePrivate((prev) => [...prev, ...res.data]);
       })
       .catch((err) => {
         console.log(err);
@@ -242,22 +109,6 @@ const MainPage = () => {
     }
   }, [inViewForPublic]);
 
-  //원형 카로셀
-  const [touchStartX, setTouchStartX] = useState(0);
-  const carouselTouchStart = (e) => {
-    setTouchStartX(e.touches[0].clientX);
-  };
-  const carouselTouchEnd = (e) => {
-    const touchEndX = e.changedTouches[0].clientX;
-    if (touchStartX - touchEndX < -5) {
-      const prevButton = document.querySelector(".prev");
-      prevButton.click();
-    } else if (touchStartX - touchEndX > 5) {
-      const nextButton = document.querySelector(".next");
-      nextButton.click();
-    }
-  };
-
   const curUserNickname = useSelector(
     (state) => state.currentUserInfoSlice.userNickname
   );
@@ -268,40 +119,73 @@ const MainPage = () => {
 
   return (
     <div>
-      <CircularCarousel
-        onTouchStart={carouselTouchStart}
-        onTouchEnd={carouselTouchEnd}
-      >
-        <WelcomeArea>
-          <div>
-            안녕하세요
-            <br />
-            {curUserNickname}님!
-          </div>
-          <div
-            style={{
-              backgroundColor: "skyblue",
-              borderRadius: "50%",
-              height: "40px",
-              width: "40px",
-            }}
-          >
-            사진
-          </div>
-        </WelcomeArea>
-        <div className="slider__container">
-          {dataListForSelfMadePrivate?.map((item, i) => (
-            <div key={i} className="slide__container">
-              <div className="slide">{i}</div>
-            </div>
-          ))}
+      <WelcomeArea>
+        <div>
+          안녕하세요
+          <br />
+          {curUserNickname}님!
         </div>
-      </CircularCarousel>
+        <div
+          style={{
+            backgroundColor: "skyblue",
+            borderRadius: "50%",
+            height: "40px",
+            width: "40px",
+          }}
+        >
+          사진
+        </div>
+      </WelcomeArea>
+      <Label>공유 다이어리</Label>
+      <SwiperArea>
+        <Swiper
+          slidesPerView={"auto"}
+          spaceBetween={20}
+          pagination={{
+            clickable: true,
+            dynamicBullets: true,
+          }}
+          modules={[Pagination]}
+          className="mySwiper"
+        >
+          {dataListForSelfMadePrivate.map((item) => (
+            <SwiperSlide
+              key={item.id}
+              onClick={() => {
+                goToDiaryDetail(item.id);
+              }}
+            >
+              <SlideOne imageUrl={item.img}>
+                <h1>{item.title}</h1>
+                <h3>{item.name}</h3>
+                <p>{item.modifiedAt}</p>
+              </SlideOne>
+            </SwiperSlide>
+          ))}
+          {IsLoadingForPrivate ? (
+            <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+          ) : (
+            ""
+          )}
+          <span
+            slot="wrapper-end"
+            ref={refForPrivate}
+            style={{ margin: "0px 10px" }}
+          >
+            <Skeleton width={140} height={196} borderRadius={25} />
+          </span>
+          <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
+            <Skeleton width={140} height={196} borderRadius={25} />
+          </span>
+          <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
+            <Skeleton width={140} height={196} borderRadius={25} />
+          </span>
+        </Swiper>
+      </SwiperArea>
       <div style={{ display: "none" }}>
         <button className="prev">prev</button>
         <button className="next">next</button>
       </div>
-
       <div style={{ margin: "10px 10px 80px 10px" }}>
         <Label>공유 다이어리</Label>
         <SwiperArea>
@@ -334,8 +218,18 @@ const MainPage = () => {
             ) : (
               ""
             )}
-            <span slot="wrapper-end" ref={refForPrivate}>
-              PUBLIC 더 넣기
+            <span
+              slot="wrapper-end"
+              ref={refForPrivate}
+              style={{ margin: "0px 10px 0px 0px" }}
+            >
+              <Skeleton width={140} height={196} borderRadius={25} />
+            </span>
+            <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
+              <Skeleton width={140} height={196} borderRadius={25} />
+            </span>
+            <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
+              <Skeleton width={140} height={196} borderRadius={25} />
             </span>
           </Swiper>
         </SwiperArea>
@@ -370,8 +264,18 @@ const MainPage = () => {
             ) : (
               ""
             )}
-            <span slot="wrapper-end" ref={refForPublic}>
-              PUBLIC 더 넣기
+            <span
+              slot="wrapper-end"
+              ref={refForPublic}
+              style={{ margin: "0px 10px" }}
+            >
+              <Skeleton width={140} height={196} borderRadius={25} />
+            </span>
+            <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
+              <Skeleton width={140} height={196} borderRadius={25} />
+            </span>
+            <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
+              <Skeleton width={140} height={196} borderRadius={25} />
             </span>
           </Swiper>
         </SwiperArea>
@@ -386,9 +290,8 @@ export default MainPage;
 const WelcomeArea = styled.div`
   display: flex;
   justify-content: space-between;
-  z-index: 1;
-  position: absolute;
-  top: 5vh;
+  margin: 20px auto;
+
   background-color: #c2e9f9;
   width: 90vw;
 `;
