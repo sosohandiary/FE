@@ -40,8 +40,8 @@ function Detail() {
   return (
     <>
       <div>
-        <StyledGobackButton onClick={() => navigate(-1)} />
         <button onClick={navToModify}>수정</button>
+        <StyledGobackButton onClick={() => navigate(-1)} />
       </div>
 
       {myDiary && (
@@ -93,7 +93,7 @@ const StyledDerailPage = styled.div`
 
 const StyledGobackButton = styled(MdArrowBack)`
   position: absolute;
-  top: 10px;
+  top: 25px;
   left: 50%;
   transform: translateX(-500%);
   font-size: 40px;
