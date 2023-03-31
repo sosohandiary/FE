@@ -48,7 +48,6 @@
     "redux": "^4.2.1",
     "styled-components": "^5.3.8",
     "swiper": "^9.1.1",
-    "turn.js": "https://github.com/rizalibnu/turn.js.git",
     "use-image": "^1.1.0",
     "web-vitals": "^2.1.4"
   },
