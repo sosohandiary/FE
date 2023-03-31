@@ -45,7 +45,6 @@ function Detail() {
       <button style={{ float: "right" }} onClick={navToModify}>
         수정하기
       </button>
-
       {myDiary && (
         <StyledDerailPage>
           <GetUser createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
@@ -77,7 +76,7 @@ function Detail() {
             </DetailElement>
           }
           defaultSnap={({ snapPoints }) => snapPoints}
-          snapPoints={({ minHeight, maxHeight }) => [60, 800]}
+          snapPoints={({ minHeight, maxHeight }) => [60, maxHeight]}
           blocking={false}
         >
           <CommentBox />
@@ -105,7 +104,7 @@ const StyledDerailPage = styled.div`
 
 const StyledGobackButton = styled(MdArrowBack)`
   position: absolute;
-  top: 10px;
+  top: 25px;
   left: 50%;
   transform: translateX(-500%);
   font-size: 40px;

@@ -4,10 +4,9 @@ import { GrayButtonMedium } from "../styles/Buttons";
 import axios from "axios";
 import { VscBlank } from "react-icons/vsc";
 
-import Navigationbar from "../components/Navigationbar";
-
 const Diary = () => {
   const accessToken = window.localStorage.getItem("accessToken");
+
   const [file, setFile] = useState();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -30,7 +29,6 @@ const Diary = () => {
     if (!file) return;
 
     const formData = new FormData();
-    console.log(file);
     await formData.append("img", file);
 
     const data = {
@@ -55,9 +53,30 @@ const Diary = () => {
         },
       }
     );
-    console.log(res);
-    if (res.status === 201) console.log(res.data);
   }, [file]);
+
+  // const getMyfriends = async () => {
+  //   return await axios.get(
+  //     `${process.env.REACT_APP_BASEURL}/mypage/friend/myfriends`,
+  //     {
+  //       headers: { Authorization: accessToken },
+  //     }
+  //   );
+  // };
+
+  const getMyfriends = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_BASEURL}/mypage/friend/myfriends`,
+        {
+          headers: { Authorization: accessToken },
+        }
+      );
+      console.log(res.data); // 친구 목록 출력
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Wholebox>
@@ -78,6 +97,7 @@ const Diary = () => {
           }}
         />
       )}
+      <button onClick={getMyfriends}>내 친구 목록 가져오기</button>
       <form onSubmit={handleClick}>
         <TitleText>제목</TitleText>
         <TitleContent>
@@ -123,7 +143,6 @@ const Diary = () => {
           </label>
         </RadioWrapper>
       </form>
-      <Navigationbar/>
     </Wholebox>
   );
 };
