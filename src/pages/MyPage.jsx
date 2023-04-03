@@ -16,6 +16,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import Navigationbar from "../components/Navigationbar";
 
 
+
 function MyPage() {
   const accessToken = localStorage.getItem("accessToken");
 
@@ -39,7 +40,7 @@ function MyPage() {
   const profile = profileData?.data;
 
   // console.log(mypage);
-  console.log(profile);
+  // console.log(profile);
 
   const navigate = useNavigate();
 
@@ -51,9 +52,15 @@ function MyPage() {
     navigate("/myfriends/list");
   };
 
-  const navTodiary = (diaryId) => {
-    navigate(`/diaries/${diaryId}`);
+  const navToModifyCover = (diaryId, index) => {
+    navigate(`/diary`,{
+      state: {
+        id: diaryId,
+        data : mypage[index],
+      },
+    });
   }
+console.log(mypage);
 
 
   const LogoutHandler = () => {
@@ -88,7 +95,7 @@ function MyPage() {
           내 다이어리
         </Label>
 
-        {mypage?.map((item) => {
+        {mypage?.map((item, index) => {
           return (
             <DiaryCards key={item.id}>
               <ThumbnailBox>
@@ -102,7 +109,7 @@ function MyPage() {
                   개설일: {getDate(item.createdAt)}{" "}
                 </StText>
               </div>
-              <ConfirmButton onClick={() => navTodiary(item.id)}><IoIosArrowForward size={28} color="#959494"/></ConfirmButton>
+              <ConfirmButton onClick={() => navToModifyCover(item.id, index)}><IoIosArrowForward size={28} color="#959494"/></ConfirmButton>
             </DiaryCards>
           );
         })}
