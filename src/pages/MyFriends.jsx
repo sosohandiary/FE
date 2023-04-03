@@ -20,8 +20,6 @@ const MyFriends = () => {
 
   const location = useLocation();
 
-  console.log(location.state);
-
   const { mode } = useParams();
   const navigate = useNavigate();
 
@@ -35,7 +33,7 @@ const MyFriends = () => {
     getFriendsCount(accessToken)
   );
 
-  console.log(friendsCount)
+  console.log(friendsCount);
 
   const queryClient = useQueryClient();
   //friend-id 넣어주기
@@ -89,14 +87,14 @@ const MyFriends = () => {
   return (
     <>
       <WholeArea style={{ margin: "30px auto", maxWidth: "720px" }}>
-        <Title size='18'>친구</Title>
+        <Title size="18">친구</Title>
         {/* <Searchbox placeholder='친구 검색' /> */}
         <Filter
           setCards={setSearchFriends}
           existCards={friends}
-          placeholder='친구 검색'
+          placeholder="친구 검색"
         />
-        <Label alignSelf='flex-start'>
+        <Label alignSelf="flex-start">
           친구 {friendsCount?.data?.myFriendCount}
         </Label>
         {selectedFriends.length > 0 && (
@@ -108,7 +106,7 @@ const MyFriends = () => {
               <ListCards key={index}>
                 {item.friendStatus === "ACCEPTED" && (
                   <>
-                    <ProfilePicSmall src='https://avatars.githubusercontent.com/u/109452831?v=4' />
+                    <ProfilePicSmall src="https://avatars.githubusercontent.com/u/109452831?v=4" />
                     <ListContentBox>
                       {mode === "add" && !selectedFriends.includes(item) ? (
                         <button onClick={() => handleAddFriend(item)}>
@@ -120,7 +118,7 @@ const MyFriends = () => {
                           취소
                         </button>
                       ) : null}
-                      <StText fontWeight='bold'>{item.nickname}</StText>
+                      <StText fontWeight="bold">{item.nickname}</StText>
                       <StText>{item.statusMessage}</StText>
                       <button
                         onClick={() => {

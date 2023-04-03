@@ -1,21 +1,67 @@
 import React from "react";
 import styled from "styled-components";
 import { TbBellRingingFilled } from "react-icons/tb";
+import axios from "axios";
+import { useMutation } from "react-query";
 
-function AlarmUnReadCard() {
+const AlarmUnReadCard = ({ alarmSort, item }) => {
+  const accessToken = window.localStorage.getItem("accessToken");
+
+  const getDesc = (alarmSort) => {
+    switch (alarmSort) {
+      case "friendRequest":
+        return "새로운 친구요청이 왔습니다.";
+      default:
+        return;
+    }
+  };
+
+  console.log(item);
+  const { mutate, isLoading, isError, error, isSuccess } = useMutation(
+    (friendId) => {
+      return axios.put(
+        `${process.env.REACT_APP_BASEURL}/friend/request/accept/${friendId}`,
+        {},
+        {
+          headers: { Authorization: accessToken },
+        }
+      );
+    }
+  );
+
+  const admitRequest = (friendListId) => {
+    console.log(friendListId);
+    mutate(friendListId);
+  };
+  if (isSuccess) {
+    alert("친구를 추가하였습니다");
+  }
+
   return (
     <AlarmUnread>
       <TbBellRingingFilled className="TbBellRingingFilled" />
       <AlarmUnreadTextBox>
         <AlarmHead>
-          <AlarmUnreadTitle>Seryoung_S2 님의 새 댓글 </AlarmUnreadTitle>
-          <AlarmUnreadDay>‧ 17시간</AlarmUnreadDay>
+          <AlarmUnreadTitle>{getDesc(alarmSort)}</AlarmUnreadTitle>
         </AlarmHead>
-        <AlarmUnreadBody>소다 화이팅!!</AlarmUnreadBody>
+        <AlarmUnreadBody>
+          <ProfileAndComment>
+            <UserProfileImg src={item?.profileImageUrl}></UserProfileImg>
+            {item?.nickname}님이 친구 요청을 보냈습니다.
+          </ProfileAndComment>
+          <div>
+            <button onClick={() => admitRequest(item?.friendListId)}>
+              수락하기
+            </button>
+          </div>
+        </AlarmUnreadBody>
+        <AlarmUnreadTime>
+          <AlarmUnreadDay>‧ 17시간</AlarmUnreadDay>
+        </AlarmUnreadTime>
       </AlarmUnreadTextBox>
     </AlarmUnread>
   );
-}
+};
 
 export default AlarmUnReadCard;
 
@@ -37,6 +83,20 @@ const AlarmUnreadBody = styled.div`
   color: black;
   font-size: 100%;
   padding-top: 5px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ProfileAndComment = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const AlarmUnreadTime = styled.div`
+  width: 80vw;
+  display: flex;
+  justify-content: flex-end;
+  color: #a7a7a7;
 `;
 const AlarmUnreadTextBox = styled.div`
   padding-top: 12px;
@@ -55,4 +115,11 @@ const AlarmUnread = styled.div`
     margin: 10px 10px 10px 20px;
     color: gold;
   }
+`;
+
+const UserProfileImg = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
 `;
