@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import styled from "styled-components";
 import { VscHome, VscBell, VscBlank } from "react-icons/vsc";
 import { RxMagnifyingGlass, RxPerson } from "react-icons/rx";

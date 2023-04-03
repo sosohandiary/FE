@@ -16,7 +16,7 @@ import {
 import "draft-js/dist/Draft.css";
 import { useParams } from "react-router-dom";
 
-// <---------------변형 기능된 이미지 스티커 컴퍼넌트----------------->
+// <---------------스티커 크기 조절----------------->
 const ImageSticker = ({
   shapeProps,
   isSelected,
@@ -25,21 +25,6 @@ const ImageSticker = ({
   sticker,
   mode,
 }) => {
-  // 데이터 통신
-  const [imgDictList, setImgDictList] = useState([]);
-
-  const accessToken = localStorage.getItem("accessToken");
-  const { data } = useQuery(["getDecorationData"], () => {
-    return axios
-      .get(`${process.env.REACT_APP_BASEURL}/decoration/`, {
-        headers: { Authorization: accessToken },
-      })
-      .then((res) => {
-        setImgDictList(res.data);
-      })
-      .catch((err) => console.log(err));
-  });
-
   // <--------------->
   const shapeRef = useRef();
   const trRef = useRef();
@@ -63,9 +48,6 @@ const ImageSticker = ({
   const [imgUrl2] = useImage(
     "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fcl8BFN%2Fbtr4voJMOf7%2FdmfbZkelRI171YwUDcRdj0%2Fimg.png"
   );
-  // const [imgUrl0] = useImage(imgDictList[0]?.imageURL);
-  // const [imgUrl1] = useImage(imgDictList[1]?.imageURL);
-  // const [imgUrl2] = useImage(imgDictList[2]?.imageURL);
 
   const imgList = [imgUrl0, imgUrl1, imgUrl2];
 
@@ -164,17 +146,17 @@ const Test = () => {
     setMode(target);
   };
 
-  // <=== 데이터 겟 테스트===>
   const accessToken = localStorage.getItem("accessToken");
 
+  // 드래그 시  스크롤 방지
   useEffect(() => {
     function preventBehavior(e) {
       e.preventDefault();
     }
-
     document.addEventListener("touchmove", preventBehavior, { passive: false });
   }, []);
 
+  // <=== 데이터 겟===>
   useEffect(() => {
     axios
       .get(
