@@ -2,8 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { MdArrowBack } from "react-icons/md";
 import { VscBlank } from "react-icons/vsc";
+import { useNavigate } from "react-router-dom";
 
 function TitleBox() {
+  const navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  };
   return (
     <>
       <TopBox>
@@ -13,7 +18,7 @@ function TitleBox() {
       </TopBox>
 
       <ArrowBox>
-        <MdArrowBack className="MdArrowBack" />
+        <MdArrowBack className="MdArrowBack" onClick={goBack} />
       </ArrowBox>
     </>
   );
