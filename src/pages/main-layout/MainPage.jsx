@@ -27,11 +27,13 @@ const MainPage = () => {
   }, []);
 
   // 로그인 유저 정보
-  const { data } = useQuery(["getUserInfo"], () => {
+  const { data: dataOfUserInfo } = useQuery(["getUserInfo"], () => {
     return axios.get(`${process.env.REACT_APP_BASEURL}/mypage/profile`, {
       headers: { Authorization: accessToken },
     });
   });
+  const { nickname: curNickname, profileImageUrl: curProfileImageUrl } =
+    dataOfUserInfo?.data;
 
   //무한스크롤
 
@@ -143,20 +145,9 @@ const MainPage = () => {
         <div>
           안녕하세요
           <br />
-          {curUserNickname}님!
+          {curNickname}님!
         </div>
-        <div
-          style={{
-            backgroundColor: "skyblue",
-            borderRadius: "50%",
-            height: "40px",
-            width: "40px",
-            position: "relative",
-            top: "10px",
-          }}
-        >
-          사진
-        </div>
+        <CurProfileImage url={curProfileImageUrl}></CurProfileImage>
       </WelcomeArea>
       <Label style={{ backgroundColor: "#e1e7fc" }}>내가 만든 다이어리</Label>
       <SelfmadeArea>
@@ -306,6 +297,17 @@ const WelcomeArea = styled.div`
   padding: 24px;
   background-color: #e1e7fc;
   margin-bottom: -20px;
+`;
+
+const CurProfileImage = styled.div`
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  position: relative;
+  top: 30px;
+  background-image: url(${({ url }) => url});
+  background-size: 200% 200%;
+  background-position: center;
 `;
 
 const SwiperArea = styled.div`
