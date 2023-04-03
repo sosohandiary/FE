@@ -5,16 +5,17 @@ import { useSelector } from "react-redux";
 
 import Navigationbar from "../components/Navigationbar";
 
-
 import { SlMagnifier } from "react-icons/sl";
 import { MdOutlineCancel } from "react-icons/md";
 import { ProfilePicSmall } from "../components/ProfilePics";
+import { useNavigate } from "react-router-dom";
 
 const NewFriend = () => {
   const accessToken = window.localStorage.getItem("accessToken");
   const [friendName, setFriendName] = useState("");
   const [list, setList] = useState([]);
   const [friendStatus, setFriendStatus] = useState("");
+  const navigate = useNavigate();
 
   //로그인 할때 이름? 멤버아이디? 받으면 적용하기
   // const state = useSelector((state) => {
@@ -59,16 +60,19 @@ const NewFriend = () => {
     });
   }, [findFriend]);
 
+  const goToAcceptFriend = () => {
+    navigate("/acceptTest");
+  };
   return (
     <>
       <SearchTotalBox>
         <SearchStyleBox>
-          <SlMagnifier className='SlMagnifier' />
+          <SlMagnifier className="SlMagnifier" />
           <SearchStyle>
             <Searchinput
-              type='text'
-              name='searchbox'
-              placeholder='아이디를 검색해 친구를 추가해보세요'
+              type="text"
+              name="searchbox"
+              placeholder="아이디를 검색해 친구를 추가해보세요"
               onChange={(e) => {
                 setFriendName(e.target.value);
               }}
@@ -77,9 +81,10 @@ const NewFriend = () => {
           <button onClick={findFriend}>찾기</button>
         </SearchStyleBox>
       </SearchTotalBox>
+      <button onClick={goToAcceptFriend}>친구 수락</button>
       {list?.map((item) => (
         <ListCards key={item.memberId}>
-          <ProfilePicSmall src='https://avatars.githubusercontent.com/u/109452831?v=4' />
+          <ProfilePicSmall src="https://avatars.githubusercontent.com/u/109452831?v=4" />
           <ListContentBox>{item.name}</ListContentBox>
           {friendStatus !== "ACCEPTED" && (
             <button

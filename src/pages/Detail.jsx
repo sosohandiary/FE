@@ -34,20 +34,23 @@ function Detail() {
   }, []);
 
   const navToModify = () => {
-    navigate(`/test/${diaryId}/${detailId}`)
-  }
+    navigate(`/test/${diaryId}/${detailId}`);
+  };
 
   return (
     <>
-      <StyledGobackButton onClick={() => navigate(-1)} />
-      <button style={{float:"right"}} onClick={navToModify}>수정하기</button>
-
+      <button onClick={navToModify}>
+        <StyledGobackButton onClick={() => navigate(-1)} />
+        수정하기
+      </button>
       {myDiary && (
         <StyledDerailPage>
           <GetUser createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
           <WholeAreaWithMargin>
             <StyledDetailCardWrapper>
-              <StyledDetailCard>야이씨 언제 나몰래 봄 왔냐 커플다망해라</StyledDetailCard>
+              <StyledDetailCard>
+                <div>{myDiary.diaryTitle}</div>
+              </StyledDetailCard>
             </StyledDetailCardWrapper>
           </WholeAreaWithMargin>
         </StyledDerailPage>
@@ -67,13 +70,19 @@ function Detail() {
             </DetailElement>
           }
           defaultSnap={({ snapPoints }) => snapPoints}
-          snapPoints={({ minHeight, maxHeight }) => [60, 800]}
+          snapPoints={({ minHeight, maxHeight }) => [60, maxHeight]}
           blocking={false}
         >
           <CommentBox />
         </BottomSheet>
       ) : (
-        <div style={{ marginTop: "40vh", display: "flex", justifyContent: "center" }}>
+        <div
+          style={{
+            marginTop: "40vh",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Spinner />
         </div>
       )}
@@ -89,7 +98,7 @@ const StyledDerailPage = styled.div`
 
 const StyledGobackButton = styled(MdArrowBack)`
   position: absolute;
-  top: 10px;
+  top: 25px;
   left: 50%;
   transform: translateX(-500%);
   font-size: 40px;

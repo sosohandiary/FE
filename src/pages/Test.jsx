@@ -15,7 +15,6 @@ import {
 } from "draft-js";
 import "draft-js/dist/Draft.css";
 import { useParams } from "react-router-dom";
-import html2canvas from "html2canvas";
 
 // <---------------변형 기능된 이미지 스티커 컴퍼넌트----------------->
 const ImageSticker = ({
@@ -42,10 +41,10 @@ const ImageSticker = ({
   });
 
   // <--------------->
-  const shapeRef = React.useRef();
-  const trRef = React.useRef();
+  const shapeRef = useRef();
+  const trRef = useRef();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isSelected) {
       // we need to attach transformer manually
       trRef.current.nodes([shapeRef.current]);
@@ -81,7 +80,6 @@ const ImageSticker = ({
         numPoints={5}
         innerRadius={20}
         outerRadius={40}
-        // fill="#89b717"
         opacity={0.8}
         draggable={mode === "STICKER" ? true : false}
         rotation={sticker.rotation}
@@ -153,40 +151,6 @@ const ImageSticker = ({
 
 // <---------------------------------------->
 
-// 초기 스티커 값
-const INITIAL_STATE = [
-  {
-    id: 0,
-    x: 100,
-    y: 100,
-    width: 100,
-    height: 100,
-    rotation: 30,
-    isDragging: false,
-    stickerUrlNum: 0,
-  },
-  {
-    id: 1,
-    x: 200,
-    y: 200,
-    width: 100,
-    height: 100,
-    rotation: 60,
-    isDragging: false,
-    stickerUrlNum: 1,
-  },
-  {
-    id: 2,
-    x: 300,
-    y: 300,
-    width: 100,
-    height: 100,
-    rotation: 90,
-    isDragging: false,
-    stickerUrlNum: 2,
-  },
-];
-
 const Test = () => {
   const [mode, setMode] = useState("TEXT");
   const [lineTool, setLineTool] = useState("pen");
@@ -199,8 +163,17 @@ const Test = () => {
   const changeModeHandler = (target) => {
     setMode(target);
   };
+
   // <=== 데이터 겟 테스트===>
   const accessToken = localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    function preventBehavior(e) {
+      e.preventDefault();
+    }
+
+    document.addEventListener("touchmove", preventBehavior, { passive: false });
+  }, []);
 
   useEffect(() => {
     axios
@@ -211,7 +184,6 @@ const Test = () => {
         }
       )
       .then((res) => {
-        console.log("CC", res.data.customJson);
         if (res.data.customJson.length > 10) {
           const resJson = JSON.parse(res.data.customJson);
           setStickers(resJson.stickers);
@@ -319,16 +291,16 @@ const Test = () => {
         convertToRaw(editorState.getCurrentContent())
       );
       localStorage.setItem(TEXT_EDITOR_ITEM, data);
+
       const allData = {
         stickers,
         lines,
         texts: convertToRaw(editorState.getCurrentContent()),
       };
 
-      console.log("보내는 데이터 : ", allData);
       const allJSON = JSON.stringify(allData);
 
-      const sendData = { content: "", customJson: allJSON };
+      const sendData = { thumbnail: "", customJson: allJSON };
 
       axios
         .patch(
@@ -397,27 +369,6 @@ const Test = () => {
     setLineTool(target);
   };
 
-  //썸네일 저장
-  const thumbArea = useRef(null);
-  const saveThumb = () => {
-    html2canvas(thumbArea.current).then((canvas) => {
-      const formData = new FormData();
-
-      formData.append("image", canvas.toDataURL());
-
-      axios
-        .post(`${process.env.REACT_APP_BASEURL}`, formData, {
-          headers: { Authorization: accessToken },
-        })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    });
-  };
-
   //도구 모음 창
   const Toolbar = () => {
     const onClickSaveStickerHandler = () => {
@@ -453,7 +404,7 @@ const Test = () => {
             2번 스티커 추가
           </button>
           <button onClick={onClickSaveStickerHandler}>스티커 저장</button>
-          <button onClick={saveThumb}>이미지로 저장</button>
+          <button>이미지로 저장</button>
         </div>
       </div>
     );
@@ -464,59 +415,58 @@ const Test = () => {
     <WholeAreaWithMargin>
       <Toolbar />
       <BackgroundStyle></BackgroundStyle>
-      <div ref={thumbArea}>
-        <TextAreaStyle mode={mode}>
-          <Draft />
-        </TextAreaStyle>
-        <Stage
-          id="testForHTML2Canvas"
-          width={window.innerWidth}
-          height={window.innerHeight}
-          onMouseDown={handleMouseDown}
-          onTouchStart={handleMouseDown}
-          onMousemove={handleMouseMove}
-          onMouseup={handleMouseUp}
-          style={{ position: "absolute", top: "40px" }}
-        >
-          <Layer>
-            {lines.map((line, i) => (
-              <Line
+      <TextAreaStyle mode={mode}>
+        <Draft />
+      </TextAreaStyle>
+      <Stage
+        width={window.innerWidth}
+        height={window.innerHeight}
+        onMouseDown={handleMouseDown}
+        onMousemove={handleMouseMove}
+        onMouseup={handleMouseUp}
+        onTouchStart={handleMouseDown}
+        onTouchMove={handleMouseMove}
+        onTouchEnd={handleMouseUp}
+        style={{ position: "absolute", top: "40px" }}
+      >
+        <Layer>
+          {lines.map((line, i) => (
+            <Line
+              key={i}
+              points={line.points}
+              stroke={line.lineColor}
+              strokeWidth={line.lineWidth}
+              tension={0.5}
+              lineCap="round"
+              lineJoin="round"
+              globalCompositeOperation={
+                line.lineTool === "eraser" ? "destination-out" : "source-over"
+              }
+            />
+          ))}
+          {stickers.map((sticker, i) => {
+            return (
+              <ImageSticker
                 key={i}
-                points={line.points}
-                stroke={line.lineColor}
-                strokeWidth={line.lineWidth}
-                tension={0.5}
-                lineCap="round"
-                lineJoin="round"
-                globalCompositeOperation={
-                  line.lineTool === "eraser" ? "destination-out" : "source-over"
-                }
+                mode={mode}
+                shapeProps={sticker}
+                isSelected={sticker.id === selectedId}
+                sticker={sticker}
+                onSelect={() => {
+                  if (mode === "STICKER") {
+                    selectShape(sticker.id);
+                  }
+                }}
+                onChange={(newAttrs) => {
+                  const sticks = stickers.slice();
+                  sticks[i] = newAttrs;
+                  setStickers(sticks);
+                }}
               />
-            ))}
-            {stickers.map((sticker, i) => {
-              return (
-                <ImageSticker
-                  key={i}
-                  mode={mode}
-                  shapeProps={sticker}
-                  isSelected={sticker.id === selectedId}
-                  sticker={sticker}
-                  onSelect={() => {
-                    if (mode === "STICKER") {
-                      selectShape(sticker.id);
-                    }
-                  }}
-                  onChange={(newAttrs) => {
-                    const sticks = stickers.slice();
-                    sticks[i] = newAttrs;
-                    setStickers(sticks);
-                  }}
-                />
-              );
-            })}
-          </Layer>
-        </Stage>
-      </div>
+            );
+          })}
+        </Layer>
+      </Stage>
     </WholeAreaWithMargin>
   );
 };
@@ -528,7 +478,7 @@ const BackgroundStyle = styled.div`
   z-index: -10;
   background-color: #e9e9e9;
   width: 100%;
-  height: 1000px;
+  height: 200px;
 `;
 
 const TextAreaStyle = styled.div`
