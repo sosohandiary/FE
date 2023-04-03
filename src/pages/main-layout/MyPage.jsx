@@ -8,13 +8,12 @@ import {
   getMypage,
   getProfile,
   getDiaryCount,
-} from "../api/mypage";
-import { getDate } from "../utils/getDate";
-import { WholeArea } from "../styles/WholeAreaStyle";
-import { ProfilePicLarge } from "../components/ProfilePics";
+} from "../../api/mypage";
+import { getDate } from "../../utils/getDate";
+import { WholeArea } from "../../styles/WholeAreaStyle";
+import { ProfilePicLarge } from "../../components/ProfilePics";
 import { IoIosArrowForward } from "react-icons/io";
-import Navigationbar from "../components/Navigationbar";
-
+import Navigationbar from "../../components/Navigationbar";
 
 
 function MyPage() {
@@ -39,8 +38,7 @@ function MyPage() {
   const mypage = myPageData?.data;
   const profile = profileData?.data;
 
-  // console.log(mypage);
-  // console.log(profile);
+  console.log(mypage);
 
   const navigate = useNavigate();
 
@@ -51,6 +49,7 @@ function MyPage() {
   const navToFriendsList = () => {
     navigate("/myfriends/list");
   };
+
 
   const navToModifyCover = (diaryId, index) => {
     navigate(`/diary`,{
@@ -63,6 +62,7 @@ function MyPage() {
 console.log(mypage);
 
 
+
   const LogoutHandler = () => {
     localStorage.removeItem("accessToken");
     alert("로그아웃! 이 메세지 없애주세요");
@@ -72,7 +72,7 @@ console.log(mypage);
     <>
       <WholeArea style={{ margin: "30px auto", maxWidth: "720px" }}>
         <Title size='18'>마이페이지</Title>
-        <ProfilePicLarge src={profile?.profileImageUrl} />
+        <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
         <Title size='22'>{profile?.nickname}</Title>
 
         <NavButton alignSelf='flex-end' onClick={navToProfile}>
@@ -95,7 +95,7 @@ console.log(mypage);
           내 다이어리
         </Label>
 
-        {mypage?.map((item, index) => {
+        {mypage?.map((item) => {
           return (
             <DiaryCards key={item.id}>
               <ThumbnailBox>
@@ -109,7 +109,7 @@ console.log(mypage);
                   개설일: {getDate(item.createdAt)}{" "}
                 </StText>
               </div>
-              <ConfirmButton onClick={() => navToModifyCover(item.id, index)}><IoIosArrowForward size={28} color="#959494"/></ConfirmButton>
+              <ConfirmButton onClick={() => navToModifyCover(item.id)}><IoIosArrowForward size={28} color="#959494"/></ConfirmButton>
             </DiaryCards>
           );
         })}
