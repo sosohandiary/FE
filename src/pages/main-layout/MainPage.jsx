@@ -7,7 +7,7 @@ import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import { useSelector } from "react-redux";
-import Navigationbar from "../components/Navigationbar";
+import Navigationbar from "../../components/Navigationbar";
 import { useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -56,6 +56,7 @@ const MainPage = () => {
         setDataListForSelfMadePrivate((prev) => [...prev, ...res.data]);
       })
       .catch((err) => {
+        setIsLoadingForSelfMadePrivate(false);
         console.log(err);
       });
   }, []);
@@ -77,6 +78,8 @@ const MainPage = () => {
           setPrivatePage((prev) => prev + 1);
         })
         .catch((err) => {
+          setIsLoadingForPrivate(false);
+
           console.log(err);
         });
     }
@@ -98,6 +101,7 @@ const MainPage = () => {
           setPublicPage((prev) => prev + 1);
         })
         .catch((err) => {
+          setIsLoadingForPublic(false);
           console.log(err);
         });
     }
@@ -276,7 +280,6 @@ const MainPage = () => {
           </Swiper>
         </SwiperArea>
       </div>
-      <Navigationbar />
     </div>
   );
 };

@@ -5,9 +5,9 @@ import { TbAlertCircle } from "react-icons/tb";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 
-import BackButtonTitle from "../styles/BackButtonTitle";
-import { MintButtonLargeForSubmitInput } from "../styles/Buttons";
-import { WholeAreaWithMargin } from "../styles/WholeAreaStyle";
+import BackButtonTitle from "../../styles/BackButtonTitle";
+import { MintButtonLargeForSubmitInput } from "../../styles/Buttons";
+import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
 
 const Signup = () => {
   const navigate = useNavigate();

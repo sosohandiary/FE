@@ -133,7 +133,7 @@ const ImageSticker = ({
 
 // <---------------------------------------->
 
-const Test = () => {
+const Drawing = () => {
   const [mode, setMode] = useState("TEXT");
   const [lineTool, setLineTool] = useState("pen");
   const [lines, setLines] = useState([]);
@@ -453,7 +453,7 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default Drawing;
 
 const BackgroundStyle = styled.div`
   position: absolute;

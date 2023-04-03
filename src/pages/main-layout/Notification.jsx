@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import Navigationbar from "../components/Navigationbar";
-import AlarmUnReadCard from "../components/AlarmUnReadCard";
-import AlarmReadCard from "../components/AlarmReadCard";
-import TitleBox from "../components/TitleBox";
+import Navigationbar from "../../components/Navigationbar";
+import AlarmUnReadCard from "../../components/AlarmUnReadCard";
+import AlarmReadCard from "../../components/AlarmReadCard";
+import TitleBox from "../../components/TitleBox";
 
 const Notification = () => {
   return (
@@ -15,8 +15,6 @@ const Notification = () => {
         <AlarmReadCard />
         <AlarmReadCard />
       </AlarmBox>
-
-      <Navigationbar />
     </>
   );
 };
