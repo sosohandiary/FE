@@ -95,7 +95,7 @@ console.log(mypage);
           내 다이어리
         </Label>
 
-        {mypage?.map((item) => {
+        {mypage?.map((item, index) => {
           return (
             <DiaryCards key={item.id}>
               <ThumbnailBox>
@@ -109,7 +109,7 @@ console.log(mypage);
                   개설일: {getDate(item.createdAt)}{" "}
                 </StText>
               </div>
-              <ConfirmButton onClick={() => navToModifyCover(item.id)}><IoIosArrowForward size={28} color="#959494"/></ConfirmButton>
+              <ConfirmButton onClick={() => navToModifyCover(item.id, index)}><IoIosArrowForward size={28} color="#959494"/></ConfirmButton>
             </DiaryCards>
           );
         })}
