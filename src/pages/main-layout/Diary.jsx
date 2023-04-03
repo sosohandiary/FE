@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import styled from "styled-components";
-import { GrayButtonMedium } from "../styles/Buttons";
+import { GrayButtonMedium } from "../../styles/Buttons";
 import axios from "axios";
 import { VscBlank } from "react-icons/vsc";
 

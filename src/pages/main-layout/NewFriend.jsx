@@ -3,11 +3,11 @@ import axios from "axios";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-import Navigationbar from "../components/Navigationbar";
+import Navigationbar from "../../components/Navigationbar";
 
 import { SlMagnifier } from "react-icons/sl";
 import { MdOutlineCancel } from "react-icons/md";
-import { ProfilePicSmall } from "../components/ProfilePics";
+import { ProfilePicSmall } from "../../components/ProfilePics";
 import { useNavigate } from "react-router-dom";
 
 const NewFriend = () => {
@@ -97,8 +97,6 @@ const NewFriend = () => {
           )}
         </ListCards>
       ))}
-
-      <Navigationbar />
     </>
   );
 };

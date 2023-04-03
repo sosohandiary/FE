@@ -8,13 +8,12 @@ import {
   getMypage,
   getProfile,
   getDiaryCount,
-} from "../api/mypage";
-import { getDate } from "../utils/getDate";
-import { WholeArea } from "../styles/WholeAreaStyle";
-import { ProfilePicLarge } from "../components/ProfilePics";
+} from "../../api/mypage";
+import { getDate } from "../../utils/getDate";
+import { WholeArea } from "../../styles/WholeAreaStyle";
+import { ProfilePicLarge } from "../../components/ProfilePics";
 import { IoIosArrowForward } from "react-icons/io";
-import Navigationbar from "../components/Navigationbar";
-
+import Navigationbar from "../../components/Navigationbar";
 
 function MyPage() {
   const accessToken = localStorage.getItem("accessToken");
@@ -52,8 +51,7 @@ function MyPage() {
 
   const navTodiary = (diaryId) => {
     navigate(`/diaries/${diaryId}`);
-  }
-
+  };
 
   const LogoutHandler = () => {
     localStorage.removeItem("accessToken");
@@ -63,16 +61,16 @@ function MyPage() {
   return (
     <>
       <WholeArea style={{ margin: "30px auto", maxWidth: "720px" }}>
-        <Title size='18'>마이페이지</Title>
-        <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
-        <Title size='22'>{profile?.nickname}</Title>
+        <Title size="18">마이페이지</Title>
+        <ProfilePicLarge src="https://avatars.githubusercontent.com/u/109452831?v=4" />
+        <Title size="22">{profile?.nickname}</Title>
 
-        <NavButton alignSelf='flex-end' onClick={navToProfile}>
-          <Label size='16'>프로필 편집</Label>
+        <NavButton alignSelf="flex-end" onClick={navToProfile}>
+          <Label size="16">프로필 편집</Label>
         </NavButton>
 
         <MenuBox>
-          <EachMenuBox boderRight='1px solid'>
+          <EachMenuBox boderRight="1px solid">
             <NavButton onClick={navToFriendsList}>
               <LabelSpan>친구</LabelSpan>
             </NavButton>
@@ -83,7 +81,7 @@ function MyPage() {
             <div>{diaryCount?.data?.myDiaryCount}</div>
           </EachMenuBox>
         </MenuBox>
-        <Label size='18' alignSelf='flex-start'>
+        <Label size="18" alignSelf="flex-start">
           내 다이어리
         </Label>
 
@@ -94,25 +92,23 @@ function MyPage() {
                 <ThumbnailImg src={item.img} />
               </ThumbnailBox>
               <div style={{ marginLeft: "70px" }}>
-                <StText fontWeight='bold' size='20'>
+                <StText fontWeight="bold" size="20">
                   {item.title}
                 </StText>
-                <StText size='16' color='#B0B0B0'>
+                <StText size="16" color="#B0B0B0">
                   개설일: {getDate(item.createdAt)}{" "}
                 </StText>
               </div>
-              <ConfirmButton onClick={() => navTodiary(item.id)}><IoIosArrowForward size={28} color="#959494"/></ConfirmButton>
+              <ConfirmButton onClick={() => navTodiary(item.id)}>
+                <IoIosArrowForward size={28} color="#959494" />
+              </ConfirmButton>
             </DiaryCards>
           );
         })}
- 
-        <StLogout>
-          <LougoutBtn onClick={LogoutHandler}>
-            로그아웃
-          </LougoutBtn>
-        </StLogout>
 
-        <Navigationbar />
+        <StLogout>
+          <LougoutBtn onClick={LogoutHandler}>로그아웃</LougoutBtn>
+        </StLogout>
       </WholeArea>
     </>
   );
@@ -221,7 +217,7 @@ const StText = styled.div`
 `;
 
 const ConfirmButton = styled.button`
-    position: absolute;
+  position: absolute;
   top: 35px;
   right: 45px;
 
