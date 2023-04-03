@@ -19,6 +19,7 @@ import SubPage from "./SubPage";
 import Diary from "./main-layout/Diary";
 import MainLayout from "./main-layout/MainLayout";
 import Drawing from "./Drawing";
+import TestAnimation from "./TestAnimation";
 
 const Router = () => {
   return (
@@ -45,6 +46,7 @@ const Router = () => {
         <Route path="/myfriends/:mode" element={<MyFriends />} />
         <Route path="/acceptTest" element={<AcceptTest />} />
         <Route path="/diaries/:diaryId" element={<SubPage />} />
+        <Route path="/test-animation" element={<TestAnimation />} />
       </Routes>
     </BrowserRouter>
   );

@@ -5,6 +5,11 @@ import { RxMagnifyingGlass, RxPerson } from "react-icons/rx";
 import { BiPlus } from "react-icons/bi";
 import { FaCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import home from "../assets/navbar/home.png";
+import bell from "../assets/navbar/bell.png";
+import magnifier from "../assets/navbar/magnifier.png";
+import person from "../assets/navbar/person.png";
+import plus from "../assets/navbar/plus.png";
 
 const Navigationbar = () => {
   const navigate = useNavigate();
@@ -15,124 +20,38 @@ const Navigationbar = () => {
   };
 
   return (
-    <BottomBox>
-      <VscHome className="VscHome" onClick={() => goToPage("/")} />
-      <VscBell className="VscBell" onClick={() => goToPage("/notification")} />
-      <div style={{ fontSize: "50px" }} onClick={() => goToPage("/diary")}>
-        +
+    <NavbarArea>
+      <div onClick={() => goToPage("/")}>
+        <img src={home} />
       </div>
-      <RxMagnifyingGlass
-        className="RxMagnifyingGlass"
-        onClick={() => goToPage("/new-friend")}
-      />
-      <RxPerson className="RxPerson" onClick={() => goToPage("/mypage")} />
-    </BottomBox>
+      <div onClick={() => goToPage("/notification")}>
+        <img src={bell} />
+      </div>
+      <div onClick={() => goToPage("/diary")}>
+        <img src={plus} />
+      </div>
+      <div onClick={() => goToPage("/new-friend")}>
+        <img src={magnifier} />
+      </div>
+      <div onClick={() => goToPage("/mypage")}>
+        <img src={person} />
+      </div>
+    </NavbarArea>
   );
 };
 
 export default Navigationbar;
 
-const BottomBox = styled.div`
-  background-color: #ececec;
-  display: flex;
-  justify-content: space-evenly;
-  position: fixed;
-  bottom: 0;
+const NavbarArea = styled.div`
   width: 100%;
-  .VscHome {
-    font-size: 30px;
-    padding: 20px;
-    transition-duration: 0.5s;
-    :hover {
-      background-color: #d4d4d4;
-    }
-    :active {
-      background-color: #919191;
-    }
-  }
-  .VscBell {
-    font-size: 30px;
-    padding: 20px;
-    transition-duration: 0.5s;
-    :hover {
-      background-color: #d4d4d4;
-    }
-    :active {
-      background-color: #919191;
-    }
-  }
-  .BiPlus {
-    font-size: 30px;
-    padding: 20px;
-    color: #ececec;
-    transition-duration: 0.5s;
-    :hover {
-      background-color: #d4d4d4;
-    }
-    :active {
-      background-color: #919191;
-    }
-  }
-  .RxMagnifyingGlass {
-    font-size: 30px;
-    padding: 20px;
-    transition-duration: 0.5s;
-    :hover {
-      background-color: #d4d4d4;
-    }
-    :active {
-      background-color: #919191;
-    }
-  }
-  .RxPerson {
-    font-size: 30px;
-    padding: 20px;
-    transition-duration: 0.5s;
-    :hover {
-      background-color: #d4d4d4;
-    }
-    :active {
-      background-color: #919191;
-    }
-  }
-`;
-
-const PlusBox = styled.div`
-  position: fixed;
-  bottom: 0%;
-  margin-bottom: 10px;
+  height: 80px;
+  background-color: #fff;
   display: flex;
   justify-content: space-evenly;
-  background-color: transparent;
-
-  .BiPlus {
-    font-size: 35px;
-    color: white;
-    background-color: #525252;
-    border-radius: 35px;
-    padding: 8px 8px 8px 8px;
-  }
-  .VscBlank {
-    font-size: 35px;
-    color: white;
-  }
-`;
-
-const CircleBox = styled.div`
+  align-items: center;
   position: fixed;
-  bottom: 0%;
-  margin-bottom: 7px;
-  display: flex;
-  justify-content: space-evenly;
-  background-color: transparent;
-  .FaCircle {
-    font-size: 57px;
-    color: #bebebe;
-    background-color: #bebebe;
-    border-radius: 57px;
-  }
-  .VscBlank {
-    font-size: 35px;
-    color: white;
-  }
+  z-index: 1;
+  bottom: -1px;
+  border-radius: 20px 20px 0 0;
+  box-shadow: -2px -2px 9px rgba(0, 0, 0, 0.2);
 `;
