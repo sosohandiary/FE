@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import kakaoLoginImage from "../assets/kakao_login_medium_wide.png";
+import kakaoLoginImage from "../../assets//kakao_login_medium_wide.png";
 import { useNavigate } from "react-router-dom";
-import { kakaoLoginApi } from "../api/kakaoLogin";
-import { disableColor, subColor1 } from "../constants/colorPalette";
+import { kakaoLoginApi } from "../../api/kakaoLogin";
+import { disableColor, subColor1 } from "../../constants/colorPalette";
 import { useForm } from "react-hook-form";
 import {
   MintButtonLarge,
   MintButtonLargeForSubmitInput,
-} from "../styles/Buttons";
+} from "../../styles/Buttons";
 import { HiOutlineXCircle } from "react-icons/hi";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setCurrentUser } from "../contexts/currentUserInfoSlice";
+import { setCurrentUser } from "../../contexts/currentUserInfoSlice";
 
 const Login = () => {
   const navigate = useNavigate();

@@ -7,10 +7,13 @@ import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import { useSelector } from "react-redux";
-import Navigationbar from "../components/Navigationbar";
 import { useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import ellipse from "../../assets/main-page/Ellipse 111.png";
+import DiaryCard from "../../components/mainpage/DiaryCard";
+import DiaryCardTopBig from "../../components/mainpage/DiaryCardTopBig";
+import { useQuery } from "react-query";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -22,6 +25,13 @@ const MainPage = () => {
       navigate("/login");
     }
   }, []);
+
+  // 로그인 유저 정보
+  const { data } = useQuery(["getUserInfo"], () => {
+    return axios.get(`${process.env.REACT_APP_BASEURL}/mypage/profile`, {
+      headers: { Authorization: accessToken },
+    });
+  });
 
   //무한스크롤
 
@@ -44,6 +54,7 @@ const MainPage = () => {
   );
   const [dataListForPrivate, setDataListForPrivate] = useState([]);
   const [dataListForPublic, setDataListForPublic] = useState([]);
+  const [activeIdxForSelfmade, setActiveIdxForSelfmade] = useState(0);
 
   useEffect(() => {
     setIsLoadingForSelfMadePrivate(true);
@@ -53,9 +64,10 @@ const MainPage = () => {
       })
       .then((res) => {
         setIsLoadingForSelfMadePrivate(false);
-        setDataListForSelfMadePrivate((prev) => [...prev, ...res.data]);
+        setDataListForSelfMadePrivate(res.data);
       })
       .catch((err) => {
+        setIsLoadingForSelfMadePrivate(false);
         console.log(err);
       });
   }, []);
@@ -77,6 +89,8 @@ const MainPage = () => {
           setPrivatePage((prev) => prev + 1);
         })
         .catch((err) => {
+          setIsLoadingForPrivate(false);
+
           console.log(err);
         });
     }
@@ -98,23 +112,33 @@ const MainPage = () => {
           setPublicPage((prev) => prev + 1);
         })
         .catch((err) => {
+          setIsLoadingForPublic(false);
           console.log(err);
         });
     }
   }, [inViewForPublic]);
 
-  console.log(dataListForPublic);
-
-  const curUserNickname = useSelector(
-    (state) => state.currentUserInfoSlice.userNickname
+  const { userNickname: curUserNickname } = useSelector(
+    (state) => state.currentUserInfoSlice
   );
 
   const goToDiaryDetail = (id) => {
     navigate(`/diaries/${id}`);
   };
 
+  const dataList = [
+    { id: 0 },
+    { id: 1 },
+    { id: 2 },
+    { id: 3 },
+    { id: 4 },
+    { id: 5 },
+    { id: 6 },
+    { id: 7 },
+  ];
+
   return (
-    <div>
+    <div style={{ marginBottom: "100px" }}>
       <WelcomeArea>
         <div>
           안녕하세요
@@ -127,57 +151,35 @@ const MainPage = () => {
             borderRadius: "50%",
             height: "40px",
             width: "40px",
+            position: "relative",
+            top: "10px",
           }}
         >
           사진
         </div>
       </WelcomeArea>
-      <Label>내가 만든 다이어리</Label>
-      <SwiperArea>
+      <Label style={{ backgroundColor: "#e1e7fc" }}>내가 만든 다이어리</Label>
+      <SelfmadeArea>
         <Swiper
-          slidesPerView={"auto"}
-          spaceBetween={20}
-          pagination={{
-            clickable: true,
-            dynamicBullets: true,
-          }}
-          modules={[Pagination]}
+          slidesPerView={3}
+          spaceBetween={0}
+          onSlideChange={(e) => setActiveIdxForSelfmade(e.activeIndex)}
           className="mySwiper"
         >
-          {dataListForSelfMadePrivate.map((item) => (
-            <SwiperSlide
-              key={item.id}
-              onClick={() => {
-                goToDiaryDetail(item.id);
-              }}
-            >
-              <SlideOne imageUrl={item.img}>
-                <h1>{item.title}</h1>
-                <h3>{item.name}</h3>
-                <p>{item.modifiedAt}</p>
-              </SlideOne>
+          {dataList.map((item) => (
+            <SwiperSlide>
+              <DiaryCardTopBig
+                color="purple"
+                key={item.id}
+                idx={item.id}
+                activeIdxForSelfmade={activeIdxForSelfmade}
+              >
+                Slide {item.id}
+              </DiaryCardTopBig>
             </SwiperSlide>
           ))}
-          {IsLoadingForPrivate ? (
-            <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
-          ) : (
-            ""
-          )}
-          <span
-            slot="wrapper-end"
-            ref={refForPrivate}
-            style={{ margin: "0px 10px" }}
-          >
-            <Skeleton width={140} height={196} borderRadius={25} />
-          </span>
-          <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
-            <Skeleton width={140} height={196} borderRadius={25} />
-          </span>
-          <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
-            <Skeleton width={140} height={196} borderRadius={25} />
-          </span>
         </Swiper>
-      </SwiperArea>
+      </SelfmadeArea>
       <div style={{ display: "none" }}>
         <button className="prev">prev</button>
         <button className="next">next</button>
@@ -195,6 +197,18 @@ const MainPage = () => {
             modules={[Pagination]}
             className="mySwiper"
           >
+            {dataListForPrivate.length == 0 ? (
+              <SwiperSlide
+                style={{
+                  width: "330px",
+                  backgroundColor: "red",
+                }}
+              >
+                데이터가 없습니다.
+              </SwiperSlide>
+            ) : (
+              ""
+            )}
             {dataListForPrivate.map((item) => (
               <SwiperSlide
                 key={item.id}
@@ -241,18 +255,21 @@ const MainPage = () => {
             modules={[Pagination]}
             className="mySwiper"
           >
-            {dataListForPublic.map((item) => (
+            {dataListForPublic.length == 0 ? (
+              <SwiperSlide style={{ width: "300px", backgroundColor: "red" }}>
+                데이터가 없습니다.
+              </SwiperSlide>
+            ) : (
+              ""
+            )}
+            {dataListForPublic.map((item, i) => (
               <SwiperSlide
-                key={item.id}
+                key={i}
                 onClick={() => {
                   goToDiaryDetail(item.id);
                 }}
               >
-                <SlideOne imageUrl={item.img}>
-                  <h1>{item.title}</h1>
-                  <h3>{item.name}</h3>
-                  <p>{item.modifiedAt}</p>
-                </SlideOne>
+                <DiaryCard item={item} color="purple" />
               </SwiperSlide>
             ))}
             {IsLoadingForPublic ? (
@@ -276,7 +293,6 @@ const MainPage = () => {
           </Swiper>
         </SwiperArea>
       </div>
-      <Navigationbar />
     </div>
   );
 };
@@ -284,12 +300,12 @@ const MainPage = () => {
 export default MainPage;
 
 const WelcomeArea = styled.div`
+  font-size: 32px;
   display: flex;
   justify-content: space-between;
-  margin: 20px auto;
-
-  background-color: #c2e9f9;
-  width: 90vw;
+  padding: 24px;
+  background-color: #e1e7fc;
+  margin-bottom: -20px;
 `;
 
 const SwiperArea = styled.div`
@@ -323,7 +339,7 @@ const SwiperArea = styled.div`
 `;
 
 const Label = styled.div`
-  margin: 10px;
+  padding: 10px;
   font-weight: 800;
 `;
 
@@ -338,4 +354,32 @@ const SlideOne = styled.div`
   background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url(${({ imageUrl }) => imageUrl});
   background-size: cover;
+`;
+
+const SelfmadeArea = styled.div`
+  .swiper {
+    width: 100%;
+    height: 100%;
+    background-image: url(${ellipse});
+    background-size: 100vw 100%;
+    background-position: 0 -120px;
+    background-repeat: no-repeat;
+    margin-top: -10px;
+  }
+
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
