@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
-import { RiPencilFill, RiDeleteBin6Fill, RiCheckFill, RiCloseFill } from "react-icons/ri";
+import { RiPencilFill, RiDeleteBin6Fill, RiCheckFill, RiCloseFill, RiMore2Fill } from "react-icons/ri";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
 import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
+import Modal from "./Modal";
 
 const CommentBox = () => {
   const [showComments] = useState(true);
@@ -16,6 +17,7 @@ const CommentBox = () => {
   const [editingComment, setEditingComment] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [test, setTest] = useState(null);
+  // const [showModal, setShowModal] = useState(false);
 
   const queryClient = useQueryClient();
   const { detailId } = useParams();
@@ -126,6 +128,9 @@ const CommentBox = () => {
                       </>
                     ) : (
                       <>
+                        {/* <Modal /> */}
+                        {/* <ModlaIcon onClick={() => setShowModal(true)} /> */}
+
                         <EditIcon onClick={() => onEditHandler(comment)} />
                         <DeleteIcon onClick={() => onDeleteHandler(comment.commentId)} />
                       </>
@@ -279,5 +284,11 @@ const CancelIcon = styled(RiCloseFill)`
 const UpdateIcon = styled(RiCheckFill)`
   position: absolute;
   right: -60px;
+  cursor: pointer;
+`;
+
+const ModlaIcon = styled(RiMore2Fill)`
+  position: absolute;
+  right: -40px;
   cursor: pointer;
 `;

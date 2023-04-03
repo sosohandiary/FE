@@ -4,7 +4,9 @@
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@iconify/react": "^4.1.0",
+    "@mui/material": "^5.11.15",
     "@nextui-org/react": "^1.0.0-beta.12",
     "@react-spring/web": "^9.7.1",
     "@reduxjs/toolkit": "^1.9.3",
