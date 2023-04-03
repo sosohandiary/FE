@@ -38,7 +38,8 @@ function MyPage() {
   const mypage = myPageData?.data;
   const profile = profileData?.data;
 
-  console.log(mypage);
+  // console.log(mypage);
+  console.log(profile);
 
   const navigate = useNavigate();
 
@@ -64,7 +65,7 @@ function MyPage() {
     <>
       <WholeArea style={{ margin: "30px auto", maxWidth: "720px" }}>
         <Title size='18'>마이페이지</Title>
-        <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
+        <ProfilePicLarge src={profile?.profileImageUrl} />
         <Title size='22'>{profile?.nickname}</Title>
 
         <NavButton alignSelf='flex-end' onClick={navToProfile}>
