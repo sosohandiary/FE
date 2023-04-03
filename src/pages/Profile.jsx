@@ -13,26 +13,56 @@ function Profile() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const [editData, setEditData] = useState({
-    nickname: "",
-    statusMessage: "",
-  });
+  const [nickname, setNickname] = useState("");
+  const [statusMessage, setStatusMessage] = useState("");
 
-  const { data: profileData } = useQuery(["getProfile"], () =>
-    getProfile(accessToken)
-  );
+  const [newimage, setNewImage] = useState("");
+  const [file, setFile] = useState("");
+  const [previewImg, setPreviewImg] = useState(false);
 
-  const { mutate: editProfileMutate } = useMutation(
-    () => editProfile(editData, accessToken),
+  const { data: profileData } = useQuery(
+    ["getProfile"],
+    () => getProfile(accessToken),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("getProfile");
+        setNickname(profileData?.data.nickname);
+        setStatusMessage(profileData?.data.statusMessage);
       },
     }
   );
 
-    //delete Mutation
-    const { mutate: deleteAccountMutate } = useMutation(() => deleteAccount(accessToken));
+  const mutation = useMutation(() => editProfile(formData, accessToken), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("getProfile");
+    },
+  });
+
+  //image
+  const onImgPostHandler = (event) => {
+    setNewImage([]);
+    for (let i = 0; i < event.target.files.length; i++) {
+      setFile(event.target.files[i]);
+      let reader = new FileReader();
+      reader.readAsDataURL(event.target.files[i]);
+      reader.addEventListener("loaded", (event) => {
+        newimage.src = event.target.result;
+      });
+      reader.onloadend = () => {
+        const base = reader.result;
+        if (base) {
+          const baseSub = base.toString();
+          setNewImage((newimage) => [...newimage, baseSub]);
+        }
+      };
+    }
+
+    setPreviewImg(true);
+  };
+
+  //delete Mutation
+  const { mutate: deleteAccountMutate } = useMutation(() =>
+    deleteAccount(accessToken)
+  );
 
   console.log(profileData?.data);
   const profile = profileData?.data;
@@ -61,20 +91,30 @@ function Profile() {
     alert("탈퇴 완료!");
     deleteAccountMutate();
     localStorage.removeItem("accessToken");
-    navigate('/login');
+    navigate("/login");
   };
 
-  const onChangeHandler = (e) => {
-    const { name, value } = e.target;
-    setEditData({
-      ...editData,
-      [name]: value,
-    });
+  const data = {
+    nickname: nickname,
+    statusMessage: statusMessage,
   };
 
-  const onSubmitHandler = () => {
-    editProfileMutate();
-  };
+  console.log(nickname);
+  console.log(statusMessage);
+
+  const formData = new FormData();
+
+  function onSubmitHandler(e) {
+    e.preventDefault();
+
+    formData.append("img", file);
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(data)], { type: "application/json" })
+    );
+
+    mutation.mutate(formData);
+  }
 
   return (
     <>
@@ -84,12 +124,19 @@ function Profile() {
           <form encType='multipart/form-data' onSubmit={onSubmitHandler}>
             <ProfileArea>
               <StButton onClick={onImgButton}>
-                <img
-                  style={ProfileImg}
-                  //사진 여기로 전달 받기!
-                  src='https://avatars.githubusercontent.com/u/109452831?v=4'
-                  alt='profile image'
-                />
+                {previewImg ? (
+                  <img
+                    style={ProfileImg}
+                    src={newimage}
+                    alt='profile image'
+                  />
+                ) : (
+                  <img
+                    style={ProfileImg}
+                    src={profile?.profileImageUrl}
+                    alt='profile image'
+                  />
+                )}
               </StButton>
               <EditPencilArea>
                 <HiPencil />
@@ -98,7 +145,7 @@ function Profile() {
             <input
               type='file'
               accept='image/*'
-              // onChange={onImgPostHandler}
+              onChange={onImgPostHandler}
               ref={fileInput}
               style={{ display: "none" }}
             />
@@ -110,7 +157,8 @@ function Profile() {
                     type='text'
                     name='nickname'
                     placeholder={profile?.nickname}
-                    onChange={onChangeHandler}
+                    value={nickname}
+                    onChange={(e) => setNickname(e.target.value)}
                   />
                   <ClearButton disabled>
                     <HiOutlineXCircle color='#D0D0D0' />
@@ -120,8 +168,9 @@ function Profile() {
                 <Label>소개</Label>
                 <StTextarea
                   name='statusMessage'
-                  onChange={onChangeHandler}
+                  onChange={(e) => setStatusMessage(e.target.value)}
                   placeholder={profile?.statusMessage}
+                  value={statusMessage}
                 />
               </Content>
               <MintButtonMedium type='submit'>저장</MintButtonMedium>

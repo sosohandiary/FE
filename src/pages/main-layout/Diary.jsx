@@ -1,16 +1,15 @@
 import React, { useState, useCallback } from "react";
 import styled from "styled-components";
-import { GrayButtonMedium } from "../../styles/Buttons";
 import axios from "axios";
 import { VscBlank } from "react-icons/vsc";
+import defaultProfileImg from "../../assets/defaultProfileImg.jpeg";
 
 const Diary = () => {
   const accessToken = window.localStorage.getItem("accessToken");
 
   const [file, setFile] = useState();
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [previewImage, setPreviewImage] = useState();
+  const [previewImage, setPreviewImage] = useState(defaultProfileImg);
   const [diaryCondition, setDiaryCondition] = useState("PUBLIC");
 
   const handleConditionChange = (event) => {
@@ -33,10 +32,8 @@ const Diary = () => {
 
     const data = {
       title: title,
-      description: description,
       diaryCondition: diaryCondition,
     };
-
     // for spring server
     await formData.append(
       "data",
@@ -55,29 +52,6 @@ const Diary = () => {
     );
   }, [file]);
 
-  // const getMyfriends = async () => {
-  //   return await axios.get(
-  //     `${process.env.REACT_APP_BASEURL}/mypage/friend/myfriends`,
-  //     {
-  //       headers: { Authorization: accessToken },
-  //     }
-  //   );
-  // };
-
-  const getMyfriends = async () => {
-    try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_BASEURL}/mypage/friend/myfriends`,
-        {
-          headers: { Authorization: accessToken },
-        }
-      );
-      console.log(res.data); // 친구 목록 출력
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <Wholebox>
       <TopBox>
@@ -85,19 +59,30 @@ const Diary = () => {
         <Textbox>다이어리 만들기</Textbox>
         <VscBlank className="VscBlank" />
       </TopBox>
+
+      <InputBox>
+        <VscBlank className="VscBlank" />
+        <FileInput
+          type="file"
+          onChange={handleChange}
+          className="StyledInput"
+        />
+        <VscBlank className="VscBlank" />
+      </InputBox>
+
       {previewImage && ( // 업로드하려는 이미지를 미리 보여줌
         <img
           alt="preview"
           src={previewImage}
           style={{
             margin: "auto",
-            width: "230px",
-            height: "230px",
+            width: "100px",
+            height: "150px",
             borderRadius: "25px",
           }}
         />
       )}
-      <button onClick={getMyfriends}>내 친구 목록 가져오기</button>
+
       <form onSubmit={handleClick}>
         <TitleText>제목</TitleText>
         <TitleContent>
@@ -108,46 +93,76 @@ const Diary = () => {
           />
         </TitleContent>
 
-        <TitleText>소개</TitleText>
-        <DescContent>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </DescContent>
+        <PrivateorPublicBox>
+          <VscBlank className="VscBlank" />
+          <RadioWrapper>
+            <label>
+              <input
+                type="radio"
+                value="PRIVATE"
+                checked={diaryCondition === "PRIVATE"}
+                onChange={handleConditionChange}
+              />
+              <span>비공개</span>
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="PUBLIC"
+                checked={diaryCondition === "PUBLIC"}
+                onChange={handleConditionChange}
+              />
+              <span>공개</span>
+            </label>
+          </RadioWrapper>
+        </PrivateorPublicBox>
 
-        <TitleText>표지 설정</TitleText>
-
-        <input type={"file"} onChange={handleChange} />
-        <GrayButtonMedium>사진으로 설정하기</GrayButtonMedium>
-        <Upbutton onClick={handleClick}>업로드</Upbutton>
-
-        <RadioWrapper>
-          <label>
-            <input
-              type="radio"
-              value="PUBLIC"
-              checked={diaryCondition === "PUBLIC"}
-              onChange={handleConditionChange}
-            />
-            <span>PUBLIC</span>
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="PRIVATE"
-              checked={diaryCondition === "PRIVATE"}
-              onChange={handleConditionChange}
-            />
-            <span>PRIVATE</span>
-          </label>
-        </RadioWrapper>
+        <UpButtonBox>
+          <VscBlank className="VscBlank" />
+          <Upbutton onClick={handleClick}>생성하기</Upbutton>
+          <VscBlank className="VscBlank" />
+        </UpButtonBox>
       </form>
     </Wholebox>
   );
 };
 
 export default Diary;
+const InputBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+  margin-right: 10px;
+  justify-content: space-between;
+`;
+
+const FileInput = styled.input`
+  margin: 0 auto;
+  &::-webkit-file-upload-button {
+    background-color: #d9d9d9;
+    color: gray;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bolder;
+  }
+`;
+
+const PrivateorPublicBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin 10px;
+  justify-content: space-between;
+`;
+
+const UpButtonBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+  justify-content: space-between;
+`;
 
 const RadioWrapper = styled.div`
   display: flex;
@@ -164,13 +179,12 @@ const RadioWrapper = styled.div`
 `;
 
 const Upbutton = styled.button`
-  color: black;
+  color: gray;
   background-color: #e8fefb;
   width: 100px;
   height: 35px;
   border: none;
   border-radius: 5px;
-  margin: 0px auto;
   font-weight: 700;
   font-size: 100%;
   cursor: pointer;
@@ -192,22 +206,6 @@ const TitleContent = styled.div`
   }
 `;
 
-const DescContent = styled.div`
-  padding: 10px;
-  position: relative;
-  textarea {
-    box-sizing: border-box;
-    height: 100px;
-    width: 100%;
-    outline: none;
-    border-radius: 20px;
-    padding: 10px 10px 10px 25px;
-    font-size: 16px;
-    border: 1px solid #eee;
-    background: #f5f5f5;
-  }
-`;
-
 const TitleText = styled.div`
   font-size: 120%;
   color: gray;
@@ -216,7 +214,7 @@ const TitleText = styled.div`
 const Wholebox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  padding: 5vw;
 `;
 
 const TopBox = styled.div`

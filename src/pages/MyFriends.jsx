@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useLocation, useNavigate } from "react-router-dom";
+import Draggable from "react-draggable";
 
 import { getMyfriends, getFriendsCount, deleteFriend } from "../api/mypage";
 import { ProfilePicSmall } from "../components/ProfilePics";
@@ -14,14 +14,19 @@ import { Checkbox } from "@nextui-org/react";
 const MyFriends = () => {
   const [searchFriends, setSearchFriends] = useState(null);
 
-  const [selectedFriends, setSelectedFriends] = useState([]);
+  const [showDeleteButton, setShowDeleteButton] = useState(false);
 
-  const [friendStatus, setFriendStatus] = useState("");
+  // const handleDragStop = (e, data) => {
+  //   const { deltaX, deltaY } = data;
 
-  const location = useLocation();
 
-  const { mode } = useParams();
-  const navigate = useNavigate();
+  //   if (Math.abs(deltaX) > 50 || Math.abs(deltaY) > 50) {
+  //     setShowDeleteButton(true);
+  //   }
+  // };
+  // const handleDragStart = () => {
+  //   setShowDeleteButton(true);
+  // };
 
   const accessToken = localStorage.getItem("accessToken");
 
@@ -54,32 +59,6 @@ const MyFriends = () => {
     setSearchFriends(friends);
   }, [friends]);
 
-  const handleAddFriend = (friend) => {
-    setSelectedFriends((prevSelectedFriends) => {
-      if (prevSelectedFriends.length >= 7) {
-        // Do not allow more than 7 selected friends
-        return prevSelectedFriends;
-      }
-      // Add the friend to the selected friends list
-      return [...prevSelectedFriends, friend];
-    });
-  };
-
-  const handleRemoveFriend = (friend) => {
-    setSelectedFriends((prevSelectedFriends) =>
-      prevSelectedFriends.filter(
-        (selectedFriend) => selectedFriend.nickname !== friend.nickname
-      )
-    );
-  };
-
-  const handleSaveSelectedFriends = () => {
-    // Save the selected friends to the navigate state and navigate to the other page
-    navigate("/friends-list", { state: { selectedFriends } });
-  };
-
-  console.log(selectedFriends);
-
   const onDeleteHandler = (friendId) => {
     deleteFriendMutate(friendId);
   };
@@ -97,9 +76,6 @@ const MyFriends = () => {
         <Label alignSelf="flex-start">
           친구 {friendsCount?.data?.myFriendCount}
         </Label>
-        {selectedFriends.length > 0 && (
-          <button onClick={handleSaveSelectedFriends}>친구 추가 완료</button>
-        )}
         {friends &&
           searchFriends?.map((item, index) => {
             return (
@@ -108,25 +84,29 @@ const MyFriends = () => {
                   <>
                     <ProfilePicSmall src="https://avatars.githubusercontent.com/u/109452831?v=4" />
                     <ListContentBox>
-                      {mode === "add" && !selectedFriends.includes(item) ? (
-                        <button onClick={() => handleAddFriend(item)}>
-                          추가
-                        </button>
-                      ) : null}
-                      {mode === "add" && selectedFriends.includes(item) ? (
-                        <button onClick={() => handleRemoveFriend(item)}>
-                          취소
-                        </button>
-                      ) : null}
-                      <StText fontWeight="bold">{item.nickname}</StText>
+
+                      <StText fontWeight='bold'>{item.nickname}</StText>
                       <StText>{item.statusMessage}</StText>
-                      <button
-                        onClick={() => {
-                          onDeleteHandler(item.friendListId);
-                        }}
-                      >
-                        삭제
-                      </button>
+
+                      {/* <Draggable onStart={handleDragStart}
+                       bounds={{ left: 0, top: 0, right: 500, bottom: 500 }}>
+                        
+                      <div style={{ cursor: 'move' }}>
+                      <StText fontWeight='bold'>{item.nickname}</StText>
+                      <StText >{item.statusMessage}</StText>
+
+                      </div>
+                      
+                      </Draggable> */}
+                      {showDeleteButton && (
+                        <button
+                          onClick={() => {
+                            onDeleteHandler(item.friendListId);
+                          }}
+                        >
+                          삭제
+                        </button>
+                      )}
                     </ListContentBox>
                   </>
                 )}
