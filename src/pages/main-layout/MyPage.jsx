@@ -127,8 +127,8 @@ function MyPage() {
                     </StText>
                   ) : (
                     <StText fontWeight='bold' size='18'>
-                     {/* {item.title.length > 10 ? item.title.slice(0, 10) + '...' : item.title} */}
-                     {item.title}
+                      {/* {item.title.length > 10 ? item.title.slice(0, 10) + '...' : item.title} */}
+                      {item.title}
                     </StText>
                   )}
                   {item.diaryCondition === "PUBLIC" ? (
@@ -255,6 +255,15 @@ const DiaryCards = styled.div`
   background: #f5f5f5;
 
   margin: 5px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media (min-width: 425px) {
+    text-overflow: clip;
+    white-space: normal;
+  }
 `;
 
 const ThumbnailBox = styled.div`
@@ -286,16 +295,16 @@ const Public = styled.div`
   margin-left: ${({ marginLeft }) => `${marginLeft}px`};
 
   display: flex;
-
-  @media (max-width: 300px) {
-    display: none;
-  }
 `;
 
 const StTextBox = styled.div`
   margin-left: 70px;
   display: ${({ display }) => `${display}`};
-  gap:10px;
+  gap: 10px;
+
+  @media (max-width: 380px) {
+    flex-direction: column;
+  }
 `;
 
 const StText = styled.div`
@@ -303,7 +312,6 @@ const StText = styled.div`
   font-size: ${({ size }) => `${size}px`};
   color: ${(props) => props.color};
 
-  width: 40%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -312,7 +320,6 @@ const StText = styled.div`
     text-overflow: clip;
     white-space: normal;
   }
-  
 `;
 
 const ConfirmButton = styled.button`
