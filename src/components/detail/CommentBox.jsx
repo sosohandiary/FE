@@ -9,7 +9,6 @@ import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
 
 const CommentBox = () => {
-  const [showComments] = useState(true);
   const [comment, setComment] = useState({
     comment: "",
   });
@@ -106,7 +105,7 @@ const CommentBox = () => {
   return (
     <div>
       <WholeAreaWithMargin>
-        <CommentsContainer show={showComments}>
+        <CommentsContainer>
           <h3>댓글</h3>
 
           {mycomment?.map((comment) => {
@@ -159,9 +158,8 @@ export default CommentBox;
 const CommentsContainer = styled.div`
   width: 375px;
   height: 600px;
-  display: ${(props) => (props.show ? "block" : "none")};
   border: none;
-  /* background-color: #f1f1f1; */
+  background-color: #d17878;
   /* border-radius: 30px 30px 0px 0px; */
   padding: 10px;
   margin-top: -25px;
@@ -194,14 +192,14 @@ const CommentInput = styled.input`
 
 const CommentStyle = styled.div`
   border: none;
-  width: 325px;
+  width: 355px;
   height: 55px;
   display: flex;
   align-items: center;
   margin-left: 10px;
   margin-top: 5px;
   margin-bottom: -3px;
-  /* background-color: #4a92d1; */
+  background-color: #4a92d1;
 `;
 const CommentText = styled.span`
   font-size: 14px;
