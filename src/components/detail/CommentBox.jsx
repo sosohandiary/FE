@@ -25,6 +25,8 @@ const CommentBox = () => {
   const { data: commentData } = useQuery(["getComment"], () => getComment(detailId, accessToken));
   const mycomment = commentData?.data;
 
+  console.log("??", mycomment);
+
   // <----Mutation----> //
 
   //add
@@ -112,7 +114,7 @@ const CommentBox = () => {
             return (
               <React.Fragment key={comment.commentId}>
                 <CommentStyle>
-                  <ProfilePicSmall src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAyMTVfMTA5%2FMDAxNjc2NDMyNzA5NDIy.Di4Jca6bfg9LaSOaeeO3vwdHwRqMVt-14xV2Xat4raUg.xwfQrSJhrS0WuJUuaAdEalXb_Z1BEEOKx_my1FHX9d0g.JPEG.qmfosej%2FIMG_9285.jpg&type=a340" />
+                  <ProfilePicSmall profileImg={comment.commentProfileImageUrl} />
                   <UserBox>
                     <span>{comment.commentName}</span>
                     <span>{createdAtAgo}</span>
