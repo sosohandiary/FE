@@ -7,7 +7,7 @@ import { addComment, getComment, deleteComment, updatedComment } from "../../api
 import { useParams } from "react-router-dom";
 import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
-import Modal from "./Modal";
+
 
 const CommentBox = () => {
   const [showComments] = useState(true);
@@ -17,7 +17,7 @@ const CommentBox = () => {
   const [editingComment, setEditingComment] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [test, setTest] = useState(null);
-  // const [showModal, setShowModal] = useState(false);
+
 
   const queryClient = useQueryClient();
   const { detailId } = useParams();

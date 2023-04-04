@@ -39,7 +39,7 @@ function Detail() {
 
   return (
     <>
-      {/* <button onClick={navToModify}>수정하기</button> */}
+      <button onClick={navToModify}>수정하기</button>
       <StyledGobackButton onClick={() => navigate(-1)} />
       {myDiary && (
         <StyledDerailPage>
