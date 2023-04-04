@@ -15,7 +15,6 @@ const Notification = () => {
     });
   });
 
-  console.log(dataForFriendRequest?.data);
   return (
     <>
       <TitleBox />
