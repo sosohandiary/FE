@@ -39,13 +39,11 @@ function Detail() {
 
   return (
     <>
-      <button onClick={navToModify}>
-        <StyledGobackButton onClick={() => navigate(-1)} />
-        수정하기
-      </button>
+      <button onClick={navToModify}>수정하기</button>
+      <StyledGobackButton onClick={() => navigate(-1)} />
       {myDiary && (
         <StyledDerailPage>
-          <GetUser createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
+          <GetUser ProfileImg={myDiary.profileImageUrl} createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
           <WholeAreaWithMargin>
             <StyledDetailCardWrapper>
               <StyledDetailCard>

@@ -21,16 +21,12 @@ function Profile() {
   const [file, setFile] = useState("");
   const [previewImg, setPreviewImg] = useState(false);
 
-  const { data: profileData } = useQuery(
-    ["getProfile"],
-    () => getProfile(accessToken),
-    {
-      onSuccess: () => {
-        setNickname(profileData?.data.nickname);
-        setStatusMessage(profileData?.data.statusMessage);
-      },
-    }
-  );
+  const { data: profileData } = useQuery(["getProfile"], () => getProfile(accessToken), {
+    onSuccess: () => {
+      setNickname(profileData?.data.nickname);
+      setStatusMessage(profileData?.data.statusMessage);
+    },
+  });
 
   const mutation = useMutation(() => editProfile(formData, accessToken), {
     onSuccess: () => {
@@ -69,9 +65,7 @@ function Profile() {
   };
 
   //delete Mutation
-  const { mutate: deleteAccountMutate } = useMutation(() =>
-    deleteAccount(accessToken)
-  );
+  const { mutate: deleteAccountMutate } = useMutation(() => deleteAccount(accessToken));
 
   console.log(profileData?.data);
   const profile = profileData?.data;
@@ -118,10 +112,7 @@ function Profile() {
     e.preventDefault();
 
     formData.append("img", file);
-    formData.append(
-      "data",
-      new Blob([JSON.stringify(data)], { type: "application/json" })
-    );
+    formData.append("data", new Blob([JSON.stringify(data)], { type: "application/json" }));
 
     mutation.mutate(formData);
   }
@@ -142,11 +133,7 @@ function Profile() {
                 {previewImg ? (
                   <img style={ProfileImg} src={newimage} alt='profile image' />
                 ) : (
-                  <img
-                    style={ProfileImg}
-                    src={profile?.profileImageUrl}
-                    alt='profile image'
-                  />
+                  <img style={ProfileImg} src={profile?.profileImageUrl} alt="profile image" />
                 )}
               </StButton>
 
@@ -156,8 +143,8 @@ function Profile() {
             </ProfileArea>
 
             <input
-              type='file'
-              accept='image/*'
+              type="file"
+              accept="image/*"
               onChange={onImgPostHandler}
               ref={fileInput}
               style={{ display: "none" }}
@@ -167,20 +154,20 @@ function Profile() {
                 <Label>이름(별명)</Label>
                 <IconContainer>
                   <StInput
-                    type='text'
-                    name='nickname'
+                    type="text"
+                    name="nickname"
                     placeholder={profile?.nickname}
                     value={nickname || ""}
                     onChange={(e) => setNickname(e.target.value)}
                   />
                   <ClearButton disabled>
-                    <HiOutlineXCircle color='#D0D0D0' />
+                    <HiOutlineXCircle color="#D0D0D0" />
                   </ClearButton>
                 </IconContainer>
 
                 <Label>소개</Label>
                 <StTextarea
-                  name='statusMessage'
+                  name="statusMessage"
                   onChange={(e) => setStatusMessage(e.target.value)}
                   placeholder={profile?.statusMessage}
                   value={statusMessage || ""}
@@ -194,7 +181,7 @@ function Profile() {
                 <DeActivate onClick={handleOpenModal}><HiOutlineExclamation/>회원 탈퇴</DeActivate>
               </DeActivateBox>
               <DeleteAccount
-                title='탈퇴하기'
+                title="탈퇴하기"
                 isOpen={confirmDelete}
                 onClose={handleCloseModal}
                 handleDelete={handleDelete}

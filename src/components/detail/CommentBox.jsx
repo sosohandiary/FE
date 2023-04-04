@@ -1,25 +1,14 @@
 import React, { useState } from "react";
-import styled, { keyframes, css } from "styled-components";
+import styled from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
-import {
-  RiPencilFill,
-  RiDeleteBin6Fill,
-  RiCheckFill,
-  RiCloseFill,
-} from "react-icons/ri";
+import { RiPencilFill, RiDeleteBin6Fill, RiCheckFill, RiCloseFill } from "react-icons/ri";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import {
-  addComment,
-  getComment,
-  deleteComment,
-  updatedComment,
-} from "../../api/detail";
+import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
 import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
 
 const CommentBox = () => {
-  const [showComments] = useState(true);
   const [comment, setComment] = useState({
     comment: "",
   });
@@ -32,34 +21,28 @@ const CommentBox = () => {
   const accessToken = localStorage.getItem("accessToken");
 
   // get
-  const { data: commentData } = useQuery(["getComment"], () =>
-    getComment(detailId, accessToken)
-  );
+  const { data: commentData } = useQuery(["getComment"], () => getComment(detailId, accessToken));
   const mycomment = commentData?.data;
+
+  // console.log("??", mycomment);
 
   // <----Mutation----> //
 
   //add
-  const { mutate: addmutation } = useMutation(
-    () => addComment(detailId, comment, accessToken),
-    {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries("getComment");
-        queryClient.invalidateQueries("getDiary");
-      },
-    }
-  );
+  const { mutate: addmutation } = useMutation(() => addComment(detailId, comment, accessToken), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("getComment");
+      queryClient.invalidateQueries("getDiary");
+    },
+  });
 
   //delete
-  const { mutate: deleteCommentMutate } = useMutation(
-    (commentId) => deleteComment(detailId, commentId, accessToken),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("getComment");
-        queryClient.invalidateQueries("getDiary");
-      },
-    }
-  );
+  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(detailId, commentId, accessToken), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("getComment");
+      queryClient.invalidateQueries("getDiary");
+    },
+  });
 
   //edit
   const { mutate: updatedCommentMutate } = useMutation(
@@ -122,7 +105,7 @@ const CommentBox = () => {
   return (
     <div>
       <WholeAreaWithMargin>
-        <CommentsContainer show={showComments}>
+        <CommentsContainer>
           <h3>댓글</h3>
 
           {mycomment?.map((comment) => {
@@ -130,15 +113,14 @@ const CommentBox = () => {
             return (
               <React.Fragment key={comment.commentId}>
                 <CommentStyle>
-                  <ProfilePicSmall src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAyMTVfMTA5%2FMDAxNjc2NDMyNzA5NDIy.Di4Jca6bfg9LaSOaeeO3vwdHwRqMVt-14xV2Xat4raUg.xwfQrSJhrS0WuJUuaAdEalXb_Z1BEEOKx_my1FHX9d0g.JPEG.qmfosej%2FIMG_9285.jpg&type=a340" />
+                  <ProfilePicSmall src={comment.commentProfileImageUrl} />
                   <UserBox>
                     <span>{comment.commentName}</span>
                     <span>{createdAtAgo}</span>
                   </UserBox>
 
                   <IconStyle>
-                    {isEditing &&
-                    editingComment.commentId === comment.commentId ? (
+                    {isEditing && editingComment.commentId === comment.commentId ? (
                       <>
                         <CancelIcon onClick={onCancelEditHandler} />
                         <UpdateIcon onClick={onUpdateHandler} />
@@ -146,9 +128,7 @@ const CommentBox = () => {
                     ) : (
                       <>
                         <EditIcon onClick={() => onEditHandler(comment)} />
-                        <DeleteIcon
-                          onClick={() => onDeleteHandler(comment.commentId)}
-                        />
+                        <DeleteIcon onClick={() => onDeleteHandler(comment.commentId)} />
                       </>
                     )}
                   </IconStyle>
@@ -175,21 +155,9 @@ const CommentBox = () => {
 
 export default CommentBox;
 
-const CommetnslideUp = keyframes`
-  0% {
-    transform: translateY(60%);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-`;
-
 const CommentsContainer = styled.div`
   width: 375px;
   height: 600px;
-  display: ${(props) => (props.show ? "block" : "none")};
   border: none;
   /* background-color: #f1f1f1; */
   /* border-radius: 30px 30px 0px 0px; */
@@ -199,11 +167,6 @@ const CommentsContainer = styled.div`
   overflow-y: auto;
   position: relative;
 
-  ${(props) =>
-    props.show &&
-    css`
-      animation: ${CommetnslideUp} 0.3s ease-out forwards;
-    `}
   h3 {
     text-align: center;
     line-height: 22px;
@@ -238,11 +201,14 @@ const CommentStyle = styled.div`
   margin-bottom: -3px;
   /* background-color: #4a92d1; */
 `;
+
 const CommentText = styled.span`
   font-size: 14px;
   /* font-weight: 600; */
   margin-left: 10px;
   display: block;
+  white-space: pre-wrap;
+  word-break: break-all;
 `;
 
 const UserBox = styled.div`
