@@ -4,13 +4,26 @@ import Navigationbar from "../../components/Navigationbar";
 import AlarmUnReadCard from "../../components/AlarmUnReadCard";
 import AlarmReadCard from "../../components/AlarmReadCard";
 import TitleBox from "../../components/TitleBox";
+import { useQuery } from "react-query";
+import axios from "axios";
 
 const Notification = () => {
+  const accessToken = window.localStorage.getItem("accessToken");
+  const { data: dataForFriendRequest } = useQuery(["getFriendRequests"], () => {
+    return axios.get(`${process.env.REACT_APP_BASEURL}/friend/request`, {
+      headers: { Authorization: accessToken },
+    });
+  });
+
+  console.log(dataForFriendRequest?.data);
   return (
     <>
       <TitleBox />
 
       <AlarmBox>
+        {dataForFriendRequest?.data.map((item, i) => (
+          <AlarmUnReadCard key={i} item={item} alarmSort="friendRequest" />
+        ))}
         <AlarmUnReadCard />
         <AlarmReadCard />
         <AlarmReadCard />

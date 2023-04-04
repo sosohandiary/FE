@@ -19,6 +19,7 @@ const MyFriends = () => {
   // const handleDragStop = (e, data) => {
   //   const { deltaX, deltaY } = data;
 
+
   //   if (Math.abs(deltaX) > 50 || Math.abs(deltaY) > 50) {
   //     setShowDeleteButton(true);
   //   }
@@ -65,14 +66,14 @@ const MyFriends = () => {
   return (
     <>
       <WholeArea style={{ margin: "30px auto", maxWidth: "720px" }}>
-        <Title size='18'>친구</Title>
+        <Title size="18">친구</Title>
         {/* <Searchbox placeholder='친구 검색' /> */}
         <Filter
           setCards={setSearchFriends}
           existCards={friends}
-          placeholder='친구 검색'
+          placeholder="친구 검색"
         />
-        <Label alignSelf='flex-start'>
+        <Label alignSelf="flex-start">
           친구 {friendsCount?.data?.myFriendCount}
         </Label>
         {friends &&
@@ -81,8 +82,9 @@ const MyFriends = () => {
               <ListCards key={index}>
                 {item.friendStatus === "ACCEPTED" && (
                   <>
-                    <ProfilePicSmall src='https://avatars.githubusercontent.com/u/109452831?v=4' />
+                    <ProfilePicSmall src="https://avatars.githubusercontent.com/u/109452831?v=4" />
                     <ListContentBox>
+
                       <StText fontWeight='bold'>{item.nickname}</StText>
                       <StText>{item.statusMessage}</StText>
 
