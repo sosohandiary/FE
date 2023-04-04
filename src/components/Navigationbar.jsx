@@ -10,9 +10,34 @@ import bell from "../assets/navbar/bell.png";
 import magnifier from "../assets/navbar/magnifier.png";
 import person from "../assets/navbar/person.png";
 import plus from "../assets/navbar/plus.png";
+import { Badge } from "@mui/material";
+import { useQuery } from "react-query";
+import axios from "axios";
 
 const Navigationbar = () => {
   const navigate = useNavigate();
+  const accessToken = window.localStorage.getItem("accessToken");
+
+  const { data: dataForInviteAlarm } = useQuery(["getData"], () => {
+    return axios.get(`${process.env.REACT_APP_BASEURL}/invite/alarm`, {
+      headers: { Authorization: accessToken },
+    });
+  });
+
+  const { data: dataForFriendAlarm } = useQuery(["getData"], () => {
+    return axios.get(`${process.env.REACT_APP_BASEURL}/friend/request`, {
+      headers: { Authorization: accessToken },
+    });
+  });
+
+  const { data: dataForCommentAlarm } = useQuery(["getData"], () => {
+    return axios.get(
+      `${process.env.REACT_APP_BASEURL}/detail/{detail-id}/comment`,
+      {
+        headers: { Authorization: accessToken },
+      }
+    );
+  });
 
   const goToPage = (to) => {
     console.log(to);
@@ -25,7 +50,9 @@ const Navigationbar = () => {
         <img src={home} />
       </div>
       <div onClick={() => goToPage("/notification")}>
-        <img src={bell} />
+        <Badge badgeContent={9999} color="primary">
+          <img src={bell} />
+        </Badge>
       </div>
       <div onClick={() => goToPage("/diary")}>
         <img src={plus} />
