@@ -52,22 +52,22 @@ const Card = styled.div`
   background-color: #e3d7d7;
 
   height: ${({ idx, activeIdxForSelfmade }) =>
-    idx === activeIdxForSelfmade + 1 ? "196px" : "140px"};
+    idx === activeIdxForSelfmade ? "196px" : "140px"};
   width: ${({ idx, activeIdxForSelfmade }) =>
-    idx === activeIdxForSelfmade + 1 ? "140px" : "100px"};
+    idx === activeIdxForSelfmade ? "140px" : "100px"};
   border-radius: 25px;
   margin-bottom: ${({ idx, activeIdxForSelfmade }) =>
-    idx === activeIdxForSelfmade + 1
+    idx === activeIdxForSelfmade
       ? "0px"
-      : idx === activeIdxForSelfmade || idx === activeIdxForSelfmade + 2
-      ? "75px"
-      : "150px"};
+      : idx === activeIdxForSelfmade - 1 || idx === activeIdxForSelfmade + 1
+      ? "80px"
+      : "160px"};
 
   margin-left: ${({ idx, activeIdxForSelfmade }) =>
-    idx <= activeIdxForSelfmade ? "-50%" : "0px"};
+    idx < activeIdxForSelfmade ? "-50%" : "0px"};
 
   margin-right: ${({ idx, activeIdxForSelfmade }) =>
-    idx >= activeIdxForSelfmade + 2 ? "-50%" : ""};
+    idx > activeIdxForSelfmade ? "-50%" : ""};
 `;
 
 const SideLabel = styled.div`
@@ -75,7 +75,7 @@ const SideLabel = styled.div`
   background-color: ${({ colorCode }) => colorCode};
   width: 15px;
   height: ${({ idx, activeIdxForSelfmade }) =>
-    idx === activeIdxForSelfmade + 1 ? "196px" : "140px"};
+    idx === activeIdxForSelfmade ? "196px" : "140px"};
   border-radius: 13px 0 0 13px;
   position: absolute;
 `;
