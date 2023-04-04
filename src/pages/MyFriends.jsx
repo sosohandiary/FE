@@ -192,7 +192,7 @@ const Item = ({ children }) => {
     if (x - downX < -30) {
       ref.current.style.transform = "translate(-55px)";
       setTimeout(() => {
-        ref.current.style.transform = "translate(0px)";
+        if (ref.current){ref.current.style.transform = "translate(0px)";}
       }, 4000);
     } else {
       ref.current.style.transform = "translate(0px)";

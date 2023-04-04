@@ -71,7 +71,7 @@ function MyPage() {
   };
   return (
     <>
-      <WholeViewWidth style={{ margin: "30px auto", maxWidth: "720px" }}>
+      <WholeViewWidth style={{ margin: "30px auto", maxWidth: "600px" }}>
         <StArrow>
           <StyledGobackButton onClick={navToBack} />
         </StArrow>
@@ -84,7 +84,9 @@ function MyPage() {
 
         <FlexContainer justifyContent='flex-end'>
           <NavButton onClick={navToProfile}>
-            <Label size='16'>프로필 편집</Label>
+            <Label size='16' margin='10'>
+              프로필 편집
+            </Label>
           </NavButton>
         </FlexContainer>
 
@@ -92,18 +94,22 @@ function MyPage() {
           <MenuBox>
             <EachMenuBox boderRight='1px solid'>
               <NavButton onClick={navToFriendsList}>
-                <LabelSpan>친구</LabelSpan>
-                <div>{friendsCount?.data?.myFriendCount}</div>
+                <LabelSpan size='18'>친구</LabelSpan>
+                <Label size='20' fontWeight='bold' color='#858585'>
+                  {friendsCount?.data?.myFriendCount}
+                </Label>
               </NavButton>
             </EachMenuBox>
             <EachMenuBox>
-              <LabelSpan>다이어리</LabelSpan>
-              <div>{diaryCount?.data?.myDiaryCount}</div>
+              <LabelSpan size='18'>다이어리</LabelSpan>
+              <Label size='20' fontWeight='bold' color='#858585'>
+                {diaryCount?.data?.myDiaryCount}
+              </Label>
             </EachMenuBox>
           </MenuBox>
         </FlexContainer>
 
-        <Label size='18' alignSelf='flex-start'>
+        <Label size='18' margin='10'>
           내 다이어리
         </Label>
 
@@ -114,16 +120,31 @@ function MyPage() {
                 <ThumbnailBox>
                   <ThumbnailImg src={item.img} />
                 </ThumbnailBox>
-                <div style={{ marginLeft: "70px" }}>
-                  <StText fontWeight='bold' size='20'>
-                    {item.title}
-                  </StText>
-                  <StText size='16' color='#B0B0B0'>
+                <StTextBox display='flex'>
+                  {item.title === "" ? (
+                    <StText fontWeight='bold' size='18' color='#C2C3C5'>
+                      제목 없음
+                    </StText>
+                  ) : (
+                    <StText fontWeight='bold' size='18'>
+                     {/* {item.title.length > 10 ? item.title.slice(0, 10) + '...' : item.title} */}
+                     {item.title}
+                    </StText>
+                  )}
+                  {item.diaryCondition === "PUBLIC" ? (
+                    <Public size='16'>공유 다이어리</Public>
+                  ) : (
+                    <StText>다이어리</StText>
+                  )}
+                </StTextBox>
+                <StTextBox>
+                  <Label size='16' color='#B0B0B0'>
                     개설일: {getDate(item.createdAt)}{" "}
-                  </StText>
-                </div>
+                  </Label>
+                </StTextBox>
+
                 <ConfirmButton onClick={() => navToModifyCover(item.id, index)}>
-                  <IoIosArrowForward size={28} color='#959494' />
+                  <IoIosArrowForward size={28} color='#A1B2FA' />
                 </ConfirmButton>
               </DiaryCards>
             </FlexContainer>
@@ -171,11 +192,9 @@ const Title = styled.div`
 const Label = styled.div`
   color: #858585;
   font-size: ${({ size }) => `${size}px`};
-  display: block;
   font-weight: ${(props) => props.fontWeight};
-  margin: 10px;
-
-  display: flex;
+  margin: ${({ margin }) => `${margin}px`};
+  margin-left: ${({ marginLeft }) => `${marginLeft}px`};
   align-self: ${({ alignSelf }) => alignSelf};
 `;
 
@@ -202,8 +221,8 @@ const MenuBox = styled.div`
   width: 50%;
   max-width: 300px;
   outline: none;
-  border-radius: 15px;
-  padding: 0 10px;
+  border-radius: 20px;
+  padding: 10px;
   font-size: 16px;
   border: 1px solid #eee;
   background: #d9d9d9;
@@ -228,12 +247,12 @@ const EachMenuBox = styled.div`
 
 const DiaryCards = styled.div`
   border-radius: 23px;
-  width: 80%;
-  max-width: 500px;
+  width: 90%;
+  max-width: 600px;
   padding: 30px;
   position: relative;
 
-  background: #d9d9d9;
+  background: #f5f5f5;
 
   margin: 5px;
 `;
@@ -256,18 +275,50 @@ const ThumbnailImg = styled.img`
 
 const LabelSpan = styled.span`
   color: #858585;
+  font-weight: ${(props) => props.fontWeight};
+  font-size: ${({ size }) => `${size}px`};
+  color: ${(props) => props.color};
+`;
+
+const Public = styled.div`
+  color: #858585;
+  font-size: ${({ size }) => `${size}px`};
+  margin-left: ${({ marginLeft }) => `${marginLeft}px`};
+
+  display: flex;
+
+  @media (max-width: 300px) {
+    display: none;
+  }
+`;
+
+const StTextBox = styled.div`
+  margin-left: 70px;
+  display: ${({ display }) => `${display}`};
+  gap:10px;
 `;
 
 const StText = styled.div`
   font-weight: ${(props) => props.fontWeight};
   font-size: ${({ size }) => `${size}px`};
   color: ${(props) => props.color};
+
+  width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media (min-width: 425px) {
+    text-overflow: clip;
+    white-space: normal;
+  }
+  
 `;
 
 const ConfirmButton = styled.button`
   position: absolute;
   top: 35px;
-  right: 45px;
+  right: 25px;
 
   background: none;
   border: none;
@@ -278,7 +329,7 @@ const ConfirmButton = styled.button`
 const StLogout = styled.div`
   display: flex;
   justify-content: flex-end;
-  color: #8E8F94;
+  color: #8e8f94;
 
   margin-top: 10px;
   padding-bottom: 80px;

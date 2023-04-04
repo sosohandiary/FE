@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 
 import { getProfile, editProfile, deleteAccount } from "../api/mypage";
-import { HiPencil, HiOutlineXCircle } from "react-icons/hi";
+import { HiPencil, HiOutlineXCircle, HiOutlineExclamation } from "react-icons/hi";
 import { MdArrowBack } from "react-icons/md";
 import { MintButtonMedium } from "../styles/Buttons";
 import DeleteAccount from "../components/mypage/DeleteAccount";
@@ -187,9 +187,11 @@ function Profile() {
                 />
               </Content>
 
-              <MintButtonMedium type='submit'>저장</MintButtonMedium>
+              <StButtonContainer>
+                <MintButtonMedium type='submit'>저장</MintButtonMedium>
+              </StButtonContainer>
               <DeActivateBox>
-                <DeActivate onClick={handleOpenModal}>회원 탈퇴</DeActivate>
+                <DeActivate onClick={handleOpenModal}><HiOutlineExclamation/>회원 탈퇴</DeActivate>
               </DeActivateBox>
               <DeleteAccount
                 title='탈퇴하기'
@@ -234,8 +236,8 @@ const ProfileLayout = styled.div`
 const ProfileImg = {
   padding: "2px",
   borderRadius: "50%",
-  width: "80px",
-  height: "80px",
+  width: "120px",
+  height: "120px",
 };
 
 const ProfileArea = styled.div`
@@ -294,7 +296,7 @@ const StInput = styled.input`
   height: 55px;
   width: 100%;
   outline: none;
-  border-radius: 8px;
+  border-radius: 20px;
   padding: 0 10px;
   font-size: 16px;
   border: 1px solid #eee;
@@ -305,7 +307,7 @@ const StTextarea = styled.textarea`
   height: 100px;
   border: 1px solid #eee;
   box-sizing: border-box;
-  border-radius: 8px;
+  border-radius: 20px;
   padding: 12px;
   font-size: 16px;
   margin-bottom: 20px;
@@ -334,16 +336,43 @@ const ClearButton = styled.button`
   cursor: pointer;
 `;
 
-const DeActivate = styled.button`
+const StButtonContainer = styled.div`
+  position: absolute;
+  
+  top: 450px;
+  right: 0;
+  /* bottom: 300px; */
+  left: 0;
   display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
+const DeActivate = styled.button`
   border: none;
   background: none;
   cursor: pointer;
+
+
+
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 `;
 
 const DeActivateBox = styled.div`
-  display: flex;
+  /* display: flex;
   align-items: flex-end;
-  justify-content: flex-end;
+  justify-content: flex-end; */
+
+  position: absolute;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  right: 40px;
+  top:550px;
 `;
