@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import Draggable from "react-draggable";
+import { useNavigate } from "react-router-dom";
 
 import { getMyfriends, getFriendsCount, deleteFriend } from "../api/mypage";
 import { ProfilePicSmall } from "../components/ProfilePics";
+import { MdArrowBack } from "react-icons/md";
 import Searchbox from "../components/Searchbox";
-import { WholeArea, WholeAreaWithMargin } from "../styles/WholeAreaStyle";
+import {
+  WholeArea,
+  WholeAreaWithMargin,
+  WholeViewWidth,
+} from "../styles/WholeAreaStyle";
 import Filter from "../components/mypage/Filter";
 import { useParams } from "react-router-dom";
 import { Checkbox } from "@nextui-org/react";
@@ -14,21 +20,8 @@ import { Checkbox } from "@nextui-org/react";
 const MyFriends = () => {
   const [searchFriends, setSearchFriends] = useState(null);
 
-  const [showDeleteButton, setShowDeleteButton] = useState(false);
-
-  // const handleDragStop = (e, data) => {
-  //   const { deltaX, deltaY } = data;
-
-
-  //   if (Math.abs(deltaX) > 50 || Math.abs(deltaY) > 50) {
-  //     setShowDeleteButton(true);
-  //   }
-  // };
-  // const handleDragStart = () => {
-  //   setShowDeleteButton(true);
-  // };
-
   const accessToken = localStorage.getItem("accessToken");
+  const navigate = useNavigate();
 
   const { data: myFriends } = useQuery(["getMyFriends"], () =>
     getMyfriends(accessToken)
@@ -63,69 +56,89 @@ const MyFriends = () => {
     deleteFriendMutate(friendId);
   };
 
+  const navToBack = () => {
+    navigate("/mypage");
+  };
+
   return (
     <>
-      <WholeArea style={{ margin: "30px auto", maxWidth: "720px" }}>
-        <Title size="18">친구</Title>
+      <WholeViewWidth style={{ margin: "30px auto", maxWidth: "720px" }}>
+        <StArrow>
+          <StyledGobackButton onClick={navToBack} />
+        </StArrow>
+        <Title size='18'>친구</Title>
         {/* <Searchbox placeholder='친구 검색' /> */}
         <Filter
           setCards={setSearchFriends}
           existCards={friends}
-          placeholder="친구 검색"
+          placeholder='친구 검색'
         />
-        <Label alignSelf="flex-start">
+        <Label alignSelf='flex-start'>
           친구 {friendsCount?.data?.myFriendCount}
         </Label>
-        {friends &&
-          searchFriends?.map((item, index) => {
-            return (
-              <ListCards key={index}>
-                {item.friendStatus === "ACCEPTED" && (
-                  <>
-                    <ProfilePicSmall src="https://avatars.githubusercontent.com/u/109452831?v=4" />
-                    <ListContentBox>
 
-                      <StText fontWeight='bold'>{item.nickname}</StText>
-                      <StText>{item.statusMessage}</StText>
+        <Wrapper>
+          {friends &&
+            searchFriends
+              ?.filter((item) => item.friendStatus === "ACCEPTED")
+              .map((item) => {
+                return (
+                  <Item key={item.memberId}>
+                    {item.friendStatus === "ACCEPTED" ? (
+                      <>
+                        <div className='slide'>
+                          <ListCards>
+                            <ProfilePicSmall src={item.profileImageUrl} />
+                            <ListContentBox>
+                              <StText fontWeight='bold'>{item.nickname}</StText>
+                              <StText>{item.statusMessage}</StText>
+                            </ListContentBox>
+                          </ListCards>
+                        </div>
 
-                      {/* <Draggable onStart={handleDragStart}
-                       bounds={{ left: 0, top: 0, right: 500, bottom: 500 }}>
-                        
-                      <div style={{ cursor: 'move' }}>
-                      <StText fontWeight='bold'>{item.nickname}</StText>
-                      <StText >{item.statusMessage}</StText>
-
-                      </div>
-                      
-                      </Draggable> */}
-                      {showDeleteButton && (
-                        <button
+                        <DeleteButton
                           onClick={() => {
-                            onDeleteHandler(item.friendListId);
+                            onDeleteHandler();
                           }}
                         >
                           삭제
-                        </button>
-                      )}
-                    </ListContentBox>
-                  </>
-                )}
-              </ListCards>
-            );
-          })}
-      </WholeArea>
+                        </DeleteButton>
+                      </>
+                    ) : (
+                      <div style={{ border: "none" }}>야호</div>
+                    )}
+                  </Item>
+                );
+              })}
+        </Wrapper>
+      </WholeViewWidth>
     </>
   );
 };
 
 export default MyFriends;
 
+const StArrow = styled.div`
+  max-width: 720px;
+  margin: 0 auto;
+  position: relative;
+  top: 30px;
+`;
+
+const StyledGobackButton = styled(MdArrowBack)`
+  position: absolute;
+  /* padding-top: 50px; */
+  font-size: 40px;
+  color: #adaaaa;
+  cursor: pointer;
+`;
+
 const Title = styled.div`
   font-weight: bold;
-  font-size: ${({ size }) => `${size}px`};
-  color: black;
-
+  padding-top: 30px;
+  margin-bottom: 50px;
   display: flex;
+  justify-content: center;
 `;
 
 const Label = styled.div`
@@ -143,7 +156,7 @@ const ListCards = styled.div`
   display: flex;
   align-self: flex-start;
 
-  padding: 10px;
+  /* padding: 10px; */
 `;
 
 const ListContentBox = styled.div`
@@ -157,4 +170,92 @@ const StText = styled.div`
   font-size: ${({ size }) => `${size}px`};
   font-weight: ${(props) => props.fontWeight};
   color: ${(props) => props.color};
+`;
+
+const Wrapper = styled.div`
+  width: 100%;
+  /* border-top: 1px solid #d9d9d9; */
+  overflow: hidden;
+`;
+
+const DeleteButton = styled.button`
+  background: #dedede;
+  text-align: center;
+  border: 1px solid #d9d9d9;
+  min-width: 75px;
+`;
+const Item = ({ children }) => {
+  const ref = useRef();
+  let downX;
+
+  const onMove = (x) => {
+    if (x - downX < -30) {
+      ref.current.style.transform = "translate(-55px)";
+      setTimeout(() => {
+        ref.current.style.transform = "translate(0px)";
+      }, 4000);
+    } else {
+      ref.current.style.transform = "translate(0px)";
+    }
+  };
+
+  const onStart = (x) => {
+    downX = x;
+    ref.current.addEventListener("touchmove", onTouchMove);
+    ref.current.addEventListener("mousemove", onMouseMove);
+  };
+
+  const onEnd = () => {
+    ref.current.removeEventListener("touchmove", onTouchMove);
+    ref.current.removeEventListener("mousemove", onMouseMove);
+  };
+
+  const onTouchMove = (e) => {
+    const newX = e.touches[0].clientX;
+    onMove(newX);
+  };
+
+  const onTouchStart = (e) => {
+    onStart(e.touches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    onEnd();
+  };
+
+  const onMouseMove = (e) => {
+    onMove(e.clientX);
+  };
+
+  const onMouseDown = (e) => {
+    onStart(e.clientX);
+  };
+
+  const onMouseUp = () => {
+    onEnd();
+  };
+
+  return (
+    <ItemWrapper
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      ref={ref}
+    >
+      {children}
+    </ItemWrapper>
+  );
+};
+
+const ItemWrapper = styled.div`
+  display: flex;
+  /* margin: 3px 0; */
+  transition: transform 800ms;
+  border-top: 1px solid #d9d9d9;
+
+  .slide {
+    flex: 1 0 100%;
+    margin: 10px 0;
+  }
 `;

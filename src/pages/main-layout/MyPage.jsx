@@ -10,11 +10,11 @@ import {
   getDiaryCount,
 } from "../../api/mypage";
 import { getDate } from "../../utils/getDate";
-import { WholeArea } from "../../styles/WholeAreaStyle";
+import { WholeArea, WholeViewWidth } from "../../styles/WholeAreaStyle";
 import { ProfilePicLarge } from "../../components/ProfilePics";
 import { IoIosArrowForward } from "react-icons/io";
+import { MdArrowBack } from "react-icons/md";
 import Navigationbar from "../../components/Navigationbar";
-
 
 function MyPage() {
   const accessToken = localStorage.getItem("accessToken");
@@ -50,18 +50,19 @@ function MyPage() {
     navigate("/myfriends/list");
   };
 
-
   const navToModifyCover = (diaryId, index) => {
-    navigate(`/diary`,{
+    navigate(`/diary`, {
       state: {
         id: diaryId,
-        data : mypage[index],
+        data: mypage[index],
       },
     });
-  }
-console.log(mypage);
+  };
+  console.log(mypage);
 
-
+  const navToBack = () => {
+    navigate(-1);
+  };
 
   const LogoutHandler = () => {
     localStorage.removeItem("accessToken");
@@ -70,63 +71,92 @@ console.log(mypage);
   };
   return (
     <>
-      <WholeArea style={{ margin: "30px auto", maxWidth: "720px" }}>
+      <WholeViewWidth style={{ margin: "30px auto", maxWidth: "720px" }}>
+        <StArrow>
+          <StyledGobackButton onClick={navToBack} />
+        </StArrow>
         <Title size='18'>마이페이지</Title>
-        <ProfilePicLarge src='https://avatars.githubusercontent.com/u/109452831?v=4' />
+        <FlexContainer justifyContent='center'>
+          <ProfilePicLarge src={profile?.profileImageUrl} />
+        </FlexContainer>
+
         <Title size='22'>{profile?.nickname}</Title>
 
-        <NavButton alignSelf='flex-end' onClick={navToProfile}>
-          <Label size='16'>프로필 편집</Label>
-        </NavButton>
+        <FlexContainer justifyContent='flex-end'>
+          <NavButton onClick={navToProfile}>
+            <Label size='16'>프로필 편집</Label>
+          </NavButton>
+        </FlexContainer>
 
-        <MenuBox>
-          <EachMenuBox boderRight='1px solid'>
-            <NavButton onClick={navToFriendsList}>
-              <LabelSpan>친구</LabelSpan>
-            </NavButton>
-            <div>{friendsCount?.data?.myFriendCount}</div>
-          </EachMenuBox>
-          <EachMenuBox>
-            <LabelSpan>다이어리</LabelSpan>
-            <div>{diaryCount?.data?.myDiaryCount}</div>
-          </EachMenuBox>
-        </MenuBox>
+        <FlexContainer justifyContent='center'>
+          <MenuBox>
+            <EachMenuBox boderRight='1px solid'>
+              <NavButton onClick={navToFriendsList}>
+                <LabelSpan>친구</LabelSpan>
+                <div>{friendsCount?.data?.myFriendCount}</div>
+              </NavButton>
+            </EachMenuBox>
+            <EachMenuBox>
+              <LabelSpan>다이어리</LabelSpan>
+              <div>{diaryCount?.data?.myDiaryCount}</div>
+            </EachMenuBox>
+          </MenuBox>
+        </FlexContainer>
+
         <Label size='18' alignSelf='flex-start'>
           내 다이어리
         </Label>
 
         {mypage?.map((item, index) => {
           return (
-            <DiaryCards key={item.id}>
-              <ThumbnailBox>
-                <ThumbnailImg src={item.img} />
-              </ThumbnailBox>
-              <div style={{ marginLeft: "70px" }}>
-                <StText fontWeight='bold' size='20'>
-                  {item.title}
-                </StText>
-                <StText size='16' color='#B0B0B0'>
-                  개설일: {getDate(item.createdAt)}{" "}
-                </StText>
-              </div>
-              <ConfirmButton onClick={() => navToModifyCover(item.id, index)}><IoIosArrowForward size={28} color="#959494"/></ConfirmButton>
-            </DiaryCards>
+            <FlexContainer justifyContent='center' key={item.id}>
+              <DiaryCards>
+                <ThumbnailBox>
+                  <ThumbnailImg src={item.img} />
+                </ThumbnailBox>
+                <div style={{ marginLeft: "70px" }}>
+                  <StText fontWeight='bold' size='20'>
+                    {item.title}
+                  </StText>
+                  <StText size='16' color='#B0B0B0'>
+                    개설일: {getDate(item.createdAt)}{" "}
+                  </StText>
+                </div>
+                <ConfirmButton onClick={() => navToModifyCover(item.id, index)}>
+                  <IoIosArrowForward size={28} color='#959494' />
+                </ConfirmButton>
+              </DiaryCards>
+            </FlexContainer>
           );
         })}
- 
+
         <StLogout>
-          <LougoutBtn onClick={LogoutHandler}>
-            로그아웃
-          </LougoutBtn>
+          <LougoutBtn onClick={LogoutHandler}>로그아웃</LougoutBtn>
         </StLogout>
 
         <Navigationbar />
-      </WholeArea>
+      </WholeViewWidth>
     </>
   );
 }
 
 export default MyPage;
+
+const StArrow = styled.div`
+  max-width: 720px;
+  margin: 0 auto;
+  position: relative;
+  left: 0;
+  top: 30px;
+`;
+
+const StyledGobackButton = styled(MdArrowBack)`
+  position: absolute;
+  /* padding-top: 50px; */
+  font-size: 40px;
+  color: #adaaaa;
+  cursor: pointer;
+`;
 
 const Title = styled.div`
   font-weight: bold;
@@ -135,6 +165,7 @@ const Title = styled.div`
 
   display: flex;
   padding: 10px;
+  justify-content: center;
 `;
 
 const Label = styled.div`
@@ -148,13 +179,19 @@ const Label = styled.div`
   align-self: ${({ alignSelf }) => alignSelf};
 `;
 
+const FlexContainer = styled.div`
+  display: flex;
+  justify-content: ${({ justifyContent }) => justifyContent};
+`;
+
 const NavButton = styled.button`
   border: none;
   background: none;
   font-size: 16px;
-
+  cursor: pointer;
   /* display: flex;
-  align-self: flex-end; */
+  justify-content: flex-end; */
+  align-items: flex-end;
   align-self: ${({ alignSelf }) => alignSelf};
 `;
 
@@ -178,7 +215,6 @@ const MenuBox = styled.div`
 `;
 
 const EachMenuBox = styled.div`
-  cursor: pointer;
   flex: 1;
   line-height: 1.3rem;
   color: ${(props) => props.color};
@@ -229,7 +265,7 @@ const StText = styled.div`
 `;
 
 const ConfirmButton = styled.button`
-    position: absolute;
+  position: absolute;
   top: 35px;
   right: 45px;
 
@@ -241,9 +277,11 @@ const ConfirmButton = styled.button`
 
 const StLogout = styled.div`
   display: flex;
-  align-self: flex-end;
-  margin: 20px;
-  padding-bottom: 30px;
+  justify-content: flex-end;
+  color: #8E8F94;
+
+  margin-top: 10px;
+  padding-bottom: 80px;
 `;
 
 const LougoutBtn = styled.button`

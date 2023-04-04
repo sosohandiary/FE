@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -40,6 +40,13 @@ function Profile() {
 
   //image
   const onImgPostHandler = (event) => {
+    // const onImgPostHandler = useCallback((e) => {
+    //   if (e.target.files === null) return;
+    //   if (e.target.files[0]) {
+    //     setFile(e.target.files[0]);
+    //     setNewImage(URL.createObjectURL(e.target.files[0]));
+    //   }
+
     setNewImage([]);
     for (let i = 0; i < event.target.files.length; i++) {
       setFile(event.target.files[i]);
@@ -57,7 +64,8 @@ function Profile() {
       };
     }
 
-    setPreviewImg(true);
+    //   setPreviewImg(true);
+    // }, []);
   };
 
   //delete Mutation
@@ -96,7 +104,7 @@ function Profile() {
   };
 
   const navToBack = () => {
-    navigate(-1);
+    navigate("/mypage");
   };
 
   const data = {
@@ -162,7 +170,7 @@ function Profile() {
                     type='text'
                     name='nickname'
                     placeholder={profile?.nickname}
-                    value={nickname}
+                    value={nickname || ""}
                     onChange={(e) => setNickname(e.target.value)}
                   />
                   <ClearButton disabled>
@@ -175,7 +183,7 @@ function Profile() {
                   name='statusMessage'
                   onChange={(e) => setStatusMessage(e.target.value)}
                   placeholder={profile?.statusMessage}
-                  value={statusMessage}
+                  value={statusMessage || ""}
                 />
               </Content>
 
@@ -207,7 +215,7 @@ const StArrow = styled.div`
   max-width: 720px;
   margin: 0 auto;
   position: relative;
-  top: 30px
+  top: 60px;
 `;
 
 const StyledGobackButton = styled(MdArrowBack)`
@@ -238,7 +246,6 @@ const ProfileArea = styled.div`
 
 const Title = styled.div`
   font-weight: bold;
-  font-size: 16px;
   color: #fff;
   padding-top: 30px;
   display: flex;

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { SlMagnifier } from "react-icons/sl";
 import { MdOutlineCancel } from "react-icons/md";
 
+
 //test filter입니다. searchBox에 합치기?
 const Filter = ({ setCards, existCards, placeholder }) => {
   // console.log(existCards);
@@ -46,6 +47,7 @@ const SearchTotalBox = styled.div`
   display: flex;
   justify-content: center;
   margin: 25px 15px 25px 15px;
+  overflow-x:hidden ;
 `;
 
 const SearchStyleBox = styled.div`
@@ -53,9 +55,9 @@ const SearchStyleBox = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 95%;
-  background-color: #d9d9d948;
+  background-color: #E8E8E8;
   border: none;
-  border-radius: 13px;
+  border-radius: 20px;
   padding: 12px 15px 12px 15px;
   .SlMagnifier {
     font-size: 25px;
@@ -70,8 +72,9 @@ const SearchStyleBox = styled.div`
 `;
 
 const SearchStyle = styled.div`
-  width: 95%;
+  width: 100%;
   margin-left: 3%;
+  display: flex;
 `;
 
 const Searchinput = styled.input`
@@ -79,7 +82,7 @@ const Searchinput = styled.input`
   font-weight: bold;
   background-color: transparent;
   border: none;
-  width: 300px;
+  width: 100%;
 `;
 
 const ClearButton = styled.button`
