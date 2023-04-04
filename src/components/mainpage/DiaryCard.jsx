@@ -1,5 +1,4 @@
 import { purple } from "@nextui-org/react";
-import React from "react";
 import styled from "styled-components";
 
 const DiaryCard = ({ item, color }) => {
@@ -16,13 +15,23 @@ const DiaryCard = ({ item, color }) => {
     }
   };
   const colorCode = getColorCode(color);
+
+  const fitTitleLength = (target) => {
+    if (target.length < 8) {
+      return target;
+    } else {
+      return target.substr(0, 6) + "...";
+    }
+  };
+
   return (
-    <Card imgSrc={item?.img}>
+    <Card>
       <SideLabel colorCode={colorCode}></SideLabel>
-      <div>
-        <Title>{item?.title}</Title>
+      <InnerArea>
+        <Title>{fitTitleLength(item?.title)}</Title>
+        <ImgArea imgSrc={item?.img}></ImgArea>
         <CreatedAt>{item?.createdAt.split(" ")[0]}</CreatedAt>
-      </div>
+      </InnerArea>
     </Card>
   );
 };
@@ -30,12 +39,10 @@ const DiaryCard = ({ item, color }) => {
 export default DiaryCard;
 
 const Card = styled.div`
-  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url(${({ imgSrc }) => imgSrc});
-  color: #fff;
+  color: black;
   background-size: cover;
-  width: 120px;
-  height: 160px;
+  width: 135px;
+  height: 180px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 13px;
 `;
@@ -43,18 +50,33 @@ const Card = styled.div`
 const SideLabel = styled.div`
   background-color: ${({ colorCode }) => colorCode};
   width: 15px;
-  height: 160px;
+  height: 180px;
   border-radius: 13px 0 0 13px;
   position: absolute;
+`;
+
+const InnerArea = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const Title = styled.div`
   font-weight: 700;
   margin: 20px 0 20px 15px;
 `;
+
+const ImgArea = styled.div`
+  height: 100px;
+  width: 100px;
+  background-image: url(${({ imgSrc }) => imgSrc});
+  margin: 0 0 0 15px;
+`;
+
 const CreatedAt = styled.div`
   font-size: 10px;
   position: absolute;
-  bottom: 22px;
-  right: 20px;
+  bottom: 14px;
+  right: 14px;
 `;
