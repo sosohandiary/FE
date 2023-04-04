@@ -8,7 +8,6 @@ import { useParams } from "react-router-dom";
 import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
 
-
 const CommentBox = () => {
   const [showComments] = useState(true);
   const [comment, setComment] = useState({
@@ -17,7 +16,6 @@ const CommentBox = () => {
   const [editingComment, setEditingComment] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [test, setTest] = useState(null);
-
 
   const queryClient = useQueryClient();
   const { detailId } = useParams();
@@ -128,9 +126,6 @@ const CommentBox = () => {
                       </>
                     ) : (
                       <>
-                        {/* <Modal /> */}
-                        {/* <ModlaIcon onClick={() => setShowModal(true)} /> */}
-
                         <EditIcon onClick={() => onEditHandler(comment)} />
                         <DeleteIcon onClick={() => onDeleteHandler(comment.commentId)} />
                       </>
