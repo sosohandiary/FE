@@ -60,6 +60,7 @@ function Page() {
       const formData = new FormData();
       formData.append("img", file);
 
+
       const data = {
         title: title,
         diaryCondition: diaryCondition,
