@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled, { keyframes, css } from "styled-components";
+import styled from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
 import { RiPencilFill, RiDeleteBin6Fill, RiCheckFill, RiCloseFill } from "react-icons/ri";
 import { useQuery, useMutation, useQueryClient } from "react-query";
@@ -156,17 +156,6 @@ const CommentBox = () => {
 
 export default CommentBox;
 
-const CommetnslideUp = keyframes`
-  0% {
-    transform: translateY(60%);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-`;
-
 const CommentsContainer = styled.div`
   width: 375px;
   height: 600px;
@@ -180,11 +169,6 @@ const CommentsContainer = styled.div`
   overflow-y: auto;
   position: relative;
 
-  ${(props) =>
-    props.show &&
-    css`
-      animation: ${CommetnslideUp} 0.3s ease-out forwards;
-    `}
   h3 {
     text-align: center;
     line-height: 22px;
