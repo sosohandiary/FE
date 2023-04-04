@@ -140,6 +140,11 @@ const MainPage = () => {
     { id: 7 },
   ];
 
+  const onSlideChangeHandler = (swiperCore) => {
+    console.log(swiperCore.eventsListeners.resize);
+    swiperCore.eventsListeners.resize();
+  };
+
   return (
     <div style={{ marginBottom: "100px" }}>
       <WelcomeArea>
@@ -158,6 +163,8 @@ const MainPage = () => {
       <Label style={{ backgroundColor: "#e1e7fc" }}>내가 만든 다이어리</Label>
       <SelfmadeArea>
         <Swiper
+          watchSlidesProgress
+          centeredSlides={true}
           slidesPerView={3}
           spaceBetween={0}
           onSlideChange={(e) => setActiveIdxForSelfmade(e.activeIndex)}
