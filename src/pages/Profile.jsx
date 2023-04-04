@@ -1,12 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
 import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 
 import { getProfile, editProfile, deleteAccount } from "../api/mypage";
-import { HiPencil, HiOutlineXCircle } from "react-icons/hi";
+import { HiPencil, HiOutlineXCircle, HiOutlineExclamation } from "react-icons/hi";
+import { MdArrowBack } from "react-icons/md";
 import { MintButtonMedium } from "../styles/Buttons";
 import DeleteAccount from "../components/mypage/DeleteAccount";
-import { useNavigate } from "react-router-dom";
 
 function Profile() {
   const accessToken = localStorage.getItem("accessToken");
@@ -35,6 +36,13 @@ function Profile() {
 
   //image
   const onImgPostHandler = (event) => {
+    // const onImgPostHandler = useCallback((e) => {
+    //   if (e.target.files === null) return;
+    //   if (e.target.files[0]) {
+    //     setFile(e.target.files[0]);
+    //     setNewImage(URL.createObjectURL(e.target.files[0]));
+    //   }
+
     setNewImage([]);
     for (let i = 0; i < event.target.files.length; i++) {
       setFile(event.target.files[i]);
@@ -52,7 +60,8 @@ function Profile() {
       };
     }
 
-    setPreviewImg(true);
+    //   setPreviewImg(true);
+    // }, []);
   };
 
   //delete Mutation
@@ -86,16 +95,16 @@ function Profile() {
     deleteAccountMutate();
     localStorage.removeItem("accessToken");
     navigate("/login");
-    navigate("/login");
+  };
+
+  const navToBack = () => {
+    navigate("/mypage");
   };
 
   const data = {
     nickname: nickname,
     statusMessage: statusMessage,
   };
-
-  console.log(nickname);
-  console.log(statusMessage);
 
   const formData = new FormData();
 
@@ -111,21 +120,28 @@ function Profile() {
   return (
     <>
       <StLayout>
+        <StArrow>
+          <StyledGobackButton onClick={navToBack} />
+        </StArrow>
+
+        <Title size='18'>프로필 편집</Title>
+
         <ProfileLayout>
-          <Title>프로필 편집</Title>
-          <form encType="multipart/form-data" onSubmit={onSubmitHandler}>
+          <form encType='multipart/form-data' onSubmit={onSubmitHandler}>
             <ProfileArea>
               <StButton onClick={onImgButton}>
                 {previewImg ? (
-                  <img style={ProfileImg} src={newimage} alt="profile image" />
+                  <img style={ProfileImg} src={newimage} alt='profile image' />
                 ) : (
                   <img style={ProfileImg} src={profile?.profileImageUrl} alt="profile image" />
                 )}
               </StButton>
-              <EditPencilArea>
+
+              {/* <EditPencilArea>
                 <HiPencil />
-              </EditPencilArea>
+              </EditPencilArea> */}
             </ProfileArea>
+
             <input
               type="file"
               accept="image/*"
@@ -141,7 +157,7 @@ function Profile() {
                     type="text"
                     name="nickname"
                     placeholder={profile?.nickname}
-                    value={nickname}
+                    value={nickname || ""}
                     onChange={(e) => setNickname(e.target.value)}
                   />
                   <ClearButton disabled>
@@ -154,12 +170,15 @@ function Profile() {
                   name="statusMessage"
                   onChange={(e) => setStatusMessage(e.target.value)}
                   placeholder={profile?.statusMessage}
-                  value={statusMessage}
+                  value={statusMessage || ""}
                 />
               </Content>
-              <MintButtonMedium type="submit">저장</MintButtonMedium>
+
+              <StButtonContainer>
+                <MintButtonMedium type='submit'>저장</MintButtonMedium>
+              </StButtonContainer>
               <DeActivateBox>
-                <DeActivate onClick={handleOpenModal}>회원 탈퇴</DeActivate>
+                <DeActivate onClick={handleOpenModal}><HiOutlineExclamation/>회원 탈퇴</DeActivate>
               </DeActivateBox>
               <DeleteAccount
                 title="탈퇴하기"
@@ -181,6 +200,21 @@ const StLayout = styled.div`
   background-color: #524f4f;
 `;
 
+const StArrow = styled.div`
+  max-width: 720px;
+  margin: 0 auto;
+  position: relative;
+  top: 60px;
+`;
+
+const StyledGobackButton = styled(MdArrowBack)`
+  position: absolute;
+  /* padding-top: 50px; */
+  font-size: 40px;
+  color: #adaaaa;
+  cursor: pointer;
+`;
+
 const ProfileLayout = styled.div`
   max-width: 720px;
   margin: 0 auto;
@@ -189,8 +223,8 @@ const ProfileLayout = styled.div`
 const ProfileImg = {
   padding: "2px",
   borderRadius: "50%",
-  width: "80px",
-  height: "80px",
+  width: "120px",
+  height: "120px",
 };
 
 const ProfileArea = styled.div`
@@ -201,10 +235,10 @@ const ProfileArea = styled.div`
 
 const Title = styled.div`
   font-weight: bold;
-  font-size: 16px;
   color: #fff;
+  padding-top: 30px;
   display: flex;
-  padding: 10px;
+  justify-content: center;
 `;
 
 const EditPencilArea = styled.div`
@@ -249,7 +283,7 @@ const StInput = styled.input`
   height: 55px;
   width: 100%;
   outline: none;
-  border-radius: 8px;
+  border-radius: 20px;
   padding: 0 10px;
   font-size: 16px;
   border: 1px solid #eee;
@@ -260,7 +294,7 @@ const StTextarea = styled.textarea`
   height: 100px;
   border: 1px solid #eee;
   box-sizing: border-box;
-  border-radius: 8px;
+  border-radius: 20px;
   padding: 12px;
   font-size: 16px;
   margin-bottom: 20px;
@@ -289,16 +323,43 @@ const ClearButton = styled.button`
   cursor: pointer;
 `;
 
-const DeActivate = styled.button`
+const StButtonContainer = styled.div`
+  position: absolute;
+  
+  top: 450px;
+  right: 0;
+  /* bottom: 300px; */
+  left: 0;
   display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
+const DeActivate = styled.button`
   border: none;
   background: none;
   cursor: pointer;
+
+
+
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 `;
 
 const DeActivateBox = styled.div`
-  display: flex;
+  /* display: flex;
   align-items: flex-end;
-  justify-content: flex-end;
+  justify-content: flex-end; */
+
+  position: absolute;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  right: 40px;
+  top:550px;
 `;
