@@ -20,7 +20,7 @@ import Diary from "./main-layout/Diary";
 import MainLayout from "./main-layout/MainLayout";
 import Drawing from "./Drawing";
 import TestAnimation from "./TestAnimation";
-
+import Page from "./Page";
 const Router = () => {
   return (
     <BrowserRouter>
@@ -47,6 +47,7 @@ const Router = () => {
         <Route path="/acceptTest" element={<AcceptTest />} />
         <Route path="/diaries/:diaryId" element={<SubPage />} />
         <Route path="/test-animation" element={<TestAnimation />} />
+        <Route path="/diary/:diaryId" element={<Page />} />
       </Routes>
     </BrowserRouter>
   );
