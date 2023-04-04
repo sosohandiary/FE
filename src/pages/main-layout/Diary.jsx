@@ -3,10 +3,11 @@ import styled from "styled-components";
 import axios from "axios";
 import { VscBlank } from "react-icons/vsc";
 import defaultProfileImg from "../../assets/defaultProfileImg.jpeg";
+import { useNavigate } from "react-router-dom";
 
 const Diary = () => {
   const accessToken = window.localStorage.getItem("accessToken");
-
+  const navigate = useNavigate();
   const [file, setFile] = useState();
   const [title, setTitle] = useState("");
   const [previewImage, setPreviewImage] = useState(defaultProfileImg);
@@ -24,32 +25,36 @@ const Diary = () => {
     }
   }, []);
 
-  const handleClick = useCallback(async () => {
+  const handleClick = useCallback(() => {
     if (!file) return;
 
     const formData = new FormData();
-    await formData.append("img", file);
+    formData.append("img", file);
 
     const data = {
       title: title,
       diaryCondition: diaryCondition,
     };
-    // for spring server
-    await formData.append(
+    formData.append(
       "data",
       new Blob([JSON.stringify(data)], { type: "application/json" })
     );
 
-    const res = await axios.post(
-      `${process.env.REACT_APP_BASEURL}/diary`,
-      formData,
-      {
+    axios
+      .post(`${process.env.REACT_APP_BASEURL}/diary`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: accessToken,
         },
-      }
-    );
+      })
+      .then(() => {
+        alert("작성이 완료되었습니다.");
+        navigate(`/`);
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("오류가 발생했습니다. 다시 시도해주세요.");
+      });
   }, [file]);
 
   return (
