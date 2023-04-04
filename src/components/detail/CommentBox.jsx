@@ -281,9 +281,3 @@ const UpdateIcon = styled(RiCheckFill)`
   right: -60px;
   cursor: pointer;
 `;
-
-const ModlaIcon = styled(RiMore2Fill)`
-  position: absolute;
-  right: -40px;
-  cursor: pointer;
-`;
