@@ -25,7 +25,7 @@ const CommentBox = () => {
   const { data: commentData } = useQuery(["getComment"], () => getComment(detailId, accessToken));
   const mycomment = commentData?.data;
 
-  console.log("??", mycomment);
+  // console.log("??", mycomment);
 
   // <----Mutation----> //
 
@@ -114,7 +114,7 @@ const CommentBox = () => {
             return (
               <React.Fragment key={comment.commentId}>
                 <CommentStyle>
-                  <ProfilePicSmall profileImg={comment.commentProfileImageUrl} />
+                  <ProfilePicSmall src={comment.commentProfileImageUrl} />
                   <UserBox>
                     <span>{comment.commentName}</span>
                     <span>{createdAtAgo}</span>

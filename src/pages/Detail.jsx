@@ -43,7 +43,7 @@ function Detail() {
       <StyledGobackButton onClick={() => navigate(-1)} />
       {myDiary && (
         <StyledDerailPage>
-          <GetUser createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
+          <GetUser ProfileImg={myDiary.profileImageUrl} createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
           <WholeAreaWithMargin>
             <StyledDetailCardWrapper>
               <StyledDetailCard>
