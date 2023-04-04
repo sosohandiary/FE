@@ -159,7 +159,7 @@ const CommentsContainer = styled.div`
   width: 375px;
   height: 600px;
   border: none;
-  /* background-color: #f1f1f1; */
+  /* background-color: #ca9d9d; */
   /* border-radius: 30px 30px 0px 0px; */
   padding: 10px;
   margin-top: -25px;
@@ -175,6 +175,11 @@ const CommentsContainer = styled.div`
     font-weight: 700;
     font-size: 16px;
     line-height: 22px;
+  }
+
+  /* Add new styles */
+  & > div {
+    margin-bottom: 5px;
   }
 `;
 
@@ -192,16 +197,24 @@ const CommentInput = styled.input`
 
 const CommentStyle = styled.div`
   border: none;
-  width: 325px;
+  width: 360px;
   height: 55px;
   display: flex;
   align-items: center;
   margin-left: 10px;
   margin-top: 5px;
   margin-bottom: -3px;
-  /* background-color: #4a92d1; */
-`;
+  background-color: #4a92d1;
 
+  /* Add new styles */
+  & > img {
+    margin-right: 10px;
+  }
+
+  & > span:last-child {
+    flex: 1;
+  }
+`;
 const CommentText = styled.span`
   font-size: 14px;
   /* font-weight: 600; */
@@ -209,6 +222,8 @@ const CommentText = styled.span`
   display: block;
   white-space: pre-wrap;
   word-break: break-all;
+  background-color: #e4abab;
+  width: 360px;
 `;
 
 const UserBox = styled.div`
