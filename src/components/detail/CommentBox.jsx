@@ -1,19 +1,9 @@
 import React, { useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
-import {
-  RiPencilFill,
-  RiDeleteBin6Fill,
-  RiCheckFill,
-  RiCloseFill,
-} from "react-icons/ri";
+import { RiPencilFill, RiDeleteBin6Fill, RiCheckFill, RiCloseFill } from "react-icons/ri";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import {
-  addComment,
-  getComment,
-  deleteComment,
-  updatedComment,
-} from "../../api/detail";
+import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
 import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
@@ -32,34 +22,28 @@ const CommentBox = () => {
   const accessToken = localStorage.getItem("accessToken");
 
   // get
-  const { data: commentData } = useQuery(["getComment"], () =>
-    getComment(detailId, accessToken)
-  );
+  const { data: commentData } = useQuery(["getComment"], () => getComment(detailId, accessToken));
   const mycomment = commentData?.data;
+
+  // console.log("??", mycomment);
 
   // <----Mutation----> //
 
   //add
-  const { mutate: addmutation } = useMutation(
-    () => addComment(detailId, comment, accessToken),
-    {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries("getComment");
-        queryClient.invalidateQueries("getDiary");
-      },
-    }
-  );
+  const { mutate: addmutation } = useMutation(() => addComment(detailId, comment, accessToken), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("getComment");
+      queryClient.invalidateQueries("getDiary");
+    },
+  });
 
   //delete
-  const { mutate: deleteCommentMutate } = useMutation(
-    (commentId) => deleteComment(detailId, commentId, accessToken),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("getComment");
-        queryClient.invalidateQueries("getDiary");
-      },
-    }
-  );
+  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(detailId, commentId, accessToken), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("getComment");
+      queryClient.invalidateQueries("getDiary");
+    },
+  });
 
   //edit
   const { mutate: updatedCommentMutate } = useMutation(
@@ -130,15 +114,14 @@ const CommentBox = () => {
             return (
               <React.Fragment key={comment.commentId}>
                 <CommentStyle>
-                  <ProfilePicSmall src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAyMTVfMTA5%2FMDAxNjc2NDMyNzA5NDIy.Di4Jca6bfg9LaSOaeeO3vwdHwRqMVt-14xV2Xat4raUg.xwfQrSJhrS0WuJUuaAdEalXb_Z1BEEOKx_my1FHX9d0g.JPEG.qmfosej%2FIMG_9285.jpg&type=a340" />
+                  <ProfilePicSmall src={comment.commentProfileImageUrl} />
                   <UserBox>
                     <span>{comment.commentName}</span>
                     <span>{createdAtAgo}</span>
                   </UserBox>
 
                   <IconStyle>
-                    {isEditing &&
-                    editingComment.commentId === comment.commentId ? (
+                    {isEditing && editingComment.commentId === comment.commentId ? (
                       <>
                         <CancelIcon onClick={onCancelEditHandler} />
                         <UpdateIcon onClick={onUpdateHandler} />
@@ -146,9 +129,7 @@ const CommentBox = () => {
                     ) : (
                       <>
                         <EditIcon onClick={() => onEditHandler(comment)} />
-                        <DeleteIcon
-                          onClick={() => onDeleteHandler(comment.commentId)}
-                        />
+                        <DeleteIcon onClick={() => onDeleteHandler(comment.commentId)} />
                       </>
                     )}
                   </IconStyle>

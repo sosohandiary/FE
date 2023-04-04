@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
 import GetTimeAgo from "../GetTimeAgo";
 
-const GetUser = ({ nickname, createdAt }) => {
+const GetUser = ({ nickname, createdAt, ProfileImg }) => {
   const createdAtAgo = <GetTimeAgo createdAt={createdAt} />;
   return (
     <>
       <StyledUserBox>
-        <ProfilePicSmall src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAyMTVfMTA5%2FMDAxNjc2NDMyNzA5NDIy.Di4Jca6bfg9LaSOaeeO3vwdHwRqMVt-14xV2Xat4raUg.xwfQrSJhrS0WuJUuaAdEalXb_Z1BEEOKx_my1FHX9d0g.JPEG.qmfosej%2FIMG_9285.jpg&type=a340" />
+        <ProfilePicSmall src={ProfileImg} />
 
         <span>{nickname}</span>
         <span>{createdAtAgo}</span>
