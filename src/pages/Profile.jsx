@@ -1,12 +1,13 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 
 import { getProfile, editProfile, deleteAccount } from "../api/mypage";
 import { HiPencil, HiOutlineXCircle } from "react-icons/hi";
+import { MdArrowBack } from "react-icons/md";
 import { MintButtonMedium } from "../styles/Buttons";
 import DeleteAccount from "../components/mypage/DeleteAccount";
-import { useNavigate } from "react-router-dom";
 
 function Profile() {
   const accessToken = localStorage.getItem("accessToken");
@@ -94,13 +95,14 @@ function Profile() {
     navigate("/login");
   };
 
+  const navToBack = () => {
+    navigate(-1);
+  };
+
   const data = {
     nickname: nickname,
     statusMessage: statusMessage,
   };
-
-  console.log(nickname);
-  console.log(statusMessage);
 
   const formData = new FormData();
 
@@ -119,17 +121,18 @@ function Profile() {
   return (
     <>
       <StLayout>
+        <StArrow>
+          <StyledGobackButton onClick={navToBack} />
+        </StArrow>
+
+        <Title size='18'>프로필 편집</Title>
+
         <ProfileLayout>
-          <Title>프로필 편집</Title>
           <form encType='multipart/form-data' onSubmit={onSubmitHandler}>
             <ProfileArea>
               <StButton onClick={onImgButton}>
                 {previewImg ? (
-                  <img
-                    style={ProfileImg}
-                    src={newimage}
-                    alt='profile image'
-                  />
+                  <img style={ProfileImg} src={newimage} alt='profile image' />
                 ) : (
                   <img
                     style={ProfileImg}
@@ -138,10 +141,12 @@ function Profile() {
                   />
                 )}
               </StButton>
-              <EditPencilArea>
+
+              {/* <EditPencilArea>
                 <HiPencil />
-              </EditPencilArea>
+              </EditPencilArea> */}
             </ProfileArea>
+
             <input
               type='file'
               accept='image/*'
@@ -173,6 +178,7 @@ function Profile() {
                   value={statusMessage}
                 />
               </Content>
+
               <MintButtonMedium type='submit'>저장</MintButtonMedium>
               <DeActivateBox>
                 <DeActivate onClick={handleOpenModal}>회원 탈퇴</DeActivate>
@@ -197,6 +203,21 @@ const StLayout = styled.div`
   background-color: #524f4f;
 `;
 
+const StArrow = styled.div`
+  max-width: 720px;
+  margin: 0 auto;
+  position: relative;
+  top: 30px
+`;
+
+const StyledGobackButton = styled(MdArrowBack)`
+  position: absolute;
+  /* padding-top: 50px; */
+  font-size: 40px;
+  color: #adaaaa;
+  cursor: pointer;
+`;
+
 const ProfileLayout = styled.div`
   max-width: 720px;
   margin: 0 auto;
@@ -219,8 +240,9 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 16px;
   color: #fff;
+  padding-top: 30px;
   display: flex;
-  padding: 10px;
+  justify-content: center;
 `;
 
 const EditPencilArea = styled.div`
