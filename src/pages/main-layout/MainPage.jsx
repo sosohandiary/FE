@@ -27,13 +27,14 @@ const MainPage = () => {
   }, []);
 
   // 로그인 유저 정보
-  const { data: dataOfUserInfo } = useQuery(["getUserInfo"], () => {
+  const { data: dataOfUserInfo, isSuccess } = useQuery(["getUserInfo"], () => {
     return axios.get(`${process.env.REACT_APP_BASEURL}/mypage/profile`, {
       headers: { Authorization: accessToken },
     });
   });
-  const { nickname: curNickname, profileImageUrl: curProfileImageUrl } =
-    dataOfUserInfo?.data;
+
+  const curNickname = dataOfUserInfo?.data.nickname;
+  const curProfileImageUrl = dataOfUserInfo?.data.profileImageUrl;
 
   //무한스크롤
 
@@ -139,6 +140,11 @@ const MainPage = () => {
     { id: 7 },
   ];
 
+  const onSlideChangeHandler = (swiperCore) => {
+    console.log(swiperCore.eventsListeners.resize);
+    swiperCore.eventsListeners.resize();
+  };
+
   return (
     <div style={{ marginBottom: "100px" }}>
       <WelcomeArea>
@@ -147,21 +153,27 @@ const MainPage = () => {
           <br />
           {curNickname}님!
         </div>
-        <CurProfileImage url={curProfileImageUrl}></CurProfileImage>
+        <CurProfileImage
+          url={curProfileImageUrl}
+          onClick={() => {
+            navigate("/mypage");
+          }}
+        ></CurProfileImage>
       </WelcomeArea>
       <Label style={{ backgroundColor: "#e1e7fc" }}>내가 만든 다이어리</Label>
       <SelfmadeArea>
         <Swiper
+          watchSlidesProgress
+          centeredSlides={true}
           slidesPerView={3}
           spaceBetween={0}
           onSlideChange={(e) => setActiveIdxForSelfmade(e.activeIndex)}
           className="mySwiper"
         >
           {dataList.map((item) => (
-            <SwiperSlide>
+            <SwiperSlide key={item.id}>
               <DiaryCardTopBig
                 color="purple"
-                key={item.id}
                 idx={item.id}
                 activeIdxForSelfmade={activeIdxForSelfmade}
               >
@@ -236,16 +248,7 @@ const MainPage = () => {
         </SwiperArea>
         <Label>공개 다이어리</Label>
         <SwiperArea>
-          <Swiper
-            slidesPerView={"auto"}
-            spaceBetween={20}
-            pagination={{
-              clickable: true,
-              dynamicBullets: true,
-            }}
-            modules={[Pagination]}
-            className="mySwiper"
-          >
+          <Swiper slidesPerView={"auto"} spaceBetween={20} className="mySwiper">
             {dataListForPublic.length == 0 ? (
               <SwiperSlide style={{ width: "300px", backgroundColor: "red" }}>
                 데이터가 없습니다.
@@ -304,7 +307,7 @@ const CurProfileImage = styled.div`
   width: 50px;
   border-radius: 50%;
   position: relative;
-  top: 30px;
+  top: 50px;
   background-image: url(${({ url }) => url});
   background-size: 200% 200%;
   background-position: center;

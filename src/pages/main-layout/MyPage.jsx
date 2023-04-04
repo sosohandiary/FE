@@ -51,9 +51,9 @@ function MyPage() {
   };
 
   const navToModifyCover = (diaryId, index) => {
-    navigate(`/diary`, {
+    console.log("TARGET", mypage[index]);
+    navigate(`/diary/${diaryId}`, {
       state: {
-        id: diaryId,
         data: mypage[index],
       },
     });
