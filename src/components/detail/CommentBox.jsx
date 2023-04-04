@@ -201,11 +201,14 @@ const CommentStyle = styled.div`
   margin-bottom: -3px;
   /* background-color: #4a92d1; */
 `;
+
 const CommentText = styled.span`
   font-size: 14px;
   /* font-weight: 600; */
   margin-left: 10px;
   display: block;
+  white-space: pre-wrap;
+  word-break: break-all;
 `;
 
 const UserBox = styled.div`
