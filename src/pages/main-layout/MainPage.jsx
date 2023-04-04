@@ -140,11 +140,6 @@ const MainPage = () => {
     { id: 7 },
   ];
 
-  const onSlideChangeHandler = (swiperCore) => {
-    console.log(swiperCore.eventsListeners.resize);
-    swiperCore.eventsListeners.resize();
-  };
-
   return (
     <div style={{ marginBottom: "100px" }}>
       <WelcomeArea>
