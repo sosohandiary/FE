@@ -159,7 +159,7 @@ const CommentsContainer = styled.div`
   width: 375px;
   height: 600px;
   border: none;
-  background-color: #d17878;
+  /* background-color: #f1f1f1; */
   /* border-radius: 30px 30px 0px 0px; */
   padding: 10px;
   margin-top: -25px;
@@ -192,14 +192,14 @@ const CommentInput = styled.input`
 
 const CommentStyle = styled.div`
   border: none;
-  width: 355px;
+  width: 325px;
   height: 55px;
   display: flex;
   align-items: center;
   margin-left: 10px;
   margin-top: 5px;
   margin-bottom: -3px;
-  background-color: #4a92d1;
+  /* background-color: #4a92d1; */
 `;
 const CommentText = styled.span`
   font-size: 14px;
