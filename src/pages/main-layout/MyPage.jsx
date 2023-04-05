@@ -80,7 +80,7 @@ function MyPage() {
   };
   return (
     <>
-      <WholeViewWidth>
+      <WholeViewWidth style={{overflow:"hidden"}}>
         <StArrow>
           <StyledGobackButton onClick={navToBack} />
         </StArrow>
