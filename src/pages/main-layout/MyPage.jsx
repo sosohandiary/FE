@@ -248,7 +248,7 @@ const EachMenuBox = styled.div`
 const DiaryCards = styled.div`
   border-radius: 23px;
   width: 90%;
-  max-width: 600px;
+  max-width: 720px;
   padding: 30px;
   position: relative;
 
@@ -273,6 +273,10 @@ const ThumbnailBox = styled.div`
 
   box-sizing: border-box;
   border-radius: 18px;
+
+  @media (max-width: 390px) {
+    top: 25px;
+  }
 `;
 
 const ThumbnailImg = styled.img`
@@ -302,8 +306,9 @@ const StTextBox = styled.div`
   display: ${({ display }) => `${display}`};
   gap: 10px;
 
-  @media (max-width: 380px) {
+  @media (max-width: 390px) {
     flex-direction: column;
+    gap: 0px;
   }
 `;
 
@@ -331,6 +336,10 @@ const ConfirmButton = styled.button`
   border: none;
 
   cursor: pointer;
+
+  @media (max-width: 390px) {
+    top: 50px;
+  }
 `;
 
 const StLogout = styled.div`
