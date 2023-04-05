@@ -43,3 +43,25 @@ const TestAnimation = () => {
 };
 
 export default TestAnimation;
+
+const WholeLine = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+`;
+
+const OuterLine = styled.div`
+  position: relative;
+  width: 100vw;
+  height: 100%;
+  background-color: #e5e5e5;
+  transition: 0.5s;
+  transition-timing-function: ease;
+`;
+
+const InnerLine = styled.div`
+  position: absolute;
+  right: 50px;
+  z-index: ${({ isOpen }) => (isOpen === true ? 1 : -1)};
+`;

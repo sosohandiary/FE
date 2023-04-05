@@ -4,6 +4,7 @@ import TitleBox from "../../components/TitleBox";
 import { useQuery } from "react-query";
 import axios from "axios";
 import AlarmList from "../../components/notification/AlarmList";
+import AlarmList from "../../components/notification/AlarmList";
 
 const Notification = () => {
   const accessToken = window.localStorage.getItem("accessToken");

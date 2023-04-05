@@ -59,12 +59,13 @@ function Page() {
 
       const formData = new FormData();
       formData.append("img", file);
-      formData.append("title", title);
 
-      // const data = {
-      //   title: title,
-      // };
-      // formData.append("data", JSON.stringify(data));
+
+      const data = {
+        title: title,
+        diaryCondition: diaryCondition,
+      };
+      formData.append("data", JSON.stringify(data));
 
       try {
         const res = await axios.patch(
