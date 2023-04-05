@@ -7,6 +7,7 @@ import {
   TrailingActions,
 } from "react-swipeable-list";
 import "react-swipeable-list/dist/styles.css";
+import styled from "styled-components";
 
 const TestAnimation = () => {
   const leadingActions = () => (
