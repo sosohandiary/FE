@@ -1,3 +1,6 @@
 {
-  "recommendations": ["jonkwheeler.styled-components-snippets"]
+  "recommendations": [
+    "jonkwheeler.styled-components-snippets",
+    "danielsanmedium.dscodegpt"
+  ]
 }

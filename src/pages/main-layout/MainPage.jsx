@@ -62,9 +62,12 @@ const MainPage = () => {
   useEffect(() => {
     setIsLoadingForSelfMadePrivate(true);
     axios
-      .get(`${process.env.REACT_APP_BASEURL}/private`, {
-        headers: { Authorization: accessToken },
-      })
+      .get(
+        `${process.env.REACT_APP_BASEURL}/public?page=${publicPage}&size=5`,
+        {
+          headers: { Authorization: accessToken },
+        }
+      )
       .then((res) => {
         setIsLoadingForSelfMadePrivate(false);
         setDataListForSelfMadePrivate(res.data);
@@ -121,10 +124,6 @@ const MainPage = () => {
     }
   }, [inViewForPublic]);
 
-  const { userNickname: curUserNickname } = useSelector(
-    (state) => state.currentUserInfoSlice
-  );
-
   const goToDiaryDetail = (id) => {
     navigate(`/diaries/${id}`);
   };
@@ -165,7 +164,7 @@ const MainPage = () => {
           onSlideChange={(e) => setActiveIdxForSelfmade(e.activeIndex)}
           className="mySwiper"
         >
-          {dataList.map((item) => (
+          {dataList?.map((item) => (
             <SwiperSlide key={item.id}>
               <DiaryCardTopBig
                 color="purple"
