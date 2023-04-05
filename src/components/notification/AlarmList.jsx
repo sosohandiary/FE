@@ -11,6 +11,7 @@ import {
 import "react-swipeable-list/dist/styles.css";
 import AlarmReadCard from "./AlarmReadCard";
 import styled from "styled-components";
+import AlarmUnReadCard from "./AlarmUnReadCard";
 
 const handleReject = () => {
   console.log("reject");
@@ -19,12 +20,14 @@ const handleDelete = () => {
   console.log("delete");
 };
 
-const AlarmList = () => {
+const AlarmList = ({ item, alarmType }) => {
   const trailingActions = () => (
     <TrailingActions>
-      <SwipeAction onClick={handleReject}>Reject</SwipeAction>
+      <SwipeAction onClick={handleReject}>
+        <ActionContent>수락하기</ActionContent>
+      </SwipeAction>
       <SwipeAction destructive={true} onClick={handleDelete}>
-        <Button>Delete</Button>
+        <Button color="red">삭제하기</Button>
       </SwipeAction>
     </TrailingActions>
   );
@@ -33,7 +36,11 @@ const AlarmList = () => {
     <>
       <SwipeableList threshold={0.5} type={ListType.IOS}>
         <SwipeableListItem trailingActions={trailingActions()}>
-          <AlarmReadCard />
+          {item?.alarm === false ? (
+            <AlarmUnReadCard item={item} alarmType={alarmType} />
+          ) : (
+            <AlarmReadCard item={item} alarmType={alarmType} />
+          )}
         </SwipeableListItem>
       </SwipeableList>
     </>
@@ -42,7 +49,24 @@ const AlarmList = () => {
 
 export default AlarmList;
 
+const ActionContent = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  box-sizing: border-box;
+  color: #eee;
+  user-select: none;
+  background-color: blue;
+`;
 const Button = styled.div`
-  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70px;
+  height: 100%;
+  background-color: ${({ color }) => (color === "red" ? "red" : "blue")};
   vertical-align: center;
 `;
