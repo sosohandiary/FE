@@ -66,6 +66,7 @@ const MainPage = () => {
         headers: { Authorization: accessToken },
       })
       .then((res) => {
+        console.log(res);
         setIsLoadingForSelfMadePrivate(false);
         setDataListForSelfMadePrivate(res.data);
       })
@@ -121,10 +122,6 @@ const MainPage = () => {
     }
   }, [inViewForPublic]);
 
-  const { userNickname: curUserNickname } = useSelector(
-    (state) => state.currentUserInfoSlice
-  );
-
   const goToDiaryDetail = (id) => {
     navigate(`/diaries/${id}`);
   };
@@ -165,7 +162,7 @@ const MainPage = () => {
           onSlideChange={(e) => setActiveIdxForSelfmade(e.activeIndex)}
           className="mySwiper"
         >
-          {dataList.map((item) => (
+          {dataList?.map((item) => (
             <SwiperSlide key={item.id}>
               <DiaryCardTopBig
                 color="purple"
