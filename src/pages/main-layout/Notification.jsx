@@ -1,11 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import Navigationbar from "../../components/Navigationbar";
-import AlarmUnReadCard from "../../components/AlarmUnReadCard";
-import AlarmReadCard from "../../components/AlarmReadCard";
 import TitleBox from "../../components/TitleBox";
 import { useQuery } from "react-query";
 import axios from "axios";
+import AlarmList from "../../components/notification/AlarmList";
 
 const Notification = () => {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -20,12 +18,7 @@ const Notification = () => {
       <TitleBox />
 
       <AlarmBox>
-        {dataForFriendRequest?.data.map((item, i) => (
-          <AlarmUnReadCard key={i} item={item} alarmSort="friendRequest" />
-        ))}
-        <AlarmUnReadCard />
-        <AlarmReadCard />
-        <AlarmReadCard />
+        <AlarmList />
       </AlarmBox>
     </>
   );

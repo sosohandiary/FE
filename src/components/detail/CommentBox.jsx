@@ -1,12 +1,33 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
-import { RiPencilFill, RiDeleteBin6Fill, RiCheckFill, RiCloseFill } from "react-icons/ri";
+import {
+  RiPencilFill,
+  RiDeleteBin6Fill,
+  RiCheckFill,
+  RiCloseFill,
+} from "react-icons/ri";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
+import {
+  addComment,
+  getComment,
+  deleteComment,
+  updatedComment,
+} from "../../api/detail";
 import { useParams } from "react-router-dom";
 import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
+
+import {
+  LeadingActions,
+  SwipeableList,
+  SwipeableListItem,
+  SwipeAction,
+  TrailingActions,
+  Type as ListType,
+} from "react-swipeable-list";
+import "react-swipeable-list/dist/styles.css";
+import AlarmReadCard from "../notification/AlarmReadCard";
 
 const CommentBox = () => {
   const [comment, setComment] = useState({
@@ -21,7 +42,9 @@ const CommentBox = () => {
   const accessToken = localStorage.getItem("accessToken");
 
   // get
-  const { data: commentData } = useQuery(["getComment"], () => getComment(detailId, accessToken));
+  const { data: commentData } = useQuery(["getComment"], () =>
+    getComment(detailId, accessToken)
+  );
   const mycomment = commentData?.data;
 
   // console.log("??", mycomment);
@@ -29,20 +52,26 @@ const CommentBox = () => {
   // <----Mutation----> //
 
   //add
-  const { mutate: addmutation } = useMutation(() => addComment(detailId, comment, accessToken), {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries("getComment");
-      queryClient.invalidateQueries("getDiary");
-    },
-  });
+  const { mutate: addmutation } = useMutation(
+    () => addComment(detailId, comment, accessToken),
+    {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries("getComment");
+        queryClient.invalidateQueries("getDiary");
+      },
+    }
+  );
 
   //delete
-  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(detailId, commentId, accessToken), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("getComment");
-      queryClient.invalidateQueries("getDiary");
-    },
-  });
+  const { mutate: deleteCommentMutate } = useMutation(
+    (commentId) => deleteComment(detailId, commentId, accessToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("getComment");
+        queryClient.invalidateQueries("getDiary");
+      },
+    }
+  );
 
   //edit
   const { mutate: updatedCommentMutate } = useMutation(
@@ -102,41 +131,70 @@ const CommentBox = () => {
     setComment({ comment: "" });
   };
 
+  //스와이프 테스트
+  const handleReject = () => {
+    console.log("Reject 누름");
+  };
+  const handleDelete = () => {
+    console.log("Delete 누름");
+    console.log("Delete 누르면 사라집니다. -> destructive={true} 옵션");
+  };
+  const trailingActions = () => (
+    <TrailingActions>
+      <SwipeAction onClick={handleReject}>Reject</SwipeAction>
+      <SwipeAction destructive={true} onClick={handleDelete}>
+        Delete
+      </SwipeAction>
+    </TrailingActions>
+  );
+
   return (
     <div>
       <WholeAreaWithMargin>
         <CommentsContainer>
           <h3>댓글</h3>
 
-          {mycomment?.map((comment) => {
-            const createdAtAgo = <GetTimeAgo createdAt={comment.createdAt} />;
-            return (
-              <React.Fragment key={comment.commentId}>
-                <CommentStyle>
-                  <ProfilePicSmall src={comment.commentProfileImageUrl} />
-                  <UserBox>
-                    <span>{comment.commentName}</span>
-                    <span>{createdAtAgo}</span>
-                  </UserBox>
-
-                  <IconStyle>
-                    {isEditing && editingComment.commentId === comment.commentId ? (
-                      <>
-                        <CancelIcon onClick={onCancelEditHandler} />
-                        <UpdateIcon onClick={onUpdateHandler} />
-                      </>
-                    ) : (
-                      <>
-                        <EditIcon onClick={() => onEditHandler(comment)} />
-                        <DeleteIcon onClick={() => onDeleteHandler(comment.commentId)} />
-                      </>
-                    )}
-                  </IconStyle>
-                </CommentStyle>
-                <CommentText>{comment.comment}</CommentText>
-              </React.Fragment>
-            );
-          })}
+          <SwipeableList threshold={0.5} type={ListType.IOS}>
+            {mycomment?.map((comment) => {
+              const createdAtAgo = <GetTimeAgo createdAt={comment.createdAt} />;
+              return (
+                <SwipeableListItem trailingActions={trailingActions()}>
+                  <React.Fragment key={comment.commentId}>
+                    <div>
+                      <CommentStyle>
+                        <ProfilePicSmall src={comment.commentProfileImageUrl} />
+                        <UserBox>
+                          <span>{comment.commentName}</span>
+                          <span>{createdAtAgo}</span>
+                        </UserBox>
+                        <IconStyle>
+                          {isEditing &&
+                          editingComment.commentId === comment.commentId ? (
+                            <>
+                              <CancelIcon onClick={onCancelEditHandler} />
+                              <UpdateIcon onClick={onUpdateHandler} />
+                            </>
+                          ) : (
+                            <>
+                              <EditIcon
+                                onClick={() => onEditHandler(comment)}
+                              />
+                              <DeleteIcon
+                                onClick={() =>
+                                  onDeleteHandler(comment.commentId)
+                                }
+                              />
+                            </>
+                          )}
+                        </IconStyle>
+                      </CommentStyle>
+                      <CommentText>{comment.comment}</CommentText>
+                    </div>
+                  </React.Fragment>
+                </SwipeableListItem>
+              );
+            })}
+          </SwipeableList>
         </CommentsContainer>
       </WholeAreaWithMargin>
 
