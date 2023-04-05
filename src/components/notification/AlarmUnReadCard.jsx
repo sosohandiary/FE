@@ -19,6 +19,11 @@ const AlarmUnReadCard = ({ alarmType, item }) => {
           title: "다이어리에 초대되었습니다.",
           desc: `${item.nickname}님의 다이어리`,
         };
+      case "comment":
+        return {
+          title: "내 다이어리에 댓글이 달렸습니다.",
+          desc: `${item.commentName}님이 댓글을 작성하였습니다.`,
+        };
       default:
         return "다이어리에 초대되었습니다.";
     }
@@ -35,8 +40,6 @@ const AlarmUnReadCard = ({ alarmType, item }) => {
       );
     }
   );
-
-  console.log("item", item.alarm);
 
   return (
     <AlarmArea alarm={item?.alarm}>
