@@ -31,8 +31,6 @@ const MyFriends = () => {
     getFriendsCount(accessToken)
   );
 
-  console.log(friendsCount);
-
   const queryClient = useQueryClient();
   //friend-id 넣어주기
   const { mutate: deleteFriendMutate } = useMutation(
@@ -47,7 +45,6 @@ const MyFriends = () => {
 
   const friends = myFriends?.data;
 
-  console.log(friends);
   useEffect(() => {
     setSearchFriends(friends);
   }, [friends]);
@@ -62,7 +59,7 @@ const MyFriends = () => {
 
   return (
     <>
-      <WholeViewWidth>
+      <WholeViewWidth style={{overflow:"hidden"}}>
         <StArrow>
           <StyledGobackButton onClick={navToBack} />
         </StArrow>

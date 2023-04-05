@@ -69,7 +69,7 @@ function Profile() {
       };
     }
 
-    //   setPreviewImg(true);
+      setPreviewImg(true);
     // }, []);
   };
 
@@ -78,7 +78,6 @@ function Profile() {
     deleteAccount(accessToken)
   );
 
-  console.log(profileData?.data);
   const profile = profileData?.data;
 
   const fileInput = useRef();
