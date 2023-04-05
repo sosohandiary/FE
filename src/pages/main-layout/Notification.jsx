@@ -21,11 +21,15 @@ const Notification = () => {
     });
   });
 
+  const { data: dataForCommentAlarm } = useQuery(["getCommentAlarm"], () => {
+    return axios.get(`${process.env.REACT_APP_BASEURL}/comment/alarm`, {
+      headers: { Authorization: accessToken },
+    });
+  });
+
   const dataListForFriendRequset = dataForFriendRequest?.data;
   const dataListForInviteAlarm = dataForInviteAlarm?.data;
-
-  console.log(dataListForFriendRequset);
-  console.log(dataListForInviteAlarm);
+  const dataListForCommentAlarm = dataForCommentAlarm?.data;
 
   return (
     <>
@@ -37,6 +41,9 @@ const Notification = () => {
         ))}
         {dataListForInviteAlarm?.map((item, i) => (
           <AlarmList key={i} alarmType="invite" item={item} />
+        ))}
+        {dataListForCommentAlarm?.map((item, i) => (
+          <AlarmList key={i} alarmType="comment" item={item} />
         ))}
         <AlarmList />
       </AlarmBox>
