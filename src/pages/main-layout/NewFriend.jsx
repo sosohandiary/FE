@@ -14,6 +14,7 @@ const NewFriend = () => {
   const [list, setList] = useState([]);
   const [friendStatus, setFriendStatus] = useState("");
   const [userId, setUserId] = useState(null);
+  const [requested, setRequested] = useState(false);
 
   //프로필 get 해오기!!!
 
@@ -66,6 +67,7 @@ const NewFriend = () => {
       )
       .then((res) => {
         console.log(res);
+        setRequested(true);
       })
       .catch((err) => console.log(err));
   };
@@ -91,13 +93,13 @@ const NewFriend = () => {
             <ListBox>
               <ProfilePicSmall src={item.profileImageUrl} />
               <ListContentBox>
-                <StText fontWeight='bold'>{item.nickname}</StText>
+                <StText fontWeight='bold'>{item.name}</StText>
                 <StText>{item.statusMessage}</StText>
               </ListContentBox>
             </ListBox>
 
             <ButtonBox>
-              {friendStatus !== "ACCEPTED" && userId != item.memberId && (
+              {friendStatus !== "ACCEPTED" && userId != item.memberId && friendStatus !== "PENDING" && (!requested) && (
                 <AddButton
                   onClick={() => {
                     addFriend(item.memberId);

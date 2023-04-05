@@ -65,7 +65,7 @@ const SearchStyleBox = styled.div`
 `;
 
 const SearchStyle = styled.div`
-  width: 95%;
+  width: 100%;
   margin-left: 3%;
   display: flex;
 `;

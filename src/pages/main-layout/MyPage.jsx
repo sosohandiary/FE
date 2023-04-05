@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import styled from "styled-components";
@@ -18,9 +18,18 @@ import Navigationbar from "../../components/Navigationbar";
 
 function MyPage() {
   const accessToken = localStorage.getItem("accessToken");
+  const [dataStatus, setDataStatus] = useState(true);
 
-  const { data: myPageData } = useQuery(["getMypage"], () =>
-    getMypage(accessToken)
+  const { data: myPageData } = useQuery(
+    ["getMypage"],
+    () => getMypage(accessToken),
+    {
+      onSuccess: (data) => {
+        if (data && data.data.length < 1) {
+          setDataStatus(false);
+        }
+      },
+    }
   );
 
   const { data: profileData } = useQuery(["getProfile"], () =>
@@ -71,7 +80,7 @@ function MyPage() {
   };
   return (
     <>
-      <WholeViewWidth style={{ margin: "30px auto", maxWidth: "600px" }}>
+      <WholeViewWidth>
         <StArrow>
           <StyledGobackButton onClick={navToBack} />
         </StArrow>
@@ -82,78 +91,86 @@ function MyPage() {
 
         <Title size='22'>{profile?.nickname}</Title>
 
-        <FlexContainer justifyContent='flex-end'>
-          <NavButton onClick={navToProfile}>
-            <Label size='16' margin='10'>
-              프로필 편집
-            </Label>
-          </NavButton>
-        </FlexContainer>
-
-        <FlexContainer justifyContent='center'>
-          <MenuBox>
-            <EachMenuBox boderRight='1px solid'>
-              <NavButton onClick={navToFriendsList}>
-                <LabelSpan size='18'>친구</LabelSpan>
-                <Label size='20' fontWeight='bold' color='#858585'>
-                  {friendsCount?.data?.myFriendCount}
-                </Label>
-              </NavButton>
-            </EachMenuBox>
-            <EachMenuBox>
-              <LabelSpan size='18'>다이어리</LabelSpan>
-              <Label size='20' fontWeight='bold' color='#858585'>
-                {diaryCount?.data?.myDiaryCount}
+        <Container>
+          <FlexContainer justifyContent='flex-end'>
+            <NavButton onClick={navToProfile}>
+              <Label size='16'>
+                프로필 편집
               </Label>
-            </EachMenuBox>
-          </MenuBox>
-        </FlexContainer>
+            </NavButton>
+          </FlexContainer>
 
-        <Label size='18' margin='10'>
-          내 다이어리
-        </Label>
-
-        {mypage?.map((item, index) => {
-          return (
-            <FlexContainer justifyContent='center' key={item.id}>
-              <DiaryCards>
-                <ThumbnailBox>
-                  <ThumbnailImg src={item.img} />
-                </ThumbnailBox>
-                <StTextBox display='flex'>
-                  {item.title === "" ? (
-                    <StText fontWeight='bold' size='18' color='#C2C3C5'>
-                      제목 없음
-                    </StText>
-                  ) : (
-                    <StText fontWeight='bold' size='18'>
-                      {/* {item.title.length > 10 ? item.title.slice(0, 10) + '...' : item.title} */}
-                      {item.title}
-                    </StText>
-                  )}
-                  {item.diaryCondition === "PUBLIC" ? (
-                    <Public size='16'>공유 다이어리</Public>
-                  ) : (
-                    <StText>다이어리</StText>
-                  )}
-                </StTextBox>
-                <StTextBox>
-                  <Label size='16' color='#B0B0B0'>
-                    개설일: {getDate(item.createdAt)}{" "}
+          <FlexContainer justifyContent='center'>
+            <MenuBox>
+              <EachMenuBox boderRight='1px solid'>
+                <NavButton onClick={navToFriendsList}>
+                  <LabelSpan size='18'>친구</LabelSpan>
+                  <Label size='20' fontWeight='bold' color='#858585'>
+                    {friendsCount?.data?.myFriendCount}
                   </Label>
-                </StTextBox>
+                </NavButton>
+              </EachMenuBox>
+              <EachMenuBox>
+                <LabelSpan size='18'>다이어리</LabelSpan>
+                <Label size='20' fontWeight='bold' color='#858585'>
+                  {diaryCount?.data?.myDiaryCount}
+                </Label>
+              </EachMenuBox>
+            </MenuBox>
+          </FlexContainer>
 
-                <ConfirmButton onClick={() => navToModifyCover(item.id, index)}>
-                  <IoIosArrowForward size={28} color='#A1B2FA' />
-                </ConfirmButton>
-              </DiaryCards>
-            </FlexContainer>
-          );
-        })}
+          <Label size='18' margin='16' fontWeight='bold'>
+            내 다이어리
+          </Label>
 
-        <StLogout>
-          <LougoutBtn onClick={LogoutHandler}>로그아웃</LougoutBtn>
-        </StLogout>
+          {dataStatus ? (
+            mypage?.map((item, index) => {
+              return (
+                <FlexContainer justifyContent='center' key={item.id}>
+                  <DiaryCards>
+                    <ThumbnailBox>
+                      <ThumbnailImg src={item.img} />
+                    </ThumbnailBox>
+                    <StTextBox display='flex'>
+                      {item.title === "" ? (
+                        <StText fontWeight='bold' size='18' color='#C2C3C5'>
+                          제목 없음
+                        </StText>
+                      ) : (
+                        <StText fontWeight='bold' size='18'>
+                          {/* {item.title.length > 10 ? item.title.slice(0, 10) + '...' : item.title} */}
+                          {item.title}
+                        </StText>
+                      )}
+                      {item.diaryCondition === "PUBLIC" ? (
+                        <Public size='16'>공유 다이어리</Public>
+                      ) : (
+                        <StText>다이어리</StText>
+                      )}
+                    </StTextBox>
+                    <StTextBox>
+                      <Label size='16' color='#B0B0B0'>
+                        개설일: {getDate(item.createdAt)}{" "}
+                      </Label>
+                    </StTextBox>
+
+                    <ConfirmButton
+                      onClick={() => navToModifyCover(item.id, index)}
+                    >
+                      <IoIosArrowForward size={28} color='#A1B2FA' />
+                    </ConfirmButton>
+                  </DiaryCards>
+                </FlexContainer>
+              );
+            })
+          ) : (
+            <StEmptyBox>다이어리가 없습니다.</StEmptyBox>
+          )}
+
+          <StLogout>
+            <LougoutBtn onClick={LogoutHandler}>로그아웃</LougoutBtn>
+          </StLogout>
+        </Container>
 
         <Navigationbar />
       </WholeViewWidth>
@@ -164,10 +181,9 @@ function MyPage() {
 export default MyPage;
 
 const StArrow = styled.div`
-  max-width: 720px;
   margin: 0 auto;
   position: relative;
-  left: 0;
+  left: 16px;
   top: 30px;
 `;
 
@@ -184,8 +200,9 @@ const Title = styled.div`
   font-size: ${({ size }) => `${size}px`};
   color: black;
 
+  padding-top: 30px;
+  margin-bottom: 17px;
   display: flex;
-  padding: 10px;
   justify-content: center;
 `;
 
@@ -195,6 +212,7 @@ const Label = styled.div`
   font-weight: ${(props) => props.fontWeight};
   margin: ${({ margin }) => `${margin}px`};
   margin-left: ${({ marginLeft }) => `${marginLeft}px`};
+  margin-right: ${({ marginRight }) => `${marginRight}px`};
   align-self: ${({ alignSelf }) => alignSelf};
 `;
 
@@ -260,7 +278,7 @@ const DiaryCards = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  @media (min-width: 425px) {
+  @media (max-width: 425px) {
     text-overflow: clip;
     white-space: normal;
   }
@@ -306,7 +324,7 @@ const StTextBox = styled.div`
   display: ${({ display }) => `${display}`};
   gap: 10px;
 
-  @media (max-width: 390px) {
+  @media (max-width: 425px) {
     flex-direction: column;
     gap: 0px;
   }
@@ -351,7 +369,21 @@ const StLogout = styled.div`
   padding-bottom: 80px;
 `;
 
+const StEmptyBox = styled.div`
+  padding: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`;
+
 const LougoutBtn = styled.button`
   border: none;
   background: none;
+  margin-right: 24px;
+`;
+
+const Container = styled.div`
+  max-width: 720px;
+  margin: 0 auto;
 `;
