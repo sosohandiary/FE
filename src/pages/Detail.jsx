@@ -14,6 +14,7 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getDiary } from "../api/detail";
 import Spinner from "../styles/Spinner";
+import CommentImage from "../assets//comment.png";
 
 function Detail() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function Detail() {
 
   const myDiary = diaryData?.data;
 
-  console.log(myDiary);
+  // console.log(myDiary);
 
   useEffect(() => {
     sheetRef.current.click();
@@ -61,7 +62,8 @@ function Detail() {
           open={open}
           header={
             <DetailElement>
-              <CommentIcon />
+              {/* <CommentIcon /> */}
+              <img src={CommentImage} alt="코멘트 아이콘" width="28" height="28" style={{ marginRight: "5px" }} />
               {myDiary.commentCount}
               <Like diaryData={myDiary} />
               {myDiary.likeCount}

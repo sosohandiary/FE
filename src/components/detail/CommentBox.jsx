@@ -1,19 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
-import {
-  RiPencilFill,
-  RiDeleteBin6Fill,
-  RiCheckFill,
-  RiCloseFill,
-} from "react-icons/ri";
+import { RiPencilFill, RiDeleteBin6Fill, RiCheckFill, RiCloseFill } from "react-icons/ri";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import {
-  addComment,
-  getComment,
-  deleteComment,
-  updatedComment,
-} from "../../api/detail";
+import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
 import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
@@ -33,6 +23,8 @@ const CommentBox = () => {
   const [comment, setComment] = useState({
     comment: "",
   });
+
+  const [swipeOpen, setSwipeOpen] = useState(false);
   const [editingComment, setEditingComment] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [test, setTest] = useState(null);
@@ -42,9 +34,7 @@ const CommentBox = () => {
   const accessToken = localStorage.getItem("accessToken");
 
   // get
-  const { data: commentData } = useQuery(["getComment"], () =>
-    getComment(detailId, accessToken)
-  );
+  const { data: commentData } = useQuery(["getComment"], () => getComment(detailId, accessToken));
   const mycomment = commentData?.data;
 
   // console.log("??", mycomment);
@@ -52,26 +42,20 @@ const CommentBox = () => {
   // <----Mutation----> //
 
   //add
-  const { mutate: addmutation } = useMutation(
-    () => addComment(detailId, comment, accessToken),
-    {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries("getComment");
-        queryClient.invalidateQueries("getDiary");
-      },
-    }
-  );
+  const { mutate: addmutation } = useMutation(() => addComment(detailId, comment, accessToken), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("getComment");
+      queryClient.invalidateQueries("getDiary");
+    },
+  });
 
   //delete
-  const { mutate: deleteCommentMutate } = useMutation(
-    (commentId) => deleteComment(detailId, commentId, accessToken),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("getComment");
-        queryClient.invalidateQueries("getDiary");
-      },
-    }
-  );
+  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(detailId, commentId, accessToken), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("getComment");
+      queryClient.invalidateQueries("getDiary");
+    },
+  });
 
   //edit
   const { mutate: updatedCommentMutate } = useMutation(
@@ -129,22 +113,30 @@ const CommentBox = () => {
     setIsEditing(false);
     setEditingComment(null);
     setComment({ comment: "" });
+    setSwipeOpen(false);
   };
 
-  //스와이프 테스트
-  const handleReject = () => {
-    console.log("Reject 누름");
-  };
-  const handleDelete = () => {
-    console.log("Delete 누름");
-    console.log("Delete 누르면 사라집니다. -> destructive={true} 옵션");
-  };
-  const trailingActions = () => (
+  const trailingActions = (comment) => (
     <TrailingActions>
-      <SwipeAction onClick={handleReject}>Reject</SwipeAction>
-      <SwipeAction destructive={true} onClick={handleDelete}>
-        Delete
-      </SwipeAction>
+      {isEditing && editingComment.commentId === comment.commentId ? (
+        <>
+          <IconWrapper onClick={onUpdateHandler}>
+            <CheckIconStyled />
+          </IconWrapper>
+          <IconWrapper onClick={onCancelEditHandler}>
+            <CloseIconStyled />
+          </IconWrapper>
+        </>
+      ) : (
+        <>
+          <IconWrapper onClick={() => onEditHandler(comment)}>
+            <EditIconStyled />
+          </IconWrapper>
+          <IconWrapper onClick={() => onDeleteHandler(comment.commentId)}>
+            <DeleteIconStyled />
+          </IconWrapper>
+        </>
+      )}
     </TrailingActions>
   );
 
@@ -154,11 +146,16 @@ const CommentBox = () => {
         <CommentsContainer>
           <h3>댓글</h3>
 
-          <SwipeableList threshold={0.5} type={ListType.IOS}>
+          <SwipeableList threshold={0.5} type={ListType.IOS} disableSwipe={isEditing}>
             {mycomment?.map((comment) => {
               const createdAtAgo = <GetTimeAgo createdAt={comment.createdAt} />;
               return (
-                <SwipeableListItem trailingActions={trailingActions()}>
+                <SwipeableListItem
+                  key={comment.commentId}
+                  trailingActions={trailingActions(comment)}
+                  onSwipeOpen={() => setSwipeOpen(true)}
+                  onSwipeClose={() => setSwipeOpen(false)}
+                >
                   <React.Fragment key={comment.commentId}>
                     <div>
                       <CommentStyle>
@@ -167,26 +164,6 @@ const CommentBox = () => {
                           <span>{comment.commentName}</span>
                           <span>{createdAtAgo}</span>
                         </UserBox>
-                        <IconStyle>
-                          {isEditing &&
-                          editingComment.commentId === comment.commentId ? (
-                            <>
-                              <CancelIcon onClick={onCancelEditHandler} />
-                              <UpdateIcon onClick={onUpdateHandler} />
-                            </>
-                          ) : (
-                            <>
-                              <EditIcon
-                                onClick={() => onEditHandler(comment)}
-                              />
-                              <DeleteIcon
-                                onClick={() =>
-                                  onDeleteHandler(comment.commentId)
-                                }
-                              />
-                            </>
-                          )}
-                        </IconStyle>
                       </CommentStyle>
                       <CommentText>{comment.comment}</CommentText>
                     </div>
@@ -213,12 +190,41 @@ const CommentBox = () => {
 
 export default CommentBox;
 
+const IconWrapper = styled.span`
+  cursor: pointer;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+`;
+
+const EditIconStyled = styled(RiPencilFill)`
+  font-size: 20px;
+  margin-right: 5px;
+  color: #87b1e7;
+`;
+
+const DeleteIconStyled = styled(RiDeleteBin6Fill)`
+  font-size: 20px;
+  margin-right: 5px;
+  color: #f35b5b;
+`;
+
+const CloseIconStyled = styled(RiCloseFill)`
+  font-size: 25px;
+  margin-right: 5px;
+  color: #f35b5b;
+`;
+
+const CheckIconStyled = styled(RiCheckFill)`
+  font-size: 25px;
+  margin-right: 5px;
+  color: #87b1e7;
+`;
+
 const CommentsContainer = styled.div`
   width: 375px;
   height: 600px;
   border: none;
-  /* background-color: #ca9d9d; */
-  /* border-radius: 30px 30px 0px 0px; */
   padding: 10px;
   margin-top: -25px;
   margin-bottom: -25px;
@@ -262,7 +268,7 @@ const CommentStyle = styled.div`
   margin-left: 10px;
   margin-top: 5px;
   margin-bottom: -3px;
-  background-color: #4a92d1;
+  /* background-color: #4a92d1; */
 
   /* Add new styles */
   & > img {
@@ -280,7 +286,7 @@ const CommentText = styled.span`
   display: block;
   white-space: pre-wrap;
   word-break: break-all;
-  background-color: #e4abab;
+  /* background-color: #e4abab; */
   width: 360px;
 `;
 
@@ -307,37 +313,4 @@ const UserBox = styled.div`
       color: gray;
     }
   }
-`;
-
-const IconStyle = styled.div`
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  width: 118px;
-  height: 40px;
-  color: #a5a2a2;
-`;
-
-const EditIcon = styled(RiPencilFill)`
-  position: absolute;
-  right: -60px;
-  cursor: pointer;
-`;
-
-const DeleteIcon = styled(RiDeleteBin6Fill)`
-  position: absolute;
-  right: -80px;
-  cursor: pointer;
-`;
-
-const CancelIcon = styled(RiCloseFill)`
-  position: absolute;
-  right: -80px;
-  cursor: pointer;
-`;
-
-const UpdateIcon = styled(RiCheckFill)`
-  position: absolute;
-  right: -60px;
-  cursor: pointer;
 `;
