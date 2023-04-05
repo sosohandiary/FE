@@ -120,11 +120,11 @@ const CommentBox = () => {
     <TrailingActions>
       {isEditing && editingComment.commentId === comment.commentId ? (
         <>
-          <IconWrapper onClick={onCancelEditHandler}>
-            <CloseIconStyled />
-          </IconWrapper>
           <IconWrapper onClick={onUpdateHandler}>
             <CheckIconStyled />
+          </IconWrapper>
+          <IconWrapper onClick={onCancelEditHandler}>
+            <CloseIconStyled />
           </IconWrapper>
         </>
       ) : (
@@ -200,11 +200,13 @@ const IconWrapper = styled.span`
 const EditIconStyled = styled(RiPencilFill)`
   font-size: 20px;
   margin-right: 5px;
+  color: #87b1e7;
 `;
 
 const DeleteIconStyled = styled(RiDeleteBin6Fill)`
   font-size: 20px;
   margin-right: 5px;
+  color: #f35b5b;
 `;
 
 const CloseIconStyled = styled(RiCloseFill)`
