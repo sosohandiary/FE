@@ -48,7 +48,8 @@ const Card = styled.div`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 13px;
 
-  transition: 0.5s;
+  transition: 0.1s;
+  transition-timing-function: cubic-bezier(0.2, 0.4, 0.78, 1);
   background-color: #e3d7d7;
 
   height: ${({ idx, activeIdxForSelfmade }) =>
@@ -71,7 +72,9 @@ const Card = styled.div`
 `;
 
 const SideLabel = styled.div`
-  transition: 0.5s;
+  transition: 0.1s;
+  transition-timing-function: cubic-bezier(0.2, 0.4, 0.78, 1);
+
   background-color: ${({ colorCode }) => colorCode};
   width: 15px;
   height: ${({ idx, activeIdxForSelfmade }) =>
