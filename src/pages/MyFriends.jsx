@@ -62,7 +62,7 @@ const MyFriends = () => {
 
   return (
     <>
-      <WholeViewWidth style={{ margin: "30px auto", maxWidth: "720px" }}>
+      <WholeViewWidth style={{ margin: "24px auto", maxWidth: "720px" }}>
         <StArrow>
           <StyledGobackButton onClick={navToBack} />
         </StArrow>
