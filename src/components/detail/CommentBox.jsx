@@ -1,19 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
-import {
-  RiPencilFill,
-  RiDeleteBin6Fill,
-  RiCheckFill,
-  RiCloseFill,
-} from "react-icons/ri";
+import { RiPencilFill, RiDeleteBin6Fill, RiCheckFill, RiCloseFill } from "react-icons/ri";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import {
-  addComment,
-  getComment,
-  deleteComment,
-  updatedComment,
-} from "../../api/detail";
+import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
 import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
@@ -42,9 +32,7 @@ const CommentBox = () => {
   const accessToken = localStorage.getItem("accessToken");
 
   // get
-  const { data: commentData } = useQuery(["getComment"], () =>
-    getComment(detailId, accessToken)
-  );
+  const { data: commentData } = useQuery(["getComment"], () => getComment(detailId, accessToken));
   const mycomment = commentData?.data;
 
   // console.log("??", mycomment);
@@ -52,26 +40,20 @@ const CommentBox = () => {
   // <----Mutation----> //
 
   //add
-  const { mutate: addmutation } = useMutation(
-    () => addComment(detailId, comment, accessToken),
-    {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries("getComment");
-        queryClient.invalidateQueries("getDiary");
-      },
-    }
-  );
+  const { mutate: addmutation } = useMutation(() => addComment(detailId, comment, accessToken), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("getComment");
+      queryClient.invalidateQueries("getDiary");
+    },
+  });
 
   //delete
-  const { mutate: deleteCommentMutate } = useMutation(
-    (commentId) => deleteComment(detailId, commentId, accessToken),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("getComment");
-        queryClient.invalidateQueries("getDiary");
-      },
-    }
-  );
+  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(detailId, commentId, accessToken), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("getComment");
+      queryClient.invalidateQueries("getDiary");
+    },
+  });
 
   //edit
   const { mutate: updatedCommentMutate } = useMutation(
@@ -139,12 +121,17 @@ const CommentBox = () => {
     console.log("Delete 누름");
     console.log("Delete 누르면 사라집니다. -> destructive={true} 옵션");
   };
-  const trailingActions = () => (
+
+  const trailingActions = (comment) => (
     <TrailingActions>
-      <SwipeAction onClick={handleReject}>Reject</SwipeAction>
-      <SwipeAction destructive={true} onClick={handleDelete}>
-        Delete
-      </SwipeAction>
+      <IconWrapper onClick={() => onEditHandler(comment)}>
+        <EditIconStyled>&#9998;</EditIconStyled>
+        <span>Edit</span>
+      </IconWrapper>
+      <IconWrapper onClick={() => onDeleteHandler(comment.commentId)}>
+        <DeleteIconStyled>&#10006;</DeleteIconStyled>
+        <span>Delete</span>
+      </IconWrapper>
     </TrailingActions>
   );
 
@@ -168,22 +155,15 @@ const CommentBox = () => {
                           <span>{createdAtAgo}</span>
                         </UserBox>
                         <IconStyle>
-                          {isEditing &&
-                          editingComment.commentId === comment.commentId ? (
+                          {isEditing && editingComment.commentId === comment.commentId ? (
                             <>
                               <CancelIcon onClick={onCancelEditHandler} />
                               <UpdateIcon onClick={onUpdateHandler} />
                             </>
                           ) : (
                             <>
-                              <EditIcon
-                                onClick={() => onEditHandler(comment)}
-                              />
-                              <DeleteIcon
-                                onClick={() =>
-                                  onDeleteHandler(comment.commentId)
-                                }
-                              />
+                              <EditIcon onClick={() => onEditHandler(comment)} />
+                              <DeleteIcon onClick={() => onDeleteHandler(comment.commentId)} />
                             </>
                           )}
                         </IconStyle>
@@ -212,6 +192,22 @@ const CommentBox = () => {
 };
 
 export default CommentBox;
+
+const IconWrapper = styled.span`
+  cursor: pointer;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+`;
+const EditIconStyled = styled(RiPencilFill)`
+  font-size: 20px;
+  margin-right: 5px;
+`;
+
+const DeleteIconStyled = styled(RiDeleteBin6Fill)`
+  font-size: 20px;
+  margin-right: 5px;
+`;
 
 const CommentsContainer = styled.div`
   width: 375px;
