@@ -62,7 +62,7 @@ const MyFriends = () => {
 
   return (
     <>
-      <WholeViewWidth style={{ margin: "30px auto", maxWidth: "720px" }}>
+      <WholeViewWidth>
         <StArrow>
           <StyledGobackButton onClick={navToBack} />
         </StArrow>
@@ -98,7 +98,7 @@ const MyFriends = () => {
 
                         <DeleteButton
                           onClick={() => {
-                            onDeleteHandler();
+                            onDeleteHandler(item.friendListId);
                           }}
                         >
                           삭제
@@ -119,10 +119,10 @@ const MyFriends = () => {
 export default MyFriends;
 
 const StArrow = styled.div`
-  max-width: 720px;
   margin: 0 auto;
   position: relative;
   top: 30px;
+  left: 16px;
 `;
 
 const StyledGobackButton = styled(MdArrowBack)`
@@ -135,6 +135,7 @@ const StyledGobackButton = styled(MdArrowBack)`
 
 const Title = styled.div`
   font-weight: bold;
+  font-size: ${({ size }) => `${size}px`};
   padding-top: 30px;
   margin-bottom: 50px;
   display: flex;
@@ -146,7 +147,7 @@ const Label = styled.div`
   font-size: ${({ size }) => `${size}px`};
   display: block;
   font-weight: ${(props) => props.fontWeight};
-  margin: 10px;
+  margin: 0 24px 5px 24px;
 
   display: flex;
   align-self: ${({ alignSelf }) => alignSelf};
@@ -157,6 +158,7 @@ const ListCards = styled.div`
   align-self: flex-start;
 
   /* padding: 10px; */
+  margin: 0 24px 0 24px;
 `;
 
 const ListContentBox = styled.div`
@@ -192,7 +194,9 @@ const Item = ({ children }) => {
     if (x - downX < -30) {
       ref.current.style.transform = "translate(-55px)";
       setTimeout(() => {
-        if (ref.current){ref.current.style.transform = "translate(0px)";}
+        if (ref.current) {
+          ref.current.style.transform = "translate(0px)";
+        }
       }, 4000);
     } else {
       ref.current.style.transform = "translate(0px)";
