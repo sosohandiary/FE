@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+import debounce from "lodash.debounce";
 
 import { ProfilePicSmall } from "../../components/ProfilePics";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +11,6 @@ import { WholeViewWidth } from "../../styles/WholeAreaStyle";
 
 const NewFriend = () => {
   const accessToken = window.localStorage.getItem("accessToken");
-  const [friendName, setFriendName] = useState("");
   const [list, setList] = useState([]);
   const [friendStatus, setFriendStatus] = useState("");
   const [userId, setUserId] = useState(null);
@@ -33,20 +33,30 @@ const NewFriend = () => {
     getProfile();
   }, []);
 
-  const findFriend = () => {
-    axios
-      .get(`${process.env.REACT_APP_BASEURL}/search?name=${friendName}`, {
-        headers: { Authorization: accessToken },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setList(res.data);
-      })
-      .catch((err) => console.log(err));
+  const findFriend = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_BASEURL}/search?name=${inputRef.current}`,
+        {
+          headers: { Authorization: accessToken },
+        }
+      );
+      console.log(res.data);
+      setList(res.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
+  let inputRef = useRef();
+
   const onChangeInput = (e) => {
-    setFriendName(e.target.value);
+    inputRef.current = e.target.value;
+    if (inputRef.current.trim() == '') {
+      setList([]);
+    } else {
+      findFriend();
+    }
   };
 
   const handleKeyDown = (event) => {
@@ -87,6 +97,7 @@ const NewFriend = () => {
           placeholder='아이디를 검색해 친구를 추가해보세요'
           onChangeInput={onChangeInput}
           onKeyPress={handleKeyDown}
+          // value={inputRef}
         />
         {list?.map((item) => (
           <ListCards key={item.memberId}>
@@ -99,15 +110,20 @@ const NewFriend = () => {
             </ListBox>
 
             <ButtonBox>
-              {friendStatus !== "ACCEPTED" && userId != item.memberId && friendStatus !== "PENDING" && (!requested) && (
-                <AddButton
-                  onClick={() => {
-                    addFriend(item.memberId);
-                  }}
-                >
-                  <StText color="#9A9A9A" fontWeight='700'>추가하기 +</StText>
-                </AddButton>
-              )}
+              {friendStatus !== "ACCEPTED" &&
+                userId != item.memberId &&
+                friendStatus !== "PENDING" &&
+                !requested && (
+                  <AddButton
+                    onClick={() => {
+                      addFriend(item.memberId);
+                    }}
+                  >
+                    <StText color='#9A9A9A' fontWeight='700'>
+                      추가하기 +
+                    </StText>
+                  </AddButton>
+                )}
             </ButtonBox>
           </ListCards>
         ))}
@@ -131,8 +147,6 @@ const ListBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-
 `;
 
 const ListContentBox = styled.div`
@@ -149,18 +163,15 @@ const StText = styled.div`
   color: ${(props) => props.color};
 `;
 
-const ButtonBox = styled.div`
-
-`;
+const ButtonBox = styled.div``;
 
 const AddButton = styled.button`
-
   height: 25px;
-  width:  87px;
+  width: 87px;
   border: none;
   border-radius: 20px;
   text-align: center;
-  background: #E3E3E3;
+  background: #e3e3e3;
 
   cursor: pointer;
 `;

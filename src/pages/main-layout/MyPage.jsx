@@ -48,7 +48,6 @@ function MyPage() {
   const profile = profileData?.data;
 
   console.log(mypage);
-
   const navigate = useNavigate();
 
   const navToProfile = () => {
@@ -67,7 +66,6 @@ function MyPage() {
       },
     });
   };
-  console.log(mypage);
 
   const navToBack = () => {
     navigate(-1);
