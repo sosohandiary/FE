@@ -16,6 +16,15 @@ import {
 import "draft-js/dist/Draft.css";
 import { useParams } from "react-router-dom";
 import RightSideSlider from "../components/test-component/RightSideSlider";
+import BottomSlider from "../components/test-component/BottomSlider";
+import { Global } from "@emotion/react";
+import CssBaseline from "@mui/material/CssBaseline";
+import { grey } from "@mui/material/colors";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
+import Typography from "@mui/material/Typography";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 
 // <---------------스티커 크기 조절----------------->
 const ImageSticker = ({
@@ -134,12 +143,10 @@ const ImageSticker = ({
 
 // <---------------------------------------->
 
-const Drawing = () => {
+const TestAnimation = () => {
   const [mode, setMode] = useState("TEXT");
   const [lineTool, setLineTool] = useState("pen");
   const [lines, setLines] = useState([]);
-  const [lineColor, setLineColor] = useState("#df4b26");
-  const [lineWidth, setLineWidth] = useState(5);
   const isDrawing = useRef(false);
   const { diaryid, paperid } = useParams();
 
@@ -246,100 +253,51 @@ const Drawing = () => {
   // 텍스트 - Draft관련
   const TEXT_EDITOR_ITEM = "draft-js-example-item";
 
-  const Draft = () => {
-    const accessToken = localStorage.getItem("accessToken");
-    const data = localStorage.getItem(TEXT_EDITOR_ITEM);
-    const initialState = data
-      ? EditorState.createWithContent(convertFromRaw(JSON.parse(data)))
-      : EditorState.createEmpty();
-    const [editorState, setEditorState] = useState(initialState);
+  const data = localStorage.getItem(TEXT_EDITOR_ITEM);
+  const initialState = data
+    ? EditorState.createWithContent(convertFromRaw(JSON.parse(data)))
+    : EditorState.createEmpty();
+  const [editorState, setEditorState] = useState(initialState);
 
-    const handleKeyCommand = (command) => {
-      const newState = RichUtils.handleKeyCommand(editorState, command);
-      if (newState) {
-        setEditorState(newState);
-        return "handled";
-      }
-      return "not-handled";
+  const handleKeyCommand = (command) => {
+    const newState = RichUtils.handleKeyCommand(editorState, command);
+    if (newState) {
+      setEditorState(newState);
+      return "handled";
+    }
+    return "not-handled";
+  };
+
+  const handleTogggleClick = (inlineStyle) => {
+    setEditorState(RichUtils.toggleInlineStyle(editorState, inlineStyle));
+  };
+
+  const handleSave = () => {
+    const data = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+    localStorage.setItem(TEXT_EDITOR_ITEM, data);
+
+    const allData = {
+      stickers,
+      lines,
+      texts: convertToRaw(editorState.getCurrentContent()),
     };
 
-    const handleTogggleClick = (e, inlineStyle) => {
-      e.preventDefault();
-      setEditorState(RichUtils.toggleInlineStyle(editorState, inlineStyle));
-    };
+    const allJSON = JSON.stringify(allData);
 
-    // 저장 버튼 !!!!
-    const handleSave = () => {
-      const data = JSON.stringify(
-        convertToRaw(editorState.getCurrentContent())
-      );
-      localStorage.setItem(TEXT_EDITOR_ITEM, data);
+    const sendData = { thumbnail: "", customJson: allJSON };
 
-      const allData = {
-        stickers,
-        lines,
-        texts: convertToRaw(editorState.getCurrentContent()),
-      };
-
-      const allJSON = JSON.stringify(allData);
-
-      const sendData = { thumbnail: "", customJson: allJSON };
-
-      axios
-        .patch(
-          `${process.env.REACT_APP_BASEURL}/diary/${diaryid}/detail/${paperid}`,
-          sendData,
-          {
-            headers: { Authorization: accessToken },
-          }
-        )
-        .then((res) => {
-          console.log("res : ", res);
-        })
-        .catch((err) => console.log(err));
-    };
-
-    return (
-      <div className="texteditor">
-        <button onMouseDown={(e) => handleTogggleClick(e, "BOLD")}>bold</button>
-        <button onMouseDown={(e) => handleTogggleClick(e, "UNDERLINE")}>
-          underline
-        </button>
-        <button onMouseDown={(e) => handleTogggleClick(e, "ITALIC")}>
-          italic
-        </button>
-        <button onMouseDown={(e) => handleTogggleClick(e, "STRIKETHROUGH")}>
-          strikthrough
-        </button>
-        <button
-          disabled={editorState.getUndoStack().size <= 0}
-          onMouseDown={() => setEditorState(EditorState.undo(editorState))}
-        >
-          UNDO
-        </button>
-        <button
-          disabled={editorState.getRedoStack().size <= 0}
-          onMouseDown={() => setEditorState(EditorState.redo(editorState))}
-        >
-          REDO
-        </button>
-        <Editor
-          editorState={editorState}
-          onChange={setEditorState}
-          handleKeyCommand={handleKeyCommand}
-        />
-        <button
-          className="save"
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            handleSave();
-          }}
-        >
-          save
-        </button>
-      </div>
-    );
+    axios
+      .patch(
+        `${process.env.REACT_APP_BASEURL}/diary/${diaryid}/detail/${paperid}`,
+        sendData,
+        {
+          headers: { Authorization: accessToken },
+        }
+      )
+      .then((res) => {
+        console.log("res : ", res);
+      })
+      .catch((err) => console.log(err));
   };
 
   const changeColorHandler = (target) => {
@@ -393,14 +351,42 @@ const Drawing = () => {
     );
   };
 
+  //툴바 관련
+  const [isOpenAllToolbar, setIsOpenAllToolbar] = useState(true);
+  const [isOpenTextToolbar, setIsOpenTextToolbar] = useState(false);
+  const [isOpenDrawToolbar, setIsOpenDrawToolbar] = useState(false);
+  const [isOpenStickerToolbar, setIsOpenStickerToolbar] = useState(false);
+
+  const [lineColor, setLineColor] = useState("#e74b24");
+  const [lineWidth, setLineWidth] = useState(5);
+
+  const touchAllToolbarButtonHandler = (props) => {
+    switch (props) {
+      case "TEXT":
+        setIsOpenTextToolbar(true);
+        setMode("TEXT");
+        return;
+      case "DRAW":
+        setIsOpenAllToolbar(false);
+        setIsOpenDrawToolbar(true);
+        setMode("DRAW");
+        return;
+      case "STICKER":
+        setIsOpenAllToolbar(false);
+        setIsOpenStickerToolbar(true);
+        setMode("STICKER");
+        return;
+      default:
+        return;
+    }
+  };
+
   // 도화지
   return (
     <WholeAreaWithMargin>
       <Toolbar />
       <BackgroundStyle></BackgroundStyle>
-      <TextAreaStyle mode={mode}>
-        <Draft />
-      </TextAreaStyle>
+      <TextAreaStyle mode={mode}></TextAreaStyle>
       <Stage
         width={window.innerWidth}
         height={window.innerHeight}
@@ -450,14 +436,93 @@ const Drawing = () => {
           })}
         </Layer>
       </Stage>
-      <div style={{ zIndex: 100 }}>
-        <RightSideSlider />
-      </div>
+      <Editor
+        editorState={editorState}
+        onChange={setEditorState}
+        handleKeyCommand={handleKeyCommand}
+      />
+      <AllToolbarStyle isOpenAllToolbar={isOpenAllToolbar}>
+        <ToolButton onClick={() => touchAllToolbarButtonHandler("TEXT")}>
+          Text
+        </ToolButton>
+        <ToolButton onClick={() => touchAllToolbarButtonHandler("DRAW")}>
+          Draw
+        </ToolButton>
+        <ToolButton onClick={() => touchAllToolbarButtonHandler("STICKER")}>
+          Sticker
+        </ToolButton>
+        <ToolButton onClick={() => touchAllToolbarButtonHandler()}>
+          Paper
+        </ToolButton>
+      </AllToolbarStyle>
+
+      <TextToolbarStyle isOpenTextToolbar={isOpenTextToolbar}>
+        <ToolButton
+          onMouseDown={() => {
+            setIsOpenTextToolbar(false);
+            setMode("TEXT");
+          }}
+        >
+          BAC
+        </ToolButton>
+        <ToolButton onMouseDown={() => handleTogggleClick("UNDERLINE")}>
+          UND
+        </ToolButton>
+        <ToolButton onMouseDown={() => handleTogggleClick("STRIKETHROUGH")}>
+          STR
+        </ToolButton>
+        <ToolButton onMouseDown={() => handleTogggleClick("ITALIC")}>
+          ITA
+        </ToolButton>
+        <ToolButton onMouseDown={() => handleTogggleClick("BOLD")}>
+          BOL
+        </ToolButton>
+      </TextToolbarStyle>
+
+      <DrawToolbarStyle isOpenDrawToolbar={isOpenDrawToolbar}>
+        <ToolButton
+          onClick={() => {
+            setIsOpenDrawToolbar(false);
+            setIsOpenAllToolbar(true);
+            setMode("TEXT");
+          }}
+        >
+          BACK
+        </ToolButton>
+        <ToolButton
+          onMouseDown={() => {
+            setLineColor("red");
+          }}
+        >
+          RED
+        </ToolButton>
+        <ToolButton
+          onMouseDown={() => {
+            setLineColor("blue");
+          }}
+        >
+          BLUE
+        </ToolButton>
+      </DrawToolbarStyle>
+
+      <StickerToolbarStyle isOpenStickerToolbar={isOpenStickerToolbar}>
+        <div
+          onMouseDown={() => {
+            setIsOpenStickerToolbar(false);
+            setIsOpenAllToolbar(true);
+          }}
+        >
+          Back
+        </div>
+        <div onClick={() => addStickerButtonHandler(0)}>1번 스티커 추가</div>
+        <div onClick={() => addStickerButtonHandler(1)}>2번 스티커 추가</div>
+        <div onClick={() => addStickerButtonHandler(2)}>3번 스티커 추가</div>
+      </StickerToolbarStyle>
     </WholeAreaWithMargin>
   );
 };
 
-export default Drawing;
+export default TestAnimation;
 
 const BackgroundStyle = styled.div`
   position: absolute;
@@ -472,4 +537,71 @@ const TextAreaStyle = styled.div`
   top: 120px;
   width: 100%;
   z-index: ${({ mode }) => (mode === "TEXT" ? 1 : -1)};
+`;
+
+const AllToolbarStyle = styled.div`
+  transition: 0.3s;
+  transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
+  position: absolute;
+  right: ${({ isOpenAllToolbar }) => (isOpenAllToolbar === true ? 0 : "-60px")};
+  top: 40vh;
+  background-color: #eeeeee;
+  width: 70px;
+  height: 200px;
+  border-radius: 25px 0 0 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const ToolButton = styled.div`
+  margin: 10px;
+  background-color: #bdbdbd;
+`;
+
+const TextToolbarStyle = styled.div`
+  transition: 0.3s;
+  transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
+  position: absolute;
+  right: ${({ isOpenTextToolbar }) =>
+    isOpenTextToolbar === true ? 0 : "-80px"};
+  top: 40vh;
+  background-color: #cdcdcd;
+  width: 70px;
+  height: 200px;
+  border-radius: 25px 0 0 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const DrawToolbarStyle = styled.div`
+  transition: 0.3s;
+  transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
+  position: absolute;
+  right: ${({ isOpenDrawToolbar }) =>
+    isOpenDrawToolbar === true ? 0 : "-80px"};
+  top: 40vh;
+  background-color: #cdcdcd;
+  width: 70px;
+  height: 200px;
+  border-radius: 25px 0 0 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const StickerToolbarStyle = styled.div`
+  transition: 0.3s;
+  transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
+  position: absolute;
+  bottom: 0;
+  background-color: #b9b9b9;
+  width: 100vw;
+  height: ${({ isOpenStickerToolbar }) =>
+    isOpenStickerToolbar === true ? "100px" : 0};
+  border-radius: 25px 25px 0 0;
 `;

@@ -62,13 +62,11 @@ const MainPage = () => {
   useEffect(() => {
     setIsLoadingForSelfMadePrivate(true);
     axios
-      .get(
-        `${process.env.REACT_APP_BASEURL}/public?page=${publicPage}&size=5`,
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
+      .get(`${process.env.REACT_APP_BASEURL}/private`, {
+        headers: { Authorization: accessToken },
+      })
       .then((res) => {
+        console.log(res);
         setIsLoadingForSelfMadePrivate(false);
         setDataListForSelfMadePrivate(res.data);
       })

@@ -12,7 +12,7 @@ import styled from "styled-components";
 // import InboxIcon from "@mui/icons-material/MoveToInbox";
 // import MailIcon from "@mui/icons-material/Mail";
 
-const RightSideSlider = () => {
+const RightSideSlider = ({ setMode }) => {
   const [isOpenRightSide, setIsOpenRightSide] = useState(false);
 
   const toggleDrawer = (open) => (event) => {
@@ -27,11 +27,14 @@ const RightSideSlider = () => {
     setIsOpenRightSide(open);
   };
 
+  const changeMode = (target) => {
+    setMode(target);
+  };
+
   return (
     <div>
       <React.Fragment>
-        <OpenButton>Open</OpenButton>
-        <Button onClick={toggleDrawer(true)}>right</Button>
+        <OpenButton onClick={toggleDrawer(true)}>Open</OpenButton>
         <SwipeableDrawer
           anchor={"right"}
           open={isOpenRightSide}
@@ -55,10 +58,9 @@ const RightSideSlider = () => {
               width: "100%",
             }}
           >
-            <div>PEN</div>
-            <div>PEN</div>
-            <div>PEN</div>
-            <div>PEN</div>
+            <div onClick={() => changeMode("TEXT")}>TEXT</div>
+            <div onClick={() => changeMode("DRAW")}>DRAW</div>
+            <div onClick={() => changeMode("STICKER")}>STICKER</div>
           </div>
         </SwipeableDrawer>
       </React.Fragment>
@@ -69,5 +71,8 @@ const RightSideSlider = () => {
 export default RightSideSlider;
 
 const OpenButton = styled.div`
-  OpenButton
+  position: fixed;
+  right: 0;
+  top: 50vh;
+  background-color: #e0eecc;
 `;
