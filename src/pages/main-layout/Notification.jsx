@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import AlarmUnReadCard from "../../components/notification/AlarmUnReadCard";
-import AlarmReadCard from "../../components/notification/AlarmReadCard";
 import TitleBox from "../../components/TitleBox";
 import { useQuery } from "react-query";
 import axios from "axios";
@@ -20,13 +18,7 @@ const Notification = () => {
       <TitleBox />
 
       <AlarmBox>
-        {dataForFriendRequest?.data.map((item, i) => (
-          <AlarmUnReadCard key={i} item={item} alarmSort="friendRequest" />
-        ))}
         <AlarmList />
-        <AlarmUnReadCard />
-        <AlarmReadCard />
-        <AlarmReadCard />
       </AlarmBox>
     </>
   );

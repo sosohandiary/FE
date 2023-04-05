@@ -1,53 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
+import {
+  LeadingActions,
+  SwipeableList,
+  SwipeableListItem,
+  SwipeAction,
+  TrailingActions,
+} from "react-swipeable-list";
+import "react-swipeable-list/dist/styles.css";
 import styled from "styled-components";
-import Draggable from "react-draggable";
 
 const TestAnimation = () => {
-  const [xMove, setXMove] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-  const handleStart = (e) => {};
-  const handleDrag = (e) => {
-    setXMove((prev) => prev + e.movementX);
-  };
-  const handleStop = () => {
-    if (xMove <= -200) {
-      setXMove(-200);
-      setTimeout(() => {
-        setIsOpen(true);
-      }, 500);
-    } else {
-      setXMove(0);
-      setIsOpen(false);
-    }
-  };
+  const leadingActions = () => (
+    <LeadingActions>
+      <SwipeAction onClick={() => console.info("swipe action triggered")}>
+        Action name
+      </SwipeAction>
+    </LeadingActions>
+  );
 
-  const acceptHandler = () => {
-    console.log("Button clicked");
-  };
+  const trailingActions = () => (
+    <TrailingActions>
+      <SwipeAction
+        // destructive={true}
+        onClick={() => console.info("swipe action triggered")}
+      >
+        Delete
+      </SwipeAction>
+    </TrailingActions>
+  );
+
   return (
-    <div>
-      <WholeLine>
-        <Draggable
-          axis="x"
-          handle=".handle"
-          defaultPosition={{ x: 0, y: 0 }}
-          bounds={{ top: 0, bottom: 0, left: -100, right: 0 }}
-          position={{ x: xMove, y: 0 }}
-          grid={[1, 1]}
-          scale={1}
-          onStart={handleStart}
-          onDrag={handleDrag}
-          onStop={handleStop}
+    <>
+      <SwipeableList>
+        <SwipeableListItem
+          leadingActions={leadingActions()}
+          trailingActions={trailingActions()}
         >
-          <OuterLine className="handle">
-            This readme is really dragging on...
-          </OuterLine>
-        </Draggable>
-        <InnerLine isOpen={isOpen}>
-          <button onClick={acceptHandler}>수락하기</button>
-        </InnerLine>
-      </WholeLine>
-    </div>
+          Item content
+        </SwipeableListItem>
+      </SwipeableList>
+    </>
   );
 };
 
