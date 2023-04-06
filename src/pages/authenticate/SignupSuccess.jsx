@@ -10,7 +10,7 @@ const SignupSuccess = () => {
   setInterval(() => {
     setCountdown(countdown - 1);
     if (countdown === 1) {
-      navigate("/diaries");
+      navigate("/");
     }
   }, 1000);
 

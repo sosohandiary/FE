@@ -168,7 +168,8 @@ function DiaryEdit() {
                     listStyleType: "none",
                     display: "flex",
                     flexDirection: "column",
-                  }}>
+                  }}
+                >
                   {friends.map((friend) => (
                     <li
                       key={friend.id}
@@ -176,7 +177,8 @@ function DiaryEdit() {
                         display: "flex",
                         justifyContent: "space-between",
                         marginBottom: "8px",
-                      }}>
+                      }}
+                    >
                       <label style={{ flex: 1 }}>
                         <img src={friend.profileImageUrl} alt="Profile Image" />
                         {friend.name} ({friend.nickname}):

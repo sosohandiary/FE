@@ -12,6 +12,7 @@ import "react-swipeable-list/dist/styles.css";
 import AlarmReadCard from "./AlarmReadCard";
 import styled from "styled-components";
 import AlarmUnReadCard from "./AlarmUnReadCard";
+import axios from "axios";
 
 const handleReject = () => {
   console.log("reject");
@@ -20,11 +21,29 @@ const handleDelete = () => {
   console.log("delete");
 };
 
+const acceptDiary = (id) => {};
+
+const goToDetailOfComment = () => {};
+
 const AlarmList = ({ item, alarmType }) => {
+  const accessToken = window.localStorage.getItem("accessToken");
+  console.log("item : ", item?.friendListId);
+
+  const acceptFriend = (id) => {
+    axios
+      .put(`${process.env.REACT_APP_BASEURL}/friend/request/accept/${id}`, {
+        headers: { Authorization: accessToken },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
   const trailingActions = () => (
     <TrailingActions>
       <SwipeAction onClick={handleReject}>
-        <ActionContent>수락하기</ActionContent>
+        <ActionContent onClick={() => acceptFriend(item?.friendListId)}>
+          수락하기
+        </ActionContent>
       </SwipeAction>
       <SwipeAction destructive={true} onClick={handleDelete}>
         <Button color="red">삭제하기</Button>
