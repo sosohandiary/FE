@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import React from "react";
 import styled from "styled-components";
-import { WholeAreaWithMargin } from "../styles/WholeAreaStyle";
 import { Stage, Layer, Line, Transformer, Image } from "react-konva";
 import useImage from "use-image";
 import { useQuery } from "react-query";
@@ -14,12 +13,24 @@ import {
   convertFromRaw,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
-import { useParams } from "react-router-dom";
-import Eraser from "../assets/decoration/drawing/Eraser.png";
-import Pen from "../assets/decoration/drawing/Pen.png";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
+import { useNavigate, useParams } from "react-router-dom";
+import eraser from "../assets/decoration/toolbar/eraser.png";
+import pen from "../assets/decoration/toolbar/pen.png";
 import Grid from "@mui/material/Grid";
+import bImg from "../assets/decoration/toolbar/bImg.png";
+import iImg from "../assets/decoration/toolbar/iImg.png";
+import sImg from "../assets/decoration/toolbar/sImg.png";
+import uImg from "../assets/decoration/toolbar/uImg.png";
+import drawImg from "../assets/decoration/toolbar/drawImg.png";
+import saveImg from "../assets/decoration/toolbar/saveImg.png";
+import stickerImg from "../assets/decoration/toolbar/stickerImg.png";
+import textImg from "../assets/decoration/toolbar/textImg.png";
+import diaryBack from "../assets/decoration/diaryBack.png";
+import widthLarge from "../assets/decoration/toolbar/widthLarge.png";
+import widthMedium from "../assets/decoration/toolbar/widthMedium.png";
+import widthSmall from "../assets/decoration/toolbar/widthSmall.png";
+import "react-tooltip/dist/react-tooltip.css";
+import { Tooltip } from "react-tooltip";
 
 // <---------------스티커 크기 조절----------------->
 const ImageSticker = ({
@@ -139,9 +150,11 @@ const ImageSticker = ({
 // <---------------------------------------->
 
 const TestAnimation = () => {
+  const navigate = useNavigate();
   const [mode, setMode] = useState("TEXT");
   const [lineTool, setLineTool] = useState("pen");
   const [lines, setLines] = useState([]);
+  const [touchStartY, setTouchStartY] = useState(0);
   const isDrawing = useRef(false);
   const { diaryid, paperid } = useParams();
 
@@ -295,39 +308,6 @@ const TestAnimation = () => {
       .catch((err) => console.log(err));
   };
 
-  const changeColorHandler = (target) => {
-    setLineColor(target);
-  };
-  const changeWidthHandler = (target) => {
-    setLineWidth(target);
-  };
-  const changeLineTool = (target) => {
-    setLineTool(target);
-  };
-
-  //도구 모음 창
-  const Toolbar = () => {
-    const onClickSaveStickerHandler = () => {
-      const accessToken = localStorage.getItem("accessToken");
-
-      axios.post(`${process.env.REACT_APP_BASEURL}/decoration/`, stickers, {
-        headers: { Authorization: accessToken },
-      });
-    };
-
-    return (
-      <div style={{ position: "sticky", zIndex: 10 }}>
-        <button onClick={(e) => changeModeHandler("TEXT")}>텍스트 모드</button>
-        <button onClick={() => changeModeHandler("DRAW")}>그리기 모드</button>
-        <button onClick={() => changeModeHandler("STICKER")}>
-          스티커 모드
-        </button>
-        <button onClick={() => changeWidthHandler(5)}>굵게</button>
-        <button onClick={() => changeWidthHandler(1)}>얇게</button>
-      </div>
-    );
-  };
-
   //툴바 관련
   const [isOpenAllToolbar, setIsOpenAllToolbar] = useState(true);
   const [isOpenTextToolbar, setIsOpenTextToolbar] = useState(false);
@@ -339,11 +319,11 @@ const TestAnimation = () => {
   const [lineColor, setLineColor] = useState("#e74b24");
   const [lineWidth, setLineWidth] = useState(5);
 
-  console.log(mode);
   const touchAllToolbarButtonHandler = (props) => {
     switch (props) {
       case "TEXT":
         setIsOpenTextToolbar(true);
+        setIsOpenAllToolbar(false);
         setMode("TEXT");
         return;
       case "DRAW":
@@ -372,9 +352,15 @@ const TestAnimation = () => {
     "#000000",
   ];
 
+  const goBackDiaryHandler = () => {
+    navigate(-1);
+  };
+
   // 도화지
   return (
     <div style={{ overflow: "hidden", width: "100vw" }}>
+      <DiaryBack src={diaryBack} onClick={goBackDiaryHandler} />
+
       <TextAreaStyle mode={mode}></TextAreaStyle>
 
       <Stage
@@ -434,44 +420,59 @@ const TestAnimation = () => {
         />
       </TextAreaStyle>
       <AllToolbarStyle isOpenAllToolbar={isOpenAllToolbar}>
-        <ToolButton onClick={() => touchAllToolbarButtonHandler("TEXT")}>
-          Text
-        </ToolButton>
-        <ToolButton onClick={() => touchAllToolbarButtonHandler("DRAW")}>
-          Draw
-        </ToolButton>
-        <ToolButton onClick={() => touchAllToolbarButtonHandler("STICKER")}>
-          Sticker
-        </ToolButton>
-        <ToolButton onClick={() => touchAllToolbarButtonHandler()}>
-          Paper
-        </ToolButton>
+        <ToolButton
+          src={textImg}
+          onClick={() => touchAllToolbarButtonHandler("TEXT")}
+        />
+        <ToolButton
+          src={drawImg}
+          onClick={() => touchAllToolbarButtonHandler("DRAW")}
+        />
+        <ToolButton
+          src={stickerImg}
+          onClick={() => touchAllToolbarButtonHandler("STICKER")}
+        />
+        <ToolButton src={saveImg} onClick={handleSave} />
       </AllToolbarStyle>
       <TextToolbarStyle isOpenTextToolbar={isOpenTextToolbar}>
         <ToolButton
+          src={uImg}
+          width="40px"
+          height="40px"
           onMouseDown={() => {
             setIsOpenTextToolbar(false);
+            setIsOpenAllToolbar(true);
             setMode("TEXT");
           }}
-        >
-          BAC
-        </ToolButton>
-        <ToolButton onMouseDown={() => handleTogggleClick("UNDERLINE")}>
-          UND
-        </ToolButton>
-        <ToolButton onMouseDown={() => handleTogggleClick("STRIKETHROUGH")}>
-          STR
-        </ToolButton>
-        <ToolButton onMouseDown={() => handleTogggleClick("ITALIC")}>
-          ITA
-        </ToolButton>
-        <ToolButton onMouseDown={() => handleTogggleClick("BOLD")}>
-          BOL
-        </ToolButton>
+        />
+        <ToolButton
+          src={uImg}
+          width="40px"
+          height="40px"
+          onMouseDown={() => handleTogggleClick("UNDERLINE")}
+        />
+        <ToolButton
+          src={sImg}
+          width="40px"
+          height="40px"
+          onMouseDown={() => handleTogggleClick("STRIKETHROUGH")}
+        />
+        <ToolButton
+          src={iImg}
+          width="40px"
+          height="40px"
+          onMouseDown={() => handleTogggleClick("ITALIC")}
+        />
+        <ToolButton
+          src={bImg}
+          width="40px"
+          height="40px"
+          onMouseDown={() => handleTogggleClick("BOLD")}
+        />
       </TextToolbarStyle>
 
       <DrawToolbarStyle isOpenDrawToolbar={isOpenDrawToolbar}>
-        <ToolButton
+        <div
           onClick={() => {
             setIsOpenDrawToolbar(false);
             setIsOpenAllToolbar(true);
@@ -479,42 +480,79 @@ const TestAnimation = () => {
           }}
         >
           BACK
-        </ToolButton>
+        </div>
+        <a id={lineTool === "pen" ? "openerPenWidth" : ""}>
+          <PenStyle
+            src={pen}
+            lineTool={lineTool}
+            onClick={() => {
+              setLineTool("pen");
+            }}
+          />
+        </a>
+        <Tooltip
+          anchorSelect="#openerPenWidth"
+          clickable
+          place="left"
+          noArrow={true}
+          style={{ backgroundColor: "rgba(150,150,150,0.5)" }}
+        >
+          <WidthArea>
+            <WidthButton
+              src={widthSmall}
+              onMouseDown={() => {
+                setLineWidth(5);
+              }}
+            ></WidthButton>
+            <WidthButton
+              src={widthMedium}
+              onMouseDown={() => {
+                setLineWidth(10);
+              }}
+            ></WidthButton>
+            <WidthButton
+              src={widthLarge}
+              onMouseDown={() => {
+                setLineWidth(20);
+              }}
+            ></WidthButton>
+          </WidthArea>
+        </Tooltip>
 
-        <PenStyle
-          src={Pen}
-          onClick={() => {
-            setLineTool("pen");
-          }}
-        />
         <EraserStyle
-          src={Eraser}
+          src={eraser}
+          lineTool={lineTool}
           onClick={() => {
             setLineTool("eraser");
           }}
         />
         {colorPallette.map((item) => (
-          <ColorPea color={item} onClick={() => setLineColor(item)}></ColorPea>
+          <ColorPea
+            color={item}
+            lineColor={lineColor}
+            onClick={() => setLineColor(item)}
+          ></ColorPea>
         ))}
       </DrawToolbarStyle>
 
-      <StickerToolbarStyle isOpenStickerToolbar={isOpenStickerToolbar}>
+      <StickerToolbarStyle
+        isOpenStickerToolbar={isOpenStickerToolbar}
+        onTouchStart={(e) => {
+          setTouchStartY(e.touches[0].clientY);
+        }}
+        onTouchMove={(e) => {
+          if (e.touches[0].clientY - touchStartY > 10) {
+            setIsOpenStickerToolbar(false);
+            setIsOpenAllToolbar(true);
+          }
+        }}
+      >
         <StickerTitle>스티커</StickerTitle>
         <Grid
           container
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 6, sm: 8, md: 12 }}
         >
-          <Grid item xs={2} sm={4} md={4}>
-            <StickerPea
-              onMouseDown={() => {
-                setIsOpenStickerToolbar(false);
-                setIsOpenAllToolbar(true);
-              }}
-            >
-              뒤로가기
-            </StickerPea>
-          </Grid>
           {[0, 1, 2, 0, 1, 2].map((item) => (
             <Grid item xs={2} sm={4} md={4}>
               <StickerPea
@@ -534,19 +572,27 @@ const TestAnimation = () => {
 
 export default TestAnimation;
 
+const DiaryBack = styled.img`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+`;
+
 const TextAreaStyle = styled.div`
   position: absolute;
-  width: 100%;
+  width: 80vw;
+  margin: 40px 10vw;
   z-index: ${({ mode }) => (mode === "TEXT" ? 1 : -1)};
 `;
 
 const AllToolbarStyle = styled.div`
-  transition: 0.3s;
+  transition: 0.2s;
   transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
   position: absolute;
-  right: ${({ isOpenAllToolbar }) => (isOpenAllToolbar === true ? 0 : "-60px")};
+  right: ${({ isOpenAllToolbar }) =>
+    isOpenAllToolbar === true ? 0 : "-100px"};
   top: 40vh;
-  background-color: #eeeeee;
+  background-color: #707070;
   width: 70px;
   height: 200px;
   border-radius: 25px 0 0 25px;
@@ -557,21 +603,16 @@ const AllToolbarStyle = styled.div`
   z-index: 10;
 `;
 
-const ToolButton = styled.div`
-  margin: 10px;
-  background-color: #bdbdbd;
-`;
-
 const TextToolbarStyle = styled.div`
-  transition: 0.3s;
+  transition: 0.2s;
   transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
   position: absolute;
   right: ${({ isOpenTextToolbar }) =>
     isOpenTextToolbar === true ? 0 : "-80px"};
   top: 40vh;
-  background-color: #cdcdcd;
+  background-color: #707070;
   width: 70px;
-  height: 200px;
+  height: 270px;
   border-radius: 25px 0 0 25px;
   display: flex;
   justify-content: center;
@@ -581,13 +622,13 @@ const TextToolbarStyle = styled.div`
 `;
 
 const DrawToolbarStyle = styled.div`
-  transition: 0.3s;
+  transition: 0.2s;
   transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
   position: absolute;
   right: ${({ isOpenDrawToolbar }) =>
     isOpenDrawToolbar === true ? "-32px" : "-70px"};
   top: 10vh;
-  background-color: #cdcdcd;
+  background-color: transparent;
   width: 70px;
   height: 500px;
   border-radius: 25px 0 0 25px;
@@ -599,33 +640,44 @@ const DrawToolbarStyle = styled.div`
 `;
 
 const StickerToolbarStyle = styled.div`
-  transition: 0.3s;
+  transition: 0.2s;
   transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
   position: absolute;
-  bottom: 0;
+  bottom: -100px;
   background-color: #b9b9b9;
   width: 100vw;
   height: ${({ isOpenStickerToolbar }) =>
-    isOpenStickerToolbar === true ? "450px" : 0};
+    isOpenStickerToolbar === true ? "600px" : 0};
   border-radius: 25px 25px 0 0;
   padding-top: 20px;
   z-index: 10;
 `;
 
 const ColorPea = styled.div`
+  transition: 0.2s;
+  transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
   background-color: ${({ color }) => color};
   height: 30px;
   width: 30px;
+  transform: scale(
+    ${({ color, lineColor }) => (color === lineColor ? "1.3" : "1")}
+  );
   border-radius: 50%;
   border: 2px solid #9b9b9b;
   margin: 4px;
 `;
 
 const PenStyle = styled.img`
-  margin: 0 10px 10px 0;
+  margin: 5px 0 5px 0;
+  transition: 0.2s;
+  transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
+  width: ${({ lineTool }) => (lineTool === "pen" ? "70px" : "40px")};
 `;
 const EraserStyle = styled.img`
-  margin: 0 10px 10px 0;
+  margin: 5px 0 5px 0;
+  transition: 0.2s;
+  transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
+  width: ${({ lineTool }) => (lineTool === "eraser" ? "70px" : "30px")};
 `;
 
 const StickerPea = styled.div`
@@ -639,4 +691,20 @@ const StickerPea = styled.div`
 const StickerTitle = styled.div`
   text-align: center;
   margin-bottom: 20px;
+`;
+
+const ToolButton = styled.img`
+  margin: 5px;
+`;
+
+const WidthArea = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 -10px;
+`;
+
+const WidthButton = styled.img`
+  width: 30px;
+  margin: -5px 1px;
 `;
