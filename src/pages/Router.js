@@ -22,6 +22,8 @@ import Drawing from "./Drawing";
 import TestAnimation from "./TestAnimation";
 import Page from "./Page";
 import TestDrawing from "./TestDrawing";
+import DiaryEdit from "./DiaryEdit";
+
 const Router = () => {
   return (
     <BrowserRouter>
@@ -50,6 +52,7 @@ const Router = () => {
         <Route path="/test-animation" element={<TestAnimation />} />
         <Route path="/test-drawing" element={<TestDrawing />} />
         <Route path="/diary/:diaryId" element={<Page />} />
+        <Route path="/diaryedit/:diaryId" element={<DiaryEdit />} />
       </Routes>
     </BrowserRouter>
   );
