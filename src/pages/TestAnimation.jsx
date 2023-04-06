@@ -15,16 +15,11 @@ import {
 } from "draft-js";
 import "draft-js/dist/Draft.css";
 import { useParams } from "react-router-dom";
-import RightSideSlider from "../components/test-component/RightSideSlider";
-import BottomSlider from "../components/test-component/BottomSlider";
-import { Global } from "@emotion/react";
-import CssBaseline from "@mui/material/CssBaseline";
-import { grey } from "@mui/material/colors";
-import Button from "@mui/material/Button";
+import Eraser from "../assets/decoration/drawing/Eraser.png";
+import Pen from "../assets/decoration/drawing/Pen.png";
 import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
-import Typography from "@mui/material/Typography";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
 
 // <---------------스티커 크기 조절----------------->
 const ImageSticker = ({
@@ -327,26 +322,8 @@ const TestAnimation = () => {
         <button onClick={() => changeModeHandler("STICKER")}>
           스티커 모드
         </button>
-        <button onClick={() => changeColorHandler("#df4b26")}>빨간색</button>
-        <button onClick={() => changeColorHandler("#2645df")}>파란색</button>
         <button onClick={() => changeWidthHandler(5)}>굵게</button>
         <button onClick={() => changeWidthHandler(1)}>얇게</button>
-        <button onClick={() => changeLineTool("eraser")}>지우개</button>
-        <button onClick={() => changeLineTool("pen")}>펜</button>
-        <div>
-          스티커 관련
-          <button onClick={() => addStickerButtonHandler(0)}>
-            0번 스티커 추가
-          </button>
-          <button onClick={() => addStickerButtonHandler(1)}>
-            1번 스티커 추가
-          </button>
-          <button onClick={() => addStickerButtonHandler(2)}>
-            2번 스티커 추가
-          </button>
-          <button onClick={onClickSaveStickerHandler}>스티커 저장</button>
-          <button>이미지로 저장</button>
-        </div>
       </div>
     );
   };
@@ -356,10 +333,13 @@ const TestAnimation = () => {
   const [isOpenTextToolbar, setIsOpenTextToolbar] = useState(false);
   const [isOpenDrawToolbar, setIsOpenDrawToolbar] = useState(false);
   const [isOpenStickerToolbar, setIsOpenStickerToolbar] = useState(false);
+  const [isOpenPenWidth, setIsOpenPenWidth] = useState(false);
+  const [isOpenEraserWidth, setIsOpenEraserWidth] = useState(false);
 
   const [lineColor, setLineColor] = useState("#e74b24");
   const [lineWidth, setLineWidth] = useState(5);
 
+  console.log(mode);
   const touchAllToolbarButtonHandler = (props) => {
     switch (props) {
       case "TEXT":
@@ -381,12 +361,22 @@ const TestAnimation = () => {
     }
   };
 
+  const colorPallette = [
+    "#FC9F9F",
+    "#FCBB9F",
+    "#FCDC9F",
+    "#9FFCA8",
+    "#9FF1FC",
+    "#9FB3FC",
+    "#E49FFC",
+    "#000000",
+  ];
+
   // 도화지
   return (
-    <WholeAreaWithMargin>
-      <Toolbar />
-      <BackgroundStyle></BackgroundStyle>
+    <div style={{ overflow: "hidden", width: "100vw" }}>
       <TextAreaStyle mode={mode}></TextAreaStyle>
+
       <Stage
         width={window.innerWidth}
         height={window.innerHeight}
@@ -436,11 +426,13 @@ const TestAnimation = () => {
           })}
         </Layer>
       </Stage>
-      <Editor
-        editorState={editorState}
-        onChange={setEditorState}
-        handleKeyCommand={handleKeyCommand}
-      />
+      <TextAreaStyle mode={mode}>
+        <Editor
+          editorState={editorState}
+          onChange={setEditorState}
+          handleKeyCommand={handleKeyCommand}
+        />
+      </TextAreaStyle>
       <AllToolbarStyle isOpenAllToolbar={isOpenAllToolbar}>
         <ToolButton onClick={() => touchAllToolbarButtonHandler("TEXT")}>
           Text
@@ -455,7 +447,6 @@ const TestAnimation = () => {
           Paper
         </ToolButton>
       </AllToolbarStyle>
-
       <TextToolbarStyle isOpenTextToolbar={isOpenTextToolbar}>
         <ToolButton
           onMouseDown={() => {
@@ -489,52 +480,62 @@ const TestAnimation = () => {
         >
           BACK
         </ToolButton>
-        <ToolButton
-          onMouseDown={() => {
-            setLineColor("red");
+
+        <PenStyle
+          src={Pen}
+          onClick={() => {
+            setLineTool("pen");
           }}
-        >
-          RED
-        </ToolButton>
-        <ToolButton
-          onMouseDown={() => {
-            setLineColor("blue");
+        />
+        <EraserStyle
+          src={Eraser}
+          onClick={() => {
+            setLineTool("eraser");
           }}
-        >
-          BLUE
-        </ToolButton>
+        />
+        {colorPallette.map((item) => (
+          <ColorPea color={item} onClick={() => setLineColor(item)}></ColorPea>
+        ))}
       </DrawToolbarStyle>
 
       <StickerToolbarStyle isOpenStickerToolbar={isOpenStickerToolbar}>
-        <div
-          onMouseDown={() => {
-            setIsOpenStickerToolbar(false);
-            setIsOpenAllToolbar(true);
-          }}
+        <StickerTitle>스티커</StickerTitle>
+        <Grid
+          container
+          spacing={{ xs: 2, md: 3 }}
+          columns={{ xs: 6, sm: 8, md: 12 }}
         >
-          Back
-        </div>
-        <div onClick={() => addStickerButtonHandler(0)}>1번 스티커 추가</div>
-        <div onClick={() => addStickerButtonHandler(1)}>2번 스티커 추가</div>
-        <div onClick={() => addStickerButtonHandler(2)}>3번 스티커 추가</div>
+          <Grid item xs={2} sm={4} md={4}>
+            <StickerPea
+              onMouseDown={() => {
+                setIsOpenStickerToolbar(false);
+                setIsOpenAllToolbar(true);
+              }}
+            >
+              뒤로가기
+            </StickerPea>
+          </Grid>
+          {[0, 1, 2, 0, 1, 2].map((item) => (
+            <Grid item xs={2} sm={4} md={4}>
+              <StickerPea
+                onClick={() => {
+                  addStickerButtonHandler(item);
+                  setIsOpenStickerToolbar(false);
+                  setIsOpenAllToolbar(true);
+                }}
+              />
+            </Grid>
+          ))}
+        </Grid>
       </StickerToolbarStyle>
-    </WholeAreaWithMargin>
+    </div>
   );
 };
 
 export default TestAnimation;
 
-const BackgroundStyle = styled.div`
-  position: absolute;
-  z-index: -10;
-  background-color: #e9e9e9;
-  width: 100%;
-  height: 200px;
-`;
-
 const TextAreaStyle = styled.div`
   position: absolute;
-  top: 120px;
   width: 100%;
   z-index: ${({ mode }) => (mode === "TEXT" ? 1 : -1)};
 `;
@@ -553,6 +554,7 @@ const AllToolbarStyle = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  z-index: 10;
 `;
 
 const ToolButton = styled.div`
@@ -575,6 +577,7 @@ const TextToolbarStyle = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  z-index: 10;
 `;
 
 const DrawToolbarStyle = styled.div`
@@ -582,16 +585,17 @@ const DrawToolbarStyle = styled.div`
   transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
   position: absolute;
   right: ${({ isOpenDrawToolbar }) =>
-    isOpenDrawToolbar === true ? 0 : "-80px"};
-  top: 40vh;
+    isOpenDrawToolbar === true ? "-32px" : "-70px"};
+  top: 10vh;
   background-color: #cdcdcd;
   width: 70px;
-  height: 200px;
+  height: 500px;
   border-radius: 25px 0 0 25px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  z-index: 10;
 `;
 
 const StickerToolbarStyle = styled.div`
@@ -602,6 +606,37 @@ const StickerToolbarStyle = styled.div`
   background-color: #b9b9b9;
   width: 100vw;
   height: ${({ isOpenStickerToolbar }) =>
-    isOpenStickerToolbar === true ? "100px" : 0};
+    isOpenStickerToolbar === true ? "450px" : 0};
   border-radius: 25px 25px 0 0;
+  padding-top: 20px;
+  z-index: 10;
+`;
+
+const ColorPea = styled.div`
+  background-color: ${({ color }) => color};
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  border: 2px solid #9b9b9b;
+  margin: 4px;
+`;
+
+const PenStyle = styled.img`
+  margin: 0 10px 10px 0;
+`;
+const EraserStyle = styled.img`
+  margin: 0 10px 10px 0;
+`;
+
+const StickerPea = styled.div`
+  background-color: red;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  margin: auto;
+`;
+
+const StickerTitle = styled.div`
+  text-align: center;
+  margin-bottom: 20px;
 `;
