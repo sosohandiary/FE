@@ -180,7 +180,7 @@ function DiaryEdit() {
                 </ul>
 
                 <ModalCloseButton onClick={handleCloseModal}>
-                  x
+                  닫기
                 </ModalCloseButton>
               </div>
             </ModalContent>
