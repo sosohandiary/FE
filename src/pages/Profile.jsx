@@ -30,9 +30,9 @@ function Profile() {
     ["getProfile"],
     () => getProfile(accessToken),
     {
-      onSuccess: () => {
-        setNickname(profileData?.data.nickname);
-        setStatusMessage(profileData?.data.statusMessage);
+      onSuccess: (data) => {
+        setNickname(data.data.nickname);
+        setStatusMessage(data.data.statusMessage);
       },
     }
   );
@@ -45,13 +45,6 @@ function Profile() {
 
   //image
   const onImgPostHandler = (event) => {
-    // const onImgPostHandler = useCallback((e) => {
-    //   if (e.target.files === null) return;
-    //   if (e.target.files[0]) {
-    //     setFile(e.target.files[0]);
-    //     setNewImage(URL.createObjectURL(e.target.files[0]));
-    //   }
-
     setNewImage([]);
     for (let i = 0; i < event.target.files.length; i++) {
       setFile(event.target.files[i]);
