@@ -33,37 +33,42 @@ function DiaryEdit() {
   }, []);
 
   // 수정
-  const handleClick = useCallback();
-  // async (e) => {
-  //   e.preventDefault();
+  const handleClick = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-  //   const formData = new FormData();
-  //   formData.append("img", file);
+      const formData = new FormData();
+      formData.append("img", file);
+      const data = {
+        title: title,
+        diaryCondition: diaryCondition,
+      };
+      formData.append(
+        "data",
+        new Blob([JSON.stringify(data)], { type: "application/json" })
+      );
+      console.log(data);
+      console.log(...formData);
 
-  //   const data = {
-  //     title: title,
-  //     diaryCondition: diaryCondition,
-  //   };
-  //   formData.append("data", JSON.stringify(data));
-
-  //   try {
-  //     const res = await axios.patch(
-  //       `${process.env.REACT_APP_BASEURL}/diary/${mypage.data.id}`,
-  //       formData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //           Authorization: accessToken,
-  //         },
-  //       }
-  //     );
-  //     console.log(res.data); // 수정된 다이어리 정보가 포함된 API 응답 데이터
-  //     navigate(`/mypage`);
-  //   } catch (error) {
-  //     console.error("다이어리 수정에 실패했습니다.", error);
-  //   }
-  // },
-  // [accessToken, diaryCondition, file, mypage.data.id, navigate, title]
+      try {
+        const res = await axios.patch(
+          `${process.env.REACT_APP_BASEURL}/diary/${mypage.data.id}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: accessToken,
+            },
+          }
+        );
+        console.log(res.data); // 수정된 다이어리 정보가 포함된 API 응답 데이터
+        navigate(`/mypage`);
+      } catch (error) {
+        console.error("다이어리 수정에 실패했습니다.", error);
+      }
+    },
+    [accessToken, diaryCondition, file, mypage.data.id, navigate, title]
+  );
 
   return (
     <Wholebox>
