@@ -66,6 +66,29 @@ function DiaryEdit() {
     [accessToken, diaryCondition, file, mypage.data.id, navigate, title]
   );
 
+  // 친구
+  const [friends, setFriends] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const getMyfriends = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_BASEURL}/mypage/friend/myfriends`,
+        {
+          headers: { Authorization: accessToken },
+        }
+      );
+      setFriends(res.data);
+      setModalOpen(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <Wholebox>
       <TopBox>
@@ -74,29 +97,25 @@ function DiaryEdit() {
         <VscBlank className="VscBlank" />
       </TopBox>
 
-      <InputBox>
-        <VscBlank className="VscBlank" />
-        <FileInput
-          type="file"
-          onChange={handleChange}
-          className="StyledInput"
-        />
-        <VscBlank className="VscBlank" />
-      </InputBox>
-
       {previewImage && ( // 업로드하려는 이미지를 미리 보여줌
         <img
           alt="preview"
           src={previewImage}
           style={{
             margin: "auto",
-            width: "100px",
-            height: "150px",
-            borderRadius: "25px",
+            width: "200px",
+            height: "300px",
+            borderRadius: "7px",
           }}
         />
       )}
-
+      <InputBox>
+        <FileInput
+          type="file"
+          onChange={handleChange}
+          className="StyledInput"
+        />
+      </InputBox>
       <form onSubmit={handleClick}>
         <TitleText>제목</TitleText>
         <TitleContent>
@@ -131,8 +150,47 @@ function DiaryEdit() {
           </RadioWrapper>
         </PrivateorPublicBox>
 
+        <Addbutton onClick={getMyfriends}>멤버 추가</Addbutton>
+        {modalOpen && (
+          <ModalWrapper>
+            <ModalContent>
+              <div>
+                <h2>추가할 멤버를 체크하세요</h2>
+                <ul
+                  style={{
+                    listStyleType: "none",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}>
+                  {friends.map((friend) => (
+                    <li
+                      key={friend.id}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginBottom: "8px",
+                      }}>
+                      <label style={{ flex: 1 }}>
+                        <img src={friend.profileImageUrl} alt="Profile Image" />
+                        {friend.name} ({friend.nickname}):
+                      </label>
+                      <input type="checkbox" />
+                    </li>
+                  ))}
+                </ul>
+
+                <ModalCloseButton onClick={handleCloseModal}>
+                  x
+                </ModalCloseButton>
+              </div>
+            </ModalContent>
+          </ModalWrapper>
+        )}
+
         <UpButtonBox>
+          <VscBlank className="VscBlank" />
           <Upbutton onClick={handleClick}>완료</Upbutton>
+          <VscBlank className="VscBlank" />
         </UpButtonBox>
       </form>
     </Wholebox>
@@ -141,6 +199,48 @@ function DiaryEdit() {
 
 export default DiaryEdit;
 
+const Addbutton = styled.button`
+  color: gray;
+  width: 100px;
+  height: 40px;
+  padding: 10px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+`;
+
+const ModalWrapper = styled.div`
+  position: fixed;
+  bottom: 50%;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  border-radius: 5px;
+`;
+
+const ModalContent = styled.div`
+  background-color: #fff;
+  border-radius: 25px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  padding: 20px;
+`;
+
+const ModalCloseButton = styled.button`
+  position: absolute;
+  right: 0%;
+  top: 0%;
+  border-radius: 50%;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  background-color: gray;
+`;
 const InputBox = styled.div`
   display: flex;
   flex-direction: row;
@@ -150,29 +250,32 @@ const InputBox = styled.div`
 `;
 
 const FileInput = styled.input`
-  margin: 0 auto;
   &::-webkit-file-upload-button {
     background-color: #d9d9d9;
     color: gray;
+    width: 100px;
+    height: 40px;
     padding: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     font-weight: bolder;
+    margin-bottom: 20px;
+    margin-top: 10px;
   }
 `;
 
 const PrivateorPublicBox = styled.div`
   display: flex;
   flex-direction: row;
-  margin 10px;
+  margin: 10px;
   justify-content: space-between;
 `;
 
 const UpButtonBox = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   margin: 10px;
   justify-content: space-between;
 `;
@@ -254,58 +357,3 @@ const Textbox = styled.div`
   font-weight: bolder;
   margin: 15px;
 `;
-
-// import React, { useState, useCallback } from "react";
-// import styled from "styled-components";
-// import axios from "axios";
-// import { VscBlank } from "react-icons/vsc";
-// import { useLocation, useNavigate } from "react-router-dom";
-
-// function DiaryEdit() {
-//   const accessToken = window.localStorage.getItem("accessToken");
-
-//   return (
-//     <Wholebox>
-//       {previewImage && ( // 업로드하려는 이미지를 미리 보여줌
-//         <img
-//           alt="preview"
-//           src={previewImage}
-//           style={{
-//             margin: "auto",
-//             width: "100px",
-//             height: "150px",
-//             borderRadius: "25px",
-//           }}
-//         />
-//       )}
-//       <div>diaryTitle: {item.diaryTitle}</div>
-//       <div>content: {item.content}</div>
-//       <div>createdAt: {item.createdAt}</div>
-//       <div>diaryTitle: {item.diaryTitle}</div>
-//       <div>modifiedAt: {item.modifiedAt}</div>
-//       <div>name: {item.name}</div>
-
-//       <Upbutton onClick={handleDelete}>삭제하기</Upbutton>
-//     </Wholebox>
-//   );
-// }
-
-// export default DiaryEdit;
-
-// const Upbutton = styled.button`
-//   color: gray;
-//   background-color: #e8fefb;
-//   width: 100px;
-//   height: 35px;
-//   border: none;
-//   border-radius: 5px;
-//   font-weight: 700;
-//   font-size: 100%;
-//   cursor: pointer;
-// `;
-
-// const Wholebox = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   padding: 5vw;
-// `;
