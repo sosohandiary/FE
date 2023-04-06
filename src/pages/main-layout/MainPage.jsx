@@ -66,7 +66,7 @@ const MainPage = () => {
         headers: { Authorization: accessToken },
       })
       .then((res) => {
-        console.log(res);
+        console.log("내가만듬", res);
         setIsLoadingForSelfMadePrivate(false);
         setDataListForSelfMadePrivate(res.data);
       })
@@ -81,15 +81,16 @@ const MainPage = () => {
       setIsLoadingForPrivate(true);
       axios
         .get(
-          `${process.env.REACT_APP_BASEURL}/private?page=${privatePage}&size=5`,
+          `${process.env.REACT_APP_BASEURL}/invite?page=${privatePage}&size=5`,
           {
             headers: { Authorization: accessToken },
           }
         )
         .then((res) => {
+          console.log(res);
           setIsLoadingForPrivate(false);
 
-          setDataListForPrivate((prev) => [...prev, ...res.data]);
+          setDataListForPrivate((prev) => [...prev, ...res.data.content]);
           setPrivatePage((prev) => prev + 1);
         })
         .catch((err) => {
