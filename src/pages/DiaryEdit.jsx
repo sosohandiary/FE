@@ -39,15 +39,11 @@ function DiaryEdit() {
 
       const formData = new FormData();
       formData.append("img", file);
-      const data = {
-        title: title,
-        diaryCondition: diaryCondition,
-      };
+      const uploader = { title };
       formData.append(
-        "data",
-        new Blob([JSON.stringify(data)], { type: "application/json" })
+        "title",
+        new Blob([JSON.stringify(uploader)], { type: "application/json" })
       );
-      console.log(data);
       console.log(...formData);
 
       try {
