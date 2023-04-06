@@ -86,9 +86,11 @@ const MainPage = () => {
           }
         )
         .then((res) => {
-          console.log(res);
           setIsLoadingForPrivate(false);
 
+          if (res.data === "") {
+            return;
+          }
           setDataListForPrivate((prev) => [...prev, ...res.data.content]);
           setPrivatePage((prev) => prev + 1);
         })
@@ -126,17 +128,6 @@ const MainPage = () => {
     navigate(`/diaries/${id}`);
   };
 
-  const dataList = [
-    { id: 0 },
-    { id: 1 },
-    { id: 2 },
-    { id: 3 },
-    { id: 4 },
-    { id: 5 },
-    { id: 6 },
-    { id: 7 },
-  ];
-
   return (
     <div style={{ marginBottom: "100px" }}>
       <WelcomeArea>
@@ -162,18 +153,31 @@ const MainPage = () => {
           onSlideChange={(e) => setActiveIdxForSelfmade(e.activeIndex)}
           className="mySwiper"
         >
-          {dataListForSelfMadePrivate?.map((item, i) => (
-            <SwiperSlide key={i}>
+          {dataListForSelfMadePrivate.length === 0 ? (
+            <SwiperSlide>
               <DiaryCardTopBig
                 color="purple"
-                idx={i}
+                idx={0}
                 activeIdxForSelfmade={activeIdxForSelfmade}
-                item={item}
-              >
-                Slide {item.id}
-              </DiaryCardTopBig>
+              ></DiaryCardTopBig>
             </SwiperSlide>
-          ))}
+          ) : (
+            dataListForSelfMadePrivate?.map((item, i) => (
+              <SwiperSlide key={i} onClick={() => goToDiaryDetail(item.id)}>
+                <DiaryCardTopBig
+                  color="purple"
+                  idx={i}
+                  activeIdxForSelfmade={activeIdxForSelfmade}
+                  item={item}
+                  onClick={() => {
+                    navigate("/dd");
+                  }}
+                >
+                  Slide {item.id}
+                </DiaryCardTopBig>
+              </SwiperSlide>
+            ))
+          )}
         </Swiper>
       </SelfmadeArea>
       <div style={{ display: "none" }}>

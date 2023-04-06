@@ -17,16 +17,18 @@ const Diary = () => {
     setDiaryCondition(event.target.value);
   };
 
-  const handleChange = useCallback((e) => {
+  const handleChange = (e) => {
     if (e.target.files === null) return;
     if (e.target.files[0]) {
       setFile(e.target.files[0]);
       setPreviewImage(URL.createObjectURL(e.target.files[0]));
     }
-  }, []);
+  };
 
-  const handleClick = useCallback(() => {
-    if (!file) return;
+  const handleClick = (e) => {
+    e.preventDefault();
+    console.log("dd");
+    console.log(accessToken);
 
     const formData = new FormData();
     formData.append("img", file);
@@ -47,7 +49,8 @@ const Diary = () => {
           Authorization: accessToken,
         },
       })
-      .then(() => {
+      .then((res) => {
+        console.log(res);
         alert("작성이 완료되었습니다.");
         navigate(`/`);
       })
@@ -55,7 +58,7 @@ const Diary = () => {
         console.error(error);
         alert("오류가 발생했습니다. 다시 시도해주세요.");
       });
-  }, [file]);
+  };
 
   return (
     <Wholebox>
@@ -88,7 +91,7 @@ const Diary = () => {
         />
       )}
 
-      <form onSubmit={handleClick}>
+      <form>
         <TitleText>제목</TitleText>
         <TitleContent>
           <input
@@ -158,7 +161,7 @@ const FileInput = styled.input`
 const PrivateorPublicBox = styled.div`
   display: flex;
   flex-direction: row;
-  margin 10px;
+  margin: 10px;
   justify-content: space-between;
 `;
 

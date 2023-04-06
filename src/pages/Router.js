@@ -53,6 +53,7 @@ const Router = () => {
         <Route path="/test-drawing" element={<TestDrawing />} />
         <Route path="/diary/:diaryId" element={<Page />} />
         <Route path="/diaryedit/:diaryId" element={<DiaryEdit />} />
+        {/* <Route path="/diaryeditTest" element={<DiaryEdit />} /> */}
       </Routes>
     </BrowserRouter>
   );

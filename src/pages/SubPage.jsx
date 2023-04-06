@@ -34,12 +34,13 @@ function SubPage() {
   const fetchData = async (page) => {
     const response = await axios
       .get(
-        `${process.env.REACT_APP_BASEURL}/diary/${diaryId}/detail?page=${page}&size=5`,
+        `${process.env.REACT_APP_BASEURL}/diary/${diaryId}/detail?page=${currentPage}&size=5`,
         {
           headers: { Authorization: accessToken },
         }
       )
       .then((res) => {
+        console.log(res);
         setData([...res.data.content]); // 객체로 반환되길래 배열로 만듬
         setPageCount(res.data.pageableCustom.totalPages);
       });
@@ -136,8 +137,8 @@ function SubPage() {
           onPageChange={handlePageClick}
           containerClassName={"pagination"}
           activeClassName={"active"}
-          previousLabel='<'
-          nextLabel='>'
+          previousLabel="<"
+          nextLabel=">"
         />
       </div>
     </>
