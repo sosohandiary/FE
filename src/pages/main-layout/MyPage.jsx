@@ -143,7 +143,7 @@ function MyPage() {
                       {item.diaryCondition === "PUBLIC" ? (
                         <Public size='16'>공유 다이어리</Public>
                       ) : (
-                        <StText>다이어리</StText>
+                        <Public size='16'>다이어리</Public>
                       )}
                     </StTextBox>
                     <StTextBox>
@@ -240,8 +240,8 @@ const MenuBox = styled.div`
   border-radius: 20px;
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #eee;
-  background: #d9d9d9;
+  border: 1px solid #f8f8f8;
+  background: #f8f8f8;
   margin-bottom: 20px;
 
   text-align: center;
@@ -254,7 +254,7 @@ const EachMenuBox = styled.div`
   line-height: 1.3rem;
   color: ${(props) => props.color};
   border-right: ${(props) => props.boderRight};
-  border-right-color: #9e9b9b;
+  border-right-color: #E1E7FF;
 
   text-align: center;
   align-items: center;
