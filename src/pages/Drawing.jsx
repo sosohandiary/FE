@@ -292,7 +292,7 @@ const Drawing = () => {
 
     const allJSON = JSON.stringify(allData);
 
-    const sendData = { thumbnail: "", customJson: allJSON };
+    const sendData = { thumbnail: "dd", customJson: allJSON };
     console.log(sendData);
 
     axios

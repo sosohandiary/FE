@@ -9,7 +9,6 @@ function DiaryEdit() {
   const location = useLocation();
   const mypage = location.state;
   const navigate = useNavigate();
-  console.log(mypage?.data);
 
   const [file, setFile] = useState();
   const [title, setTitle] = useState(mypage?.data?.title);
@@ -17,6 +16,9 @@ function DiaryEdit() {
   const [diaryCondition, setDiaryCondition] = useState(
     mypage?.data?.diaryCondition
   );
+
+  console.log(mypage?.data);
+  console.log(file);
 
   // 공개 비공개 바꾸는거
   const handleConditionChange = (event) => {
@@ -39,20 +41,20 @@ function DiaryEdit() {
 
       const formData = new FormData();
       formData.append("img", file);
-      const data = {
-        title: title,
-        diaryCondition: diaryCondition,
-      };
+      const uploader = { title };
+      console.log(uploader);
       formData.append(
-        "data",
-        new Blob([JSON.stringify(data)], { type: "application/json" })
+        "title",
+        new Blob([JSON.stringify(uploader)], {
+          type: "application/json",
+        })
       );
-      console.log(data);
-      console.log(...formData);
 
       try {
+        const paramId = mypage.data.id;
+        console.log(paramId);
         const res = await axios.patch(
-          `${process.env.REACT_APP_BASEURL}/diary/${mypage.data.id}`,
+          `${process.env.REACT_APP_BASEURL}/diary/${paramId}`,
           formData,
           {
             headers: {
