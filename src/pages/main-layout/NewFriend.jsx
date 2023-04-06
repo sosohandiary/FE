@@ -50,14 +50,14 @@ const NewFriend = () => {
 
   let inputRef = useRef();
 
-  const onChangeInput = (e) => {
+  const onChangeInput = debounce((e) => {
     inputRef.current = e.target.value;
-    if (inputRef.current.trim() == '') {
+    if (inputRef.current.trim() == "") {
       setList([]);
     } else {
-      findFriend();
+      findFriend(inputRef.current);
     }
-  };
+  }, 500);
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
