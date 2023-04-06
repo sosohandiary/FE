@@ -66,7 +66,6 @@ const MainPage = () => {
         headers: { Authorization: accessToken },
       })
       .then((res) => {
-        console.log(res);
         setIsLoadingForSelfMadePrivate(false);
         setDataListForSelfMadePrivate(res.data);
       })
@@ -81,15 +80,16 @@ const MainPage = () => {
       setIsLoadingForPrivate(true);
       axios
         .get(
-          `${process.env.REACT_APP_BASEURL}/private?page=${privatePage}&size=5`,
+          `${process.env.REACT_APP_BASEURL}/invite?page=${privatePage}&size=5`,
           {
             headers: { Authorization: accessToken },
           }
         )
         .then((res) => {
+          console.log(res);
           setIsLoadingForPrivate(false);
 
-          setDataListForPrivate((prev) => [...prev, ...res.data]);
+          setDataListForPrivate((prev) => [...prev, ...res.data.content]);
           setPrivatePage((prev) => prev + 1);
         })
         .catch((err) => {
@@ -162,12 +162,13 @@ const MainPage = () => {
           onSlideChange={(e) => setActiveIdxForSelfmade(e.activeIndex)}
           className="mySwiper"
         >
-          {dataList?.map((item) => (
-            <SwiperSlide key={item.id}>
+          {dataListForSelfMadePrivate?.map((item, i) => (
+            <SwiperSlide key={i}>
               <DiaryCardTopBig
                 color="purple"
-                idx={item.id}
+                idx={i}
                 activeIdxForSelfmade={activeIdxForSelfmade}
+                item={item}
               >
                 Slide {item.id}
               </DiaryCardTopBig>
@@ -211,11 +212,7 @@ const MainPage = () => {
                   goToDiaryDetail(item.id);
                 }}
               >
-                <SlideOne imageUrl={item.img}>
-                  <h1>{item.title}</h1>
-                  <h3>{item.name}</h3>
-                  <p>{item.modifiedAt}</p>
-                </SlideOne>
+                <DiaryCard item={item} color="purple" />
               </SwiperSlide>
             ))}
             {IsLoadingForPrivate ? (
