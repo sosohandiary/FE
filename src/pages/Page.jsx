@@ -4,7 +4,6 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { VscBlank } from "react-icons/vsc";
 import { MdArrowBack } from "react-icons/md";
-import HTMLFlipBook from "react-pageflip";
 
 function Page() {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -12,7 +11,7 @@ function Page() {
   const mypage = location.state;
   const navigate = useNavigate();
   console.log(mypage.data);
-  const [previewImage, setPreviewImage] = useState(mypage?.data.img);
+  const [previewImage, setPreviewImage] = useState(mypage?.data?.img);
 
   // 수정
   const handleClick = () => {
@@ -42,30 +41,6 @@ function Page() {
     }
   };
 
-  const newInnerPaper = () => {
-    axios
-      .post(
-        `${process.env.REACT_APP_BASEURL}/diary/{diaryId}/detail`,
-        {
-          customJson: "",
-          content: "",
-        },
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-        alert("한 장 더 추가되었습니다");
-        window.location.reload();
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const goToInnerPaperDetail = () => {
-    navigate(`/diaries/{diaryId}/{paperId}`);
-  };
-
   return (
     <Wholebox>
       <TopBox>
@@ -73,15 +48,21 @@ function Page() {
         <Textbox>다이어리 상세보기</Textbox>
         <VscBlank className="VscBlank" />
       </TopBox>
-      <h2>{mypage?.data?.title}</h2>
-      <div>개설일: {mypage?.data?.createdAt}</div>
-      <div>
-        {mypage?.data?.diaryCondition === "public"
-          ? "공개 다이어리"
-          : "비공개 다이어리"}
-      </div>
-      <Upbutton onClick={handleClick}>수정하기</Upbutton>
-      <Upbutton onClick={handleDelete}>삭제하기</Upbutton>
+      <HeaderArea>
+        <h2>{mypage?.data?.title}</h2>
+        <HeaderRightArea>
+          <HeaderIsPublic>
+            {mypage?.data?.diaryCondition === "public"
+              ? "공개 다이어리"
+              : "비공개 다이어리"}
+          </HeaderIsPublic>
+          <HeaderCreatedAt>개설일: {mypage?.data?.createdAt}</HeaderCreatedAt>
+        </HeaderRightArea>
+      </HeaderArea>
+      <ButtonArea>
+        <Upbutton onClick={handleClick}>수정하기</Upbutton>
+        <Upbutton onClick={handleDelete}>삭제하기</Upbutton>
+      </ButtonArea>
       {previewImage && ( // 업로드하려는 이미지를 미리 보여줌
         <img
           alt="preview"
@@ -89,7 +70,7 @@ function Page() {
           style={{
             margin: "auto",
             width: "300px",
-            height: "400px",
+            height: "300px",
             borderRadius: "7px",
           }}
         />
@@ -103,12 +84,13 @@ export default Page;
 const Upbutton = styled.button`
   color: gray;
   background-color: #e8fefb;
-  width: 100px;
+  width: 300px;
   height: 35px;
   border: none;
   border-radius: 5px;
   font-weight: 700;
   font-size: 100%;
+  margin: 10px;
   cursor: pointer;
 `;
 
@@ -145,6 +127,26 @@ const Textbox = styled.div`
   margin: 15px;
 `;
 
-const InnerThumb = styled.div`
-  background-color: #f3f3f3;
+const HeaderArea = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+const HeaderRightArea = styled.div`
+  text-align: right;
+`;
+const HeaderCreatedAt = styled.div`
+  font-size: 12px;
+  color: rgba(1, 1, 1, 0.5);
+`;
+const HeaderIsPublic = styled.div`
+  font-size: 10px;
+  color: rgba(1, 1, 1, 0.3);
+`;
+
+const ButtonArea = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `;
