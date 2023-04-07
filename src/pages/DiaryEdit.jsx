@@ -31,24 +31,26 @@ function DiaryEdit() {
     }
   }, []);
 
+  useEffect(() => {
+    const url = mypage.data.img;
+    // let url =
+    //   "https://cdn.shopify.com/s/files/1/0234/8017/2591/products/young-man-in-bright-fashion_925x_f7029e2b-80f0-4a40-a87b-834b9a283c39.jpg";
+
+    const urlToObject = async () => {
+      const response = await fetch(url);
+      // here image is url/location of image
+      const blob = await response.blob();
+      const file = new File([blob], "image.jpg", { type: blob.type });
+      setFile(file);
+    };
+    urlToObject();
+  }, []);
+
   // 수정
   const handleClick = useCallback(
     async (e) => {
       e.preventDefault();
       const formData = new FormData();
-
-      // const url = mypage.data.img;
-      let url =
-        "https://cdn.shopify.com/s/files/1/0234/8017/2591/products/young-man-in-bright-fashion_925x_f7029e2b-80f0-4a40-a87b-834b9a283c39.jpg";
-
-      const urlToObject = async () => {
-        const response = await fetch(url);
-        // here image is url/location of image
-        const blob = await response.blob();
-        const file = new File([blob], "image.jpg", { type: blob.type });
-        setFile(file);
-      };
-      urlToObject();
 
       formData.append("img", file);
 
