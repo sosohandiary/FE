@@ -18,11 +18,11 @@ const Signup = () => {
   } = useForm();
   const onSubmit = async (data) => {
     delete data.passwordConfirm;
-    console.log("data", data);
+    console.log("nickname : ", data.nickname);
     axios
       .post(`${process.env.REACT_APP_BASEURL}/join`, data)
       .then(() => {
-        navigate("/signup-success");
+        navigate("/signup-success", { state: data.nickname });
         window.localStorage.setItem("already signed up", true);
       })
       .catch((err) => console.log(err));

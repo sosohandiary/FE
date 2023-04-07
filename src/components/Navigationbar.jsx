@@ -50,6 +50,13 @@ const Navigationbar = () => {
     }
   );
 
+  console.log(
+    "COMMENT",
+    dataForCommentAlarm,
+    dataForFriendAlarm,
+    dataForInviteAlarm
+  );
+
   dispatch(getCommentAlarm(dataForCommentAlarm?.data));
   dispatch(getFriendAlarm(dataForFriendAlarm?.data));
   dispatch(getInviteAlarm(dataForInviteAlarm?.data));
@@ -61,6 +68,32 @@ const Navigationbar = () => {
 
   const goToPage = (to) => {
     navigate(to);
+  };
+
+  const checkAllAlarm = () => {
+    dataForFriendAlarm.data.map((item) => {
+      return axios.patch(
+        `${process.env.REACT_APP_BASEURL}/invite/alarm/read/${item.friendListId}`,
+        {},
+        { headers: { Authorization: accessToken } }
+      );
+    });
+
+    dataForCommentAlarm.data.map((item) => {
+      return axios.patch(
+        `${process.env.REACT_APP_BASEURL}/comment/alarm/${item.commentId}`,
+        {},
+        { headers: { Authorization: accessToken } }
+      );
+    });
+
+    dataForInviteAlarm.data.map((item) => {
+      return axios.patch(
+        `${process.env.REACT_APP_BASEURL}/invite/alarm/read/${item.id}`,
+        {},
+        { headers: { Authorization: accessToken } }
+      );
+    });
   };
 
   return (
@@ -77,6 +110,7 @@ const Navigationbar = () => {
         onClick={() => {
           goToPage("/notification");
           setNavMode("BELL");
+          checkAllAlarm();
         }}
       >
         <Badge badgeContent={totalAlarmNumber} color="primary">
