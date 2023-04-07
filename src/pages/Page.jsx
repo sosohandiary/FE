@@ -4,6 +4,7 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { VscBlank } from "react-icons/vsc";
 import { MdArrowBack } from "react-icons/md";
+import HTMLFlipBook from "react-pageflip";
 
 function Page() {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -11,7 +12,7 @@ function Page() {
   const mypage = location.state;
   const navigate = useNavigate();
   console.log(mypage.data);
-  const [previewImage, setPreviewImage] = useState(mypage?.data?.img);
+  const [previewImage, setPreviewImage] = useState(mypage?.data.img);
 
   // 수정
   const handleClick = () => {
@@ -39,6 +40,30 @@ function Page() {
     } catch (error) {
       console.error("다이어리 삭제에 실패했습니다:", error);
     }
+  };
+
+  const newInnerPaper = () => {
+    axios
+      .post(
+        `${process.env.REACT_APP_BASEURL}/diary/{diaryId}/detail`,
+        {
+          customJson: "",
+          content: "",
+        },
+        {
+          headers: { Authorization: accessToken },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        alert("한 장 더 추가되었습니다");
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const goToInnerPaperDetail = () => {
+    navigate(`/diaries/{diaryId}/{paperId}`);
   };
 
   return (
@@ -118,4 +143,8 @@ const Textbox = styled.div`
   font-size: 110%;
   font-weight: bolder;
   margin: 15px;
+`;
+
+const InnerThumb = styled.div`
+  background-color: #f3f3f3;
 `;
