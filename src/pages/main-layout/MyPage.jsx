@@ -78,76 +78,74 @@ function MyPage() {
   };
   return (
     <>
-      <WholeViewWidth style={{overflow:"hidden"}}>
+      <WholeViewWidth style={{ overflow: "hidden" }}>
         <StArrow>
           <StyledGobackButton onClick={navToBack} />
         </StArrow>
-        <Title size='18'>마이페이지</Title>
-        <FlexContainer justifyContent='center'>
+        <Title size="18">마이페이지</Title>
+        <FlexContainer justifyContent="center">
           <ProfilePicLarge src={profile?.profileImageUrl} />
         </FlexContainer>
 
-        <Title size='22'>{profile?.nickname}</Title>
+        <Title size="22">{profile?.nickname}</Title>
 
         <Container>
-          <FlexContainer justifyContent='flex-end'>
+          <FlexContainer justifyContent="flex-end">
             <NavButton onClick={navToProfile}>
-              <Label size='16'>
-                프로필 편집
-              </Label>
+              <Label size="16">프로필 편집</Label>
             </NavButton>
           </FlexContainer>
 
-          <FlexContainer justifyContent='center'>
+          <FlexContainer justifyContent="center">
             <MenuBox>
-              <EachMenuBox boderRight='1px solid'>
+              <EachMenuBox boderRight="1px solid">
                 <NavButton onClick={navToFriendsList}>
-                  <LabelSpan size='18'>친구</LabelSpan>
-                  <Label size='20' fontWeight='bold' color='#858585'>
+                  <LabelSpan size="18">친구</LabelSpan>
+                  <Label size="20" fontWeight="bold" color="#858585">
                     {friendsCount?.data?.myFriendCount}
                   </Label>
                 </NavButton>
               </EachMenuBox>
               <EachMenuBox>
-                <LabelSpan size='18'>다이어리</LabelSpan>
-                <Label size='20' fontWeight='bold' color='#858585'>
+                <LabelSpan size="18">다이어리</LabelSpan>
+                <Label size="20" fontWeight="bold" color="#858585">
                   {diaryCount?.data?.myDiaryCount}
                 </Label>
               </EachMenuBox>
             </MenuBox>
           </FlexContainer>
 
-          <Label size='18' margin='16' fontWeight='bold'>
+          <Label size="18" margin="16" fontWeight="bold">
             내 다이어리
           </Label>
 
           {dataStatus ? (
             mypage?.map((item, index) => {
               return (
-                <FlexContainer justifyContent='center' key={item.id}>
+                <FlexContainer justifyContent="center" key={item.id}>
                   <DiaryCards>
                     <ThumbnailBox>
                       <ThumbnailImg src={item.img} />
                     </ThumbnailBox>
-                    <StTextBox display='flex'>
+                    <StTextBox display="flex">
                       {item.title === "" ? (
-                        <StText fontWeight='bold' size='18' color='#C2C3C5'>
+                        <StText fontWeight="bold" size="18" color="#C2C3C5">
                           제목 없음
                         </StText>
                       ) : (
-                        <StText fontWeight='bold' size='18'>
+                        <StText fontWeight="bold" size="18">
                           {/* {item.title.length > 10 ? item.title.slice(0, 10) + '...' : item.title} */}
                           {item.title}
                         </StText>
                       )}
                       {item.diaryCondition === "PUBLIC" ? (
-                        <Public size='16'>공유 다이어리</Public>
+                        <Public size="16">공유 다이어리</Public>
                       ) : (
-                        <Public size='16'>다이어리</Public>
+                        <Public size="16">다이어리</Public>
                       )}
                     </StTextBox>
                     <StTextBox>
-                      <Label size='16' color='#B0B0B0'>
+                      <Label size="16" color="#B0B0B0">
                         개설일: {getDate(item.createdAt)}{" "}
                       </Label>
                     </StTextBox>
@@ -155,7 +153,7 @@ function MyPage() {
                     <ConfirmButton
                       onClick={() => navToModifyCover(item.id, index)}
                     >
-                      <IoIosArrowForward size={28} color='#A1B2FA' />
+                      <IoIosArrowForward size={28} color="#A1B2FA" />
                     </ConfirmButton>
                   </DiaryCards>
                 </FlexContainer>
@@ -254,7 +252,7 @@ const EachMenuBox = styled.div`
   line-height: 1.3rem;
   color: ${(props) => props.color};
   border-right: ${(props) => props.boderRight};
-  border-right-color: #E1E7FF;
+  border-right-color: #e1e7ff;
 
   text-align: center;
   align-items: center;

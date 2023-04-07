@@ -364,4 +364,5 @@ const SubmitButton = styled.div`
   background-color: #e1e7ff;
   width: 430px;
   height: 50px;
+  cursor: pointer;
 `;
