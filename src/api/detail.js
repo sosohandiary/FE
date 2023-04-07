@@ -47,8 +47,8 @@ export const getDiary = async (diaryId, detailId, accessToken) => {
 };
 
 //다이어리속지 삭제
-export const deleteDiary = async (id, detailID, accessToken) => {
-  return await axios.delete(`${process.env.REACT_APP_BASEURL}/diary/${id}/detail/${detailID}`, {
+export const deleteDiary = async (diaryId, detailID, accessToken) => {
+  return await axios.delete(`${process.env.REACT_APP_BASEURL}/diary/${diaryId}/detail/${detailID}`, {
     headers: { Authorization: accessToken },
   });
 };

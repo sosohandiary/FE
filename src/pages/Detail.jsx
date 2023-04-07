@@ -15,6 +15,8 @@ import { getDiary } from "../api/detail";
 import Spinner from "../styles/Spinner";
 import CommentImage from "../assets//comment.png";
 import DiaryModal from "../components/detail/DiaryModal";
+import { useMutation } from "react-query";
+import { deleteDiary } from "../api/detail";
 
 function Detail() {
   const navigate = useNavigate();
@@ -34,8 +36,21 @@ function Detail() {
     sheetRef.current.click();
   }, []);
 
+  //delete
+  const { mutate: deleteDiaryMutate } = useMutation((detailId) => deleteDiary(diaryId, detailId, accessToken), {});
+
   const navToModify = () => {
     navigate(`/drawing/${diaryId}/${detailId}`);
+  };
+
+  const onDeleteHandler = async (detailId) => {
+    try {
+      await deleteDiaryMutate(detailId);
+      alert("삭제되었습니다");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -46,7 +61,7 @@ function Detail() {
           <GetUser ProfileImg={myDiary.profileImageUrl} createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
 
           <DiaryModalWrapper>
-            <DiaryModal navToModify={navToModify} />
+            <DiaryModal navToModify={navToModify} onDeleteHandler={onDeleteHandler} detailId={detailId} />
           </DiaryModalWrapper>
 
           <WholeAreaWithMargin>

@@ -9,6 +9,7 @@ const options = ["수정하기", "삭제하기"];
 const ITEM_HEIGHT = 48;
 
 const DiaryModal = (props) => {
+  const { navToModify, onDeleteHandler, detailId } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -52,7 +53,9 @@ const DiaryModal = (props) => {
             key={option}
             onClick={() => {
               if (option === "수정하기") {
-                props.navToModify();
+                navToModify();
+              } else if (option === "삭제하기") {
+                onDeleteHandler(detailId);
               }
               handleClose();
             }}
