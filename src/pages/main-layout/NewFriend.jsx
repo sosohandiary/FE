@@ -7,7 +7,6 @@ import Searchbox from "../../components/Searchbox";
 import { WholeViewWidth } from "../../styles/WholeAreaStyle";
 import { ProfilePicSmall } from "../../components/ProfilePics";
 import { useQuery, useMutation,useQueryClient } from "react-query";
-
 const NewFriend = () => {
   const accessToken = window.localStorage.getItem("accessToken");
 
@@ -32,6 +31,9 @@ const NewFriend = () => {
   const { data: friendList = [], isLoading: isFriendsLoading } = useQuery(
     ["getNewFriend", searchInput],
     async () => {
+      if (searchInput.trim() === "") {
+        return [];
+      }
       const res = await axios.get(
         `${process.env.REACT_APP_BASEURL}/search?name=${searchInput}`,
         { headers: { Authorization: accessToken } }
@@ -74,7 +76,9 @@ const NewFriend = () => {
           onKeyPress={handleKeyDown}
           setSearchInput={setSearchInput}
         />
-        {isFriendsLoading ? (
+        {searchInput.trim() === "" ? (
+          <StText>친구를 검색해주세요.</StText>
+        ) : isFriendsLoading ? (
           <StText>Loading...</StText>
         ) : friendList.length > 0 ? (
           friendList.map((item) => (
@@ -88,15 +92,13 @@ const NewFriend = () => {
               </ListBox>
 
               <ButtonBox>
-                {item.friendStatus !== "ACCEPTED" &&
-                  userId != item.memberId &&
-                  item.friendStatus !== "PENDING" &&(
-                    <AddButton onClick={() => addFriendMutation.mutate(item.memberId)}>
-                      <StText color="#9A9A9A" fontWeight="700">
-                        추가하기 +
-                      </StText>
-                    </AddButton>
-                  )}
+                {item.friendStatus !== "ACCEPTED" && userId != item.memberId && item.friendStatus !== "PENDING" && (
+                  <AddButton onClick={() => addFriendMutation.mutate(item.memberId)}>
+                    <StText color="#9A9A9A" fontWeight="700">
+                      추가하기 +
+                    </StText>
+                  </AddButton>
+                )}
               </ButtonBox>
             </ListCards>
           ))
@@ -107,6 +109,7 @@ const NewFriend = () => {
     </>
   );
 };
+
 
 export default NewFriend;
 
