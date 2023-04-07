@@ -8,16 +8,8 @@ import { useParams } from "react-router-dom";
 import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
 
-import {
-  LeadingActions,
-  SwipeableList,
-  SwipeableListItem,
-  SwipeAction,
-  TrailingActions,
-  Type as ListType,
-} from "react-swipeable-list";
+import { SwipeableList, SwipeableListItem, TrailingActions, Type as ListType } from "react-swipeable-list";
 import "react-swipeable-list/dist/styles.css";
-import AlarmReadCard from "../notification/AlarmReadCard";
 
 const CommentBox = () => {
   const [comment, setComment] = useState({
@@ -145,6 +137,7 @@ const CommentBox = () => {
       <WholeAreaWithMargin>
         <CommentsContainer>
           <h3>댓글</h3>
+          {mycomment?.length === 0 && <h5>"아직 댓글이 없어요"</h5>}
 
           <SwipeableList threshold={0.5} type={ListType.IOS} disableSwipe={isEditing}>
             {mycomment?.map((comment) => {
@@ -223,13 +216,24 @@ const CheckIconStyled = styled(RiCheckFill)`
 
 const CommentsContainer = styled.div`
   width: 375px;
-  height: 600px;
+  height: 500px;
   border: none;
   padding: 10px;
   margin-top: -25px;
   margin-bottom: -25px;
   overflow-y: auto;
   position: relative;
+  /* background-color: #598665; */
+
+  h5 {
+    text-align: center;
+    line-height: 22px;
+    margin-bottom: 20px;
+    font-style: normal;
+    font-weight: 700;
+    color: gray;
+    margin-top: 100px;
+  }
 
   h3 {
     text-align: center;

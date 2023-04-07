@@ -55,7 +55,7 @@ function MyPage() {
   };
 
   const navToFriendsList = () => {
-    navigate("/myfriends/list");
+    navigate("/myfriends");
   };
 
   const navToModifyCover = (diaryId, index) => {
