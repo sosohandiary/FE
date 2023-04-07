@@ -319,7 +319,7 @@ const PublicSelectBox = styled.div`
   border: 1px solid rgba(0, 0, 0, 0);
   border-radius: 20px;
   background-color: #eeeeee;
-  width: 430px;
+  width: 300px;
   height: 50px;
 `;
 
@@ -362,7 +362,7 @@ const SubmitButton = styled.div`
   border: 1px solid rgba(0, 0, 0, 0);
   border-radius: 20px;
   background-color: #e1e7ff;
-  width: 430px;
+  width: 300px;
   height: 50px;
   cursor: pointer;
 `;
