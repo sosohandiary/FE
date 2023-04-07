@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { VscBlank } from "react-icons/vsc";
@@ -95,6 +95,81 @@ function DiaryEdit() {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
+
+  //이미지 업로드 관련
+  const selectFile = useRef();
+  const imgClickHandler = () => {
+    console.log("dd");
+    selectFile.current.click();
+  };
+
+  return (
+    <Wholebox>
+      <TopBox>
+        <VscBlank className="VscBlank" />
+        <Textbox>다이어리 만들기</Textbox>
+        <VscBlank className="VscBlank" />
+      </TopBox>
+
+      <Card>
+        <SideLabel colorCode={"#E0C7FF"}></SideLabel>
+        <InnerArea>
+          <Title>{title}</Title>
+          <ImgArea>
+            {previewImage && ( // 업로드하려는 이미지를 미리 보여줌
+              <img
+                alt="preview"
+                src={previewImage}
+                style={{
+                  position: "absolute",
+                  top: "145px",
+                  width: "100px",
+                  height: "100px",
+                  borderRadius: "25px",
+                }}
+                onClick={imgClickHandler}
+              />
+            )}
+          </ImgArea>
+          <CreatedAt></CreatedAt>
+        </InnerArea>
+      </Card>
+
+      <InputBox>
+        <VscBlank className="VscBlank" />
+        <FileInput
+          type="file"
+          onChange={handleChange}
+          className="StyledInput"
+          ref={selectFile}
+        />
+        <VscBlank className="VscBlank" />
+      </InputBox>
+
+      <form>
+        <TitleText>제목</TitleText>
+        <TitleContent>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => {
+              if (e.target.value.length > 8) {
+                alert("제목이 너무 길어요");
+                return;
+              }
+              setTitle(e.target.value);
+            }}
+          />
+        </TitleContent>
+
+        <UpButtonBox>
+          <VscBlank className="VscBlank" />
+          <Upbutton onClick={handleClick}>생성하기</Upbutton>
+          <VscBlank className="VscBlank" />
+        </UpButtonBox>
+      </form>
+    </Wholebox>
+  );
 
   return (
     <Wholebox>
@@ -251,7 +326,7 @@ const ModalCloseButton = styled.button`
   background-color: gray;
 `;
 const InputBox = styled.div`
-  display: flex;
+  display: none;
   flex-direction: row;
   margin-left: 10px;
   margin-right: 10px;
@@ -365,4 +440,91 @@ const Textbox = styled.div`
   font-size: 110%;
   font-weight: bolder;
   margin: 15px;
+`;
+
+const Card = styled.div`
+  margin: 0 auto;
+  color: black;
+  background-size: cover;
+  width: 135px;
+  height: 180px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 13px;
+`;
+
+const SideLabel = styled.div`
+  background-color: ${({ colorCode }) => colorCode};
+  width: 15px;
+  height: 180px;
+  border-radius: 13px 0 0 13px;
+  position: absolute;
+`;
+
+const InnerArea = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const Title = styled.div`
+  font-weight: 700;
+  margin: 20px 0 20px 15px;
+`;
+
+const ImgArea = styled.div`
+  height: 100px;
+  width: 100px;
+  background-image: url(${({ imgSrc }) => imgSrc});
+  margin: 0 0 0 15px;
+`;
+
+const CreatedAt = styled.div`
+  font-size: 10px;
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+`;
+
+const PublicSelectBox = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 10px auto;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 20px;
+  background-color: #eeeeee;
+  width: 430px;
+  height: 50px;
+`;
+
+const SelectButtonLeft = styled.div`
+  transition: 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  background-color: ${({ diaryCondition }) =>
+    diaryCondition === "PUBLIC" ? "#ffe2e2" : ""};
+  width: 100%;
+  border-radius: 20px 0 0 20px;
+`;
+
+const SelectButtonRight = styled.div`
+  transition: 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  background-color: ${({ diaryCondition }) =>
+    diaryCondition === "PRIVATE" ? "#ffe2e2" : ""};
+  width: 100%;
+  border-radius: 0 20px 20px 0;
+`;
+
+const CenterColumn = styled.div`
+  background-color: rgba(1, 1, 1, 0.5);
+  width: 1px;
+  height: 20px;
+  position: absolute;
 `;
