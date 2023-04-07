@@ -14,7 +14,6 @@ const Notification = () => {
       headers: { Authorization: accessToken },
     });
   });
-  console.log(dataForFriendRequest);
 
   const { data: dataForInviteAlarm } = useQuery(["getInviteAlarm"], () => {
     return axios.get(`${process.env.REACT_APP_BASEURL}/invite/alarm`, {
@@ -28,18 +27,23 @@ const Notification = () => {
     });
   });
 
-  const acceptFriend = () => {
-    console.log();
-  };
-
   const dataListForFriendRequset = dataForFriendRequest?.data;
   const dataListForInviteAlarm = dataForInviteAlarm?.data;
   const dataListForCommentAlarm = dataForCommentAlarm?.data;
 
+  const testForButton = () => {
+    axios
+      .patch(`${process.env.REACT_APP_BASEURL}/friend/request/read/2`, {
+        headers: { Authorization: accessToken },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
   return (
     <>
       <TitleBox />
 
+      <button onClick={testForButton}>뻐튼</button>
       <AlarmBox>
         {dataListForFriendRequset?.map((item, i) => (
           <AlarmList key={i} alarmType="friend" item={item} />

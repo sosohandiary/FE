@@ -42,7 +42,6 @@ function Detail() {
 
   return (
     <>
-      <button onClick={navToModify}>수정하기</button>
       <StyledGobackButton onClick={() => navigate(-1)} />
       {myDiary && (
         <StyledDerailPage>
@@ -53,7 +52,7 @@ function Detail() {
           />
           <WholeAreaWithMargin>
             <StyledDetailCardWrapper>
-              <StyledDetailCard>
+              <StyledDetailCard onClick={navToModify}>
                 <div>{myDiary.diaryTitle}</div>
               </StyledDetailCard>
             </StyledDetailCardWrapper>

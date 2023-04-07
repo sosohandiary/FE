@@ -73,6 +73,7 @@ function SubPage() {
   return (
     <>
       <Title>다이어리 상세보기</Title>
+
       <LeftArrow src={leftArrow} onMouseDown={goBackHandler}></LeftArrow>
       {data?.map((item, index) => (
         <div key={item.id}>
@@ -85,7 +86,7 @@ function SubPage() {
         </div>
       ))}
       <MorePageButton onClick={newInnerPaper}>한장 더 쓰기</MorePageButton>
-      {/* <FlipStyle>
+      <FlipStyle>
         <HTMLFlipBook width={300} height={500}>
           <InnerThumb onClick={() => goToInnerPaperDetail(data[0]?.id)}>
             <div>id : {data[0]?.id}</div>
@@ -128,7 +129,7 @@ function SubPage() {
             <div>likeCount : {data[4]?.likeCount}</div>
           </InnerThumb>
         </HTMLFlipBook>
-      </FlipStyle> */}
+      </FlipStyle>
       <div>
         <StyledPagination
           pageCount={pageCount}
