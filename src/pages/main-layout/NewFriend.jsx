@@ -1,132 +1,108 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 import debounce from "lodash.debounce";
 
-import { ProfilePicSmall } from "../../components/ProfilePics";
-import { useNavigate } from "react-router-dom";
 import Searchbox from "../../components/Searchbox";
 import { WholeViewWidth } from "../../styles/WholeAreaStyle";
+import { ProfilePicSmall } from "../../components/ProfilePics";
+import { useQuery, useMutation,useQueryClient } from "react-query";
 
 const NewFriend = () => {
   const accessToken = window.localStorage.getItem("accessToken");
-  const [list, setList] = useState([]);
-  const [friendStatus, setFriendStatus] = useState("");
+
   const [userId, setUserId] = useState(null);
-  const [requested, setRequested] = useState(false);
+
+  const [searchInput, setSearchInput] = useState("");
+
+  const queryClient = useQueryClient();
 
   //프로필 get 해오기!!!
-
-  const getProfile = () => {
-    axios
-      .get(`${process.env.REACT_APP_BASEURL}/mypage/profile`, {
-        headers: { Authorization: accessToken },
-      })
-      .then((res) => {
-        setUserId(res.data.memberId);
-      })
-      .catch((err) => console.log(err));
+  const getProfile = async () => {
+    const res = await axios.get(`${process.env.REACT_APP_BASEURL}/mypage/profile`, {
+      headers: { Authorization: accessToken },
+    });
+    setUserId(res.data.memberId);
   };
 
   useEffect(() => {
     getProfile();
   }, []);
 
-  const findFriend = async () => {
-    try {
+  const { data: friendList = [], isLoading: isFriendsLoading } = useQuery(
+    ["getNewFriend", searchInput],
+    async () => {
       const res = await axios.get(
-        `${process.env.REACT_APP_BASEURL}/search?name=${inputRef.current}`,
-        {
-          headers: { Authorization: accessToken },
-        }
+        `${process.env.REACT_APP_BASEURL}/search?name=${searchInput}`,
+        { headers: { Authorization: accessToken } }
       );
-      console.log(res.data);
-      setList(res.data);
-    } catch (err) {
-      console.log(err);
+      return res.data;
+    },
+    {
+      enabled: searchInput.trim() !== "",
     }
-  };
+  );
 
-  let inputRef = useRef();
-
-  const onChangeInput = debounce((e) => {
-    inputRef.current = e.target.value;
-    if (inputRef.current.trim() == "") {
-      setList([]);
-    } else {
-      findFriend(inputRef.current);
+  const addFriendMutation = useMutation(
+    (id) =>
+      axios.post(
+        `${process.env.REACT_APP_BASEURL}/friend/request/${id}`,
+        {},
+        { headers: { Authorization: accessToken } }
+      ),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("getNewFriend");
+      },
     }
-  }, 500);
+  );
+
+  const onChangeInput = debounce((e) => setSearchInput(e.target.value), 500);
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      findFriend(event);
+      setSearchInput(event.target.value);
     }
   };
-
-  const addFriend = (id) => {
-    console.log(id);
-    axios
-      .post(
-        `${process.env.REACT_APP_BASEURL}/friend/request/${id}`,
-        {},
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-        setRequested(true);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {
-    list?.map((item) => {
-      if (item.friendStatus === null) setFriendStatus("null");
-      if (item.friendStatus === "ACCEPTED") setFriendStatus("ACCEPTED");
-      if (item.friendStatus === "PENDING") setFriendStatus("PENDING");
-    });
-  }, [findFriend]);
 
   return (
     <>
       <WholeViewWidth>
         <Searchbox
-          placeholder='아이디를 검색해 친구를 추가해보세요'
+          placeholder="아이디를 검색해 친구를 추가해보세요"
           onChangeInput={onChangeInput}
           onKeyPress={handleKeyDown}
-          // value={inputRef}
+          setSearchInput={setSearchInput}
         />
-        {list?.map((item) => (
-          <ListCards key={item.memberId}>
-            <ListBox>
-              <ProfilePicSmall src={item.profileImageUrl} />
-              <ListContentBox>
-                <StText fontWeight='bold'>{item.name}</StText>
-                <StText>{item.statusMessage}</StText>
-              </ListContentBox>
-            </ListBox>
+        {isFriendsLoading ? (
+          <StText>Loading...</StText>
+        ) : friendList.length > 0 ? (
+          friendList.map((item) => (
+            <ListCards key={item.memberId}>
+              <ListBox>
+                <ProfilePicSmall src={item.profileImageUrl} />
+                <ListContentBox>
+                  <StText fontWeight="bold">{item.name}</StText>
+                  <StText>{item.statusMessage}</StText>
+                </ListContentBox>
+              </ListBox>
 
-            <ButtonBox>
-              {friendStatus !== "ACCEPTED" &&
-                userId != item.memberId &&
-                friendStatus !== "PENDING" &&
-                !requested && (
-                  <AddButton
-                    onClick={() => {
-                      addFriend(item.memberId);
-                    }}
-                  >
-                    <StText color='#9A9A9A' fontWeight='700'>
-                      추가하기 +
-                    </StText>
-                  </AddButton>
-                )}
-            </ButtonBox>
-          </ListCards>
-        ))}
+              <ButtonBox>
+                {item.friendStatus !== "ACCEPTED" &&
+                  userId != item.memberId &&
+                  item.friendStatus !== "PENDING" &&(
+                    <AddButton onClick={() => addFriendMutation.mutate(item.memberId)}>
+                      <StText color="#9A9A9A" fontWeight="700">
+                        추가하기 +
+                      </StText>
+                    </AddButton>
+                  )}
+              </ButtonBox>
+            </ListCards>
+          ))
+        ) : (
+          <StText>검색 결과가 없습니다.</StText>
+        )}
       </WholeViewWidth>
     </>
   );

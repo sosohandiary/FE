@@ -4,12 +4,13 @@ import Navigationbar from "../components/Navigationbar";
 import { SlMagnifier } from "react-icons/sl";
 import { MdOutlineCancel } from "react-icons/md";
 
-function Searchbox({placeholder, onChangeInput, onKeyPress}) {
+function Searchbox({placeholder, onChangeInput, onKeyPress, setSearchInput}) {
 
   const inputRef = useRef();
 
   const clearButtonHandler = () => {
     inputRef.current.value = "";
+    setSearchInput(inputRef.current.value)
   }
 
   return (

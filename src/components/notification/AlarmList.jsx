@@ -31,9 +31,13 @@ const AlarmList = ({ item, alarmType }) => {
 
   const acceptFriend = (id) => {
     axios
-      .put(`${process.env.REACT_APP_BASEURL}/friend/request/accept/${id}`, {
-        headers: { Authorization: accessToken },
-      })
+      .put(
+        `${process.env.REACT_APP_BASEURL}/friend/request/accept/${id}`,
+        {},
+        {
+          headers: { Authorization: accessToken },
+        }
+      )
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };

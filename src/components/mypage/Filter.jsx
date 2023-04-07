@@ -8,8 +8,16 @@ import { MdOutlineCancel } from "react-icons/md";
 const Filter = ({ setCards, existCards, placeholder }) => {
   // console.log(existCards);
   const handleOnChangeFilterInput = (e) => {
-    if (e.target.value == "") return setCards(existCards);
-    setCards(existCards.filter((card) => card.nickname === e.target.value));
+    const searchText = e.target.value.toLowerCase();
+    if (searchText === "") {
+      setCards(existCards);
+    } else {
+      setCards(
+        existCards.filter((card) =>
+          card.nickname.toLowerCase().charAt(0) === searchText.charAt(0)
+        )
+      );
+    }
   };
 
   const inputRef = useRef();
