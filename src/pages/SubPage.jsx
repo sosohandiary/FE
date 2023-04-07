@@ -3,19 +3,9 @@ import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import HTMLFlipBook from "react-pageflip";
-
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/pagination";
-
-import { Pagination } from "swiper";
 import ReactPaginate from "react-paginate";
-
 import { getDate } from "../utils/getDate";
-import DecorationBoard from "../components/DecorationBoard";
+import leftArrow from "../assets/leftArrow.png";
 
 function SubPage() {
   const navigate = useNavigate();
@@ -55,6 +45,7 @@ function SubPage() {
   const goToInnerPaperDetail = (paperId) => {
     navigate(`/diaries/${diaryId}/${paperId}`);
   };
+
   const newInnerPaper = () => {
     axios
       .post(
@@ -75,62 +66,69 @@ function SubPage() {
       .catch((err) => console.log(err));
   };
 
+  const goBackHandler = () => {
+    navigate(-1);
+  };
+
   return (
     <>
-      <Title size="18">다이어리 상세보기</Title>
+      <Title>다이어리 상세보기</Title>
+      <LeftArrow src={leftArrow} onMouseDown={goBackHandler}></LeftArrow>
       {data?.map((item, index) => (
         <div key={item.id}>
           {index === 0 && (
-            <>
-              <div>{item.diaryTitle}</div>
-              <div>{getDate(item.createdAt)}</div>
-            </>
+            <HeaderStyle>
+              <DiaryTitle>{item.diaryTitle}</DiaryTitle>
+              <DiaryCreatedAt>{getDate(item.createdAt)}</DiaryCreatedAt>
+            </HeaderStyle>
           )}
         </div>
       ))}
-      <button onClick={newInnerPaper}>한장 더 쓰기</button>
-      <HTMLFlipBook width={300} height={500}>
-        <InnerThumb onClick={() => goToInnerPaperDetail(data[0]?.id)}>
-          <div>id : {data[0]?.id}</div>
-          <div>diaryTitle : {data[0]?.diaryTitle}</div>
-          <div>nickname : {data[0]?.nickname}</div>
-          <div>createdAt : {data[0]?.createdAt}</div>
-          <div>modifiedAt : {data[0]?.modifiedAt}</div>
-          <div>likeCount : {data[0]?.likeCount}</div>
-        </InnerThumb>
-        <InnerThumb onClick={() => goToInnerPaperDetail(data[1]?.id)}>
-          <div>id : {data[1]?.id}</div>
-          <div>diaryTitle : {data[1]?.diaryTitle}</div>
-          <div>nickname : {data[1]?.nickname}</div>
-          <div>createdAt : {data[1]?.createdAt}</div>
-          <div>modifiedAt : {data[1]?.modifiedAt}</div>
-          <div>likeCount : {data[1]?.likeCount}</div>
-        </InnerThumb>
-        <InnerThumb onClick={() => goToInnerPaperDetail(data[2]?.id)}>
-          <div>id : {data[2]?.id}</div>
-          <div>diaryTitle : {data[2]?.diaryTitle}</div>
-          <div>nickname : {data[2]?.nickname}</div>
-          <div>createdAt : {data[2]?.createdAt}</div>
-          <div>modifiedAt : {data[2]?.modifiedAt}</div>
-          <div>likeCount : {data[2]?.likeCount}</div>
-        </InnerThumb>
-        <InnerThumb onClick={() => goToInnerPaperDetail(data[3]?.id)}>
-          <div>id : {data[3]?.id}</div>
-          <div>diaryTitle : {data[3]?.diaryTitle}</div>
-          <div>nickname : {data[3]?.nickname}</div>
-          <div>createdAt : {data[3]?.createdAt}</div>
-          <div>modifiedAt : {data[3]?.modifiedAt}</div>
-          <div>likeCount : {data[3]?.likeCount}</div>
-        </InnerThumb>
-        <InnerThumb onClick={() => goToInnerPaperDetail(data[4]?.id)}>
-          <div>id : {data[4]?.id}</div>
-          <div>diaryTitle : {data[4]?.diaryTitle}</div>
-          <div>nickname : {data[4]?.nickname}</div>
-          <div>createdAt : {data[4]?.createdAt}</div>
-          <div>modifiedAt : {data[4]?.modifiedAt}</div>
-          <div>likeCount : {data[4]?.likeCount}</div>
-        </InnerThumb>
-      </HTMLFlipBook>
+      <MorePageButton onClick={newInnerPaper}>한장 더 쓰기</MorePageButton>
+      {/* <FlipStyle>
+        <HTMLFlipBook width={300} height={500}>
+          <InnerThumb onClick={() => goToInnerPaperDetail(data[0]?.id)}>
+            <div>id : {data[0]?.id}</div>
+            <div>diaryTitle : {data[0]?.diaryTitle}</div>
+            <div>nickname : {data[0]?.nickname}</div>
+            <div>createdAt : {data[0]?.createdAt}</div>
+            <div>modifiedAt : {data[0]?.modifiedAt}</div>
+            <div>likeCount : {data[0]?.likeCount}</div>
+          </InnerThumb>
+          <InnerThumb onClick={() => goToInnerPaperDetail(data[1]?.id)}>
+            <div>id : {data[1]?.id}</div>
+            <div>diaryTitle : {data[1]?.diaryTitle}</div>
+            <div>nickname : {data[1]?.nickname}</div>
+            <div>createdAt : {data[1]?.createdAt}</div>
+            <div>modifiedAt : {data[1]?.modifiedAt}</div>
+            <div>likeCount : {data[1]?.likeCount}</div>
+          </InnerThumb>
+          <InnerThumb onClick={() => goToInnerPaperDetail(data[2]?.id)}>
+            <div>id : {data[2]?.id}</div>
+            <div>diaryTitle : {data[2]?.diaryTitle}</div>
+            <div>nickname : {data[2]?.nickname}</div>
+            <div>createdAt : {data[2]?.createdAt}</div>
+            <div>modifiedAt : {data[2]?.modifiedAt}</div>
+            <div>likeCount : {data[2]?.likeCount}</div>
+          </InnerThumb>
+          <InnerThumb onClick={() => goToInnerPaperDetail(data[3]?.id)}>
+            <div>id : {data[3]?.id}</div>
+            <div>diaryTitle : {data[3]?.diaryTitle}</div>
+            <div>nickname : {data[3]?.nickname}</div>
+            <div>createdAt : {data[3]?.createdAt}</div>
+            <div>modifiedAt : {data[3]?.modifiedAt}</div>
+            <div>likeCount : {data[3]?.likeCount}</div>
+          </InnerThumb>
+          <InnerThumb onClick={() => goToInnerPaperDetail(data[4]?.id)}>
+            <div>id : {data[4]?.id}</div>
+            <div>diaryTitle : {data[4]?.diaryTitle}</div>
+            <div>nickname : {data[4]?.nickname}</div>
+            <div>createdAt : {data[4]?.createdAt}</div>
+            <div>modifiedAt : {data[4]?.modifiedAt}</div>
+            <div>likeCount : {data[4]?.likeCount}</div>
+          </InnerThumb>
+        </HTMLFlipBook>
+      </FlipStyle> */}
       <div>
         <StyledPagination
           pageCount={pageCount}
@@ -151,9 +149,25 @@ const Title = styled.div`
   font-weight: bold;
   font-size: ${({ size }) => `${size}px`};
   color: black;
-
   display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 10px;
+`;
+
+const HeaderStyle = styled.div`
+  display: flex;
+  padding: 20px;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const DiaryTitle = styled.div`
+  font-size: 30px;
+`;
+
+const DiaryCreatedAt = styled.div`
+  font-size: 10px;
 `;
 
 const StPageCard = styled.div`
@@ -165,7 +179,6 @@ const StPageCard = styled.div`
 const StyledPagination = styled(ReactPaginate)`
   display: flex;
   justify-content: center;
-  margin-top: 20px;
 
   & li {
     display: inline-block;
@@ -213,4 +226,31 @@ const StButton = styled.button`
 
 const InnerThumb = styled.div`
   background-color: #f3f3f3;
+`;
+
+const MorePageButton = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 auto -130px auto;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 20px;
+  background-color: #e1e7ff;
+  width: 430px;
+  height: 50px;
+  cursor: pointer;
+  z-index: 10;
+  position: relative;
+`;
+
+const FlipStyle = styled.div`
+  margin: -130px auto;
+`;
+
+const LeftArrow = styled.img`
+  margin-left: 20px;
+  width: 20px;
+  position: absolute;
+  top: 50px;
+  z-index: 11;
 `;
