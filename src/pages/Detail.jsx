@@ -30,7 +30,7 @@ function Detail() {
 
   const myDiary = diaryData?.data;
 
-  // console.log(myDiary);
+  console.log("data", myDiary);
 
   useEffect(() => {
     sheetRef.current.click();
@@ -58,7 +58,7 @@ function Detail() {
       <StyledGobackButton onClick={() => navigate(-1)} />
       {myDiary && (
         <StyledDerailPage>
-          <GetUser ProfileImg={myDiary.profileImageUrl} createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
+          <GetUser ProfileImg={myDiary.profileImageUrl} createdAt={myDiary.createdAt} nickname={myDiary.nickName} />
 
           <DiaryModalWrapper>
             <DiaryModal navToModify={navToModify} onDeleteHandler={onDeleteHandler} detailId={detailId} />
