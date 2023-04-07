@@ -216,13 +216,14 @@ const CheckIconStyled = styled(RiCheckFill)`
 
 const CommentsContainer = styled.div`
   width: 375px;
-  height: 600px;
+  height: 500px;
   border: none;
   padding: 10px;
   margin-top: -25px;
   margin-bottom: -25px;
   overflow-y: auto;
   position: relative;
+  /* background-color: #598665; */
 
   h5 {
     text-align: center;
