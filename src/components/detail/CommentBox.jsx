@@ -8,16 +8,8 @@ import { useParams } from "react-router-dom";
 import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
 
-import {
-  LeadingActions,
-  SwipeableList,
-  SwipeableListItem,
-  SwipeAction,
-  TrailingActions,
-  Type as ListType,
-} from "react-swipeable-list";
+import { SwipeableList, SwipeableListItem, TrailingActions, Type as ListType } from "react-swipeable-list";
 import "react-swipeable-list/dist/styles.css";
-import AlarmReadCard from "../notification/AlarmReadCard";
 
 const CommentBox = () => {
   const [comment, setComment] = useState({
