@@ -23,12 +23,9 @@ function SubPage() {
 
   const fetchData = async (page) => {
     const response = await axios
-      .get(
-        `${process.env.REACT_APP_BASEURL}/diary/${diaryId}/detail?page=${currentPage}&size=5`,
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
+      .get(`${process.env.REACT_APP_BASEURL}/diary/${diaryId}/detail?page=${currentPage}&size=5`, {
+        headers: { Authorization: accessToken },
+      })
       .then((res) => {
         console.log(res);
         setData([...res.data.content]); // 객체로 반환되길래 배열로 만듬
@@ -85,7 +82,7 @@ function SubPage() {
         </div>
       ))}
       <MorePageButton onClick={newInnerPaper}>한장 더 쓰기</MorePageButton>
-      {/* <FlipStyle>
+      <FlipStyle>
         <HTMLFlipBook width={300} height={500}>
           <InnerThumb onClick={() => goToInnerPaperDetail(data[0]?.id)}>
             <div>id : {data[0]?.id}</div>
@@ -128,7 +125,7 @@ function SubPage() {
             <div>likeCount : {data[4]?.likeCount}</div>
           </InnerThumb>
         </HTMLFlipBook>
-      </FlipStyle> */}
+      </FlipStyle>
       <div>
         <StyledPagination
           pageCount={pageCount}
