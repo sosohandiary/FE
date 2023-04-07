@@ -110,19 +110,6 @@ const Diary = () => {
         <VscBlank className="VscBlank" />
       </InputBox>
 
-      {/* {previewImage && ( // 업로드하려는 이미지를 미리 보여줌
-        <img
-          alt="preview"
-          src={previewImage}
-          style={{
-            margin: "auto",
-            width: "100px",
-            height: "150px",
-            borderRadius: "25px",
-          }}
-        />
-      )} */}
-
       <form>
         <TitleText>제목</TitleText>
         <TitleContent>
@@ -139,30 +126,6 @@ const Diary = () => {
           />
         </TitleContent>
 
-        {/* <PrivateorPublicBox>
-          <VscBlank className="VscBlank" />
-          <RadioWrapper>
-            <label>
-              <input
-                type="radio"
-                value="PRIVATE"
-                checked={diaryCondition === "PRIVATE"}
-                onChange={handleConditionChange}
-              />
-              <span>비공개</span>
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="PUBLIC"
-                checked={diaryCondition === "PUBLIC"}
-                onChange={handleConditionChange}
-              />
-              <span>공개</span>
-            </label>
-          </RadioWrapper>
-        </PrivateorPublicBox>
- */}
         <PublicSelectBox>
           <SelectButtonLeft
             diaryCondition={diaryCondition}
@@ -183,11 +146,7 @@ const Diary = () => {
           </SelectButtonRight>
         </PublicSelectBox>
 
-        <UpButtonBox>
-          <VscBlank className="VscBlank" />
-          <Upbutton onClick={handleClick}>생성하기</Upbutton>
-          <VscBlank className="VscBlank" />
-        </UpButtonBox>
+        <SubmitButton onClick={handleClick}>생성하기</SubmitButton>
       </form>
     </Wholebox>
   );
@@ -393,4 +352,16 @@ const CenterColumn = styled.div`
   width: 1px;
   height: 20px;
   position: absolute;
+`;
+
+const SubmitButton = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 100px auto 80px auto;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 20px;
+  background-color: #e1e7ff;
+  width: 430px;
+  height: 50px;
 `;
