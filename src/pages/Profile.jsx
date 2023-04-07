@@ -93,7 +93,6 @@ function Profile() {
   };
 
   const handleDelete = () => {
-    //alert창 수정하기
     alert("탈퇴 완료!");
     deleteAccountMutate();
     localStorage.removeItem("accessToken");
@@ -121,6 +120,7 @@ function Profile() {
     );
 
     mutation.mutate(formData);
+    alert('프로필 변경 성공');
   }
 
   return (
