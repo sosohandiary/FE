@@ -85,7 +85,7 @@ function SubPage() {
         </div>
       ))}
       <MorePageButton onClick={newInnerPaper}>한장 더 쓰기</MorePageButton>
-      <FlipStyle>
+      {/* <FlipStyle>
         <HTMLFlipBook width={300} height={500}>
           <InnerThumb onClick={() => goToInnerPaperDetail(data[0]?.id)}>
             <div>id : {data[0]?.id}</div>
@@ -128,7 +128,7 @@ function SubPage() {
             <div>likeCount : {data[4]?.likeCount}</div>
           </InnerThumb>
         </HTMLFlipBook>
-      </FlipStyle>
+      </FlipStyle> */}
       <div>
         <StyledPagination
           pageCount={pageCount}

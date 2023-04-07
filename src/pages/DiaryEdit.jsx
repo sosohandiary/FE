@@ -3,6 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { VscBlank } from "react-icons/vsc";
 import { useLocation, useNavigate } from "react-router-dom";
+import leftArrow from "../assets/leftArrow.png";
 
 function DiaryEdit() {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -115,6 +116,10 @@ function DiaryEdit() {
     selectFile.current.click();
   };
 
+  const goBackHandler = () => {
+    navigate(-1);
+  };
+
   return (
     <Wholebox>
       <TopBox>
@@ -122,6 +127,9 @@ function DiaryEdit() {
         <Textbox>다이어리 만들기</Textbox>
         <VscBlank className="VscBlank" />
       </TopBox>
+      <div>
+        <img src={leftArrow} onClick={goBackHandler} />
+      </div>
 
       <Card>
         <SideLabel colorCode={"#E0C7FF"}></SideLabel>
@@ -546,6 +554,6 @@ const SubmitButton = styled.div`
   border: 1px solid rgba(0, 0, 0, 0);
   border-radius: 20px;
   background-color: #e1e7ff;
-  width: 430px;
+  width: 300px;
   height: 50px;
 `;

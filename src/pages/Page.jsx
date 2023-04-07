@@ -41,10 +41,13 @@ function Page() {
     }
   };
 
+  const goBackHandler = () => {
+    navigate(-1);
+  };
   return (
     <Wholebox>
       <TopBox>
-        <MdArrowBack className="MdArrowBack" />
+        <MdArrowBack className="MdArrowBack" onClick={goBackHandler} />
         <Textbox>다이어리 상세보기</Textbox>
         <VscBlank className="VscBlank" />
       </TopBox>
