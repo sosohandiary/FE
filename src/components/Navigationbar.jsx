@@ -1,9 +1,5 @@
-import React, { memo, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { VscHome, VscBell, VscBlank } from "react-icons/vsc";
-import { RxMagnifyingGlass, RxPerson } from "react-icons/rx";
-import { BiPlus } from "react-icons/bi";
-import { FaCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import home from "../assets/navbar/home.png";
 import bell from "../assets/navbar/bell.png";
