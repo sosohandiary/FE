@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import "react-spring-bottom-sheet/dist/style.css";
 import CommentBox from "../components/detail/CommentBox";
-import { IoChatbubblesOutline } from "react-icons/io5";
 import "react-spring-bottom-sheet/dist/style.css";
 import Like from "../components/detail/Like";
 import { WholeAreaWithMargin, WholeViewWidth } from "../styles/WholeAreaStyle";
@@ -15,6 +14,9 @@ import { useParams } from "react-router-dom";
 import { getDiary } from "../api/detail";
 import Spinner from "../styles/Spinner";
 import CommentImage from "../assets//comment.png";
+import DiaryModal from "../components/detail/DiaryModal";
+import { useMutation } from "react-query";
+import { deleteDiary } from "../api/detail";
 
 function Detail() {
   const navigate = useNavigate();
@@ -24,9 +26,7 @@ function Detail() {
 
   const accessToken = localStorage.getItem("accessToken");
 
-  const { data: diaryData } = useQuery(["getDiary"], () =>
-    getDiary(diaryId, detailId, accessToken)
-  );
+  const { data: diaryData } = useQuery(["getDiary"], () => getDiary(diaryId, detailId, accessToken));
 
   const myDiary = diaryData?.data;
 
@@ -36,8 +36,21 @@ function Detail() {
     sheetRef.current.click();
   }, []);
 
+  //delete
+  const { mutate: deleteDiaryMutate } = useMutation((detailId) => deleteDiary(diaryId, detailId, accessToken), {});
+
   const navToModify = () => {
     navigate(`/drawing/${diaryId}/${detailId}`);
+  };
+
+  const onDeleteHandler = async (detailId) => {
+    try {
+      await deleteDiaryMutate(detailId);
+      alert("삭제되었습니다");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -45,11 +58,12 @@ function Detail() {
       <StyledGobackButton onClick={() => navigate(-1)} />
       {myDiary && (
         <StyledDerailPage>
-          <GetUser
-            ProfileImg={myDiary.profileImageUrl}
-            createdAt={myDiary.createdAt}
-            nickname={myDiary.nickname}
-          />
+          <GetUser ProfileImg={myDiary.profileImageUrl} createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
+
+          <DiaryModalWrapper>
+            <DiaryModal navToModify={navToModify} onDeleteHandler={onDeleteHandler} detailId={detailId} />
+          </DiaryModalWrapper>
+
           <WholeAreaWithMargin>
             <StyledDetailCardWrapper>
               <StyledDetailCard onClick={navToModify}>
@@ -60,25 +74,14 @@ function Detail() {
         </StyledDerailPage>
       )}
 
-      <button
-        style={{ display: "none" }}
-        ref={sheetRef}
-        onClick={() => setOpen(true)}
-      ></button>
+      <button style={{ display: "none" }} ref={sheetRef} onClick={() => setOpen(true)}></button>
 
       {myDiary ? (
         <BottomSheet
           open={open}
           header={
             <DetailElement>
-              {/* <CommentIcon /> */}
-              <img
-                src={CommentImage}
-                alt="코멘트 아이콘"
-                width="28"
-                height="28"
-                style={{ marginRight: "5px" }}
-              />
+              <img src={CommentImage} alt="코멘트 아이콘" width="28" height="28" style={{ marginRight: "5px" }} />
               {myDiary.commentCount}
               <Like diaryData={myDiary} />
               {myDiary.likeCount}
@@ -107,8 +110,8 @@ function Detail() {
 export default Detail;
 
 const StyledDerailPage = styled.div`
-  /* background-color: black; */
   margin-top: 40px;
+  position: relative;
 `;
 
 const StyledGobackButton = styled(MdArrowBack)`
@@ -126,6 +129,7 @@ const StyledDetailCardWrapper = styled(WholeViewWidth)`
   justify-content: center;
   align-items: center;
   margin-top: 10px;
+  overflow: hidden;
 `;
 
 const StyledDetailCard = styled.div`
@@ -142,11 +146,11 @@ const DetailElement = styled.div`
   display: flex;
 `;
 
-const CommentIcon = styled(IoChatbubblesOutline)`
-  font-size: 1.8rem; // 원하는 크기로 조절
-  display: flex;
-  align-items: center;
-  background-color: transparent;
+const DiaryModalWrapper = styled.div`
+  background-color: #fff;
   border: none;
-  cursor: pointer;
+  position: absolute;
+  top: 36px;
+  right: 50%;
+  transform: translateX(460%);
 `;
