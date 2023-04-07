@@ -231,7 +231,7 @@ const CommentsContainer = styled.div`
     font-style: normal;
     font-weight: 700;
     color: gray;
-    margin-top: 250px;
+    margin-top: 100px;
   }
 
   h3 {
