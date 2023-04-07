@@ -19,29 +19,36 @@ const Navigationbar = () => {
   const accessToken = window.localStorage.getItem("accessToken");
   const [navMode, setNavMode] = useState("HOME");
 
-  const { data: dataForInviteAlarm } = useQuery(["getData"], () => {
+  const { data: dataForInviteAlarm } = useQuery(["getInviteAlarmAtNav"], () => {
     return axios.get(`${process.env.REACT_APP_BASEURL}/invite/alarm`, {
       headers: { Authorization: accessToken },
     });
   });
 
-  const { data: dataForFriendAlarm } = useQuery(["getData"], () => {
-    return axios.get(`${process.env.REACT_APP_BASEURL}/friend/request`, {
-      headers: { Authorization: accessToken },
-    });
-  });
-
-  const { data: dataForCommentAlarm } = useQuery(["getData"], () => {
-    return axios.get(
-      `${process.env.REACT_APP_BASEURL}/detail/{detail-id}/comment`,
-      {
+  const { data: dataForFriendAlarm } = useQuery(
+    ["getFriendRequestsAtNav"],
+    () => {
+      return axios.get(`${process.env.REACT_APP_BASEURL}/friend/request`, {
         headers: { Authorization: accessToken },
-      }
-    );
-  });
+      });
+    }
+  );
+
+  const { data: dataForCommentAlarm } = useQuery(
+    ["getCommentAlarmAtNav"],
+    () => {
+      return axios.get(`${process.env.REACT_APP_BASEURL}/comment/alarm`, {
+        headers: { Authorization: accessToken },
+      });
+    }
+  );
+
+  const totalAlarmNumber =
+    dataForCommentAlarm.data.length +
+    dataForFriendAlarm.data.length +
+    dataForInviteAlarm.data.length;
 
   const goToPage = (to) => {
-    console.log(to);
     navigate(to);
   };
 
@@ -61,7 +68,7 @@ const Navigationbar = () => {
           setNavMode("BELL");
         }}
       >
-        <Badge badgeContent={9999} color="primary">
+        <Badge badgeContent={totalAlarmNumber} color="primary">
           <Button src={bell} buttonType={"BELL"} navMode={navMode} />
         </Badge>
       </div>

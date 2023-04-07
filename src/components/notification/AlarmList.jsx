@@ -27,7 +27,6 @@ const goToDetailOfComment = () => {};
 
 const AlarmList = ({ item, alarmType }) => {
   const accessToken = window.localStorage.getItem("accessToken");
-  console.log("item : ", item?.friendListId);
 
   const acceptFriend = (id) => {
     axios
