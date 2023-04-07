@@ -223,7 +223,7 @@ const CommentsContainer = styled.div`
   margin-bottom: -25px;
   overflow-y: auto;
   position: relative;
-  background-color: #598665;
+  /* background-color: #598665; */
 
   h5 {
     text-align: center;
