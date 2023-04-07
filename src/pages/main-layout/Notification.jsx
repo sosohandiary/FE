@@ -31,19 +31,10 @@ const Notification = () => {
   const dataListForInviteAlarm = dataForInviteAlarm?.data;
   const dataListForCommentAlarm = dataForCommentAlarm?.data;
 
-  const testForButton = () => {
-    axios
-      .patch(`${process.env.REACT_APP_BASEURL}/friend/request/read/2`, {
-        headers: { Authorization: accessToken },
-      })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-  };
   return (
     <>
       <TitleBox />
 
-      <button onClick={testForButton}>뻐튼</button>
       <AlarmBox>
         {dataListForFriendRequset?.map((item, i) => (
           <AlarmList key={i} alarmType="friend" item={item} />
