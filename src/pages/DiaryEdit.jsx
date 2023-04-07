@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { VscBlank } from "react-icons/vsc";
@@ -16,9 +16,6 @@ function DiaryEdit() {
   const [diaryCondition, setDiaryCondition] = useState(
     mypage?.data?.diaryCondition
   );
-
-  console.log(mypage?.data);
-  console.log(file);
 
   // 공개 비공개 바꾸는거
   const handleConditionChange = (event) => {
@@ -38,12 +35,25 @@ function DiaryEdit() {
   const handleClick = useCallback(
     async (e) => {
       e.preventDefault();
-
       const formData = new FormData();
+
+      // const url = mypage.data.img;
+      let url =
+        "https://cdn.shopify.com/s/files/1/0234/8017/2591/products/young-man-in-bright-fashion_925x_f7029e2b-80f0-4a40-a87b-834b9a283c39.jpg";
+
+      const urlToObject = async () => {
+        const response = await fetch(url);
+        // here image is url/location of image
+        const blob = await response.blob();
+        const file = new File([blob], "image.jpg", { type: blob.type });
+        setFile(file);
+      };
+      urlToObject();
+
       formData.append("img", file);
+
       const uploader = { title };
 
-      console.log(uploader);
       formData.append(
         "title",
         new Blob([JSON.stringify(uploader)], {
@@ -161,13 +171,9 @@ function DiaryEdit() {
             }}
           />
         </TitleContent>
-
-        <UpButtonBox>
-          <VscBlank className="VscBlank" />
-          <Upbutton onClick={handleClick}>생성하기</Upbutton>
-          <VscBlank className="VscBlank" />
-        </UpButtonBox>
       </form>
+
+      <SubmitButton onClick={handleClick}>생성하기</SubmitButton>
     </Wholebox>
   );
 
@@ -527,4 +533,17 @@ const CenterColumn = styled.div`
   width: 1px;
   height: 20px;
   position: absolute;
+`;
+
+const SubmitButton = styled.div`
+  cursor: pointer;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 100px auto 80px auto;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 20px;
+  background-color: #e1e7ff;
+  width: 430px;
+  height: 50px;
 `;
