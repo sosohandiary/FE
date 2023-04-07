@@ -23,9 +23,12 @@ function SubPage() {
 
   const fetchData = async (page) => {
     const response = await axios
-      .get(`${process.env.REACT_APP_BASEURL}/diary/${diaryId}/detail?page=${currentPage}&size=5`, {
-        headers: { Authorization: accessToken },
-      })
+      .get(
+        `${process.env.REACT_APP_BASEURL}/diary/${diaryId}/detail?page=${page}&size=5`,
+        {
+          headers: { Authorization: accessToken },
+        }
+      )
       .then((res) => {
         console.log(res);
         setData([...res.data.content]); // 객체로 반환되길래 배열로 만듬
@@ -56,7 +59,6 @@ function SubPage() {
         }
       )
       .then((res) => {
-        console.log(res);
         alert("한 장 더 추가되었습니다");
         window.location.reload();
       })
@@ -66,6 +68,8 @@ function SubPage() {
   const goBackHandler = () => {
     navigate(-1);
   };
+
+  console.log("data : ", data);
 
   return (
     <>
