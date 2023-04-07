@@ -14,6 +14,7 @@ const Notification = () => {
       headers: { Authorization: accessToken },
     });
   });
+  console.log(dataForFriendRequest);
 
   const { data: dataForInviteAlarm } = useQuery(["getInviteAlarm"], () => {
     return axios.get(`${process.env.REACT_APP_BASEURL}/invite/alarm`, {
@@ -26,6 +27,10 @@ const Notification = () => {
       headers: { Authorization: accessToken },
     });
   });
+
+  const acceptFriend = () => {
+    console.log();
+  };
 
   const dataListForFriendRequset = dataForFriendRequest?.data;
   const dataListForInviteAlarm = dataForInviteAlarm?.data;

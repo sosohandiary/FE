@@ -19,9 +19,7 @@ import SubPage from "./SubPage";
 import Diary from "./main-layout/Diary";
 import MainLayout from "./main-layout/MainLayout";
 import Drawing from "./Drawing";
-import TestAnimation from "./TestAnimation";
 import Page from "./Page";
-import TestDrawing from "./TestDrawing";
 import DiaryEdit from "./DiaryEdit";
 
 const Router = () => {
@@ -49,11 +47,8 @@ const Router = () => {
         <Route path="/myfriends/:mode" element={<MyFriends />} />
         <Route path="/acceptTest" element={<AcceptTest />} />
         <Route path="/diaries/:diaryId" element={<SubPage />} />
-        <Route path="/test-animation" element={<TestAnimation />} />
-        <Route path="/test-drawing" element={<TestDrawing />} />
         <Route path="/diary/:diaryId" element={<Page />} />
         <Route path="/diaryedit/:diaryId" element={<DiaryEdit />} />
-        {/* <Route path="/diaryeditTest" element={<DiaryEdit />} /> */}
       </Routes>
     </BrowserRouter>
   );

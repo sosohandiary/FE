@@ -12,7 +12,7 @@ const AlarmUnReadCard = ({ alarmType, item }) => {
       case "friend":
         return {
           title: "새로운 친구요청이 왔습니다.",
-          desc: `${item.nickname}님이 친구 요청을 보냈습니다.`,
+          desc: `${item.friendNickName}님이 친구 요청을 보냈습니다.`,
         };
       case "invite":
         return {
