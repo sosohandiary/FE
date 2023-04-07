@@ -13,9 +13,16 @@ import plus from "../assets/navbar/plus.png";
 import { Badge } from "@mui/material";
 import { useQuery } from "react-query";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import alarmSlice, {
+  getCommentAlarm,
+  getFriendAlarm,
+  getInviteAlarm,
+} from "../contexts/alarmSlice";
 
 const Navigationbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const accessToken = window.localStorage.getItem("accessToken");
   const [navMode, setNavMode] = useState("HOME");
 
@@ -43,10 +50,14 @@ const Navigationbar = () => {
     }
   );
 
+  dispatch(getCommentAlarm(dataForCommentAlarm?.data));
+  dispatch(getFriendAlarm(dataForFriendAlarm?.data));
+  dispatch(getInviteAlarm(dataForInviteAlarm?.data));
+
   const totalAlarmNumber =
-    dataForCommentAlarm.data.length +
-    dataForFriendAlarm.data.length +
-    dataForInviteAlarm.data.length;
+    dataForCommentAlarm?.data.length +
+    dataForFriendAlarm?.data.length +
+    dataForInviteAlarm?.data.length;
 
   const goToPage = (to) => {
     navigate(to);
