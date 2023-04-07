@@ -80,7 +80,7 @@ const MainPage = () => {
       setIsLoadingForPrivate(true);
       axios
         .get(
-          `${process.env.REACT_APP_BASEURL}/private?page=${privatePage}&size=5`,
+          `${process.env.REACT_APP_BASEURL}/invite?page=${privatePage}&size=5`,
           {
             headers: { Authorization: accessToken },
           }
@@ -88,7 +88,10 @@ const MainPage = () => {
         .then((res) => {
           setIsLoadingForPrivate(false);
 
-          setDataListForPrivate((prev) => [...prev, ...res.data]);
+          if (res.data === "") {
+            return;
+          }
+          setDataListForPrivate((prev) => [...prev, ...res.data.content]);
           setPrivatePage((prev) => prev + 1);
         })
         .catch((err) => {
@@ -121,28 +124,8 @@ const MainPage = () => {
     }
   }, [inViewForPublic]);
 
-  const { userNickname: curUserNickname } = useSelector(
-    (state) => state.currentUserInfoSlice
-  );
-
   const goToDiaryDetail = (id) => {
     navigate(`/diaries/${id}`);
-  };
-
-  const dataList = [
-    { id: 0 },
-    { id: 1 },
-    { id: 2 },
-    { id: 3 },
-    { id: 4 },
-    { id: 5 },
-    { id: 6 },
-    { id: 7 },
-  ];
-
-  const onSlideChangeHandler = (swiperCore) => {
-    console.log(swiperCore.eventsListeners.resize);
-    swiperCore.eventsListeners.resize();
   };
 
   return (
@@ -170,17 +153,31 @@ const MainPage = () => {
           onSlideChange={(e) => setActiveIdxForSelfmade(e.activeIndex)}
           className="mySwiper"
         >
-          {dataList.map((item) => (
-            <SwiperSlide key={item.id}>
+          {dataListForSelfMadePrivate.length === 0 ? (
+            <SwiperSlide>
               <DiaryCardTopBig
                 color="purple"
-                idx={item.id}
+                idx={0}
                 activeIdxForSelfmade={activeIdxForSelfmade}
-              >
-                Slide {item.id}
-              </DiaryCardTopBig>
+              ></DiaryCardTopBig>
             </SwiperSlide>
-          ))}
+          ) : (
+            dataListForSelfMadePrivate?.map((item, i) => (
+              <SwiperSlide key={i} onClick={() => goToDiaryDetail(item.id)}>
+                <DiaryCardTopBig
+                  color="purple"
+                  idx={i}
+                  activeIdxForSelfmade={activeIdxForSelfmade}
+                  item={item}
+                  onClick={() => {
+                    navigate("/dd");
+                  }}
+                >
+                  Slide {item.id}
+                </DiaryCardTopBig>
+              </SwiperSlide>
+            ))
+          )}
         </Swiper>
       </SelfmadeArea>
       <div style={{ display: "none" }}>
@@ -219,11 +216,7 @@ const MainPage = () => {
                   goToDiaryDetail(item.id);
                 }}
               >
-                <SlideOne imageUrl={item.img}>
-                  <h1>{item.title}</h1>
-                  <h3>{item.name}</h3>
-                  <p>{item.modifiedAt}</p>
-                </SlideOne>
+                <DiaryCard item={item} color="purple" />
               </SwiperSlide>
             ))}
             {IsLoadingForPrivate ? (

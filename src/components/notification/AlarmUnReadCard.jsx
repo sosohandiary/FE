@@ -4,19 +4,31 @@ import { TbBellRingingFilled } from "react-icons/tb";
 import axios from "axios";
 import { useMutation } from "react-query";
 
-const AlarmUnReadCard = ({ alarmSort, item }) => {
+const AlarmUnReadCard = ({ alarmType, item }) => {
   const accessToken = window.localStorage.getItem("accessToken");
 
-  const getDesc = (alarmSort) => {
-    switch (alarmSort) {
-      case "friendRequest":
-        return "새로운 친구요청이 왔습니다.";
+  const getTitleAndDesc = () => {
+    switch (alarmType) {
+      case "friend":
+        return {
+          title: "새로운 친구요청이 왔습니다.",
+          desc: `${item.friendNickName}님이 친구 요청을 보냈습니다.`,
+        };
+      case "invite":
+        return {
+          title: "다이어리에 초대되었습니다.",
+          desc: `${item.nickname}님의 다이어리`,
+        };
+      case "comment":
+        return {
+          title: "내 다이어리에 댓글이 달렸습니다.",
+          desc: `${item.commentName}님이 댓글을 작성하였습니다.`,
+        };
       default:
-        return;
+        return "다이어리에 초대되었습니다.";
     }
   };
 
-  console.log(item);
   const { mutate, isLoading, isError, error, isSuccess } = useMutation(
     (friendId) => {
       return axios.put(
@@ -29,37 +41,21 @@ const AlarmUnReadCard = ({ alarmSort, item }) => {
     }
   );
 
-  const admitRequest = (friendListId) => {
-    console.log(friendListId);
-    mutate(friendListId);
-  };
-  if (isSuccess) {
-    alert("친구를 추가하였습니다");
-  }
-
   return (
-    <AlarmUnread>
+    <AlarmArea alarm={item?.alarm}>
       <TbBellRingingFilled className="TbBellRingingFilled" />
       <AlarmUnreadTextBox>
         <AlarmHead>
-          <AlarmUnreadTitle>{getDesc(alarmSort)}</AlarmUnreadTitle>
+          <AlarmUnreadTitle>{getTitleAndDesc().title}</AlarmUnreadTitle>
         </AlarmHead>
         <AlarmUnreadBody>
           <ProfileAndComment>
-            <UserProfileImg src={item?.profileImageUrl}></UserProfileImg>
-            {item?.nickname}님이 친구 요청을 보냈습니다.
+            <UserProfileImg src={item?.profileImageUrl || ""}></UserProfileImg>
+            {getTitleAndDesc().desc}
           </ProfileAndComment>
-          <div>
-            <button onClick={() => admitRequest(item?.friendListId)}>
-              수락하기
-            </button>
-          </div>
         </AlarmUnreadBody>
-        <AlarmUnreadTime>
-          <AlarmUnreadDay>‧ 17시간</AlarmUnreadDay>
-        </AlarmUnreadTime>
       </AlarmUnreadTextBox>
-    </AlarmUnread>
+    </AlarmArea>
   );
 };
 
@@ -103,17 +99,17 @@ const AlarmUnreadTextBox = styled.div`
   padding-left: 10px;
 `;
 
-const AlarmUnread = styled.div`
+const AlarmArea = styled.div`
   display: flex;
   flex-direction: row;
-  background-color: #cbf0ff;
+  background-color: ${({ alarm }) => (alarm === false ? "#cbf0ff" : "gray")};
   border-bottom: 1px solid #38383818;
   width: 100%;
   height: 80px;
   .TbBellRingingFilled {
     font-size: 30px;
     margin: 10px 10px 10px 20px;
-    color: gold;
+    color: ${({ alarm }) => (alarm === false ? "gold" : "gray")};
   }
 `;
 

@@ -1,12 +1,13 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { VscBlank } from "react-icons/vsc";
 import defaultProfileImg from "../../assets/defaultProfileImg.jpeg";
+import { useNavigate } from "react-router-dom";
 
 const Diary = () => {
   const accessToken = window.localStorage.getItem("accessToken");
-
+  const navigate = useNavigate();
   const [file, setFile] = useState();
   const [title, setTitle] = useState("");
   const [previewImage, setPreviewImage] = useState(defaultProfileImg);
@@ -16,41 +17,55 @@ const Diary = () => {
     setDiaryCondition(event.target.value);
   };
 
-  const handleChange = useCallback((e) => {
+  const handleChange = (e) => {
     if (e.target.files === null) return;
     if (e.target.files[0]) {
       setFile(e.target.files[0]);
       setPreviewImage(URL.createObjectURL(e.target.files[0]));
     }
-  }, []);
+  };
 
-  const handleClick = useCallback(async () => {
-    if (!file) return;
+  const handleClick = (e) => {
+    e.preventDefault();
+    console.log("dd");
+    console.log(accessToken);
 
     const formData = new FormData();
-    await formData.append("img", file);
+    formData.append("img", file);
 
     const data = {
       title: title,
       diaryCondition: diaryCondition,
     };
-    // for spring server
-    await formData.append(
+    formData.append(
       "data",
       new Blob([JSON.stringify(data)], { type: "application/json" })
     );
 
-    const res = await axios.post(
-      `${process.env.REACT_APP_BASEURL}/diary`,
-      formData,
-      {
+    axios
+      .post(`${process.env.REACT_APP_BASEURL}/diary`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: accessToken,
         },
-      }
-    );
-  }, [file]);
+      })
+      .then((res) => {
+        console.log(res);
+        alert("작성이 완료되었습니다.");
+        navigate(`/`);
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("오류가 발생했습니다. 다시 시도해주세요.");
+      });
+  };
+
+  //이미지 업로드 관련
+  const selectFile = useRef();
+  const imgClickHandler = () => {
+    console.log("dd");
+    selectFile.current.click();
+  };
 
   return (
     <Wholebox>
@@ -60,68 +75,78 @@ const Diary = () => {
         <VscBlank className="VscBlank" />
       </TopBox>
 
+      <Card>
+        <SideLabel colorCode={"#E0C7FF"}></SideLabel>
+        <InnerArea>
+          <Title>{title}</Title>
+          <ImgArea>
+            {previewImage && ( // 업로드하려는 이미지를 미리 보여줌
+              <img
+                alt="preview"
+                src={previewImage}
+                style={{
+                  position: "absolute",
+                  top: "145px",
+                  width: "100px",
+                  height: "100px",
+                  borderRadius: "25px",
+                }}
+                onClick={imgClickHandler}
+              />
+            )}
+          </ImgArea>
+          <CreatedAt></CreatedAt>
+        </InnerArea>
+      </Card>
+
       <InputBox>
         <VscBlank className="VscBlank" />
         <FileInput
           type="file"
           onChange={handleChange}
           className="StyledInput"
+          ref={selectFile}
         />
         <VscBlank className="VscBlank" />
       </InputBox>
 
-      {previewImage && ( // 업로드하려는 이미지를 미리 보여줌
-        <img
-          alt="preview"
-          src={previewImage}
-          style={{
-            margin: "auto",
-            width: "100px",
-            height: "150px",
-            borderRadius: "25px",
-          }}
-        />
-      )}
-
-      <form onSubmit={handleClick}>
+      <form>
         <TitleText>제목</TitleText>
         <TitleContent>
           <input
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              if (e.target.value.length > 8) {
+                alert("제목이 너무 길어요");
+                return;
+              }
+              setTitle(e.target.value);
+            }}
           />
         </TitleContent>
 
-        <PrivateorPublicBox>
-          <VscBlank className="VscBlank" />
-          <RadioWrapper>
-            <label>
-              <input
-                type="radio"
-                value="PRIVATE"
-                checked={diaryCondition === "PRIVATE"}
-                onChange={handleConditionChange}
-              />
-              <span>비공개</span>
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="PUBLIC"
-                checked={diaryCondition === "PUBLIC"}
-                onChange={handleConditionChange}
-              />
-              <span>공개</span>
-            </label>
-          </RadioWrapper>
-        </PrivateorPublicBox>
+        <PublicSelectBox>
+          <SelectButtonLeft
+            diaryCondition={diaryCondition}
+            onClick={() => {
+              setDiaryCondition("PUBLIC");
+            }}
+          >
+            공개
+          </SelectButtonLeft>
+          <CenterColumn></CenterColumn>
+          <SelectButtonRight
+            diaryCondition={diaryCondition}
+            onClick={() => {
+              setDiaryCondition("PRIVATE");
+            }}
+          >
+            비공개
+          </SelectButtonRight>
+        </PublicSelectBox>
 
-        <UpButtonBox>
-          <VscBlank className="VscBlank" />
-          <Upbutton onClick={handleClick}>생성하기</Upbutton>
-          <VscBlank className="VscBlank" />
-        </UpButtonBox>
+        <SubmitButton onClick={handleClick}>생성하기</SubmitButton>
       </form>
     </Wholebox>
   );
@@ -129,7 +154,7 @@ const Diary = () => {
 
 export default Diary;
 const InputBox = styled.div`
-  display: flex;
+  display: none;
   flex-direction: row;
   margin-left: 10px;
   margin-right: 10px;
@@ -153,7 +178,7 @@ const FileInput = styled.input`
 const PrivateorPublicBox = styled.div`
   display: flex;
   flex-direction: row;
-  margin 10px;
+  margin: 10px;
   justify-content: space-between;
 `;
 
@@ -240,4 +265,104 @@ const Textbox = styled.div`
   font-size: 110%;
   font-weight: bolder;
   margin: 15px;
+`;
+
+const Card = styled.div`
+  margin: 0 auto;
+  color: black;
+  background-size: cover;
+  width: 135px;
+  height: 180px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 13px;
+`;
+
+const SideLabel = styled.div`
+  background-color: ${({ colorCode }) => colorCode};
+  width: 15px;
+  height: 180px;
+  border-radius: 13px 0 0 13px;
+  position: absolute;
+`;
+
+const InnerArea = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const Title = styled.div`
+  font-weight: 700;
+  margin: 20px 0 20px 15px;
+`;
+
+const ImgArea = styled.div`
+  height: 100px;
+  width: 100px;
+  background-image: url(${({ imgSrc }) => imgSrc});
+  margin: 0 0 0 15px;
+`;
+
+const CreatedAt = styled.div`
+  font-size: 10px;
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+`;
+
+const PublicSelectBox = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 10px auto;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 20px;
+  background-color: #eeeeee;
+  width: 430px;
+  height: 50px;
+`;
+
+const SelectButtonLeft = styled.div`
+  transition: 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  background-color: ${({ diaryCondition }) =>
+    diaryCondition === "PUBLIC" ? "#ffe2e2" : ""};
+  width: 100%;
+  border-radius: 20px 0 0 20px;
+`;
+
+const SelectButtonRight = styled.div`
+  transition: 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  background-color: ${({ diaryCondition }) =>
+    diaryCondition === "PRIVATE" ? "#ffe2e2" : ""};
+  width: 100%;
+  border-radius: 0 20px 20px 0;
+`;
+
+const CenterColumn = styled.div`
+  background-color: rgba(1, 1, 1, 0.5);
+  width: 1px;
+  height: 20px;
+  position: absolute;
+`;
+
+const SubmitButton = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 100px auto 80px auto;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 20px;
+  background-color: #e1e7ff;
+  width: 430px;
+  height: 50px;
+  cursor: pointer;
 `;

@@ -14,6 +14,7 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getDiary } from "../api/detail";
 import Spinner from "../styles/Spinner";
+import CommentImage from "../assets//comment.png";
 
 function Detail() {
   const navigate = useNavigate();
@@ -23,18 +24,20 @@ function Detail() {
 
   const accessToken = localStorage.getItem("accessToken");
 
-  const { data: diaryData } = useQuery(["getDiary"], () => getDiary(diaryId, detailId, accessToken));
+  const { data: diaryData } = useQuery(["getDiary"], () =>
+    getDiary(diaryId, detailId, accessToken)
+  );
 
   const myDiary = diaryData?.data;
 
-  console.log(myDiary);
+  // console.log(myDiary);
 
   useEffect(() => {
     sheetRef.current.click();
   }, []);
 
   const navToModify = () => {
-    navigate(`/test/${diaryId}/${detailId}`);
+    navigate(`/drawing/${diaryId}/${detailId}`);
   };
 
   return (
@@ -43,7 +46,11 @@ function Detail() {
       <StyledGobackButton onClick={() => navigate(-1)} />
       {myDiary && (
         <StyledDerailPage>
-          <GetUser ProfileImg={myDiary.profileImageUrl} createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
+          <GetUser
+            ProfileImg={myDiary.profileImageUrl}
+            createdAt={myDiary.createdAt}
+            nickname={myDiary.nickname}
+          />
           <WholeAreaWithMargin>
             <StyledDetailCardWrapper>
               <StyledDetailCard>
@@ -54,14 +61,25 @@ function Detail() {
         </StyledDerailPage>
       )}
 
-      <button style={{ display: "none" }} ref={sheetRef} onClick={() => setOpen(true)}></button>
+      <button
+        style={{ display: "none" }}
+        ref={sheetRef}
+        onClick={() => setOpen(true)}
+      ></button>
 
       {myDiary ? (
         <BottomSheet
           open={open}
           header={
             <DetailElement>
-              <CommentIcon />
+              {/* <CommentIcon /> */}
+              <img
+                src={CommentImage}
+                alt="코멘트 아이콘"
+                width="28"
+                height="28"
+                style={{ marginRight: "5px" }}
+              />
               {myDiary.commentCount}
               <Like diaryData={myDiary} />
               {myDiary.likeCount}

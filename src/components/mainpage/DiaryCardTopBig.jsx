@@ -1,4 +1,5 @@
 import { purple } from "@nextui-org/react";
+import { secondsInDay } from "date-fns";
 import React from "react";
 import styled from "styled-components";
 
@@ -18,19 +19,31 @@ const DiaryCardTopBig = ({ item, color, idx, activeIdxForSelfmade }) => {
   const colorCode = getColorCode(color);
 
   return (
-    <Card
-      imgSrc={item?.img}
-      idx={idx}
-      activeIdxForSelfmade={activeIdxForSelfmade}
-    >
+    <Card idx={idx} activeIdxForSelfmade={activeIdxForSelfmade}>
       <SideLabel
         colorCode={colorCode}
         idx={idx}
         activeIdxForSelfmade={activeIdxForSelfmade}
       ></SideLabel>
-      <div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
         <Title>{item?.title}</Title>
-        <CreatedAt>{item?.createdAt.split(" ")[0]}</CreatedAt>
+
+        <CoverImg
+          src={item?.img}
+          idx={idx}
+          activeIdxForSelfmade={activeIdxForSelfmade}
+        />
+
+        <CreatedAt idx={idx} activeIdxForSelfmade={activeIdxForSelfmade}>
+          {item?.createdAt.split(" ")[0]}
+        </CreatedAt>
       </div>
     </Card>
   );
@@ -39,17 +52,14 @@ const DiaryCardTopBig = ({ item, color, idx, activeIdxForSelfmade }) => {
 export default DiaryCardTopBig;
 
 const Card = styled.div`
-  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url(${({ imgSrc }) => imgSrc});
-  color: #fff;
-  background-size: cover;
+  background-color: #fff;
   width: 120px;
   height: 160px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 13px;
 
-  transition: 0.5s;
-  background-color: #e3d7d7;
+  transition: 0.1s;
+  transition-timing-function: cubic-bezier(0.2, 0.4, 0.78, 1);
 
   height: ${({ idx, activeIdxForSelfmade }) =>
     idx === activeIdxForSelfmade ? "196px" : "140px"};
@@ -71,7 +81,9 @@ const Card = styled.div`
 `;
 
 const SideLabel = styled.div`
-  transition: 0.5s;
+  transition: 0.1s;
+  transition-timing-function: cubic-bezier(0.2, 0.4, 0.78, 1);
+
   background-color: ${({ colorCode }) => colorCode};
   width: 15px;
   height: ${({ idx, activeIdxForSelfmade }) =>
@@ -85,8 +97,27 @@ const Title = styled.div`
   margin: 20px 0 20px 15px;
 `;
 const CreatedAt = styled.div`
+  transition: 0.1s;
+  transition-timing-function: cubic-bezier(0.2, 0.4, 0.78, 1);
   font-size: 10px;
-  position: absolute;
-  bottom: 22px;
-  right: 20px;
+  position: relative;
+  top: ${({ idx, activeIdxForSelfmade }) =>
+    idx === activeIdxForSelfmade ? "20px" : "20px"};
+  right: ${({ idx, activeIdxForSelfmade }) =>
+    idx === activeIdxForSelfmade ? "-25px" : "-15px"};
+  font-size: ${({ idx, activeIdxForSelfmade }) =>
+    idx === activeIdxForSelfmade ? "10px" : "6px"};
+`;
+
+const CoverImg = styled.div`
+  background-image: url(${({ src }) => src});
+  background-size: cover;
+  background-repeat: no-repeat;
+  transition: 0.1s;
+  transition-timing-function: cubic-bezier(0.2, 0.4, 0.78, 1);
+  width: ${({ idx, activeIdxForSelfmade }) =>
+    idx === activeIdxForSelfmade ? "95px" : "45px"};
+  height: ${({ idx, activeIdxForSelfmade }) =>
+    idx === activeIdxForSelfmade ? "95px" : "45px"};
+  margin-left: 15px;
 `;

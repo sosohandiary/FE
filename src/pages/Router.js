@@ -19,8 +19,9 @@ import SubPage from "./SubPage";
 import Diary from "./main-layout/Diary";
 import MainLayout from "./main-layout/MainLayout";
 import Drawing from "./Drawing";
-import TestAnimation from "./TestAnimation";
 import Page from "./Page";
+import DiaryEdit from "./DiaryEdit";
+
 const Router = () => {
   return (
     <BrowserRouter>
@@ -38,7 +39,7 @@ const Router = () => {
         <Route path="/signup-success" element={<SignupSuccess />} />
         <Route path="/otherlogin" element={<OtherLogin />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="test/:diaryid/:paperid" element={<Drawing />} />
+        <Route path="drawing/:diaryid/:paperid" element={<Drawing />} />
         <Route path="/oauth" element={<Oauth />} />
         <Route path="/diaries/:diaryId/:detailId" element={<Detail />} />
         <Route path="/new-diary" element={<NewDiary />} />
@@ -46,8 +47,8 @@ const Router = () => {
         <Route path="/myfriends/:mode" element={<MyFriends />} />
         <Route path="/acceptTest" element={<AcceptTest />} />
         <Route path="/diaries/:diaryId" element={<SubPage />} />
-        <Route path="/test-animation" element={<TestAnimation />} />
         <Route path="/diary/:diaryId" element={<Page />} />
+        <Route path="/diaryedit/:diaryId" element={<DiaryEdit />} />
       </Routes>
     </BrowserRouter>
   );

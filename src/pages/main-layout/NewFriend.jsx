@@ -1,40 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+import debounce from "lodash.debounce";
 
-import Navigationbar from "../../components/Navigationbar";
-
-import { SlMagnifier } from "react-icons/sl";
-import { MdOutlineCancel } from "react-icons/md";
 import { ProfilePicSmall } from "../../components/ProfilePics";
 import { useNavigate } from "react-router-dom";
+import Searchbox from "../../components/Searchbox";
+import { WholeViewWidth } from "../../styles/WholeAreaStyle";
 
 const NewFriend = () => {
   const accessToken = window.localStorage.getItem("accessToken");
-  const [friendName, setFriendName] = useState("");
   const [list, setList] = useState([]);
   const [friendStatus, setFriendStatus] = useState("");
-  const navigate = useNavigate();
+  const [userId, setUserId] = useState(null);
+  const [requested, setRequested] = useState(false);
 
-  //로그인 할때 이름? 멤버아이디? 받으면 적용하기
-  // const state = useSelector((state) => {
-  //   console.log(state.currentUserInfoSlice);
-  // })
+  //프로필 get 해오기!!!
 
-  const findFriend = () => {
+  const getProfile = () => {
     axios
-      .get(`${process.env.REACT_APP_BASEURL}/search?name=${friendName}`, {
+      .get(`${process.env.REACT_APP_BASEURL}/mypage/profile`, {
         headers: { Authorization: accessToken },
       })
       .then((res) => {
-        console.log(res.data);
-        setList(res.data);
+        setUserId(res.data.memberId);
       })
       .catch((err) => console.log(err));
   };
 
-  // console.log(list);
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  const findFriend = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_BASEURL}/search?name=${inputRef.current}`,
+        {
+          headers: { Authorization: accessToken },
+        }
+      );
+      console.log(res.data);
+      setList(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  let inputRef = useRef();
+
+  const onChangeInput = debounce((e) => {
+    inputRef.current = e.target.value;
+    if (inputRef.current.trim() == "") {
+      setList([]);
+    } else {
+      findFriend(inputRef.current);
+    }
+  }, 500);
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      findFriend(event);
+    }
+  };
 
   const addFriend = (id) => {
     console.log(id);
@@ -48,6 +77,7 @@ const NewFriend = () => {
       )
       .then((res) => {
         console.log(res);
+        setRequested(true);
       })
       .catch((err) => console.log(err));
   };
@@ -60,99 +90,88 @@ const NewFriend = () => {
     });
   }, [findFriend]);
 
-  const goToAcceptFriend = () => {
-    navigate("/acceptTest");
-  };
   return (
     <>
-      <SearchTotalBox>
-        <SearchStyleBox>
-          <SlMagnifier className="SlMagnifier" />
-          <SearchStyle>
-            <Searchinput
-              type="text"
-              name="searchbox"
-              placeholder="아이디를 검색해 친구를 추가해보세요"
-              onChange={(e) => {
-                setFriendName(e.target.value);
-              }}
-            />
-          </SearchStyle>
-          <button onClick={findFriend}>찾기</button>
-        </SearchStyleBox>
-      </SearchTotalBox>
-      <button onClick={goToAcceptFriend}>친구 수락</button>
-      {list?.map((item) => (
-        <ListCards key={item.memberId}>
-          <ProfilePicSmall src="https://avatars.githubusercontent.com/u/109452831?v=4" />
-          <ListContentBox>{item.name}</ListContentBox>
-          {friendStatus !== "ACCEPTED" && (
-            <button
-              onClick={() => {
-                addFriend(item.memberId);
-              }}
-            >
-              추가하기
-            </button>
-          )}
-        </ListCards>
-      ))}
+      <WholeViewWidth>
+        <Searchbox
+          placeholder='아이디를 검색해 친구를 추가해보세요'
+          onChangeInput={onChangeInput}
+          onKeyPress={handleKeyDown}
+          // value={inputRef}
+        />
+        {list?.map((item) => (
+          <ListCards key={item.memberId}>
+            <ListBox>
+              <ProfilePicSmall src={item.profileImageUrl} />
+              <ListContentBox>
+                <StText fontWeight='bold'>{item.name}</StText>
+                <StText>{item.statusMessage}</StText>
+              </ListContentBox>
+            </ListBox>
+
+            <ButtonBox>
+              {friendStatus !== "ACCEPTED" &&
+                userId != item.memberId &&
+                friendStatus !== "PENDING" &&
+                !requested && (
+                  <AddButton
+                    onClick={() => {
+                      addFriend(item.memberId);
+                    }}
+                  >
+                    <StText color='#9A9A9A' fontWeight='700'>
+                      추가하기 +
+                    </StText>
+                  </AddButton>
+                )}
+            </ButtonBox>
+          </ListCards>
+        ))}
+      </WholeViewWidth>
     </>
   );
 };
 
 export default NewFriend;
 
-const SearchTotalBox = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 25px 15px 25px 15px;
-`;
-
-const SearchStyleBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 95%;
-  background-color: #d9d9d948;
-  border: none;
-  border-radius: 13px;
-  padding: 12px 15px 12px 15px;
-  .SlMagnifier {
-    font-size: 25px;
-    color: #7a7a7a;
-    padding-left: 5px;
-  }
-  .MdOutlineCancel {
-    font-size: 25px;
-    color: #9b9b9b;
-    padding-right: 5px;
-  }
-`;
-
-const SearchStyle = styled.div`
-  width: 95%;
-  margin-left: 3%;
-`;
-
-const Searchinput = styled.input`
-  font-size: 16px;
-  font-weight: bold;
-  background-color: transparent;
-  border: none;
-  width: 300px;
-`;
-
 const ListCards = styled.div`
   display: flex;
-  align-self: flex-start;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 24px 0 24px;
 
-  padding: 10px;
+  padding: 5px;
+`;
+
+const ListBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ListContentBox = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+
   margin-left: 10px;
+`;
+
+const StText = styled.div`
+  font-size: ${({ size }) => `${size}px`};
+  font-weight: ${(props) => props.fontWeight};
+  color: ${(props) => props.color};
+`;
+
+const ButtonBox = styled.div``;
+
+const AddButton = styled.button`
+  height: 25px;
+  width: 87px;
+  border: none;
+  border-radius: 20px;
+  text-align: center;
+  background: #e3e3e3;
+
+  cursor: pointer;
 `;

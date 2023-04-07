@@ -4,10 +4,15 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 
 import { getProfile, editProfile, deleteAccount } from "../api/mypage";
-import { HiPencil, HiOutlineXCircle, HiOutlineExclamation } from "react-icons/hi";
+import {
+  HiPencil,
+  HiOutlineXCircle,
+  HiOutlineExclamation,
+} from "react-icons/hi";
 import { MdArrowBack } from "react-icons/md";
 import { MintButtonMedium } from "../styles/Buttons";
 import DeleteAccount from "../components/mypage/DeleteAccount";
+import { WholeViewWidth } from "../styles/WholeAreaStyle";
 
 function Profile() {
   const accessToken = localStorage.getItem("accessToken");
@@ -21,12 +26,16 @@ function Profile() {
   const [file, setFile] = useState("");
   const [previewImg, setPreviewImg] = useState(false);
 
-  const { data: profileData } = useQuery(["getProfile"], () => getProfile(accessToken), {
-    onSuccess: () => {
-      setNickname(profileData?.data.nickname);
-      setStatusMessage(profileData?.data.statusMessage);
-    },
-  });
+  const { data: profileData } = useQuery(
+    ["getProfile"],
+    () => getProfile(accessToken),
+    {
+      onSuccess: (data) => {
+        setNickname(data.data.nickname);
+        setStatusMessage(data.data.statusMessage);
+      },
+    }
+  );
 
   const mutation = useMutation(() => editProfile(formData, accessToken), {
     onSuccess: () => {
@@ -36,13 +45,6 @@ function Profile() {
 
   //image
   const onImgPostHandler = (event) => {
-    // const onImgPostHandler = useCallback((e) => {
-    //   if (e.target.files === null) return;
-    //   if (e.target.files[0]) {
-    //     setFile(e.target.files[0]);
-    //     setNewImage(URL.createObjectURL(e.target.files[0]));
-    //   }
-
     setNewImage([]);
     for (let i = 0; i < event.target.files.length; i++) {
       setFile(event.target.files[i]);
@@ -60,14 +62,15 @@ function Profile() {
       };
     }
 
-    //   setPreviewImg(true);
+      setPreviewImg(true);
     // }, []);
   };
 
   //delete Mutation
-  const { mutate: deleteAccountMutate } = useMutation(() => deleteAccount(accessToken));
+  const { mutate: deleteAccountMutate } = useMutation(() =>
+    deleteAccount(accessToken)
+  );
 
-  console.log(profileData?.data);
   const profile = profileData?.data;
 
   const fileInput = useRef();
@@ -112,84 +115,100 @@ function Profile() {
     e.preventDefault();
 
     formData.append("img", file);
-    formData.append("data", new Blob([JSON.stringify(data)], { type: "application/json" }));
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(data)], { type: "application/json" })
+    );
 
     mutation.mutate(formData);
   }
 
   return (
     <>
-      <StLayout>
-        <StArrow>
-          <StyledGobackButton onClick={navToBack} />
-        </StArrow>
+      <WholeViewWidth>
+        <StLayout>
+          <StArrow>
+            <StyledGobackButton onClick={navToBack} />
+          </StArrow>
 
-        <Title size='18'>프로필 편집</Title>
+          <Title size='18'>프로필 편집</Title>
 
-        <ProfileLayout>
-          <form encType='multipart/form-data' onSubmit={onSubmitHandler}>
-            <ProfileArea>
-              <StButton onClick={onImgButton}>
-                {previewImg ? (
-                  <img style={ProfileImg} src={newimage} alt='profile image' />
-                ) : (
-                  <img style={ProfileImg} src={profile?.profileImageUrl} alt="profile image" />
-                )}
-              </StButton>
+          <ProfileLayout>
+            <form encType='multipart/form-data' onSubmit={onSubmitHandler}>
+              <ProfileArea>
+                <StButton onClick={onImgButton}>
+                  {previewImg ? (
+                    <img
+                      style={ProfileImg}
+                      src={newimage}
+                      alt='profile image'
+                    />
+                  ) : (
+                    <img
+                      style={ProfileImg}
+                      src={profile?.profileImageUrl}
+                      alt='profile image'
+                    />
+                  )}
+                </StButton>
 
-              {/* <EditPencilArea>
+                {/* <EditPencilArea>
                 <HiPencil />
               </EditPencilArea> */}
-            </ProfileArea>
+              </ProfileArea>
 
-            <input
-              type="file"
-              accept="image/*"
-              onChange={onImgPostHandler}
-              ref={fileInput}
-              style={{ display: "none" }}
-            />
-            <Container>
-              <Content>
-                <Label>이름(별명)</Label>
-                <IconContainer>
-                  <StInput
-                    type="text"
-                    name="nickname"
-                    placeholder={profile?.nickname}
-                    value={nickname || ""}
-                    onChange={(e) => setNickname(e.target.value)}
-                  />
-                  <ClearButton disabled>
-                    <HiOutlineXCircle color="#D0D0D0" />
-                  </ClearButton>
-                </IconContainer>
-
-                <Label>소개</Label>
-                <StTextarea
-                  name="statusMessage"
-                  onChange={(e) => setStatusMessage(e.target.value)}
-                  placeholder={profile?.statusMessage}
-                  value={statusMessage || ""}
-                />
-              </Content>
-
-              <StButtonContainer>
-                <MintButtonMedium type='submit'>저장</MintButtonMedium>
-              </StButtonContainer>
-              <DeActivateBox>
-                <DeActivate onClick={handleOpenModal}><HiOutlineExclamation/>회원 탈퇴</DeActivate>
-              </DeActivateBox>
-              <DeleteAccount
-                title="탈퇴하기"
-                isOpen={confirmDelete}
-                onClose={handleCloseModal}
-                handleDelete={handleDelete}
+              <input
+                type='file'
+                accept='image/*'
+                onChange={onImgPostHandler}
+                ref={fileInput}
+                style={{ display: "none" }}
               />
-            </Container>
-          </form>
-        </ProfileLayout>
-      </StLayout>
+              <Container>
+                <Content>
+                  <Label>이름(별명)</Label>
+                  <IconContainer>
+                    <StInput
+                      type='text'
+                      name='nickname'
+                      placeholder={profile?.nickname}
+                      value={nickname || ""}
+                      onChange={(e) => setNickname(e.target.value)}
+                    />
+                    <ClearButton disabled>
+                      <HiOutlineXCircle color='#D0D0D0' />
+                    </ClearButton>
+                  </IconContainer>
+
+                  <Label>소개</Label>
+                  <StTextarea
+                    name='statusMessage'
+                    onChange={(e) => setStatusMessage(e.target.value)}
+                    placeholder={profile?.statusMessage}
+                    value={statusMessage || ""}
+                  />
+                </Content>
+
+                <StButtonContainer>
+                  <MintButtonMedium type='submit'>저장</MintButtonMedium>
+                </StButtonContainer>
+                <DeActivateBox>
+                  <DeActivate onClick={handleOpenModal}>
+                    <HiOutlineExclamation />
+                    회원 탈퇴
+                  </DeActivate>
+                </DeActivateBox>
+                <DeleteAccount
+                  title='탈퇴하기'
+                  isOpen={confirmDelete}
+                  onClose={handleCloseModal}
+                  handleDelete={handleDelete}
+                />
+              </Container>
+            </form>
+          </ProfileLayout>
+        </StLayout>
+      </WholeViewWidth>
     </>
   );
 }
@@ -198,13 +217,14 @@ export default Profile;
 
 const StLayout = styled.div`
   background-color: #524f4f;
+  overflow-x: hidden;
 `;
 
 const StArrow = styled.div`
-  max-width: 720px;
   margin: 0 auto;
   position: relative;
-  top: 60px;
+  left: 16px;
+  top: 30px;
 `;
 
 const StyledGobackButton = styled(MdArrowBack)`
@@ -235,6 +255,7 @@ const ProfileArea = styled.div`
 
 const Title = styled.div`
   font-weight: bold;
+  font-size: ${({ size }) => `${size}px`};
   color: #fff;
   padding-top: 30px;
   display: flex;
@@ -325,7 +346,7 @@ const ClearButton = styled.button`
 
 const StButtonContainer = styled.div`
   position: absolute;
-  
+
   top: 450px;
   right: 0;
   /* bottom: 300px; */
@@ -340,9 +361,7 @@ const DeActivate = styled.button`
   background: none;
   cursor: pointer;
 
-
-
-    display: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -361,5 +380,5 @@ const DeActivateBox = styled.div`
   text-align: center;
 
   right: 40px;
-  top:550px;
+  top: 550px;
 `;

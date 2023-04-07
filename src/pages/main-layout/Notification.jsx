@@ -1,31 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import Navigationbar from "../../components/Navigationbar";
-import AlarmUnReadCard from "../../components/AlarmUnReadCard";
-import AlarmReadCard from "../../components/AlarmReadCard";
 import TitleBox from "../../components/TitleBox";
 import { useQuery } from "react-query";
 import axios from "axios";
+import AlarmList from "../../components/notification/AlarmList";
+import AlarmListForFriend from "../../components/notification/AlarmList";
 
 const Notification = () => {
   const accessToken = window.localStorage.getItem("accessToken");
+
   const { data: dataForFriendRequest } = useQuery(["getFriendRequests"], () => {
     return axios.get(`${process.env.REACT_APP_BASEURL}/friend/request`, {
       headers: { Authorization: accessToken },
     });
   });
+  console.log(dataForFriendRequest);
+
+  const { data: dataForInviteAlarm } = useQuery(["getInviteAlarm"], () => {
+    return axios.get(`${process.env.REACT_APP_BASEURL}/invite/alarm`, {
+      headers: { Authorization: accessToken },
+    });
+  });
+
+  const { data: dataForCommentAlarm } = useQuery(["getCommentAlarm"], () => {
+    return axios.get(`${process.env.REACT_APP_BASEURL}/comment/alarm`, {
+      headers: { Authorization: accessToken },
+    });
+  });
+
+  const acceptFriend = () => {
+    console.log();
+  };
+
+  const dataListForFriendRequset = dataForFriendRequest?.data;
+  const dataListForInviteAlarm = dataForInviteAlarm?.data;
+  const dataListForCommentAlarm = dataForCommentAlarm?.data;
 
   return (
     <>
       <TitleBox />
 
       <AlarmBox>
-        {dataForFriendRequest?.data.map((item, i) => (
-          <AlarmUnReadCard key={i} item={item} alarmSort="friendRequest" />
+        {dataListForFriendRequset?.map((item, i) => (
+          <AlarmList key={i} alarmType="friend" item={item} />
         ))}
-        <AlarmUnReadCard />
-        <AlarmReadCard />
-        <AlarmReadCard />
+        {dataListForInviteAlarm?.map((item, i) => (
+          <AlarmList key={i} alarmType="invite" item={item} />
+        ))}
+        {dataListForCommentAlarm?.map((item, i) => (
+          <AlarmList key={i} alarmType="comment" item={item} />
+        ))}
+        <AlarmList />
       </AlarmBox>
     </>
   );
