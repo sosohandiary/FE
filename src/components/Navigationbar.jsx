@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import styled from "styled-components";
 import { VscHome, VscBell, VscBlank } from "react-icons/vsc";
 import { RxMagnifyingGlass, RxPerson } from "react-icons/rx";
@@ -17,6 +17,7 @@ import axios from "axios";
 const Navigationbar = () => {
   const navigate = useNavigate();
   const accessToken = window.localStorage.getItem("accessToken");
+  const [navMode, setNavMode] = useState("HOME");
 
   const { data: dataForInviteAlarm } = useQuery(["getData"], () => {
     return axios.get(`${process.env.REACT_APP_BASEURL}/invite/alarm`, {
@@ -46,22 +47,47 @@ const Navigationbar = () => {
 
   return (
     <NavbarArea>
-      <div onClick={() => goToPage("/")}>
-        <img src={home} />
+      <div
+        onClick={() => {
+          goToPage("/");
+          setNavMode("HOME");
+        }}
+      >
+        <Button src={home} buttonType={"HOME"} navMode={navMode} />
       </div>
-      <div onClick={() => goToPage("/notification")}>
+      <div
+        onClick={() => {
+          goToPage("/notification");
+          setNavMode("BELL");
+        }}
+      >
         <Badge badgeContent={9999} color="primary">
-          <img src={bell} />
+          <Button src={bell} buttonType={"BELL"} navMode={navMode} />
         </Badge>
       </div>
-      <div onClick={() => goToPage("/diary")}>
-        <img src={plus} />
+      <div
+        onClick={() => {
+          goToPage("/diary");
+          setNavMode("PLUS");
+        }}
+      >
+        <Button src={plus} buttonType={"PLUS"} navMode={navMode} />
       </div>
-      <div onClick={() => goToPage("/new-friend")}>
-        <img src={magnifier} />
+      <div
+        onClick={() => {
+          goToPage("/new-friend");
+          setNavMode("MAGNIFIER");
+        }}
+      >
+        <Button src={magnifier} buttonType={"MAGNIFIER"} navMode={navMode} />
       </div>
-      <div onClick={() => goToPage("/mypage")}>
-        <img src={person} />
+      <div
+        onClick={() => {
+          goToPage("/mypage");
+          setNavMode("PERSON");
+        }}
+      >
+        <Button src={person} buttonType={"PERSON"} navMode={navMode} />
       </div>
     </NavbarArea>
   );
@@ -81,4 +107,9 @@ const NavbarArea = styled.div`
   bottom: -1px;
   border-radius: 20px 20px 0 0;
   box-shadow: -2px -2px 9px rgba(0, 0, 0, 0.2);
+`;
+
+const Button = styled.img`
+  transition: 0.1s;
+  opacity: ${({ buttonType, navMode }) => (navMode === buttonType ? 1 : 0.3)};
 `;
