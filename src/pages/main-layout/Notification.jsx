@@ -1,35 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import TitleBox from "../../components/TitleBox";
-import { useQuery } from "react-query";
-import axios from "axios";
 import AlarmList from "../../components/notification/AlarmList";
-import AlarmListForFriend from "../../components/notification/AlarmList";
+import { useSelector } from "react-redux";
 
 const Notification = () => {
-  const accessToken = window.localStorage.getItem("accessToken");
+  const alarmStore = useSelector((state) => state.alarmSlice);
 
-  const { data: dataForFriendRequest } = useQuery(["getFriendRequests"], () => {
-    return axios.get(`${process.env.REACT_APP_BASEURL}/friend/request`, {
-      headers: { Authorization: accessToken },
-    });
-  });
-
-  const { data: dataForInviteAlarm } = useQuery(["getInviteAlarm"], () => {
-    return axios.get(`${process.env.REACT_APP_BASEURL}/invite/alarm`, {
-      headers: { Authorization: accessToken },
-    });
-  });
-
-  const { data: dataForCommentAlarm } = useQuery(["getCommentAlarm"], () => {
-    return axios.get(`${process.env.REACT_APP_BASEURL}/comment/alarm`, {
-      headers: { Authorization: accessToken },
-    });
-  });
-
-  const dataListForFriendRequset = dataForFriendRequest?.data;
-  const dataListForInviteAlarm = dataForInviteAlarm?.data;
-  const dataListForCommentAlarm = dataForCommentAlarm?.data;
+  const dataListForFriendRequset = alarmStore.friend;
+  const dataListForInviteAlarm = alarmStore.invite;
+  const dataListForCommentAlarm = alarmStore.comment;
 
   return (
     <>
