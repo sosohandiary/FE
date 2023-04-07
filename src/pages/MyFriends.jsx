@@ -1,24 +1,26 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import Draggable from "react-draggable";
 import { useNavigate } from "react-router-dom";
+import {
+  LeadingActions,
+  SwipeableList,
+  SwipeableListItem,
+  SwipeAction,
+  TrailingActions,
+  Type as ListType,
+} from "react-swipeable-list";
+import "react-swipeable-list/dist/styles.css";
 
 import { getMyfriends, getFriendsCount, deleteFriend } from "../api/mypage";
 import { ProfilePicSmall } from "../components/ProfilePics";
 import { MdArrowBack } from "react-icons/md";
-import Searchbox from "../components/Searchbox";
-import {
-  WholeArea,
-  WholeAreaWithMargin,
-  WholeViewWidth,
-} from "../styles/WholeAreaStyle";
+import { WholeViewWidth } from "../styles/WholeAreaStyle";
 import Filter from "../components/mypage/Filter";
-import { useParams } from "react-router-dom";
-import { Checkbox } from "@nextui-org/react";
 
 const MyFriends = () => {
   const [searchFriends, setSearchFriends] = useState(null);
+  const [swipeOpen, setSwipeOpen] = useState(false);
 
   const accessToken = localStorage.getItem("accessToken");
   const navigate = useNavigate();
@@ -57,9 +59,23 @@ const MyFriends = () => {
     navigate("/mypage");
   };
 
+  const handleDelete = () => {
+  console.log("delete");
+};
+
+
+  const trailingActions = (item) => (
+    <TrailingActions>
+      <SwipeAction destructive={true} onClick={handleDelete}>
+        <DeleteButton onClick={() => onDeleteHandler(item.friendListId)}>삭제하기</DeleteButton>
+      </SwipeAction>
+    </TrailingActions>
+  );
+
+
   return (
     <>
-      <WholeViewWidth style={{overflow:"hidden"}}>
+      <WholeViewWidth style={{ overflow: "hidden" }}>
         <StArrow>
           <StyledGobackButton onClick={navToBack} />
         </StArrow>
@@ -74,14 +90,19 @@ const MyFriends = () => {
           친구 {friendsCount?.data?.myFriendCount}
         </Label>
 
-        <Wrapper>
+        <SwipeableList threshold={0.5} type={ListType.IOS}>
           {friends &&
             searchFriends
               ?.filter((item) => item.friendStatus === "ACCEPTED")
               .map((item) => {
                 return (
-                  <Item key={item.memberId}>
-                    {item.friendStatus === "ACCEPTED" ? (
+                  <StyledSwipeableListItem
+                    key={item.memberId}
+                    trailingActions={trailingActions(item)}
+                    onSwipeOpen={() => setSwipeOpen(true)}
+                    onSwipeClose={() => setSwipeOpen(false)}
+                  >
+                    {item.friendStatus === "ACCEPTED" &&(
                       <>
                         <div className='slide'>
                           <ListCards>
@@ -92,22 +113,12 @@ const MyFriends = () => {
                             </ListContentBox>
                           </ListCards>
                         </div>
-
-                        <DeleteButton
-                          onClick={() => {
-                            onDeleteHandler(item.friendListId);
-                          }}
-                        >
-                          삭제
-                        </DeleteButton>
                       </>
-                    ) : (
-                      <div style={{ border: "none" }}>야호</div>
                     )}
-                  </Item>
+                  </StyledSwipeableListItem>
                 );
               })}
-        </Wrapper>
+        </SwipeableList>
       </WholeViewWidth>
     </>
   );
@@ -152,10 +163,12 @@ const Label = styled.div`
 
 const ListCards = styled.div`
   display: flex;
-  align-self: flex-start;
+  /* align-self: flex-start; */
 
   /* padding: 10px; */
   margin: 0 24px 0 24px;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ListContentBox = styled.div`
@@ -163,6 +176,7 @@ const ListContentBox = styled.div`
   justify-content: center;
   flex-direction: column;
   margin-left: 10px;
+  height:60px;
 `;
 
 const StText = styled.div`
@@ -171,92 +185,25 @@ const StText = styled.div`
   color: ${(props) => props.color};
 `;
 
-const Wrapper = styled.div`
+const StyledSwipeableListItem = styled(SwipeableListItem)`
+  border-top: 1px solid #d9d9d9;
+
   width: 100%;
-  /* border-top: 1px solid #d9d9d9; */
-  overflow: hidden;
-`;
+    align-items: center;
+    box-sizing: border-box;
+    height: 100%;
+    display: flex;
+
+`
 
 const DeleteButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: center;
   background: #dedede;
   text-align: center;
   border: 1px solid #d9d9d9;
-  min-width: 75px;
-`;
-const Item = ({ children }) => {
-  const ref = useRef();
-  let downX;
-
-  const onMove = (x) => {
-    if (x - downX < -30) {
-      ref.current.style.transform = "translate(-55px)";
-      setTimeout(() => {
-        if (ref.current) {
-          ref.current.style.transform = "translate(0px)";
-        }
-      }, 4000);
-    } else {
-      ref.current.style.transform = "translate(0px)";
-    }
-  };
-
-  const onStart = (x) => {
-    downX = x;
-    ref.current.addEventListener("touchmove", onTouchMove);
-    ref.current.addEventListener("mousemove", onMouseMove);
-  };
-
-  const onEnd = () => {
-    ref.current.removeEventListener("touchmove", onTouchMove);
-    ref.current.removeEventListener("mousemove", onMouseMove);
-  };
-
-  const onTouchMove = (e) => {
-    const newX = e.touches[0].clientX;
-    onMove(newX);
-  };
-
-  const onTouchStart = (e) => {
-    onStart(e.touches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    onEnd();
-  };
-
-  const onMouseMove = (e) => {
-    onMove(e.clientX);
-  };
-
-  const onMouseDown = (e) => {
-    onStart(e.clientX);
-  };
-
-  const onMouseUp = () => {
-    onEnd();
-  };
-
-  return (
-    <ItemWrapper
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      ref={ref}
-    >
-      {children}
-    </ItemWrapper>
-  );
-};
-
-const ItemWrapper = styled.div`
-  display: flex;
-  /* margin: 3px 0; */
-  transition: transform 800ms;
-  border-top: 1px solid #d9d9d9;
-
-  .slide {
-    flex: 1 0 100%;
-    margin: 10px 0;
-  }
+  width: 70px;
+  height: 100%;
 `;
