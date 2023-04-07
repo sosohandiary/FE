@@ -58,7 +58,7 @@ function Detail() {
       <StyledGobackButton onClick={() => navigate(-1)} />
       {myDiary && (
         <StyledDerailPage>
-          <GetUser ProfileImg={myDiary.profileImageUrl} createdAt={myDiary.createdAt} nickname={myDiary.nickName} />
+          <GetUser ProfileImg={myDiary.profileImageUrl} createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
 
           <DiaryModalWrapper>
             <DiaryModal navToModify={navToModify} onDeleteHandler={onDeleteHandler} detailId={detailId} />
