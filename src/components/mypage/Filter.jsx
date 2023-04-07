@@ -14,11 +14,12 @@ const Filter = ({ setCards, existCards, placeholder }) => {
     } else {
       setCards(
         existCards.filter((card) =>
-          card.nickname.toLowerCase().charAt(0) === searchText.charAt(0)
+          card.nickname.toLowerCase().includes(searchText)
         )
       );
     }
   };
+  
 
   const inputRef = useRef();
 
