@@ -73,8 +73,6 @@ function SubPage() {
     navigate(-1);
   };
 
-  console.log("data : ", data[0].nickname);
-
   return (
     <>
       <div>
@@ -83,8 +81,8 @@ function SubPage() {
 
         <div>
           <HeaderStyle>
-            <DiaryTitle>{data[0].diaryTitle}</DiaryTitle>
-            <DiaryCreatedAt>{getDate(data[0].createdAt)}</DiaryCreatedAt>
+            <DiaryTitle>{data[0]?.diaryTitle}</DiaryTitle>
+            <DiaryCreatedAt>{getDate(data[0]?.createdAt)}</DiaryCreatedAt>
           </HeaderStyle>
           <MorePageButton onClick={newInnerPaper}>한장 더 쓰기</MorePageButton>
         </div>
