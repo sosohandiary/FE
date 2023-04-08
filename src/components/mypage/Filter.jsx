@@ -14,7 +14,7 @@ const Filter = ({ setCards, existCards, placeholder }) => {
     } else {
       setCards(
         existCards.filter((card) =>
-          card.nickname.toLowerCase().includes(searchText)
+          card.name.toLowerCase().includes(searchText)
         )
       );
     }
