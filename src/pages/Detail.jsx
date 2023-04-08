@@ -26,7 +26,9 @@ function Detail() {
 
   const accessToken = localStorage.getItem("accessToken");
 
-  const { data: diaryData } = useQuery(["getDiary"], () => getDiary(diaryId, detailId, accessToken));
+  const { data: diaryData } = useQuery(["getDiary"], () =>
+    getDiary(diaryId, detailId, accessToken)
+  );
 
   const myDiary = diaryData?.data;
 
@@ -37,7 +39,10 @@ function Detail() {
   }, []);
 
   //delete
-  const { mutate: deleteDiaryMutate } = useMutation((detailId) => deleteDiary(diaryId, detailId, accessToken), {});
+  const { mutate: deleteDiaryMutate } = useMutation(
+    (detailId) => deleteDiary(diaryId, detailId, accessToken),
+    {}
+  );
 
   const navToModify = () => {
     navigate(`/drawing/${diaryId}/${detailId}`);
@@ -58,15 +63,23 @@ function Detail() {
       <StyledGobackButton onClick={() => navigate(-1)} />
       {myDiary && (
         <StyledDerailPage>
-          <GetUser ProfileImg={myDiary.profileImageUrl} createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
+          <GetUser
+            ProfileImg={myDiary.profileImageUrl}
+            createdAt={myDiary.createdAt}
+            nickname={myDiary.nickname}
+          />
 
           <DiaryModalWrapper>
-            <DiaryModal navToModify={navToModify} onDeleteHandler={onDeleteHandler} detailId={detailId} />
+            <DiaryModal
+              navToModify={navToModify}
+              onDeleteHandler={onDeleteHandler}
+              detailId={detailId}
+            />
           </DiaryModalWrapper>
 
           <WholeAreaWithMargin>
             <StyledDetailCardWrapper>
-              <StyledDetailCard onClick={navToModify}>
+              <StyledDetailCard>
                 <div>{myDiary.diaryTitle}</div>
               </StyledDetailCard>
             </StyledDetailCardWrapper>
@@ -74,14 +87,24 @@ function Detail() {
         </StyledDerailPage>
       )}
 
-      <button style={{ display: "none" }} ref={sheetRef} onClick={() => setOpen(true)}></button>
+      <button
+        style={{ display: "none" }}
+        ref={sheetRef}
+        onClick={() => setOpen(true)}
+      ></button>
 
       {myDiary ? (
         <BottomSheet
           open={open}
           header={
             <DetailElement>
-              <img src={CommentImage} alt="코멘트 아이콘" width="28" height="28" style={{ marginRight: "5px" }} />
+              <img
+                src={CommentImage}
+                alt="코멘트 아이콘"
+                width="28"
+                height="28"
+                style={{ marginRight: "5px" }}
+              />
               {myDiary.commentCount}
               <Like diaryData={myDiary} />
               {myDiary.likeCount}

@@ -149,7 +149,7 @@ const ImageSticker = ({
 
 // <---------------------------------------->
 
-const Drawing = () => {
+const TestDrawing = () => {
   const navigate = useNavigate();
   const [mode, setMode] = useState("TEXT");
   const [lineTool, setLineTool] = useState("pen");
@@ -559,7 +559,7 @@ const Drawing = () => {
   );
 };
 
-export default Drawing;
+export default TestDrawing;
 
 const DiaryBack = styled.img`
   position: absolute;

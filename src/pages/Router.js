@@ -20,6 +20,7 @@ import MainLayout from "./main-layout/MainLayout";
 import Drawing from "./Drawing";
 import Page from "./Page";
 import DiaryEdit from "./DiaryEdit";
+import TestDrawing from "./TestDrawing";
 
 const Router = () => {
   return (
@@ -39,6 +40,10 @@ const Router = () => {
         <Route path="/otherlogin" element={<OtherLogin />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="drawing/:diaryid/:paperid" element={<Drawing />} />
+        <Route
+          path="test/drawing/:diaryid/:paperid"
+          element={<TestDrawing />}
+        />
         <Route path="/oauth" element={<Oauth />} />
         <Route path="/diaries/:diaryId/:detailId" element={<Detail />} />
         <Route path="/new-diary" element={<NewDiary />} />
