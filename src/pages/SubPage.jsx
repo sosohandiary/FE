@@ -62,31 +62,33 @@ function SubPage() {
         alert("한 장 더 추가되었습니다");
         window.location.reload();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.response.status === 403) {
+          alert("다이어리의 주인만 쓸 수  있습니다.");
+        }
+      });
   };
 
   const goBackHandler = () => {
     navigate(-1);
   };
 
-  console.log("data : ", data);
+  console.log("data : ", data[0].nickname);
 
   return (
     <>
-      <Title>다이어리 상세보기</Title>
+      <div>
+        <Title>다이어리 상세보기</Title>
+        <LeftArrow src={leftArrow} onMouseDown={goBackHandler}></LeftArrow>
 
-      <LeftArrow src={leftArrow} onMouseDown={goBackHandler}></LeftArrow>
-      {data?.map((item, index) => (
-        <div key={item.id}>
-          {index === 0 && (
-            <HeaderStyle>
-              <DiaryTitle>{item.diaryTitle}</DiaryTitle>
-              <DiaryCreatedAt>{getDate(item.createdAt)}</DiaryCreatedAt>
-            </HeaderStyle>
-          )}
+        <div>
+          <HeaderStyle>
+            <DiaryTitle>{data[0].diaryTitle}</DiaryTitle>
+            <DiaryCreatedAt>{getDate(data[0].createdAt)}</DiaryCreatedAt>
+          </HeaderStyle>
+          <MorePageButton onClick={newInnerPaper}>한장 더 쓰기</MorePageButton>
         </div>
-      ))}
-      <MorePageButton onClick={newInnerPaper}>한장 더 쓰기</MorePageButton>
+      </div>
       <FlipStyle>
         <HTMLFlipBook width={300} height={500}>
           <InnerThumb onClick={() => goToInnerPaperDetail(data[0]?.id)}>
@@ -159,6 +161,7 @@ const Title = styled.div`
 
 const HeaderStyle = styled.div`
   display: flex;
+  margin-top: 30px;
   padding: 20px;
   justify-content: space-between;
   align-items: center;
@@ -179,6 +182,7 @@ const StPageCard = styled.div`
 `;
 
 const StyledPagination = styled(ReactPaginate)`
+  margin-top: 50px;
   display: flex;
   justify-content: center;
 
@@ -234,11 +238,11 @@ const MorePageButton = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin: 0 auto -130px auto;
+  margin: 0 auto 80px auto;
   border: 1px solid rgba(0, 0, 0, 0);
   border-radius: 20px;
   background-color: #e1e7ff;
-  width: 430px;
+  width: 300px;
   height: 50px;
   cursor: pointer;
   z-index: 10;

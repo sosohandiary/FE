@@ -32,17 +32,23 @@ const Navigationbar = () => {
     });
   });
 
-  const { data: dataForFriendAlarm } = useQuery(["getFriendRequestsAtNav"], () => {
-    return axios.get(`${process.env.REACT_APP_BASEURL}/friend/request`, {
-      headers: { Authorization: accessToken },
-    });
-  });
+  const { data: dataForFriendAlarm } = useQuery(
+    ["getFriendRequestsAtNav"],
+    () => {
+      return axios.get(`${process.env.REACT_APP_BASEURL}/friend/request`, {
+        headers: { Authorization: accessToken },
+      });
+    }
+  );
 
-  const { data: dataForCommentAlarm } = useQuery(["getCommentAlarmAtNav"], () => {
-    return axios.get(`${process.env.REACT_APP_BASEURL}/comment/alarm`, {
-      headers: { Authorization: accessToken },
-    });
-  });
+  const { data: dataForCommentAlarm } = useQuery(
+    ["getCommentAlarmAtNav"],
+    () => {
+      return axios.get(`${process.env.REACT_APP_BASEURL}/comment/alarm`, {
+        headers: { Authorization: accessToken },
+      });
+    }
+  );
 
   console.log(
     "COMMENT",
@@ -59,7 +65,6 @@ const Navigationbar = () => {
     dataForCommentAlarm?.data.length +
     dataForFriendAlarm?.data.length +
     dataForInviteAlarm?.data.length;
-
 
   const goToPage = (to) => {
     navigate(to);
