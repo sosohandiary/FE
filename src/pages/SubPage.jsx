@@ -6,6 +6,8 @@ import HTMLFlipBook from "react-pageflip";
 import ReactPaginate from "react-paginate";
 import { getDate } from "../utils/getDate";
 import leftArrow from "../assets/leftArrow.png";
+import { Editor, EditorState, convertFromRaw } from "draft-js";
+import { Layer, Line, Stage } from "react-konva";
 
 function SubPage() {
   const navigate = useNavigate();
@@ -30,7 +32,6 @@ function SubPage() {
         }
       )
       .then((res) => {
-        console.log(res);
         setData([...res.data.content]); // 객체로 반환되길래 배열로 만듬
         setPageCount(res.data.pageableCustom.totalPages);
       });
@@ -73,6 +74,43 @@ function SubPage() {
     navigate(-1);
   };
 
+  //텍스트 썸네일
+  const getTextData = (idx) => {
+    if (data[idx]) {
+      return EditorState.createWithContent(
+        convertFromRaw(JSON.parse(data[idx]?.customJson).texts)
+      );
+    } else {
+      return EditorState.createEmpty();
+    }
+  };
+
+  //펜 썸네일
+  const getLineData = (idx) => {
+    if (data[idx]) {
+      return JSON.parse(data[idx].customJson).lines;
+    } else {
+      return [];
+    }
+  };
+  const thumbAreaRef = useRef(null);
+  const [dimensions, setDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
+
+  useEffect(() => {
+    if (
+      thumbAreaRef.current?.offsetHeight &&
+      thumbAreaRef.current?.offsetWidth
+    ) {
+      setDimensions({
+        width: thumbAreaRef.current.offsetWidth,
+        height: thumbAreaRef.current.offsetHeight,
+      });
+    }
+  }, []);
+
   return (
     <>
       <div>
@@ -90,12 +128,39 @@ function SubPage() {
       <FlipStyle>
         <HTMLFlipBook width={300} height={500}>
           <InnerThumb onClick={() => goToInnerPaperDetail(data[0]?.id)}>
-            <div>id : {data[0]?.id}</div>
-            <div>diaryTitle : {data[0]?.diaryTitle}</div>
-            <div>nickname : {data[0]?.nickname}</div>
-            <div>createdAt : {data[0]?.createdAt}</div>
-            <div>modifiedAt : {data[0]?.modifiedAt}</div>
-            <div>likeCount : {data[0]?.likeCount}</div>
+            <div id="thumbnail" ref={thumbAreaRef} style={{ height: "100%" }}>
+              <Editor editorState={getTextData(0)} />
+              <Stage
+                width={dimensions.width}
+                height={dimensions.height}
+                style={{ position: "absolute", top: "0px", zIndex: "1" }}
+              >
+                <Layer>
+                  {getLineData(0).map((line, i) => (
+                    <Line
+                      key={i}
+                      points={line.points}
+                      stroke={line.lineColor}
+                      strokeWidth={line.lineWidth}
+                      tension={0.5}
+                      lineCap="round"
+                      lineJoin="round"
+                      globalCompositeOperation={
+                        line.lineTool === "eraser"
+                          ? "destination-out"
+                          : "source-over"
+                      }
+                    />
+                  ))}
+                </Layer>
+              </Stage>
+              <div>id : {data[0]?.id}</div>
+              <div>diaryTitle : {data[0]?.diaryTitle}</div>
+              <div>nickname : {data[0]?.nickname}</div>
+              <div>createdAt : {data[0]?.createdAt}</div>
+              <div>modifiedAt : {data[0]?.modifiedAt}</div>
+              <div>likeCount : {data[0]?.likeCount}</div>
+            </div>
           </InnerThumb>
           <InnerThumb onClick={() => goToInnerPaperDetail(data[1]?.id)}>
             <div>id : {data[1]?.id}</div>

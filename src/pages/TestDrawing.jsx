@@ -405,7 +405,7 @@ const TestDrawing = () => {
         <Editor
           editorState={editorState}
           onChange={setEditorState}
-          handleKeyCommand={handleKeyCommand}
+          onEditorStateChange={handleKeyCommand}
         />
       </TextAreaStyle>
       <AllToolbarStyle isOpenAllToolbar={isOpenAllToolbar}>

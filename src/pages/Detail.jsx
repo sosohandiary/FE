@@ -145,6 +145,7 @@ const StyledGobackButton = styled(MdArrowBack)`
   font-size: 40px;
   color: #adaaaa;
   cursor: pointer;
+  z-index: 1;
 `;
 
 const StyledDetailCardWrapper = styled(WholeViewWidth)`
