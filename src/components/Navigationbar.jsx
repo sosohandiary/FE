@@ -13,9 +13,16 @@ import plus from "../assets/navbar/plus.png";
 import { Badge } from "@mui/material";
 import { useQuery } from "react-query";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import alarmSlice, {
+  getCommentAlarm,
+  getFriendAlarm,
+  getInviteAlarm,
+} from "../contexts/alarmSlice";
 
 const Navigationbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const accessToken = window.localStorage.getItem("accessToken");
   const [navMode, setNavMode] = useState("HOME");
 
@@ -37,11 +44,51 @@ const Navigationbar = () => {
     });
   });
 
+  console.log(
+    "COMMENT",
+    dataForCommentAlarm,
+    dataForFriendAlarm,
+    dataForInviteAlarm
+  );
+
+  dispatch(getCommentAlarm(dataForCommentAlarm?.data));
+  dispatch(getFriendAlarm(dataForFriendAlarm?.data));
+  dispatch(getInviteAlarm(dataForInviteAlarm?.data));
+
   const totalAlarmNumber =
-    dataForCommentAlarm?.data.length + dataForFriendAlarm?.data.length + dataForInviteAlarm?.data.length;
+    dataForCommentAlarm?.data.length +
+    dataForFriendAlarm?.data.length +
+    dataForInviteAlarm?.data.length;
+
 
   const goToPage = (to) => {
     navigate(to);
+  };
+
+  const checkAllAlarm = () => {
+    dataForFriendAlarm.data.map((item) => {
+      return axios.patch(
+        `${process.env.REACT_APP_BASEURL}/invite/alarm/read/${item.friendListId}`,
+        {},
+        { headers: { Authorization: accessToken } }
+      );
+    });
+
+    dataForCommentAlarm.data.map((item) => {
+      return axios.patch(
+        `${process.env.REACT_APP_BASEURL}/comment/alarm/${item.commentId}`,
+        {},
+        { headers: { Authorization: accessToken } }
+      );
+    });
+
+    dataForInviteAlarm.data.map((item) => {
+      return axios.patch(
+        `${process.env.REACT_APP_BASEURL}/invite/alarm/read/${item.id}`,
+        {},
+        { headers: { Authorization: accessToken } }
+      );
+    });
   };
 
   return (
@@ -58,6 +105,7 @@ const Navigationbar = () => {
         onClick={() => {
           goToPage("/notification");
           setNavMode("BELL");
+          checkAllAlarm();
         }}
       >
         <Badge badgeContent={totalAlarmNumber} color="primary">
