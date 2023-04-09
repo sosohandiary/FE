@@ -17,6 +17,7 @@ import CommentImage from "../assets//comment.png";
 import DiaryModal from "../components/detail/DiaryModal";
 import { useMutation } from "react-query";
 import { deleteDiary } from "../api/detail";
+import Thumbnail from "../components/drawing/Thumbnail";
 
 function Detail() {
   const navigate = useNavigate();
@@ -77,24 +78,30 @@ function Detail() {
             />
           </DiaryModalWrapper>
 
-          <WholeAreaWithMargin>
+          <div>
             <StyledDetailCardWrapper>
               <StyledDetailCard>
-                <div>{myDiary.diaryTitle}</div>
+                <div style={{ position: "relative" }}>
+                  <Thumbnail
+                    diaryId={diaryId}
+                    paperId={detailId}
+                    width={window.innerWidth}
+                    height={window.innerHeight}
+                  />
+                </div>
               </StyledDetailCard>
             </StyledDetailCardWrapper>
-          </WholeAreaWithMargin>
+          </div>
         </StyledDerailPage>
       )}
-
       <button
         style={{ display: "none" }}
         ref={sheetRef}
         onClick={() => setOpen(true)}
       ></button>
-
       {myDiary ? (
         <BottomSheet
+          style={{ position: "absolute", top: "100px" }}
           open={open}
           header={
             <DetailElement>
@@ -103,7 +110,9 @@ function Detail() {
                 alt="코멘트 아이콘"
                 width="28"
                 height="28"
-                style={{ marginRight: "5px" }}
+                style={{
+                  marginRight: "5px",
+                }}
               />
               {myDiary.commentCount}
               <Like diaryData={myDiary} />
@@ -159,7 +168,7 @@ const StyledDetailCardWrapper = styled(WholeViewWidth)`
 const StyledDetailCard = styled.div`
   display: flex;
   width: 375px;
-  height: 100vh;
+  height: 80vh;
   border: none;
   background-color: #f1f1f1;
   border-radius: 30px 30px 0px 0px;

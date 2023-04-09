@@ -350,8 +350,6 @@ const Drawing = () => {
     <div style={{ overflow: "hidden", width: "100vw" }}>
       <DiaryBack src={diaryBack} onClick={goBackDiaryHandler} />
 
-      <TextAreaStyle mode={mode}></TextAreaStyle>
-
       <Stage
         width={window.innerWidth}
         height={window.innerHeight}
