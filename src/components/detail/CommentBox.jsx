@@ -136,6 +136,9 @@ const CommentBox = () => {
         <h3>댓글</h3>
         {mycomment?.length === 0 && <h5>"아직 댓글이 없어요"</h5>}
         <CommentsContainer>
+          <h3>댓글</h3>
+          {mycomment?.length === 0 && <h5>"아직 댓글이 없어요"</h5>}
+
           <SwipeableList threshold={0.5} type={ListType.IOS} disableSwipe={isEditing}>
             {mycomment?.map((comment) => {
               const createdAtAgo = <GetTimeAgo createdAt={comment.createdAt} />;
@@ -245,6 +248,7 @@ const CommentsContainer = styled.div`
 `;
 
 const CommentInput = styled.input`
+  font-size: 16px;
   width: 360px;
   height: 40px;
   /* margin-top: 10px; */
