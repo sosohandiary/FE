@@ -5,6 +5,9 @@ import { VscBlank } from "react-icons/vsc";
 import { useLocation, useNavigate } from "react-router-dom";
 import leftArrow from "../assets/leftArrow.png";
 import Searchbox from "../components/Searchbox";
+import checkedImg from "../assets/diary-edit/checkedImg.png";
+import { Badge } from "@mui/material";
+import { disableColor, subColor1 } from "../constants/colorPalette";
 
 function DiaryEdit() {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -106,14 +109,15 @@ function DiaryEdit() {
     }
   };
 
+  //모달 닫기 버튼
   const handleCloseModal = () => {
     setModalOpen(false);
+    setCheckedList([]);
   };
 
   //이미지 업로드 관련
   const selectFile = useRef();
   const imgClickHandler = () => {
-    console.log("dd");
     selectFile.current.click();
   };
 
@@ -125,6 +129,7 @@ function DiaryEdit() {
   const [searchInput, setSearchInput] = useState("");
 
   const handleInputChange = (event) => {
+    console.log(event.target.value);
     setSearchInput(event.target.value);
   };
 
@@ -134,6 +139,53 @@ function DiaryEdit() {
     }
   };
 
+  //체크 관련
+  const [checkedList, setCheckedList] = useState([]);
+
+  const onCheckedElement = (checked, item) => {
+    if (checked) {
+      setCheckedList([...checkedList, item]);
+    } else if (!checked) {
+      setCheckedList(checkedList.filter((el) => el !== item));
+    }
+  };
+  const onRemove = (item) => {
+    setCheckedList(checkedList.filter((el) => el !== item));
+  };
+
+  console.log(checkedList);
+
+  const addMemberCompleteHandler = () => {
+    const diaryId = mypage.data.id;
+    console.log(checkedList);
+    checkedList.map((item) => {
+      axios
+        .post(
+          `${process.env.REACT_APP_BASEURL}/invite/${diaryId}/${item.memberId}`,
+          {},
+          { headers: { Authorization: accessToken } }
+        )
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    });
+  };
+
+  console.log("mypage : ", mypage.data.id);
+
+  const getCurrentMemberInfo = () => {
+    axios
+      .get(`${process.env.REACT_APP_BASEURL}/invite/${mypage.data.id}/list`, {
+        headers: { Authorization: accessToken },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getCurrentMemberInfo();
+  }, []);
+
+  console.log(friends);
   return (
     <Wholebox>
       <TopBox>
@@ -205,6 +257,7 @@ function DiaryEdit() {
               <Textbox>멤버 추가</Textbox>
               <VscBlank className="VscBlank" />
             </TopBox>
+
             <Searchbox
               placeholder="친구를 검색하세요"
               onChangeInput={handleInputChange}
@@ -212,46 +265,88 @@ function DiaryEdit() {
               setSearchInput={setSearchInput}
             />
 
-            <div>
-              {friends.map((friend) => (
-                <li
-                  key={friend.id}
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginBottom: "8px",
-                    marginLeft: "10px",
-                    marginRight: "10px",
-                  }}>
-                  <label style={{ flex: 1 }}>
-                    <ImgAndName>
+            <CheckedListBox>
+              {checkedList.map((item) => {
+                return (
+                  <div>
+                    <Badge
+                      badgeContent="-"
+                      color="primary"
+                      onClick={() => {
+                        onRemove(item);
+                      }}>
                       <img
-                        src={friend.profileImageUrl}
+                        src={item.profileImageUrl}
                         style={{
-                          width: "50px",
-                          height: "50px",
+                          width: "40px",
+                          height: "40px",
                           borderRadius: "50%",
                           marginRight: "7px",
                         }}
                       />
-                      <FriendName>
-                        {friend.name}({friend.nickname})
-                      </FriendName>
-                    </ImgAndName>
-                  </label>
-                  <input
-                    type="checkbox"
+                    </Badge>
+                    <TopName>{item.name}</TopName>
+                  </div>
+                );
+              })}
+            </CheckedListBox>
+            <div>
+              {friends
+                .filter(
+                  (item) =>
+                    item.name.includes(searchInput) ||
+                    item.nickname.includes(searchInput)
+                )
+                .map((friend) => (
+                  <li
+                    key={friend.id}
                     style={{
-                      width: "20px",
-                      height: "20px",
-                      backgroundColor: "white",
-                      marginTop: "15px",
-                    }}
-                  />
-                </li>
-              ))}
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      marginBottom: "8px",
+                      marginLeft: "10px",
+                      marginRight: "10px",
+                    }}>
+                    <label style={{ flex: 1 }}>
+                      <ImgAndName>
+                        <img
+                          src={friend.profileImageUrl}
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            borderRadius: "50%",
+                            marginRight: "7px",
+                          }}
+                        />
+                        <FriendName>
+                          {friend.name}({friend.nickname})
+                        </FriendName>
+                      </ImgAndName>
+                    </label>
+                    <input
+                      type="checkbox"
+                      name="addMember"
+                      value={friend.id}
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                        backgroundColor: "white",
+                        marginTop: "15px",
+                      }}
+                      checked={checkedList.includes(friend)}
+                      onChange={(e) => {
+                        onCheckedElement(e.target.checked, friend);
+                      }}
+                    />
+                  </li>
+                ))}
               <ModalCloseButton onClick={handleCloseModal}>x</ModalCloseButton>
+              <CompleteButtonArea>
+                <Completebutton onClick={addMemberCompleteHandler}>
+                  완료
+                </Completebutton>
+              </CompleteButtonArea>
             </div>
           </ModalContent>
         </ModalWrapper>
@@ -454,4 +549,34 @@ const SubmitButton = styled.div`
   background-color: #e1e7ff;
   width: 300px;
   height: 50px;
+`;
+
+const TopName = styled.div`
+  font-size: 16px;
+  font-weight: bolder;
+  margin-bottom: 10px;
+`;
+const CheckedListBox = styled.div`
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid #dcdcdc;
+`;
+
+const CompleteButtonArea = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  margin-top: 20px;
+`;
+const Completebutton = styled.button`
+  color: black;
+  background-color: rgb(${subColor1});
+  width: 100px;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+  margin: 0px auto;
+  font-weight: 700;
+  font-size: 100%;
+  cursor: pointer;
 `;
