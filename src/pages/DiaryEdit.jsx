@@ -161,8 +161,14 @@ function DiaryEdit() {
           {},
           { headers: { Authorization: accessToken } }
         )
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          console.log(res);
+          alert("멤버 추가 요청을 보냈습니다.");
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("오류가 발생하였습니다!");
+        });
     });
   };
 
