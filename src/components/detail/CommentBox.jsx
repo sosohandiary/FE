@@ -158,7 +158,7 @@ const CommentBox = () => {
       <WholeAreaWithMargin>
         <h3>댓글</h3>
         {mycomment?.length === 0 && <h5>"아직 댓글이 없어요"</h5>}
-        <CommentsContainer>
+        <CommentsContainer style={{ overflow: "hidden" }}>
           <SwipeableList
             threshold={0.5}
             type={ListType.IOS}
@@ -272,14 +272,6 @@ const CommentsContainer = styled.div`
   /* Add new styles */
   & > div {
     margin-bottom: 5px;
-  }
-
-  /* Add media queries */
-  @media only screen and (max-width: 768px) {
-    width: 100%;
-    height: 100%;
-    margin-top: 0;
-    margin-bottom: 0;
   }
 `;
 
