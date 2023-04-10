@@ -19,6 +19,7 @@ const MainPage = () => {
 
   //비로그인 -> 로그인창으로
   const accessToken = window.localStorage.getItem("accessToken");
+
   // useEffect(() => {
   //   if (accessToken === null) {
   //     navigate("/login");
@@ -197,6 +198,7 @@ const MainPage = () => {
                 color="purple"
                 idx={0}
                 activeIdxForSelfmade={activeIdxForSelfmade}
+                item={{ title: "다이어리가 없습니다" }}
               ></DiaryCardTopBig>
             </SwiperSlide>
           ) : (
@@ -235,7 +237,17 @@ const MainPage = () => {
             modules={[Pagination]}
             className="mySwiper"
           >
-            {dataListForPrivate.length == 0 ? (
+            {dataListForPrivate.map((item) => (
+              <SwiperSlide
+                key={item.id}
+                onClick={() => {
+                  goToDiaryDetail(item.id);
+                }}
+              >
+                <DiaryCard item={item} color="purple" />
+              </SwiperSlide>
+            ))}{" "}
+            {dataListForPrivate.length < 3 ? (
               <SwiperSlide
                 style={{
                   width: "100vw",
@@ -247,16 +259,6 @@ const MainPage = () => {
             ) : (
               ""
             )}
-            {dataListForPrivate.map((item) => (
-              <SwiperSlide
-                key={item.id}
-                onClick={() => {
-                  goToDiaryDetail(item.id);
-                }}
-              >
-                <DiaryCard item={item} color="purple" />
-              </SwiperSlide>
-            ))}
             {IsLoadingForPrivate ? (
               <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
             ) : (
@@ -280,18 +282,6 @@ const MainPage = () => {
         <Label>공개 다이어리</Label>
         <SwiperArea>
           <Swiper slidesPerView={"auto"} spaceBetween={20} className="mySwiper">
-            {dataListForPublic.length == 0 ? (
-              <SwiperSlide
-                style={{
-                  width: "100vw",
-                  backgroundColor: "#e4e4e4",
-                }}
-              >
-                데이터가 없습니다.
-              </SwiperSlide>
-            ) : (
-              ""
-            )}
             {dataListForPublic.map((item, i) => (
               <SwiperSlide
                 key={i}
@@ -302,6 +292,18 @@ const MainPage = () => {
                 <DiaryCard item={item} color="purple" />
               </SwiperSlide>
             ))}
+            {dataListForPublic.length < 3 ? (
+              <SwiperSlide
+                style={{
+                  width: "100vw",
+                  backgroundColor: "#e4e4e4",
+                }}
+              >
+                다이어리가 없습니다.
+              </SwiperSlide>
+            ) : (
+              ""
+            )}
             {IsLoadingForPublic ? (
               <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
             ) : (
