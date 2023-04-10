@@ -585,6 +585,7 @@ const CompleteButtonArea = styled.div`
   justify-content: center;
   margin: 10px;
 `;
+
 const Completebutton = styled.button`
   color: black;
   background-color: #e1e7ff;
@@ -607,6 +608,7 @@ const ListStyle = styled.div`
 const AlreadyMember = styled.div`
   display: ${({ disabled }) => (disabled ? "" : "none")};
 `;
+
 const TopName = styled.div`
   font-size: 16px;
   font-weight: bolder;
