@@ -133,6 +133,8 @@ const CommentBox = () => {
   return (
     <div>
       <WholeAreaWithMargin>
+        <h3>댓글</h3>
+        {mycomment?.length === 0 && <h5>"아직 댓글이 없어요"</h5>}
         <CommentsContainer>
           <h3>댓글</h3>
           {mycomment?.length === 0 && <h5>"아직 댓글이 없어요"</h5>}
@@ -164,7 +166,7 @@ const CommentBox = () => {
       <WholeAreaWithMargin>
         <CommentInput
           name="comment"
-          placeholder={isEditing ? "댓글 수정하기" : "댓글 달기"}
+          placeholder={isEditing ? "댓글 수정하기" : "댓글 입력 후 엔터"}
           value={comment.comment}
           onChange={inputChangeHandler}
           onKeyPress={handleKeyDown}
@@ -210,12 +212,13 @@ const CheckIconStyled = styled(RiCheckFill)`
 const CommentsContainer = styled.div`
   width: 375px;
   height: 500px;
+  /* height: 80%; */
   border: none;
   padding: 10px;
   margin-top: -25px;
   margin-bottom: -25px;
-  overflow-y: auto;
   position: relative;
+  overflow-y: scroll;
   /* background-color: #598665; */
 
   h5 {
@@ -245,6 +248,7 @@ const CommentsContainer = styled.div`
 `;
 
 const CommentInput = styled.input`
+  font-size: 16px;
   width: 360px;
   height: 40px;
   /* margin-top: 10px; */
