@@ -145,7 +145,7 @@ const StyledDetailCardWrapper = styled(WholeViewWidth)`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 30px;
   overflow: hidden;
 `;
 
@@ -167,7 +167,7 @@ const DiaryModalWrapper = styled.div`
   background-color: #fff;
   border: none;
   position: absolute;
-  top: 13px;
+  top: 25px;
   right: 50%;
   transform: translateX(460%);
 `;
