@@ -108,10 +108,10 @@ function DiaryEdit() {
   };
 
   // 모달 닫기 버튼
-  // const handleCloseModal = () => {
-  //   setModalOpen(false);
-  //   setCheckedList([]);
-  // };
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setCheckedList([]);
+  };
 
   //이미지 업로드 관련
   const selectFile = useRef();
@@ -153,6 +153,7 @@ function DiaryEdit() {
   const addMemberCompleteHandler = () => {
     const diaryId = mypage.data.id;
     setModalOpen(false);
+    setCheckedList([]);
     checkedList.map((item) => {
       axios
         .post(
@@ -209,7 +210,7 @@ function DiaryEdit() {
                 src={previewImage}
                 style={{
                   position: "absolute",
-                  top: "170px",
+                  top: "200px",
                   width: "100px",
                   height: "100px",
                   borderRadius: "25px",
