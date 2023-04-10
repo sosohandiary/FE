@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import home from "../assets/navbar/home.png";
 import bell from "../assets/navbar/bell.png";
 import magnifier from "../assets/navbar/magnifier.png";
@@ -21,6 +21,13 @@ const Navigationbar = () => {
   const dispatch = useDispatch();
   const accessToken = window.localStorage.getItem("accessToken");
   const [navMode, setNavMode] = useState("HOME");
+
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname === "/mypage") {
+      setNavMode("PERSON");
+    }
+  }, []);
 
   const { data: dataForInviteAlarm } = useQuery(["getInviteAlarmAtNav"], () => {
     return axios.get(`${process.env.REACT_APP_BASEURL}/invite/alarm`, {
