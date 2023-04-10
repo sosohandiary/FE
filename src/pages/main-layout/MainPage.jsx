@@ -198,7 +198,10 @@ const MainPage = () => {
                 color="purple"
                 idx={0}
                 activeIdxForSelfmade={activeIdxForSelfmade}
-                item={{ title: "다이어리가 없습니다" }}
+                item={{
+                  title: `다이어리가 
+                없습니다`,
+                }}
               ></DiaryCardTopBig>
             </SwiperSlide>
           ) : (
@@ -227,16 +230,7 @@ const MainPage = () => {
       <div style={{ margin: "10px 10px 80px 10px" }}>
         <Label>초대된 다이어리</Label>
         <SwiperArea>
-          <Swiper
-            slidesPerView={"auto"}
-            spaceBetween={20}
-            pagination={{
-              clickable: true,
-              dynamicBullets: true,
-            }}
-            modules={[Pagination]}
-            className="mySwiper"
-          >
+          <Swiper slidesPerView={"auto"} spaceBetween={20} className="mySwiper">
             {dataListForPrivate.map((item) => (
               <SwiperSlide
                 key={item.id}
@@ -246,7 +240,7 @@ const MainPage = () => {
               >
                 <DiaryCard item={item} color="purple" />
               </SwiperSlide>
-            ))}{" "}
+            ))}
             {dataListForPrivate.length < 3 ? (
               <SwiperSlide
                 style={{

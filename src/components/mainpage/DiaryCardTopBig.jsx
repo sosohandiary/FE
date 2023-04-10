@@ -36,7 +36,7 @@ const DiaryCardTopBig = ({ item, color, idx, activeIdxForSelfmade }) => {
         <CoverImg src={item?.img} idx={idx} activeIdxForSelfmade={activeIdxForSelfmade} />
 
         <CreatedAt idx={idx} activeIdxForSelfmade={activeIdxForSelfmade}>
-          {item.createdAt?.split(" ")[0]}
+          {item?.createdAt?.split(" ")[0]}
         </CreatedAt>
       </div>
     </Card>

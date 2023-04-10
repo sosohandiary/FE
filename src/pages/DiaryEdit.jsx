@@ -7,6 +7,7 @@ import leftArrow from "../assets/leftArrow.png";
 import Searchbox from "../components/Searchbox";
 import checkedImg from "../assets/diary-edit/checkedImg.png";
 import { Badge } from "@mui/material";
+import { data } from "jquery";
 import { disableColor, subColor1 } from "../constants/colorPalette";
 
 function DiaryEdit() {
@@ -70,7 +71,6 @@ function DiaryEdit() {
 
       try {
         const paramId = mypage.data.id;
-        console.log(paramId);
         const res = await axios.patch(
           `${process.env.REACT_APP_BASEURL}/diary/${paramId}`,
           formData,
@@ -81,7 +81,6 @@ function DiaryEdit() {
             },
           }
         );
-        console.log(res.data); // 수정된 다이어리 정보가 포함된 API 응답 데이터
         navigate(`/mypage`);
       } catch (error) {
         console.error("다이어리 수정에 실패했습니다.", error);
@@ -129,7 +128,6 @@ function DiaryEdit() {
   const [searchInput, setSearchInput] = useState("");
 
   const handleInputChange = (event) => {
-    console.log(event.target.value);
     setSearchInput(event.target.value);
   };
 
@@ -153,11 +151,8 @@ function DiaryEdit() {
     setCheckedList(checkedList.filter((el) => el !== item));
   };
 
-  console.log(checkedList);
-
   const addMemberCompleteHandler = () => {
     const diaryId = mypage.data.id;
-    console.log(checkedList);
     checkedList.map((item) => {
       axios
         .post(
@@ -170,14 +165,15 @@ function DiaryEdit() {
     });
   };
 
-  console.log("mypage : ", mypage.data.id);
-
+  const [alreadyMembersId, setAlreadyMembersId] = useState([]);
   const getCurrentMemberInfo = () => {
     axios
       .get(`${process.env.REACT_APP_BASEURL}/invite/${mypage.data.id}/list`, {
         headers: { Authorization: accessToken },
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        setAlreadyMembersId(res.data.map((item) => item.memberId));
+      })
       .catch((err) => console.log(err));
   };
 
@@ -185,7 +181,6 @@ function DiaryEdit() {
     getCurrentMemberInfo();
   }, []);
 
-  console.log(friends);
   return (
     <Wholebox>
       <TopBox>
@@ -266,9 +261,9 @@ function DiaryEdit() {
             />
 
             <CheckedListBox>
-              {checkedList.map((item) => {
+              {checkedList.map((item, i) => {
                 return (
-                  <div>
+                  <div key={i}>
                     <Badge
                       badgeContent="-"
                       color="primary"
@@ -327,6 +322,7 @@ function DiaryEdit() {
                     <input
                       type="checkbox"
                       name="addMember"
+                      disabled={alreadyMembersId.includes(friend.memberId)}
                       value={friend.id}
                       style={{
                         width: "20px",
