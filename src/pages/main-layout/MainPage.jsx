@@ -199,8 +199,7 @@ const MainPage = () => {
                 idx={0}
                 activeIdxForSelfmade={activeIdxForSelfmade}
                 item={{
-                  title: `다이어리가 
-                없습니다`,
+                  title: "다이어리가 \n없습니다",
                 }}
               ></DiaryCardTopBig>
             </SwiperSlide>
@@ -338,8 +337,6 @@ const CurProfileImage = styled.div`
   height: 50px;
   width: 50px;
   border-radius: 50%;
-  position: relative;
-  top: 50px;
   background-image: url(${({ url }) => url});
   background-size: cover;
   background-position: center;
