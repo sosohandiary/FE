@@ -167,7 +167,7 @@ function DiaryEdit() {
         })
         .catch((err) => {
           console.log(err);
-          alert("오류가 발생하였습니다!");
+          alert("이미 요청을 보냈습니다!");
         });
     });
   };
