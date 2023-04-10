@@ -155,15 +155,15 @@ const CommentBox = () => {
 
   return (
     <div>
-      <WholeAreaWithMargin style={{ zIndex: 100 }}>
+      <WholeAreaWithMargin>
         <h3>댓글</h3>
         {mycomment?.length === 0 && <h5>"아직 댓글이 없어요"</h5>}
-        <CommentsContainer style={{ overflow: "hidden", zIndex: 101 }}>
+        <CommentsContainer style={{ marginBottom: "100px" }}>
           <SwipeableList
             threshold={0.5}
             type={ListType.IOS}
             disableSwipe={isEditing}
-            style={{ zIndex: 102 }}
+            style={{ height: "100%", minHeight: "400px" }}
           >
             {mycomment?.map((comment) => {
               const createdAtAgo = <GetTimeAgo createdAt={comment.createdAt} />;
@@ -171,7 +171,6 @@ const CommentBox = () => {
                 <SwipeableListItem
                   key={comment.commentId}
                   trailingActions={trailingActions(comment)}
-                  style={{ zIndex: 103 }}
                 >
                   <React.Fragment key={comment.commentId}>
                     <div>
@@ -194,6 +193,7 @@ const CommentBox = () => {
 
       <WholeAreaWithMargin>
         <CommentInput
+          style={{ position: "relative", bottom: "15px" }}
           name="comment"
           placeholder={isEditing ? "댓글 수정하기" : "댓글 입력 후 엔터"}
           value={comment.comment}
@@ -274,6 +274,11 @@ const CommentsContainer = styled.div`
   & > div {
     margin-bottom: 5px;
   }
+
+  width: 100%;
+  height: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
 `;
 
 const CommentInput = styled.input`
