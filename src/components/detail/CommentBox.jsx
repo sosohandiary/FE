@@ -158,7 +158,7 @@ const CommentBox = () => {
       <WholeAreaWithMargin>
         <h3>댓글</h3>
         {mycomment?.length === 0 && <h5>"아직 댓글이 없어요"</h5>}
-        <CommentsContainer>
+        <CommentsContainer style={{ marginBottom: "100px" }}>
           <SwipeableList
             threshold={0.5}
             type={ListType.IOS}
@@ -193,7 +193,7 @@ const CommentBox = () => {
 
       <WholeAreaWithMargin>
         <CommentInput
-          style={{ position: "absolute", bottom: "90px" }}
+          style={{ position: "relative", bottom: "90px" }}
           name="comment"
           placeholder={isEditing ? "댓글 수정하기" : "댓글 입력 후 엔터"}
           value={comment.comment}
