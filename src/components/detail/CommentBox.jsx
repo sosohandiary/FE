@@ -279,7 +279,8 @@ const CommentStyle = styled.div`
 const CommentText = styled.span`
   font-size: 14px;
   /* font-weight: 600; */
-  margin-left: 10px;
+  margin-left: 15px;
+  margin-top: 10px;
   display: block;
   white-space: pre-wrap;
   word-break: break-all;
