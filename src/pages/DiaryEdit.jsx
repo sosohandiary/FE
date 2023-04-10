@@ -168,6 +168,21 @@ function DiaryEdit() {
     });
   };
 
+  console.log("mypage : ", mypage.data.id);
+
+  const getCurrentMemberInfo = () => {
+    axios
+      .get(`${process.env.REACT_APP_BASEURL}/invite/${mypage.data.id}/list`, {
+        headers: { Authorization: accessToken },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getCurrentMemberInfo();
+  }, []);
+
   console.log(friends);
   return (
     <Wholebox>
@@ -260,7 +275,7 @@ function DiaryEdit() {
                       }}
                     >
                       <img
-                        src={checkedImg}
+                        src={item.profileImageUrl}
                         style={{
                           width: "50px",
                           height: "50px",
