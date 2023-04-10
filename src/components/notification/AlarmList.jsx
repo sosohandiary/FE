@@ -19,10 +19,6 @@ const handleReject = () => {
   console.log("reject");
 };
 
-const acceptDiary = (id) => {};
-
-const goToDetailOfComment = () => {};
-
 const AlarmList = ({ item, alarmType }) => {
   const navigate = useNavigate();
   const accessToken = window.localStorage.getItem("accessToken");
@@ -87,7 +83,9 @@ const AlarmList = ({ item, alarmType }) => {
           headers: { Authorization: accessToken },
         }
       )
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -100,6 +98,7 @@ const AlarmList = ({ item, alarmType }) => {
     <TrailingActions>
       <SwipeAction onClick={handleReject}>
         <ActionContent
+          destructive={true}
           onClick={() => {
             switch (alarmType) {
               case "friend":
