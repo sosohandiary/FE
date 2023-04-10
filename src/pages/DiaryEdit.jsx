@@ -8,8 +8,6 @@ import Searchbox from "../components/Searchbox";
 import checkedImg from "../assets/diary-edit/checkedImg.png";
 import uncheckedImg from "../assets/diary-edit/uncheckedImg.png";
 import { Badge } from "@mui/material";
-import { data } from "jquery";
-import { disableColor, subColor1 } from "../constants/colorPalette";
 
 function DiaryEdit() {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -110,10 +108,10 @@ function DiaryEdit() {
   };
 
   // 모달 닫기 버튼
-  const handleCloseModal = () => {
-    setModalOpen(false);
-    setCheckedList([]);
-  };
+  // const handleCloseModal = () => {
+  //   setModalOpen(false);
+  //   setCheckedList([]);
+  // };
 
   //이미지 업로드 관련
   const selectFile = useRef();
@@ -154,6 +152,7 @@ function DiaryEdit() {
 
   const addMemberCompleteHandler = () => {
     const diaryId = mypage.data.id;
+    setModalOpen(false);
     checkedList.map((item) => {
       axios
         .post(
@@ -256,7 +255,7 @@ function DiaryEdit() {
           <ModalContent>
             <TopBox>
               <VscBlank className="VscBlank" />
-              <Textbox>멤버 추가</Textbox>
+              <MemberTextbox>멤버 추가</MemberTextbox>
               <VscBlank className="VscBlank" />
             </TopBox>
             <Searchbox
@@ -337,7 +336,6 @@ function DiaryEdit() {
                     </AlreadyMember>
                   </ListStyle>
                 ))}
-              <ModalCloseButton onClick={handleCloseModal}>x</ModalCloseButton>
               <CompleteButtonArea>
                 <Completebutton onClick={addMemberCompleteHandler}>
                   완료
@@ -354,6 +352,14 @@ function DiaryEdit() {
 }
 
 export default DiaryEdit;
+
+const MemberTextbox = styled.div`
+  font-size: 110%;
+  font-weight: bolder;
+  margin: 10px;
+  border-top: 3px solid gray;
+  padding-top: 18px;
+`;
 
 const FriendName = styled.div`
   margin-top: 17px;
@@ -580,16 +586,18 @@ const CompleteButtonArea = styled.div`
 `;
 const Completebutton = styled.button`
   color: black;
-  background-color: rgb(${subColor1});
+  background-color: #e1e7ff;
   width: 100px;
   height: 35px;
   border: none;
-  border-radius: 5px;
+  border-radius: 15px;
   margin: 0px auto;
   font-weight: 700;
   font-size: 100%;
   cursor: pointer;
+  margin-top: 30px;
 `;
+
 const ListStyle = styled.div`
   display: flex;
   align-items: center;
