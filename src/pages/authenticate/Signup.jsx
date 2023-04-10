@@ -18,7 +18,6 @@ const Signup = () => {
   } = useForm();
   const onSubmit = async (data) => {
     delete data.passwordConfirm;
-    console.log("nickname : ", data.nickname);
     axios
       .post(`${process.env.REACT_APP_BASEURL}/join`, data)
       .then(() => {
