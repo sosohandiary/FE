@@ -9,9 +9,16 @@ import plus from "../assets/navbar/plus.png";
 import { Badge } from "@mui/material";
 import { useQuery } from "react-query";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import {
+  getCommentAlarm,
+  getFriendAlarm,
+  getInviteAlarm,
+} from "../contexts/alarmSlice";
 
 const Navigationbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const accessToken = window.localStorage.getItem("accessToken");
   const [navMode, setNavMode] = useState("HOME");
 
@@ -21,23 +28,78 @@ const Navigationbar = () => {
     });
   });
 
-  const { data: dataForFriendAlarm } = useQuery(["getFriendRequestsAtNav"], () => {
-    return axios.get(`${process.env.REACT_APP_BASEURL}/friend/request`, {
-      headers: { Authorization: accessToken },
-    });
-  });
+  const { data: dataForFriendAlarm } = useQuery(
+    ["getFriendRequestsAtNav"],
+    () => {
+      return axios.get(`${process.env.REACT_APP_BASEURL}/friend/request`, {
+        headers: { Authorization: accessToken },
+      });
+    }
+  );
 
-  const { data: dataForCommentAlarm } = useQuery(["getCommentAlarmAtNav"], () => {
-    return axios.get(`${process.env.REACT_APP_BASEURL}/comment/alarm`, {
-      headers: { Authorization: accessToken },
-    });
-  });
+  const { data: dataForCommentAlarm } = useQuery(
+    ["getCommentAlarmAtNav"],
+    () => {
+      return axios.get(`${process.env.REACT_APP_BASEURL}/comment/alarm`, {
+        headers: { Authorization: accessToken },
+      });
+    }
+  );
 
-  const totalAlarmNumber =
-    dataForCommentAlarm?.data.length + dataForFriendAlarm?.data.length + dataForInviteAlarm?.data.length;
+  dispatch(getCommentAlarm(dataForCommentAlarm?.data));
+  dispatch(getFriendAlarm(dataForFriendAlarm?.data));
+  dispatch(getInviteAlarm(dataForInviteAlarm?.data));
+
+  const friendAlarmCnt = dataForFriendAlarm?.data.filter(
+    (item) => item.alarm === false
+  ).length;
+  const commentAlarmCnt = dataForCommentAlarm?.data.filter(
+    (item) => item.alarm === false
+  ).length;
+  const inviteAlarmCnt = dataForInviteAlarm?.data.filter(
+    (item) => item.alarm === false
+  ).length;
+
+  const totalAlarmNumber = friendAlarmCnt + commentAlarmCnt + inviteAlarmCnt;
 
   const goToPage = (to) => {
     navigate(to);
+  };
+
+  const checkAllAlarm = () => {
+    dataForFriendAlarm.data.map((item) => {
+      return axios
+        .patch(
+          `${process.env.REACT_APP_BASEURL}/friend/request/read/${item.friendListId}`,
+          {},
+          { headers: { Authorization: accessToken } }
+        )
+        .then((res) => {})
+        .catch((err) => console.log(err));
+    });
+
+    dataForCommentAlarm.data.map((item) => {
+      console.log("item.commentId", item.commentId);
+      return axios
+        .patch(
+          `${process.env.REACT_APP_BASEURL}/comment/alarm/${item.commentId}`,
+          {},
+          { headers: { Authorization: accessToken } }
+        )
+        .then((res) => {})
+        .catch((err) => console.log(err));
+    });
+
+    dataForInviteAlarm.data.map((item) => {
+      return axios
+        .patch(
+          `${process.env.REACT_APP_BASEURL}/invite/alarm/read/${item.id}`,
+          {},
+          { headers: { Authorization: accessToken } }
+        )
+        .then((res) => {})
+        .catch((err) => console.log(err));
+    });
   };
 
   return (
@@ -54,6 +116,7 @@ const Navigationbar = () => {
         onClick={() => {
           goToPage("/notification");
           setNavMode("BELL");
+          // checkAllAlarm();
         }}
       >
         <Badge badgeContent={totalAlarmNumber} color="primary">

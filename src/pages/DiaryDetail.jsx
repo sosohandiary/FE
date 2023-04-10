@@ -1,151 +1,208 @@
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
-import ReactDOM from "react-dom";
 import ReactPaginate from "react-paginate";
-import HTMLFlipBook from "react-pageflip";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import curDiaryPageSlice, { syncCurPage } from "../contexts/curDiaryPageSlice";
-import { Pagination } from "antd";
+import { getDate } from "../utils/getDate";
+import leftArrow from "../assets/leftArrow.png";
+import FlipBook from "../components/FlipBook";
+import { Pagination } from "@mui/material";
 
 const DiaryDetail = () => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [pageCount, setPageCount] = useState(0);
+
+  const { diaryId } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const curPage = searchParams.get("page");
+
   const accessToken = window.localStorage.getItem("accessToken");
-  const [books, setBooks] = useState([]);
+
+  const fetchData = async (page) => {
+    const response = await axios
+      .get(
+        `${process.env.REACT_APP_BASEURL}/diary/${diaryId}/detail?page=${curPage}&size=5`,
+        {
+          headers: { Authorization: accessToken },
+        }
+      )
+      .then((res) => {
+        setData([...res.data.content]); // 객체로 반환되길래 배열로 만듬
+        setPageCount(res.data.pageableCustom.totalPages);
+      });
+
+    return response;
+  };
+
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  const newInnerPaper = () => {
     axios
-      .get(`${process.env.REACT_APP_BASEURL}/diary/1/detail?page=1&size=5`, {
-        headers: { Authorization: accessToken },
+      .post(
+        `${process.env.REACT_APP_BASEURL}/diary/${diaryId}/detail`,
+        {
+          customJson: "",
+          content: "",
+        },
+        {
+          headers: { Authorization: accessToken },
+        }
+      )
+      .then((res) => {
+        alert("한 장 더 추가되었습니다");
+        window.location.reload();
       })
-      .then((res) => setBooks(res.data.content))
-      .catch((err) => console.log(err));
-  }, []);
+      .catch((err) => {
+        if (err.response.status === 403) {
+          alert("다이어리의 주인만 쓸 수  있습니다.");
+        }
+      });
+  };
 
-  // books?.map((item, i) => {
-  //   return (
-  //     <div key={i} className="demoPage">
-  //       <div>diaryTitle: {item.diaryTitle}</div>
-  //       <div>content: {item.content}</div>
-  //       <div>createdAt: {item.createdAt}</div>
-  //       <div>diaryTitle: {item.diaryTitle}</div>
-  //       <div>modifiedAt: {item.modifiedAt}</div>
-  //       <div>name: {item.name}</div>
-  //     </div>
-  //   );
-  // });
+  const goBackHandler = () => {
+    navigate("/");
+  };
 
-  //플립 페이지 책 관련
-  const [curPage, setCurPage] = useState(1);
-  const onFlip = useCallback((e) => {
-    console.log("Current page: " + e.data);
-    setCurPage(e.data);
-  }, []);
+  const handlePagenationChange = (e, page) => {
+    searchParams.set("page", page - 1);
+    setSearchParams(searchParams);
+    window.location.reload();
+  };
 
   return (
-    <div>
-      <CardStyle>
-        {books?.map((item) => {
-          return (
-            <div>
-              <div>diaryTitle: {item.diaryTitle}</div>
-              <div>content: {item.content}</div>
-              <div>createdAt: {item.createdAt}</div>
-              <div>diaryTitle: {item.diaryTitle}</div>
-              <div>modifiedAt: {item.modifiedAt}</div>
-              <div>name: {item.name}</div>
-            </div>
-          );
-        })}
-      </CardStyle>
-      <HTMLFlipBook width={300} height={500} onFlip={onFlip} id="flip-book">
-        <div className="demoPage">Page 1</div>
-        <div className="demoPage">Page 2</div>
-        <div className="demoPage">Page 3</div>
-        <div className="demoPage">Page 4</div>
-        {books.map((item) => (
-          <div className="demoPage">
-            <div>diaryTitle: {item.diaryTitle}</div>
-            <div>Name : {item.name}</div>
-            <div>content: {item.content}</div>
-            <div>createdAt: {item.createdAt}</div>
-            <div>diaryTitle: {item.diaryTitle}</div>
-            <div>modifiedAt: {item.modifiedAt}</div>
-          </div>
-        ))}
-      </HTMLFlipBook>
-      <Pagination
-        defaultCurrent={1}
-        total={500}
-        current={curPage + 1}
-        onChange={() => {}}
-        showSizeChanger={false}
-      />
-    </div>
+    <>
+      <div>
+        <Title>다이어리 상세보기</Title>
+        <LeftArrow src={leftArrow} onMouseDown={goBackHandler}></LeftArrow>
+
+        <div>
+          <HeaderStyle>
+            <DiaryTitle>{data[0]?.diaryTitle}</DiaryTitle>
+            <DiaryCreatedAt>{getDate(data[0]?.createdAt)}</DiaryCreatedAt>
+          </HeaderStyle>
+          <MorePageButton onClick={newInnerPaper}>한장 더 쓰기</MorePageButton>
+        </div>
+      </div>
+
+      <FlipStyle>
+        <FlipBook data={data} diaryId={diaryId} />
+      </FlipStyle>
+      <PaginationStyle>
+        <Pagination
+          count={pageCount}
+          color="primary"
+          onChange={handlePagenationChange}
+          page={Number(curPage) + 1}
+        />
+      </PaginationStyle>
+    </>
   );
 };
 
 export default DiaryDetail;
 
-const CardStyle = styled.div``;
+const Title = styled.div`
+  font-weight: bold;
+  font-size: ${({ size }) => `${size}px`};
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+`;
 
-// 페이지네이션 스타일
-const PaginationStyle = styled.div`
-  .item {
-    align-items: center;
-    color: #fff;
+const HeaderStyle = styled.div`
+  display: flex;
+  margin-top: 30px;
+  padding: 20px;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const DiaryTitle = styled.div`
+  font-size: 30px;
+`;
+
+const DiaryCreatedAt = styled.div`
+  font-size: 10px;
+`;
+
+const StyledPagination = styled(ReactPaginate)`
+  position: relative;
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+
+  & li {
+    display: inline-block;
+    margin-right: 10px;
     cursor: pointer;
-    display: flex;
-    font-size: 14px;
-    height: 40px;
-    justify-content: center;
-    width: 40px;
+    padding: 5px 10px;
+    border: none;
+
+    &.active {
+      background-color: #007bff;
+      color: #fff;
+      border-color: #007bff;
+    }
   }
 
-  .disabled-page {
-    color: #808e9b;
+  & a {
+    display: inline-block;
+    padding: 5px 10px;
+    /* border: 1px solid #ccc; */
+    /* border-radius: 3px; */
+    color: #007bff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: black;
+
+    &:hover {
+      background-color: #007bff;
+      color: #fff;
+      border-color: #007bff;
+    }
   }
 
-  .active {
-    border: solid 1px #808e9b;
-    border-radius: 40px;
-    color: #808e9b;
+  & .disabled {
+    color: #ccc;
+    cursor: not-allowed;
+    border-color: #ccc;
   }
+`;
 
-  .break-me {
-  }
+const MorePageButton = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 auto 80px auto;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 20px;
+  background-color: #e1e7ff;
+  width: 300px;
+  height: 50px;
+  cursor: pointer;
+  z-index: 10;
+  position: relative;
+`;
 
-  .next {
-    border-left: solid 1px #808e9b;
-    font-size: 4px;
-    height: 60px;
-    position: absolute;
-    right: 0;
-    width: 150px;
-  }
+const FlipStyle = styled.div`
+  margin: -130px auto;
+`;
 
-  .pagination {
-    align-items: center;
-    background-color: #0fbcf9;
-    display: flex;
-    flex-direction: row;
-    height: 60px;
-    justify-content: center;
-    list-style-type: none;
-    position: relative;
-    width: 1000px;
-  }
+const LeftArrow = styled.img`
+  margin-left: 20px;
+  width: 20px;
+  position: absolute;
+  top: 50px;
+  z-index: 11;
+`;
 
-  .pagination-page {
-    font-weight: 700;
-  }
-
-  .previous {
-    border-right: solid 1px #808e9b;
-    font-size: 4px;
-    height: 60px;
-    left: 0;
-    position: absolute;
-    width: 150px;
-  }
+const PaginationStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 80px;
 `;

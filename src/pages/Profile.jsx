@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 
 import { getProfile, editProfile, deleteAccount } from "../api/mypage";
+import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
 import {
   HiPencil,
   HiOutlineXCircle,
@@ -25,6 +26,7 @@ function Profile() {
   const [newimage, setNewImage] = useState("");
   const [file, setFile] = useState("");
   const [previewImg, setPreviewImg] = useState(false);
+  const [profileStatus, setProfileStatus] = useState(true);
 
   const { data: profileData } = useQuery(
     ["getProfile"],
@@ -33,6 +35,9 @@ function Profile() {
       onSuccess: (data) => {
         setNickname(data.data.nickname);
         setStatusMessage(data.data.statusMessage);
+        if (data.data.profileImageUrl === null) {
+          setProfileStatus(false);
+        }
       },
     }
   );
@@ -44,27 +49,16 @@ function Profile() {
   });
 
   //image
-  const onImgPostHandler = (event) => {
-    setNewImage([]);
-    for (let i = 0; i < event.target.files.length; i++) {
-      setFile(event.target.files[i]);
-      let reader = new FileReader();
-      reader.readAsDataURL(event.target.files[i]);
-      reader.addEventListener("loaded", (event) => {
-        newimage.src = event.target.result;
-      });
-      reader.onloadend = () => {
-        const base = reader.result;
-        if (base) {
-          const baseSub = base.toString();
-          setNewImage((newimage) => [...newimage, baseSub]);
-        }
-      };
+
+  const onImgPostHandler = useCallback((e) => {
+    if (e.target.files === null) return;
+    if (e.target.files[0]) {
+      setFile(e.target.files[0]);
+      setNewImage(URL.createObjectURL(e.target.files[0]));
     }
 
-      setPreviewImg(true);
-    // }, []);
-  };
+    setPreviewImg(true);
+  }, []);
 
   //delete Mutation
   const { mutate: deleteAccountMutate } = useMutation(() =>
@@ -113,6 +107,8 @@ function Profile() {
   function onSubmitHandler(e) {
     e.preventDefault();
 
+    console.log(file);
+
     formData.append("img", file);
     formData.append(
       "data",
@@ -120,7 +116,7 @@ function Profile() {
     );
 
     mutation.mutate(formData);
-    alert('프로필 변경 성공');
+    alert("프로필 변경 성공");
   }
 
   return (
@@ -143,10 +139,16 @@ function Profile() {
                       src={newimage}
                       alt='profile image'
                     />
-                  ) : (
+                  ) : profileStatus ? (
                     <img
                       style={ProfileImg}
                       src={profile?.profileImageUrl}
+                      alt='profile image'
+                    />
+                  ) : (
+                    <img
+                      style={ProfileImg}
+                      src={defaultProfileImg}
                       alt='profile image'
                     />
                   )}
@@ -203,6 +205,7 @@ function Profile() {
                   isOpen={confirmDelete}
                   onClose={handleCloseModal}
                   handleDelete={handleDelete}
+                  nickname={nickname}
                 />
               </Container>
             </form>
@@ -250,7 +253,7 @@ const ProfileImg = {
 const ProfileArea = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 17px;
 `;
 
 const Title = styled.div`
@@ -347,7 +350,7 @@ const ClearButton = styled.button`
 const StButtonContainer = styled.div`
   position: absolute;
 
-  top: 450px;
+  top: 350px;
   right: 0;
   /* bottom: 300px; */
   left: 0;
@@ -380,5 +383,5 @@ const DeActivateBox = styled.div`
   text-align: center;
 
   right: 40px;
-  top: 550px;
+  top: 450px;
 `;

@@ -19,11 +19,11 @@ const MainPage = () => {
 
   //비로그인 -> 로그인창으로
   const accessToken = window.localStorage.getItem("accessToken");
-  useEffect(() => {
-    if (accessToken === null) {
-      navigate("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (accessToken === null) {
+  //     navigate("/login");
+  //   }
+  // }, []);
 
   // 로그인 유저 정보
   const { data: dataOfUserInfo } = useQuery(["getUserInfo"], () => {
@@ -95,11 +95,31 @@ const MainPage = () => {
         })
         .catch((err) => {
           setIsLoadingForPrivate(false);
-
-          console.log(err);
         });
     }
   }, [inViewForPrivate]);
+  useEffect(() => {
+    setIsLoadingForPrivate(true);
+    axios
+      .get(
+        `${process.env.REACT_APP_BASEURL}/invite?page=${privatePage}&size=5`,
+        {
+          headers: { Authorization: accessToken },
+        }
+      )
+      .then((res) => {
+        setIsLoadingForPrivate(false);
+
+        if (res.data === "") {
+          return;
+        }
+        setDataListForPrivate((prev) => [...prev, ...res.data.content]);
+        setPrivatePage((prev) => prev + 1);
+      })
+      .catch((err) => {
+        setIsLoadingForPrivate(false);
+      });
+  }, []);
 
   useEffect(() => {
     if (inViewForPublic) {
@@ -122,6 +142,25 @@ const MainPage = () => {
         });
     }
   }, [inViewForPublic]);
+  useEffect(() => {
+    setIsLoadingForPublic(true);
+    axios
+      .get(
+        `${process.env.REACT_APP_BASEURL}/public?page=${publicPage}&size=5`,
+        {
+          headers: { Authorization: accessToken },
+        }
+      )
+      .then((res) => {
+        setIsLoadingForPublic(false);
+        setDataListForPublic((prev) => [...prev, ...res.data.content]);
+        setPublicPage((prev) => prev + 1);
+      })
+      .catch((err) => {
+        setIsLoadingForPublic(false);
+        console.log(err);
+      });
+  }, []);
 
   const goToDiaryDetail = (id) => {
     navigate(`/diaries/${id}`);
@@ -184,7 +223,7 @@ const MainPage = () => {
         <button className="next">next</button>
       </div>
       <div style={{ margin: "10px 10px 80px 10px" }}>
-        <Label>공유 다이어리</Label>
+        <Label>초대된 다이어리</Label>
         <SwiperArea>
           <Swiper
             slidesPerView={"auto"}
@@ -199,11 +238,11 @@ const MainPage = () => {
             {dataListForPrivate.length == 0 ? (
               <SwiperSlide
                 style={{
-                  width: "330px",
-                  backgroundColor: "red",
+                  width: "100vw",
+                  backgroundColor: "#e4e4e4",
                 }}
               >
-                데이터가 없습니다.
+                다이어리가 없습니다.
               </SwiperSlide>
             ) : (
               ""
@@ -242,7 +281,12 @@ const MainPage = () => {
         <SwiperArea>
           <Swiper slidesPerView={"auto"} spaceBetween={20} className="mySwiper">
             {dataListForPublic.length == 0 ? (
-              <SwiperSlide style={{ width: "300px", backgroundColor: "red" }}>
+              <SwiperSlide
+                style={{
+                  width: "100vw",
+                  backgroundColor: "#e4e4e4",
+                }}
+              >
                 데이터가 없습니다.
               </SwiperSlide>
             ) : (

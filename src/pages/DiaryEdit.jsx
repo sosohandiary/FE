@@ -4,6 +4,10 @@ import axios from "axios";
 import { VscBlank } from "react-icons/vsc";
 import { useLocation, useNavigate } from "react-router-dom";
 import leftArrow from "../assets/leftArrow.png";
+import Searchbox from "../components/Searchbox";
+import checkedImg from "../assets/diary-edit/checkedImg.png";
+import uncheckedImg from "../assets/diary-edit/uncheckedImg.png";
+import { Badge } from "@mui/material";
 
 function DiaryEdit() {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -112,7 +116,6 @@ function DiaryEdit() {
   //이미지 업로드 관련
   const selectFile = useRef();
   const imgClickHandler = () => {
-    console.log("dd");
     selectFile.current.click();
   };
 
@@ -120,6 +123,52 @@ function DiaryEdit() {
     navigate(-1);
   };
 
+  // 모달 안에서 쓰일 검색 기능
+  const [searchInput, setSearchInput] = useState("");
+
+  const handleInputChange = (event) => {
+    console.log(event.target.value);
+    setSearchInput(event.target.value);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      console.log("Enter key pressed");
+    }
+  };
+
+  //체크 관련
+  const [checkedList, setCheckedList] = useState([]);
+
+  const onCheckedElement = (checked, item) => {
+    if (checked) {
+      setCheckedList([...checkedList, item]);
+    } else if (!checked) {
+      setCheckedList(checkedList.filter((el) => el !== item));
+    }
+  };
+  const onRemove = (item) => {
+    setCheckedList(checkedList.filter((el) => el !== item));
+  };
+
+  console.log(checkedList);
+
+  const addMemberCompleteHandler = () => {
+    const diaryId = mypage.data.id;
+    console.log(checkedList);
+    checkedList.map((item) => {
+      axios
+        .post(
+          `${process.env.REACT_APP_BASEURL}/invite/${diaryId}/${item.memberId}`,
+          {},
+          { headers: { Authorization: accessToken } }
+        )
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    });
+  };
+
+  console.log(friends);
   return (
     <Wholebox>
       <TopBox>
@@ -186,51 +235,101 @@ function DiaryEdit() {
       {modalOpen && (
         <ModalWrapper>
           <ModalContent>
-            <div>
-              <h2>추가할 멤버를 체크하세요</h2>
-              <ul
-                style={{
-                  listStyleType: "none",
-                  display: "flex",
-                  flexDirection: "column",
-                }}>
-                {friends.map((friend) => (
-                  <li
-                    key={friend.id}
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      marginBottom: "8px",
-                      marginRight: "30px",
-                    }}>
-                    <label style={{ flex: 1 }}>
+            <TopBox>
+              <VscBlank className="VscBlank" />
+              <Textbox>멤버 추가</Textbox>
+              <VscBlank className="VscBlank" />
+            </TopBox>
+
+            <Searchbox
+              placeholder="친구를 검색하세요"
+              onChangeInput={handleInputChange}
+              onKeyPress={handleKeyPress}
+              setSearchInput={setSearchInput}
+            />
+
+            <CheckedListBox>
+              {checkedList.map((item) => {
+                return (
+                  <div>
+                    <Badge
+                      badgeContent="-"
+                      color="primary"
+                      onClick={() => {
+                        onRemove(item);
+                      }}
+                    >
                       <img
-                        src={friend.profileImageUrl}
+                        src={checkedImg}
                         style={{
-                          width: "20px",
-                          height: "20px",
+                          width: "50px",
+                          height: "50px",
                           borderRadius: "50%",
                           marginRight: "7px",
                         }}
                       />
-                      {friend.name} ({friend.nickname}):
+                    </Badge>
+                    <div>{item.name}</div>
+                  </div>
+                );
+              })}
+            </CheckedListBox>
+            <div>
+              {friends
+                .filter(
+                  (item) =>
+                    item.name.includes(searchInput) ||
+                    item.nickname.includes(searchInput)
+                )
+                .map((friend) => (
+                  <li
+                    key={friend.id}
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      marginBottom: "8px",
+                      marginLeft: "10px",
+                      marginRight: "10px",
+                    }}
+                  >
+                    <label style={{ flex: 1 }}>
+                      <ImgAndName>
+                        <img
+                          src={friend.profileImageUrl}
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            borderRadius: "50%",
+                            marginRight: "7px",
+                          }}
+                        />
+                        <FriendName>
+                          {friend.name}({friend.nickname})
+                        </FriendName>
+                      </ImgAndName>
                     </label>
                     <input
                       type="checkbox"
+                      name="addMember"
+                      value={friend.id}
                       style={{
                         width: "20px",
                         height: "20px",
                         backgroundColor: "white",
-                        marginTop: "8px",
+                        marginTop: "15px",
+                      }}
+                      checked={checkedList.includes(friend)}
+                      onChange={(e) => {
+                        onCheckedElement(e.target.checked, friend);
                       }}
                     />
                   </li>
                 ))}
-              </ul>
-
-              <ModalCloseButton onClick={handleCloseModal}>
-                닫기
-              </ModalCloseButton>
+              <ModalCloseButton onClick={handleCloseModal}>x</ModalCloseButton>
+              <CompleteButtonArea>
+                <button onClick={addMemberCompleteHandler}>완료</button>
+              </CompleteButtonArea>
             </div>
           </ModalContent>
         </ModalWrapper>
@@ -243,6 +342,15 @@ function DiaryEdit() {
 
 export default DiaryEdit;
 
+const FriendName = styled.div`
+  margin-top: 17px;
+  font-size: 16px;
+  font-weight: bolder;
+`;
+const ImgAndName = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 const Addbutton = styled.button`
   color: gray;
   width: 100px;
@@ -258,28 +366,36 @@ const Addbutton = styled.button`
 
 const ModalWrapper = styled.div`
   position: fixed;
-  bottom: 50%;
-  width: 90%;
+  bottom: 0%;
+  width: 100%;
+  left: 0%;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1;
-  border-radius: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
 `;
 
 const ModalContent = styled.div`
   background-color: #fff;
   border-radius: 25px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  width: 90%;
-  padding: 20px;
+  width: 100%;
+  padding: 15px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  padding-bottom: 100px;
 `;
 
 const ModalCloseButton = styled.button`
   position: absolute;
-  right: 0%;
-  top: 0%;
-  border-radius: 50%;
+  right: 3%;
+  top: 3%;
+  z-index: 2;
+  border-radius: 7px;
   border: none;
   font-size: 24px;
   cursor: pointer;
@@ -308,46 +424,6 @@ const FileInput = styled.input`
     margin-bottom: 20px;
     margin-top: 10px;
   }
-`;
-
-const PrivateorPublicBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 10px;
-  justify-content: space-between;
-`;
-
-const UpButtonBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 10px;
-  justify-content: space-between;
-`;
-
-const RadioWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  label {
-    display: flex;
-    align-items: center;
-  }
-
-  input[type="radio"] {
-    margin-right: 0.5rem;
-    cursor: pointer;
-  }
-`;
-
-const Upbutton = styled.button`
-  color: gray;
-  background-color: #e8fefb;
-  width: 100px;
-  height: 35px;
-  border: none;
-  border-radius: 5px;
-  font-weight: 700;
-  font-size: 100%;
-  cursor: pointer;
 `;
 
 const TitleContent = styled.div`
@@ -445,50 +521,6 @@ const CreatedAt = styled.div`
   bottom: 14px;
   right: 14px;
 `;
-
-const PublicSelectBox = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 10px auto;
-  border: 1px solid rgba(0, 0, 0, 0);
-  border-radius: 20px;
-  background-color: #eeeeee;
-  width: 430px;
-  height: 50px;
-`;
-
-const SelectButtonLeft = styled.div`
-  transition: 0.3s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50px;
-  background-color: ${({ diaryCondition }) =>
-    diaryCondition === "PUBLIC" ? "#ffe2e2" : ""};
-  width: 100%;
-  border-radius: 20px 0 0 20px;
-`;
-
-const SelectButtonRight = styled.div`
-  transition: 0.3s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50px;
-  background-color: ${({ diaryCondition }) =>
-    diaryCondition === "PRIVATE" ? "#ffe2e2" : ""};
-  width: 100%;
-  border-radius: 0 20px 20px 0;
-`;
-
-const CenterColumn = styled.div`
-  background-color: rgba(1, 1, 1, 0.5);
-  width: 1px;
-  height: 20px;
-  position: absolute;
-`;
-
 const SubmitButton = styled.div`
   cursor: pointer;
   display: flex;
@@ -500,4 +532,25 @@ const SubmitButton = styled.div`
   background-color: #e1e7ff;
   width: 300px;
   height: 50px;
+`;
+
+const FriendListArea = styled.li`
+  display: flex;
+  align-items: center;
+`;
+
+const CheckBox = styled.img.attrs({
+  src: `${checkedImg}`,
+})`
+  height: 40px;
+`;
+
+const CheckedListBox = styled.div`
+  display: flex;
+`;
+
+const CompleteButtonArea = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 10px;
 `;
