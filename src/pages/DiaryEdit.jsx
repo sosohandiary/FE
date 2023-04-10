@@ -6,9 +6,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import leftArrow from "../assets/leftArrow.png";
 import Searchbox from "../components/Searchbox";
 import checkedImg from "../assets/diary-edit/checkedImg.png";
+import uncheckedImg from "../assets/diary-edit/uncheckedImg.png";
 import { Badge } from "@mui/material";
 import { data } from "jquery";
-import { disableColor, subColor1 } from "../constants/colorPalette";
 
 function DiaryEdit() {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -108,10 +108,8 @@ function DiaryEdit() {
     }
   };
 
-  //모달 닫기 버튼
   const handleCloseModal = () => {
     setModalOpen(false);
-    setCheckedList([]);
   };
 
   //이미지 업로드 관련
@@ -272,14 +270,14 @@ function DiaryEdit() {
                       <img
                         src={item.profileImageUrl}
                         style={{
-                          width: "40px",
-                          height: "40px",
+                          width: "50px",
+                          height: "50px",
                           borderRadius: "50%",
                           marginRight: "7px",
                         }}
                       />
                     </Badge>
-                    <TopName>{item.name}</TopName>
+                    <div>{item.name}</div>
                   </div>
                 );
               })}
@@ -336,9 +334,7 @@ function DiaryEdit() {
                 ))}
               <ModalCloseButton onClick={handleCloseModal}>x</ModalCloseButton>
               <CompleteButtonArea>
-                <Completebutton onClick={addMemberCompleteHandler}>
-                  완료
-                </Completebutton>
+                <button onClick={addMemberCompleteHandler}>완료</button>
               </CompleteButtonArea>
             </div>
           </ModalContent>
@@ -549,34 +545,24 @@ const FriendListArea = styled.li`
   align-items: center;
 `;
 
-const CheckBox = styled.img.attrs({
-  src: `${checkedImg}`,
-})`
-  height: 40px;
+const CheckBox = styled.div`
+  display: ${({ disabled }) => (disabled ? "none" : "")};
+  width: 20px;
+  height: 20px;
+  background-image: url(${({ friend, checkedList }) =>
+    checkedList.includes(friend) ? checkedImg : uncheckedImg});
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
+
 const CheckedListBox = styled.div`
   display: flex;
-  gap: 20px;
-  border-bottom: 1px solid #dcdcdc;
 `;
 
 const CompleteButtonArea = styled.div`
   display: flex;
   justify-content: center;
   margin: 10px;
-  margin-top: 20px;
-`;
-const Completebutton = styled.button`
-  color: black;
-  background-color: rgb(${subColor1});
-  width: 100px;
-  height: 35px;
-  border: none;
-  border-radius: 5px;
-  margin: 0px auto;
-  font-weight: 700;
-  font-size: 100%;
-  cursor: pointer;
 `;
 
 const ListStyle = styled.div`
