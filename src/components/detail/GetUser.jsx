@@ -24,7 +24,7 @@ const StyledUserBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  top: 28px;
+  top: 5px;
   left: -100px;
 
   span {
