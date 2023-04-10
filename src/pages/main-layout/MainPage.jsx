@@ -223,7 +223,7 @@ const MainPage = () => {
         <button className="next">next</button>
       </div>
       <div style={{ margin: "10px 10px 80px 10px" }}>
-        <Label>공유 다이어리</Label>
+        <Label>초대된 다이어리</Label>
         <SwiperArea>
           <Swiper
             slidesPerView={"auto"}
