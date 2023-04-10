@@ -338,8 +338,6 @@ const CurProfileImage = styled.div`
   height: 50px;
   width: 50px;
   border-radius: 50%;
-  position: relative;
-  top: 50px;
   background-image: url(${({ url }) => url});
   background-size: cover;
   background-position: center;
