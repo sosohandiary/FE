@@ -154,13 +154,10 @@ const Drawing = () => {
   const [mode, setMode] = useState("TEXT");
   const [lineTool, setLineTool] = useState("pen");
   const [lines, setLines] = useState([]);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [touchStartY, setTouchStartY] = useState(0);
   const isDrawing = useRef(false);
   const { diaryid, paperid } = useParams();
-
-  const changeModeHandler = (target) => {
-    setMode(target);
-  };
 
   const accessToken = localStorage.getItem("accessToken");
 
@@ -186,9 +183,8 @@ const Drawing = () => {
           const resJson = JSON.parse(res.data.customJson);
           setStickers(resJson.stickers);
           setLines(resJson.lines);
-          window.localStorage.setItem(
-            "draft-js-example-item",
-            JSON.stringify(resJson.texts)
+          setEditorState(
+            EditorState.createWithContent(convertFromRaw(resJson.texts))
           );
         }
       })
@@ -259,13 +255,6 @@ const Drawing = () => {
   };
 
   // 텍스트 - Draft관련
-  const TEXT_EDITOR_ITEM = "draft-js-example-item";
-
-  const data = localStorage.getItem(TEXT_EDITOR_ITEM);
-  const initialState = data
-    ? EditorState.createWithContent(convertFromRaw(JSON.parse(data)))
-    : EditorState.createEmpty();
-  const [editorState, setEditorState] = useState(initialState);
 
   const handleKeyCommand = (command) => {
     const newState = RichUtils.handleKeyCommand(editorState, command);
@@ -282,7 +271,7 @@ const Drawing = () => {
 
   const handleSave = () => {
     const data = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
-    localStorage.setItem(TEXT_EDITOR_ITEM, data);
+    // localStorage.setItem(TEXT_EDITOR_ITEM, data);
 
     const allData = {
       stickers,
@@ -293,20 +282,14 @@ const Drawing = () => {
     const allJSON = JSON.stringify(allData);
 
     const sendData = { thumbnail: "dd", customJson: allJSON };
-    console.log(sendData);
 
-    axios
-      .patch(
-        `${process.env.REACT_APP_BASEURL}/diary/${diaryid}/detail/${paperid}`,
-        sendData,
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
-      .then((res) => {
-        console.log("res : ", res);
-      })
-      .catch((err) => console.log(err));
+    axios.patch(
+      `${process.env.REACT_APP_BASEURL}/diary/${diaryid}/detail/${paperid}`,
+      sendData,
+      {
+        headers: { Authorization: accessToken },
+      }
+    );
   };
 
   //툴바 관련
@@ -314,8 +297,6 @@ const Drawing = () => {
   const [isOpenTextToolbar, setIsOpenTextToolbar] = useState(false);
   const [isOpenDrawToolbar, setIsOpenDrawToolbar] = useState(false);
   const [isOpenStickerToolbar, setIsOpenStickerToolbar] = useState(false);
-  const [isOpenPenWidth, setIsOpenPenWidth] = useState(false);
-  const [isOpenEraserWidth, setIsOpenEraserWidth] = useState(false);
 
   const [lineColor, setLineColor] = useState("#e74b24");
   const [lineWidth, setLineWidth] = useState(5);
@@ -361,8 +342,6 @@ const Drawing = () => {
   return (
     <div style={{ overflow: "hidden", width: "100vw" }}>
       <DiaryBack src={diaryBack} onClick={goBackDiaryHandler} />
-
-      <TextAreaStyle mode={mode}></TextAreaStyle>
 
       <Stage
         width={window.innerWidth}
@@ -417,7 +396,7 @@ const Drawing = () => {
         <Editor
           editorState={editorState}
           onChange={setEditorState}
-          handleKeyCommand={handleKeyCommand}
+          onEditorStateChange={handleKeyCommand}
         />
       </TextAreaStyle>
       <AllToolbarStyle isOpenAllToolbar={isOpenAllToolbar}>
