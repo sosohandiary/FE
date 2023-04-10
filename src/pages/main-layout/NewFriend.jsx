@@ -96,9 +96,9 @@ const NewFriend = () => {
             <ListCards key={item.memberId}>
               <ListBox>
                 {item.profileImageUrl ? (
-                  <ProfilePicSmall src={item.profileImageUrl} />
+                  <StProfilePicSmall src={item.profileImageUrl} />
                 ) : (
-                  <ProfilePicSmall src={defaultProfileImg} />
+                  <StProfilePicSmall src={defaultProfileImg} />
                 )}
                 <ListContentBox>
                   <StText fontWeight='bold'>{item.name}</StText>
@@ -184,3 +184,7 @@ const AddButton = styled.button`
 
   gap: 5px;
 `;
+
+const StProfilePicSmall = styled(ProfilePicSmall)`
+
+`
