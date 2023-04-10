@@ -30,7 +30,7 @@ const CirclePic = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
   width: ${({ size }) => {
     return size === "large" ? "120px" : size === "medium" ? "80px" : "43px";
