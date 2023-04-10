@@ -4,7 +4,7 @@ import "react-spring-bottom-sheet/dist/style.css";
 import CommentBox from "../components/detail/CommentBox";
 import "react-spring-bottom-sheet/dist/style.css";
 import Like from "../components/detail/Like";
-import { WholeAreaWithMargin, WholeViewWidth } from "../styles/WholeAreaStyle";
+import { WholeViewWidth } from "../styles/WholeAreaStyle";
 import GetUser from "../components/detail/GetUser";
 import styled from "styled-components";
 import { MdArrowBack } from "react-icons/md";
@@ -45,7 +45,6 @@ function Detail() {
   };
 
   const onDeleteHandler = async (detailId) => {
-    console.log("dd");
     try {
       await deleteDiaryMutate(detailId);
       alert("삭제되었습니다");
