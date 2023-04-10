@@ -164,7 +164,7 @@ const CommentBox = () => {
       <WholeAreaWithMargin>
         <CommentInput
           name="comment"
-          placeholder={isEditing ? "댓글 수정하기" : "댓글 달기"}
+          placeholder={isEditing ? "댓글 수정하기" : "댓글 입력 후 엔터"}
           value={comment.comment}
           onChange={inputChangeHandler}
           onKeyPress={handleKeyDown}
