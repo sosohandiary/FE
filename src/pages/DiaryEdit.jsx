@@ -152,6 +152,7 @@ function DiaryEdit() {
 
   const addMemberCompleteHandler = () => {
     const diaryId = mypage.data.id;
+    // 완료 버튼을 누르면 모달이 닫히게끔
     setModalOpen(false);
     checkedList.map((item) => {
       axios
