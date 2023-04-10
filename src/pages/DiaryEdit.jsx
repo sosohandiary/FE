@@ -6,8 +6,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import leftArrow from "../assets/leftArrow.png";
 import Searchbox from "../components/Searchbox";
 import checkedImg from "../assets/diary-edit/checkedImg.png";
-import uncheckedImg from "../assets/diary-edit/uncheckedImg.png";
 import { Badge } from "@mui/material";
+import { disableColor, subColor1 } from "../constants/colorPalette";
 
 function DiaryEdit() {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -109,8 +109,10 @@ function DiaryEdit() {
     }
   };
 
+  //모달 닫기 버튼
   const handleCloseModal = () => {
     setModalOpen(false);
+    setCheckedList([]);
   };
 
   //이미지 업로드 관련
@@ -257,19 +259,18 @@ function DiaryEdit() {
                       color="primary"
                       onClick={() => {
                         onRemove(item);
-                      }}
-                    >
+                      }}>
                       <img
-                        src={checkedImg}
+                        src={item.profileImageUrl}
                         style={{
-                          width: "50px",
-                          height: "50px",
+                          width: "40px",
+                          height: "40px",
                           borderRadius: "50%",
                           marginRight: "7px",
                         }}
                       />
                     </Badge>
-                    <div>{item.name}</div>
+                    <TopName>{item.name}</TopName>
                   </div>
                 );
               })}
@@ -291,8 +292,7 @@ function DiaryEdit() {
                       marginBottom: "8px",
                       marginLeft: "10px",
                       marginRight: "10px",
-                    }}
-                  >
+                    }}>
                     <label style={{ flex: 1 }}>
                       <ImgAndName>
                         <img
@@ -328,7 +328,9 @@ function DiaryEdit() {
                 ))}
               <ModalCloseButton onClick={handleCloseModal}>x</ModalCloseButton>
               <CompleteButtonArea>
-                <button onClick={addMemberCompleteHandler}>완료</button>
+                <Completebutton onClick={addMemberCompleteHandler}>
+                  완료
+                </Completebutton>
               </CompleteButtonArea>
             </div>
           </ModalContent>
@@ -534,23 +536,32 @@ const SubmitButton = styled.div`
   height: 50px;
 `;
 
-const FriendListArea = styled.li`
-  display: flex;
-  align-items: center;
+const TopName = styled.div`
+  font-size: 16px;
+  font-weight: bolder;
+  margin-bottom: 10px;
 `;
-
-const CheckBox = styled.img.attrs({
-  src: `${checkedImg}`,
-})`
-  height: 40px;
-`;
-
 const CheckedListBox = styled.div`
   display: flex;
+  gap: 20px;
+  border-bottom: 1px solid #dcdcdc;
 `;
 
 const CompleteButtonArea = styled.div`
   display: flex;
   justify-content: center;
   margin: 10px;
+  margin-top: 20px;
+`;
+const Completebutton = styled.button`
+  color: black;
+  background-color: rgb(${subColor1});
+  width: 100px;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+  margin: 0px auto;
+  font-weight: 700;
+  font-size: 100%;
+  cursor: pointer;
 `;
