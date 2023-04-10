@@ -11,10 +11,6 @@ const Notification = () => {
   const dataListForInviteAlarm = alarmStore.invite;
   const dataListForCommentAlarm = alarmStore.comment;
 
-  const testItem = dataListForCommentAlarm.filter(
-    (item) => item.alarm === false
-  );
-  console.log(testItem);
   return (
     <>
       <TitleBox />
