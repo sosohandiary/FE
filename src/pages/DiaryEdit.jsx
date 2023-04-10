@@ -410,17 +410,6 @@ const ModalContent = styled.div`
   padding-bottom: 100px;
 `;
 
-const ModalCloseButton = styled.button`
-  position: absolute;
-  right: 3%;
-  top: 3%;
-  z-index: 2;
-  border-radius: 7px;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  background-color: gray;
-`;
 const InputBox = styled.div`
   display: none;
   flex-direction: row;
