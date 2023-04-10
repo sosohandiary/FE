@@ -210,7 +210,7 @@ function DiaryEdit() {
                 src={previewImage}
                 style={{
                   position: "absolute",
-                  top: "145px",
+                  top: "170px",
                   width: "100px",
                   height: "100px",
                   borderRadius: "25px",
