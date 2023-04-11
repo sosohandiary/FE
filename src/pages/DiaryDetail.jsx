@@ -19,6 +19,7 @@ const DiaryDetail = () => {
 
   const accessToken = window.localStorage.getItem("accessToken");
 
+  //속지 조회
   const fetchData = async (page) => {
     const response = await axios
       .get(
