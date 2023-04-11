@@ -200,8 +200,9 @@ function DiaryEdit() {
                 alt="preview"
                 src={previewImage}
                 style={{
-                  position: "absolute",
-                  top: "145px",
+
+                  position: "relative",
+                  top: "0%",
                   width: "100px",
                   height: "100px",
                   borderRadius: "25px",
@@ -396,17 +397,6 @@ const ModalContent = styled.div`
   padding-bottom: 100px;
 `;
 
-const ModalCloseButton = styled.button`
-  position: absolute;
-  right: 3%;
-  top: 3%;
-  z-index: 2;
-  border-radius: 7px;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  background-color: gray;
-`;
 const InputBox = styled.div`
   display: none;
   flex-direction: row;
