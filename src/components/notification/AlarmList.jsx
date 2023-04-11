@@ -17,6 +17,21 @@ const AlarmList = ({ item, alarmType }) => {
   const navigate = useNavigate();
   const accessToken = window.localStorage.getItem("accessToken");
 
+  const acceptFriend = (id) => {
+    axios
+      .put(
+        `${process.env.REACT_APP_BASEURL}/friend/request/accept/${id}`,
+        {},
+        {
+          headers: { Authorization: accessToken },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const handleAccept = () => {
     switch (alarmType) {
       case "friend":
@@ -109,43 +124,26 @@ const AlarmList = ({ item, alarmType }) => {
     }
   };
 
-  const acceptFriend = (id) => {
-    axios
-      .put(
-        `${process.env.REACT_APP_BASEURL}/friend/request/accept/${id}`,
-        {},
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
-  };
-
   const trailingActions = () => (
     <TrailingActions>
-      {alarmType === "invite" ? (
-        <SwipeAction destructive={true} onClick={handleAccept}>
-          <ActionContent>{getButtonMsg().acceptMsg}</ActionContent>
-        </SwipeAction>
-      ) : (
-        ""
-      )}
+      <SwipeAction destructive={true} onClick={handleAccept}>
+        <ActionContent color="blue">{getButtonMsg().acceptMsg}</ActionContent>
+      </SwipeAction>
+
       <SwipeAction destructive={true} onClick={handleDelete}>
-        <Button color="red"> {getButtonMsg().rejectMsg}</Button>
+        <ActionContent color="red">{getButtonMsg().rejectMsg}</ActionContent>
       </SwipeAction>
     </TrailingActions>
   );
 
   return (
     <>
-      <SwipeableList threshold={0.5} type={ListType.IOS}>
-        <SwipeableListItem trailingActions={() => trailingActions()}>
+      <SwipeableList threshold={0.5} type={ListType.IOS} fullSwipe={true}>
+        <SwipeableListItem trailingActions={trailingActions()}>
           <AlarmUnReadCard item={item} alarmType={alarmType} />
         </SwipeableListItem>
       </SwipeableList>
+      ;
     </>
   );
 };
@@ -153,6 +151,7 @@ const AlarmList = ({ item, alarmType }) => {
 export default AlarmList;
 
 const ActionContent = styled.div`
+  position: relative;
   height: 100%;
   display: flex;
   align-items: center;
@@ -162,7 +161,7 @@ const ActionContent = styled.div`
   box-sizing: border-box;
   color: #eee;
   user-select: none;
-  background-color: blue;
+  background-color: ${({ color }) => color};
 `;
 const Button = styled.div`
   display: flex;

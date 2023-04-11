@@ -8,6 +8,7 @@ import Searchbox from "../components/Searchbox";
 import checkedImg from "../assets/diary-edit/checkedImg.png";
 import uncheckedImg from "../assets/diary-edit/uncheckedImg.png";
 import { Badge } from "@mui/material";
+import { data } from "jquery";
 
 function DiaryEdit() {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -107,10 +108,8 @@ function DiaryEdit() {
     }
   };
 
-  // 모달 닫기 버튼
   const handleCloseModal = () => {
     setModalOpen(false);
-    setCheckedList([]);
   };
 
   //이미지 업로드 관련
@@ -152,8 +151,6 @@ function DiaryEdit() {
 
   const addMemberCompleteHandler = () => {
     const diaryId = mypage.data.id;
-    setModalOpen(false);
-    setCheckedList([]);
     checkedList.map((item) => {
       axios
         .post(
@@ -161,14 +158,8 @@ function DiaryEdit() {
           {},
           { headers: { Authorization: accessToken } }
         )
-        .then((res) => {
-          console.log(res);
-          alert("멤버 추가 요청을 보냈습니다.");
-        })
-        .catch((err) => {
-          console.log(err);
-          alert("이미 요청을 보냈습니다!");
-        });
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
     });
   };
 
@@ -210,7 +201,7 @@ function DiaryEdit() {
                 src={previewImage}
                 style={{
                   position: "absolute",
-                  top: "200px",
+                  top: "145px",
                   width: "100px",
                   height: "100px",
                   borderRadius: "25px",
@@ -256,7 +247,7 @@ function DiaryEdit() {
           <ModalContent>
             <TopBox>
               <VscBlank className="VscBlank" />
-              <MemberTextbox>멤버 추가</MemberTextbox>
+              <Textbox>멤버 추가</Textbox>
               <VscBlank className="VscBlank" />
             </TopBox>
             <Searchbox
@@ -268,25 +259,26 @@ function DiaryEdit() {
             <CheckedListBox>
               {checkedList.map((item, i) => {
                 return (
-                  <MemberBox key={i}>
+                  <div key={i}>
                     <Badge
                       badgeContent="-"
                       color="primary"
                       onClick={() => {
                         onRemove(item);
-                      }}>
+                      }}
+                    >
                       <img
                         src={item.profileImageUrl}
                         style={{
-                          width: "40px",
-                          height: "40px",
+                          width: "50px",
+                          height: "50px",
                           borderRadius: "50%",
                           marginRight: "7px",
                         }}
                       />
                     </Badge>
-                    <TopName>{item.name}</TopName>
-                  </MemberBox>
+                    <div>{item.name}</div>
+                  </div>
                 );
               })}
             </CheckedListBox>
@@ -307,7 +299,8 @@ function DiaryEdit() {
                       marginBottom: "8px",
                       marginLeft: "10px",
                       marginRight: "10px",
-                    }}>
+                    }}
+                  >
                     <label style={{ flex: 1 }}>
                       <ImgAndName>
                         <img
@@ -330,17 +323,18 @@ function DiaryEdit() {
                         onCheckedElement(friend);
                       }}
                       checkedList={checkedList}
-                      friend={friend}></CheckBox>
+                      friend={friend}
+                    ></CheckBox>
                     <AlreadyMember
-                      disabled={alreadyMembersId.includes(friend.memberId)}>
+                      disabled={alreadyMembersId.includes(friend.memberId)}
+                    >
                       이미 멤버입니다
                     </AlreadyMember>
                   </ListStyle>
                 ))}
+              <ModalCloseButton onClick={handleCloseModal}>x</ModalCloseButton>
               <CompleteButtonArea>
-                <Completebutton onClick={addMemberCompleteHandler}>
-                  완료
-                </Completebutton>
+                <button onClick={addMemberCompleteHandler}>완료</button>
               </CompleteButtonArea>
             </div>
           </ModalContent>
@@ -353,14 +347,6 @@ function DiaryEdit() {
 }
 
 export default DiaryEdit;
-
-const MemberTextbox = styled.div`
-  font-size: 110%;
-  font-weight: bolder;
-  margin: 10px;
-  border-top: 3px solid gray;
-  padding-top: 18px;
-`;
 
 const FriendName = styled.div`
   margin-top: 17px;
@@ -554,6 +540,11 @@ const SubmitButton = styled.div`
   height: 50px;
 `;
 
+const FriendListArea = styled.li`
+  display: flex;
+  align-items: center;
+`;
+
 const CheckBox = styled.div`
   display: ${({ disabled }) => (disabled ? "none" : "")};
   width: 20px;
@@ -566,38 +557,12 @@ const CheckBox = styled.div`
 
 const CheckedListBox = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  padding-left: 32px;
-  padding-right: 10px;
-  border-bottom: 1px solid #dcdcdc;
-`;
-
-const MemberBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 60px;
-  margin: 7px;
 `;
 
 const CompleteButtonArea = styled.div`
   display: flex;
   justify-content: center;
   margin: 10px;
-`;
-
-const Completebutton = styled.button`
-  color: black;
-  background-color: #e1e7ff;
-  width: 100px;
-  height: 35px;
-  border: none;
-  border-radius: 15px;
-  margin: 0px auto;
-  font-weight: 700;
-  font-size: 100%;
-  cursor: pointer;
-  margin-top: 30px;
 `;
 
 const ListStyle = styled.div`
@@ -607,10 +572,4 @@ const ListStyle = styled.div`
 
 const AlreadyMember = styled.div`
   display: ${({ disabled }) => (disabled ? "" : "none")};
-`;
-
-const TopName = styled.div`
-  font-size: 16px;
-  font-weight: bolder;
-  margin-bottom: 10px;
 `;
