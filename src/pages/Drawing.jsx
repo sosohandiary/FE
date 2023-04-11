@@ -590,6 +590,7 @@ const DiaryBack = styled.img`
   position: absolute;
   top: 10px;
   left: 10px;
+  z-index: 1;
 `;
 
 const TextAreaStyle = styled.div`
