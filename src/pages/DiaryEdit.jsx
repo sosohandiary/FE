@@ -8,7 +8,6 @@ import Searchbox from "../components/Searchbox";
 import checkedImg from "../assets/diary-edit/checkedImg.png";
 import uncheckedImg from "../assets/diary-edit/uncheckedImg.png";
 import { Badge } from "@mui/material";
-import { data } from "jquery";
 
 function DiaryEdit() {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -108,8 +107,10 @@ function DiaryEdit() {
     }
   };
 
+  // 모달 닫기 버튼
   const handleCloseModal = () => {
     setModalOpen(false);
+    setCheckedList([]);
   };
 
   //이미지 업로드 관련
@@ -151,6 +152,8 @@ function DiaryEdit() {
 
   const addMemberCompleteHandler = () => {
     const diaryId = mypage.data.id;
+    setModalOpen(false);
+    setCheckedList([]);
     checkedList.map((item) => {
       axios
         .post(
@@ -158,8 +161,14 @@ function DiaryEdit() {
           {},
           { headers: { Authorization: accessToken } }
         )
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          console.log(res);
+          alert("멤버 추가 요청을 보냈습니다.");
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("이미 요청을 보냈습니다!");
+        });
     });
   };
 
@@ -247,7 +256,7 @@ function DiaryEdit() {
           <ModalContent>
             <TopBox>
               <VscBlank className="VscBlank" />
-              <Textbox>멤버 추가</Textbox>
+              <MemberTextbox>멤버 추가</MemberTextbox>
               <VscBlank className="VscBlank" />
             </TopBox>
             <Searchbox
@@ -259,7 +268,7 @@ function DiaryEdit() {
             <CheckedListBox>
               {checkedList.map((item, i) => {
                 return (
-                  <div key={i}>
+                  <MemberBox key={i}>
                     <Badge
                       badgeContent="-"
                       color="primary"
@@ -270,15 +279,15 @@ function DiaryEdit() {
                       <img
                         src={item.profileImageUrl}
                         style={{
-                          width: "50px",
-                          height: "50px",
+                          width: "40px",
+                          height: "40px",
                           borderRadius: "50%",
                           marginRight: "7px",
                         }}
                       />
                     </Badge>
-                    <div>{item.name}</div>
-                  </div>
+                    <TopName>{item.name}</TopName>
+                  </MemberBox>
                 );
               })}
             </CheckedListBox>
@@ -333,7 +342,9 @@ function DiaryEdit() {
                   </ListStyle>
                 ))}
               <CompleteButtonArea>
-                <button onClick={addMemberCompleteHandler}>완료</button>
+                <Completebutton onClick={addMemberCompleteHandler}>
+                  완료
+                </Completebutton>
               </CompleteButtonArea>
             </div>
           </ModalContent>
@@ -346,6 +357,14 @@ function DiaryEdit() {
 }
 
 export default DiaryEdit;
+
+const MemberTextbox = styled.div`
+  font-size: 110%;
+  font-weight: bolder;
+  margin: 10px;
+  border-top: 3px solid gray;
+  padding-top: 18px;
+`;
 
 const FriendName = styled.div`
   margin-top: 17px;
@@ -395,6 +414,17 @@ const ModalContent = styled.div`
   padding-bottom: 100px;
 `;
 
+const ModalCloseButton = styled.button`
+  position: absolute;
+  right: 3%;
+  top: 3%;
+  z-index: 2;
+  border-radius: 7px;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  background-color: gray;
+`;
 const InputBox = styled.div`
   display: none;
   flex-direction: row;
@@ -528,11 +558,6 @@ const SubmitButton = styled.div`
   height: 50px;
 `;
 
-const FriendListArea = styled.li`
-  display: flex;
-  align-items: center;
-`;
-
 const CheckBox = styled.div`
   display: ${({ disabled }) => (disabled ? "none" : "")};
   width: 20px;
@@ -545,12 +570,37 @@ const CheckBox = styled.div`
 
 const CheckedListBox = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  padding-left: 32px;
+  padding-right: 10px;
+  border-bottom: 1px solid #dcdcdc;
+`;
+
+const MemberBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60px;
+  margin: 7px;
 `;
 
 const CompleteButtonArea = styled.div`
   display: flex;
   justify-content: center;
   margin: 10px;
+`;
+const Completebutton = styled.button`
+  color: black;
+  background-color: #e1e7ff;
+  width: 100px;
+  height: 35px;
+  border: none;
+  border-radius: 15px;
+  margin: 0px auto;
+  font-weight: 700;
+  font-size: 100%;
+  cursor: pointer;
+  margin-top: 30px;
 `;
 
 const ListStyle = styled.div`
@@ -560,4 +610,9 @@ const ListStyle = styled.div`
 
 const AlreadyMember = styled.div`
   display: ${({ disabled }) => (disabled ? "" : "none")};
+`;
+const TopName = styled.div`
+  font-size: 16px;
+  font-weight: bolder;
+  margin-bottom: 10px;
 `;
