@@ -60,7 +60,7 @@ const AlarmList = ({ item, alarmType }) => {
       case "comment":
         return axios
           .patch(
-            `${process.env.REACT_APP_BASEURL}/comment/alarm/${item.commentId}`,
+            `${process.env.REACT_APP_BASEURL}/comment/alarm/${item.commentId}?page=0`,
             {},
             { headers: { Authorization: accessToken } }
           )
@@ -114,27 +114,46 @@ const AlarmList = ({ item, alarmType }) => {
   const getButtonMsg = () => {
     switch (alarmType) {
       case "friend":
-        return { acceptMsg: "수락하기", rejectMsg: "삭제하기" };
+        return { acceptMsg: "수락", rejectMsg: "삭제" };
       case "invite":
-        return { acceptMsg: "다이어리로 가기", rejectMsg: "삭제하기" };
+        return { acceptMsg: "다이어리로 가기", rejectMsg: "삭제" };
       case "comment":
-        return { acceptMsg: "다이어리로 가기", rejectMsg: "삭제하기" };
+        return { acceptMsg: "다이어리로 가기", rejectMsg: "삭제" };
       default:
         return;
     }
   };
 
-  const trailingActions = () => (
-    <TrailingActions>
-      <SwipeAction destructive={true} onClick={handleAccept}>
-        <ActionContent color="blue">{getButtonMsg().acceptMsg}</ActionContent>
-      </SwipeAction>
+  const trailingActions = () => {
+    switch (alarmType) {
+      case "friend":
+        return (
+          <TrailingActions>
+            <SwipeAction destructive={true} onClick={handleAccept}>
+              <ActionContent color="blue">
+                <InnerButton>{getButtonMsg().acceptMsg}</InnerButton>
+              </ActionContent>
+            </SwipeAction>
 
-      <SwipeAction destructive={true} onClick={handleDelete}>
-        <ActionContent color="red">{getButtonMsg().rejectMsg}</ActionContent>
-      </SwipeAction>
-    </TrailingActions>
-  );
+            <SwipeAction destructive={true} onClick={handleDelete}>
+              <ActionContent color="red">
+                <InnerButton>{getButtonMsg().rejectMsg}</InnerButton>
+              </ActionContent>
+            </SwipeAction>
+          </TrailingActions>
+        );
+      default:
+        return (
+          <TrailingActions>
+            <SwipeAction destructive={true} onClick={handleDelete}>
+              <ActionContent color="red">
+                <InnerButton>{getButtonMsg().rejectMsg}</InnerButton>
+              </ActionContent>
+            </SwipeAction>
+          </TrailingActions>
+        );
+    }
+  };
 
   return (
     <>
@@ -171,4 +190,11 @@ const Button = styled.div`
   height: 100%;
   background-color: ${({ color }) => (color === "red" ? "red" : "blue")};
   vertical-align: center;
+`;
+
+const InnerButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
 `;
