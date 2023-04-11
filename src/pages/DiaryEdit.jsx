@@ -150,26 +150,34 @@ function DiaryEdit() {
     setCheckedList(checkedList.filter((el) => el !== item));
   };
 
+  // 멤버 추가
   const addMemberCompleteHandler = () => {
     const diaryId = mypage.data.id;
     setModalOpen(false);
+    // 아무것도 선택하지 않으면 그냥 창 닫기
     setCheckedList([]);
-    checkedList.map((item) => {
-      axios
-        .post(
+    if (checkedList.length === 0) {
+      return;
+    }
+    // Promise.all()을 사용하여 모든 요청이 완료될 때까지 대기
+    Promise.all(
+      checkedList.map((item) =>
+        axios.post(
           `${process.env.REACT_APP_BASEURL}/invite/${diaryId}/${item.memberId}`,
           {},
           { headers: { Authorization: accessToken } }
         )
-        .then((res) => {
-          console.log(res);
-          alert("멤버 추가 요청을 보냈습니다.");
-        })
-        .catch((err) => {
-          console.log(err);
-          alert("이미 요청을 보냈습니다!");
-        });
-    });
+      )
+    )
+      .then((res) => {
+        // 모든 요청에 대한 결과를 한 번만 alert하기
+        console.log(res);
+        alert("멤버 추가 요청을 보냈습니다.");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("이미 요청을 보냈습니다!");
+      });
   };
 
   const [alreadyMembersId, setAlreadyMembersId] = useState([]);
