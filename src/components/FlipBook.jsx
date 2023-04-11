@@ -13,7 +13,10 @@ const FlipBook = ({ data, diaryId }) => {
 
   return (
     <FlipBookArea>
-      <HTMLFlipBook width={300} height={500}>
+      <HTMLFlipBook width={300} height={500} showCover={true}>
+        <InnerThumb>
+          <Cover>US 다이어리</Cover>
+        </InnerThumb>
         {data?.map((item, i) => (
           <InnerThumb key={i} onClick={() => goToInnerPaperDetail(item?.id)}>
             <Thumbnail
@@ -39,4 +42,10 @@ const FlipBookArea = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const Cover = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 25vh 0;
 `;

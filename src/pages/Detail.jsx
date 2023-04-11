@@ -18,6 +18,7 @@ import DiaryModal from "../components/detail/DiaryModal";
 import { useMutation } from "react-query";
 import { deleteDiary } from "../api/detail";
 import Thumbnail from "../components/drawing/Thumbnail";
+import axios from "axios";
 
 function Detail() {
   const navigate = useNavigate();
@@ -27,18 +28,29 @@ function Detail() {
 
   const accessToken = localStorage.getItem("accessToken");
 
-  const { data: diaryData } = useQuery(["getDiary"], () => getDiary(diaryId, detailId, accessToken));
+  const { data: diaryData } = useQuery(["getDiary"], () =>
+    getDiary(diaryId, detailId, accessToken)
+  );
 
   const myDiary = diaryData?.data;
 
-  console.log("data", myDiary);
+  // 현재 로그인 유저 정보 확인 -> 모달창 권한 여부
+  console.log(myDiary?.toMemberId);
+  const { data: curUserInfo } = useQuery(["getCurUser"], () => {
+    return axios.get(`${process.env.REACT_APP_BASEURL}/mypage/profile`, {
+      headers: { Authorization: accessToken },
+    });
+  });
 
   useEffect(() => {
     sheetRef.current.click();
   }, []);
 
   //delete
-  const { mutate: deleteDiaryMutate } = useMutation((detailId) => deleteDiary(diaryId, detailId, accessToken), {});
+  const { mutate: deleteDiaryMutate } = useMutation(
+    (detailId) => deleteDiary(diaryId, detailId, accessToken),
+    {}
+  );
 
   const navToModify = () => {
     navigate(`/drawing/${diaryId}/${detailId}`);
@@ -59,24 +71,45 @@ function Detail() {
       <StyledGobackButton onClick={() => navigate(-1)} />
       {myDiary && (
         <StyledDerailPage>
-          <GetUser ProfileImg={myDiary.profileImageUrl} createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
+          <GetUser
+            ProfileImg={myDiary.profileImageUrl}
+            createdAt={myDiary.createdAt}
+            nickname={myDiary.nickname}
+          />
 
-          <DiaryModalWrapper>
-            <DiaryModal navToModify={navToModify} onDeleteHandler={onDeleteHandler} detailId={detailId} />
-          </DiaryModalWrapper>
+          {myDiary?.toMemberId.includes(curUserInfo?.data.memberId) ? (
+            <DiaryModalWrapper>
+              <DiaryModal
+                navToModify={navToModify}
+                onDeleteHandler={onDeleteHandler}
+                detailId={detailId}
+              />
+            </DiaryModalWrapper>
+          ) : (
+            ""
+          )}
 
           <div>
             <StyledDetailCardWrapper>
               <StyledDetailCard>
                 <div style={{ position: "relative", top: "-10px", zIndex: 0 }}>
-                  <Thumbnail diaryId={diaryId} paperId={detailId} width={350} height={window.innerHeight} />
+                  <Thumbnail
+                    diaryId={diaryId}
+                    paperId={detailId}
+                    width={350}
+                    height={window.innerHeight}
+                  />
                 </div>
               </StyledDetailCard>
             </StyledDetailCardWrapper>
           </div>
         </StyledDerailPage>
       )}
-      <button style={{ display: "none" }} ref={sheetRef} onClick={() => setOpen(true)}></button>
+      <button
+        style={{ display: "none" }}
+        ref={sheetRef}
+        onClick={() => setOpen(true)}
+      ></button>
       {myDiary ? (
         <BottomSheet
           open={open}
