@@ -155,31 +155,6 @@ const CommentBox = () => {
   );
 
   return (
-    <SwipeableList threshold={0.5} type={ListType.IOS} disableSwipe={isEditing}>
-      {mycomment?.map((comment) => {
-        return (
-          <SwipeableListItem
-            key={comment.commentId}
-            trailingActions={trailingActions(comment)}
-          >
-            <CommentStyle>
-              <ProfilePicSmall src={comment.commentProfileImageUrl} />
-              <UserBox>
-                <span>{comment.commentName}</span>
-                <span>
-                  <GetTimeAgo createdAt={comment.createdAt} />
-                </span>
-              </UserBox>
-            </CommentStyle>
-            <CommentText>{comment.comment}</CommentText>
-          </SwipeableListItem>
-        );
-      })}
-      <input type="text" />
-    </SwipeableList>
-  );
-
-  return (
     <AllStyle>
       <h3>댓글</h3>
       {mycomment?.length === 0 && <h5>"아직 댓글이 없어요"</h5>}
