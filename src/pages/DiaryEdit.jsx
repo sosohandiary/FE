@@ -200,7 +200,6 @@ function DiaryEdit() {
                 alt="preview"
                 src={previewImage}
                 style={{
-
                   position: "relative",
                   top: "0%",
                   width: "100px",
@@ -333,7 +332,6 @@ function DiaryEdit() {
                     </AlreadyMember>
                   </ListStyle>
                 ))}
-              <ModalCloseButton onClick={handleCloseModal}>x</ModalCloseButton>
               <CompleteButtonArea>
                 <button onClick={addMemberCompleteHandler}>완료</button>
               </CompleteButtonArea>
