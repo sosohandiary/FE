@@ -55,8 +55,8 @@ const AlarmList = ({ item, alarmType }) => {
             { headers: { Authorization: accessToken } }
           )
           .then((res) => {
-            console.log(res);
             navigate(`/diaries/${item.inviteId}`);
+            handleDelete();
           })
           .catch((err) => console.log(err));
       case "comment":
@@ -67,7 +67,8 @@ const AlarmList = ({ item, alarmType }) => {
             { headers: { Authorization: accessToken } }
           )
           .then((res) => {
-            navigate(`/diaries/${item.diaryDetailId}`);
+            navigate(`/diaries/${item.diaryId}/${item.diaryDetailId}`);
+            handleDelete();
           })
           .catch((err) => console.log(err));
       default:
