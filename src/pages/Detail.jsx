@@ -18,6 +18,7 @@ import DiaryModal from "../components/detail/DiaryModal";
 import { useMutation } from "react-query";
 import { deleteDiary } from "../api/detail";
 import Thumbnail from "../components/drawing/Thumbnail";
+import axios from "axios";
 
 function Detail() {
   const navigate = useNavigate();
@@ -33,7 +34,13 @@ function Detail() {
 
   const myDiary = diaryData?.data;
 
-  console.log("data", myDiary);
+  // 현재 로그인 유저 정보 확인 -> 모달창 권한 여부
+  console.log(myDiary?.toMemberId);
+  const { data: curUserInfo } = useQuery(["getCurUser"], () => {
+    return axios.get(`${process.env.REACT_APP_BASEURL}/mypage/profile`, {
+      headers: { Authorization: accessToken },
+    });
+  });
 
   useEffect(() => {
     sheetRef.current.click();
@@ -70,13 +77,17 @@ function Detail() {
             nickname={myDiary.nickname}
           />
 
-          <DiaryModalWrapper>
-            <DiaryModal
-              navToModify={navToModify}
-              onDeleteHandler={onDeleteHandler}
-              detailId={detailId}
-            />
-          </DiaryModalWrapper>
+          {myDiary?.toMemberId.includes(curUserInfo?.data.memberId) ? (
+            <DiaryModalWrapper>
+              <DiaryModal
+                navToModify={navToModify}
+                onDeleteHandler={onDeleteHandler}
+                detailId={detailId}
+              />
+            </DiaryModalWrapper>
+          ) : (
+            ""
+          )}
 
           <div>
             <StyledDetailCardWrapper>
