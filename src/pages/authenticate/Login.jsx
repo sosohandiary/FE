@@ -215,16 +215,14 @@ const Content = styled.div`
     font-size: 16px;
     border: 1px solid #eee;
     background: #f5f5f5;
-  }
- 
+  } 
     .HiOutlineXCircle {
       position: absolute;
     font-size: 18px;
     top: 13px;
     right: 15px;
     border: none;
-    background: none;
-
+    background: none; 
       font-size: 150%;
       color: #d0d0d0;
       cursor: pointer;
