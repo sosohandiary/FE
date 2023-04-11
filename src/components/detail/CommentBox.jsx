@@ -1,29 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
-import {
-  RiPencilFill,
-  RiDeleteBin6Fill,
-  RiCheckFill,
-  RiCloseFill,
-} from "react-icons/ri";
+import { RiPencilFill, RiDeleteBin6Fill, RiCheckFill, RiCloseFill } from "react-icons/ri";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import {
-  addComment,
-  getComment,
-  deleteComment,
-  updatedComment,
-} from "../../api/detail";
+import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
 import { useParams } from "react-router-dom";
 import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
 
-import {
-  SwipeableList,
-  SwipeableListItem,
-  TrailingActions,
-  Type as ListType,
-} from "react-swipeable-list";
+import { SwipeableList, SwipeableListItem, TrailingActions, Type as ListType } from "react-swipeable-list";
 import "react-swipeable-list/dist/styles.css";
 
 const CommentBox = () => {
@@ -37,13 +22,10 @@ const CommentBox = () => {
 
   const queryClient = useQueryClient();
   const { detailId } = useParams();
-
   const accessToken = localStorage.getItem("accessToken");
 
   // get
-  const { data: commentData } = useQuery(["getComment"], () =>
-    getComment(detailId, accessToken)
-  );
+  const { data: commentData } = useQuery(["getComment"], () => getComment(detailId, accessToken));
   const mycomment = commentData?.data;
 
   // console.log("??", mycomment);
@@ -51,26 +33,20 @@ const CommentBox = () => {
   // <----Mutation----> //
 
   //add
-  const { mutate: addmutation } = useMutation(
-    () => addComment(detailId, comment, accessToken),
-    {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries("getComment");
-        queryClient.invalidateQueries("getDiary");
-      },
-    }
-  );
+  const { mutate: addmutation } = useMutation(() => addComment(detailId, comment, accessToken), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("getComment");
+      queryClient.invalidateQueries("getDiary");
+    },
+  });
 
   //delete
-  const { mutate: deleteCommentMutate } = useMutation(
-    (commentId) => deleteComment(detailId, commentId, accessToken),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("getComment");
-        queryClient.invalidateQueries("getDiary");
-      },
-    }
-  );
+  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(detailId, commentId, accessToken), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("getComment");
+      queryClient.invalidateQueries("getDiary");
+    },
+  });
 
   //edit
   const { mutate: updatedCommentMutate } = useMutation(
@@ -155,52 +131,45 @@ const CommentBox = () => {
   );
 
   return (
-    <AllStyle>
-      <h3>댓글</h3>
-      {mycomment?.length === 0 && <h5>"아직 댓글이 없어요"</h5>}
-      <div style={{ marginBottom: "100px" }}>
-        <SwipeableList
-          threshold={0.5}
-          type={ListType.IOS}
-          disableSwipe={isEditing}
-          style={{ height: "100%", maxHeight: "400px" }}
-        >
-          {mycomment?.map((comment) => {
-            const createdAtAgo = <GetTimeAgo createdAt={comment.createdAt} />;
-            return (
-              <SwipeableListItem
-                key={comment.commentId}
-                trailingActions={trailingActions(comment)}
-              >
-                <React.Fragment key={comment.commentId}>
-                  <div>
-                    <CommentStyle>
-                      <ProfilePicSmall src={comment.commentProfileImageUrl} />
-                      <UserBox>
-                        <span>{comment.commentName}</span>
-                        <span>{createdAtAgo}</span>
-                      </UserBox>
-                    </CommentStyle>
-                    <CommentText>{comment.comment}</CommentText>
-                  </div>
-                </React.Fragment>
-              </SwipeableListItem>
-            );
-          })}
-        </SwipeableList>
-      </div>
+    <div>
+      <WholeAreaWithMargin>
+        <h3>댓글</h3>
+        {mycomment?.length === 0 && <h5>"아직 댓글이 없어요"</h5>}
+        <CommentsContainer>
+          <SwipeableList threshold={0.5} type={ListType.IOS} disableSwipe={isEditing}>
+            {mycomment?.map((comment) => {
+              const createdAtAgo = <GetTimeAgo createdAt={comment.createdAt} />;
+              return (
+                <SwipeableListItem key={comment.commentId} trailingActions={trailingActions(comment)}>
+                  <React.Fragment key={comment.commentId}>
+                    <div>
+                      <CommentStyle>
+                        <ProfilePicSmall src={comment.commentProfileImageUrl} />
+                        <UserBox>
+                          <span>{comment.commentName}</span>
+                          <span>{createdAtAgo}</span>
+                        </UserBox>
+                      </CommentStyle>
+                      <CommentText>{comment.comment}</CommentText>
+                    </div>
+                  </React.Fragment>
+                </SwipeableListItem>
+              );
+            })}
+          </SwipeableList>
+        </CommentsContainer>
+      </WholeAreaWithMargin>
 
-      <CommentArea>
+      <WholeAreaWithMargin>
         <CommentInput
-          style={{ position: "relative", bottom: "15px" }}
           name="comment"
           placeholder={isEditing ? "댓글 수정하기" : "댓글 입력 후 엔터"}
           value={comment.comment}
           onChange={inputChangeHandler}
           onKeyPress={handleKeyDown}
         />
-      </CommentArea>
-    </AllStyle>
+      </WholeAreaWithMargin>
+    </div>
   );
 };
 
@@ -274,16 +243,13 @@ const CommentsContainer = styled.div`
     margin-bottom: 5px;
   }
 
-  width: 100%;
-  height: 100%;
-  margin-top: 0;
-  margin-bottom: 0;
-`;
-
-const CommentArea = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: -120px;
+  /* Add media queries */
+  /* @media only screen and (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+  } */
 `;
 
 const CommentInput = styled.input`
@@ -354,9 +320,4 @@ const UserBox = styled.div`
       color: gray;
     }
   }
-`;
-
-const AllStyle = styled.div`
-  -webkit-overflow-scrolling: touch;
-  overflow-y: scroll;
 `;
