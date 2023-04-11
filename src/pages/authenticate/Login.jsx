@@ -35,6 +35,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
+    reset,
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -75,9 +76,11 @@ const Login = () => {
                 },
               })}
             />
-            <button>
-              <HiOutlineXCircle className="HiOutlineXCircle" />
-            </button>
+
+            <HiOutlineXCircle
+              className="HiOutlineXCircle"
+              onClick={() => reset({ email: "" })}
+            />
           </Content>
           {errors.email && (
             <ValidationAlert role="alert">
@@ -94,7 +97,10 @@ const Login = () => {
               })}
             />
             <div>
-              <HiOutlineXCircle className="HiOutlineXCircle" />
+              <HiOutlineXCircle
+                className="HiOutlineXCircle"
+                onClick={() => reset({ password: "" })}
+              />
             </div>
           </Content>
           {errors.password && (
@@ -108,8 +114,7 @@ const Login = () => {
         </LoginForm>
         <MintButtonLarge onClick={goToSignup}>회원가입</MintButtonLarge>
         <Underline
-          style={{ marginTop: "7vh", marginBottom: "3vh" }}
-        ></Underline>
+          style={{ marginTop: "7vh", marginBottom: "3vh" }}></Underline>
         <div>
           <img
             src={kakaoLoginImage}
@@ -205,23 +210,21 @@ const Content = styled.div`
     width: 100%;
     outline: none;
     border-radius: 25px;
-    padding: 10px 10px 10px 25px;
+    padding: 10px 30px 10px 25px;
     font-size: 16px;
     border: 1px solid #eee;
     background: #f5f5f5;
   }
-  button {
+  .HiOutlineXCircle {
     position: absolute;
     font-size: 18px;
-    top: 21%;
-    right: 3%;
+    top: 13px;
+    right: 15px;
     border: none;
     background: none;
+    font-size: 150%;
+    color: #d0d0d0;
     cursor: pointer;
-    .HiOutlineXCircle {
-      font-size: 150%;
-      color: #d0d0d0;
-    }
   }
 `;
 

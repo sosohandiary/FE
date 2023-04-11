@@ -32,6 +32,7 @@ const AlarmList = ({ item, alarmType }) => {
       .catch((err) => console.log(err));
   };
 
+  console.log(item);
   const handleAccept = () => {
     switch (alarmType) {
       case "friend":
@@ -54,7 +55,8 @@ const AlarmList = ({ item, alarmType }) => {
             { headers: { Authorization: accessToken } }
           )
           .then((res) => {
-            console.log(res);
+            navigate(`/diaries/${item.inviteId}`);
+            handleDelete();
           })
           .catch((err) => console.log(err));
       case "comment":
@@ -65,7 +67,8 @@ const AlarmList = ({ item, alarmType }) => {
             { headers: { Authorization: accessToken } }
           )
           .then((res) => {
-            navigate(`/diaries/${item.diaryDetailId}`);
+            navigate(`/diaries/${item.diaryId}/${item.diaryDetailId}`);
+            handleDelete();
           })
           .catch((err) => console.log(err));
       default:
@@ -125,34 +128,21 @@ const AlarmList = ({ item, alarmType }) => {
   };
 
   const trailingActions = () => {
-    switch (alarmType) {
-      case "friend":
-        return (
-          <TrailingActions>
-            <SwipeAction destructive={true} onClick={handleAccept}>
-              <ActionContent color="blue">
-                <InnerButton>{getButtonMsg().acceptMsg}</InnerButton>
-              </ActionContent>
-            </SwipeAction>
+    return (
+      <TrailingActions>
+        <SwipeAction destructive={true} onClick={handleAccept}>
+          <ActionContent color="blue">
+            <InnerButton>{getButtonMsg().acceptMsg}</InnerButton>
+          </ActionContent>
+        </SwipeAction>
 
-            <SwipeAction destructive={true} onClick={handleDelete}>
-              <ActionContent color="red">
-                <InnerButton>{getButtonMsg().rejectMsg}</InnerButton>
-              </ActionContent>
-            </SwipeAction>
-          </TrailingActions>
-        );
-      default:
-        return (
-          <TrailingActions>
-            <SwipeAction destructive={true} onClick={handleDelete}>
-              <ActionContent color="red">
-                <InnerButton>{getButtonMsg().rejectMsg}</InnerButton>
-              </ActionContent>
-            </SwipeAction>
-          </TrailingActions>
-        );
-    }
+        <SwipeAction destructive={true} onClick={handleDelete}>
+          <ActionContent color="red">
+            <InnerButton>{getButtonMsg().rejectMsg}</InnerButton>
+          </ActionContent>
+        </SwipeAction>
+      </TrailingActions>
+    );
   };
 
   return (
@@ -162,7 +152,6 @@ const AlarmList = ({ item, alarmType }) => {
           <AlarmUnReadCard item={item} alarmType={alarmType} />
         </SwipeableListItem>
       </SwipeableList>
-      ;
     </>
   );
 };
