@@ -379,10 +379,12 @@ const FriendName = styled.div`
   font-size: 16px;
   font-weight: bolder;
 `;
+
 const ImgAndName = styled.div`
   display: flex;
   flex-direction: row;
 `;
+
 const Addbutton = styled.button`
   color: gray;
   width: 100px;
@@ -433,6 +435,7 @@ const ModalCloseButton = styled.button`
   cursor: pointer;
   background-color: gray;
 `;
+
 const InputBox = styled.div`
   display: none;
   flex-direction: row;
@@ -553,6 +556,7 @@ const CreatedAt = styled.div`
   bottom: 14px;
   right: 14px;
 `;
+
 const SubmitButton = styled.div`
   cursor: pointer;
   display: flex;
@@ -597,6 +601,7 @@ const CompleteButtonArea = styled.div`
   justify-content: center;
   margin: 10px;
 `;
+
 const Completebutton = styled.button`
   color: black;
   background-color: #e1e7ff;
@@ -619,6 +624,7 @@ const ListStyle = styled.div`
 const AlreadyMember = styled.div`
   display: ${({ disabled }) => (disabled ? "" : "none")};
 `;
+
 const TopName = styled.div`
   font-size: 16px;
   font-weight: bolder;
