@@ -175,6 +175,7 @@ const CommentBox = () => {
           </SwipeableListItem>
         );
       })}
+      <input type="text" />
     </SwipeableList>
   );
 
