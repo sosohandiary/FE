@@ -30,9 +30,11 @@ const Navigationbar = () => {
   }, []);
 
   const { data: dataForInviteAlarm } = useQuery(["getInviteAlarmAtNav"], () => {
-    return axios.get(`${process.env.REACT_APP_BASEURL}/invite/alarm`, {
-      headers: { Authorization: accessToken },
-    });
+    return axios
+      .get(`${process.env.REACT_APP_BASEURL}/invite/alarm`, {
+        headers: { Authorization: accessToken },
+      })
+      .then((res) => console.log(res));
   });
 
   const { data: dataForFriendAlarm } = useQuery(
