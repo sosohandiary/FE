@@ -124,7 +124,6 @@ function Detail() {
           style={{ height: "80px" }}
         >
           <CommentBox />
-          <input type="text" />
         </BottomSheet>
       ) : (
         <div
@@ -187,17 +186,4 @@ const DiaryModalWrapper = styled.div`
   top: 25px;
   right: 50%;
   transform: translateX(460%);
-`;
-
-const CommentInput = styled.input`
-  font-size: 16px;
-  width: 360px;
-  height: 40px;
-  /* margin-top: 10px; */
-  padding: 5px;
-  /* resize: none; */
-  border: none;
-  border-radius: 20px;
-  background-color: #f1f1f1;
-  outline: none;
 `;
