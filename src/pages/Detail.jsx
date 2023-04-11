@@ -70,13 +70,6 @@ function Detail() {
               <StyledDetailCard>
                 <div style={{ position: "relative", top: "-10px", zIndex: 0 }}>
                   <Thumbnail diaryId={diaryId} paperId={detailId} width={350} height={window.innerHeight} />
-                <div style={{ position: "relative", top: "-10px", zIndex: 0 }}>
-                  <Thumbnail
-                    diaryId={diaryId}
-                    paperId={detailId}
-                    width={350}
-                    height={window.innerHeight}
-                  />
                 </div>
               </StyledDetailCard>
             </StyledDetailCardWrapper>
