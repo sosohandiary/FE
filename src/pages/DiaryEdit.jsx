@@ -19,9 +19,7 @@ function DiaryEdit() {
   const [file, setFile] = useState();
   const [title, setTitle] = useState(mypage?.data?.title);
   const [previewImage, setPreviewImage] = useState(mypage?.data?.img);
-  const [diaryCondition, setDiaryCondition] = useState(
-    mypage?.data?.diaryCondition
-  );
+  const [diaryCondition, setDiaryCondition] = useState(mypage?.data?.diaryCondition);
 
   // 공개 비공개 바꾸는거
   const handleConditionChange = (event) => {
@@ -71,16 +69,12 @@ function DiaryEdit() {
 
       try {
         const paramId = mypage.data.id;
-        const res = await axios.patch(
-          `${process.env.REACT_APP_BASEURL}/diary/${paramId}`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: accessToken,
-            },
-          }
-        );
+        const res = await axios.patch(`${process.env.REACT_APP_BASEURL}/diary/${paramId}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: accessToken,
+          },
+        });
         navigate(`/mypage`);
       } catch (error) {
         console.error("다이어리 수정에 실패했습니다.", error);
@@ -95,12 +89,9 @@ function DiaryEdit() {
 
   const getMyfriends = async () => {
     try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_BASEURL}/mypage/friend/myfriends`,
-        {
-          headers: { Authorization: accessToken },
-        }
-      );
+      const res = await axios.get(`${process.env.REACT_APP_BASEURL}/mypage/friend/myfriends`, {
+        headers: { Authorization: accessToken },
+      });
       setFriends(res.data);
       setModalOpen(true);
     } catch (error) {
@@ -108,8 +99,10 @@ function DiaryEdit() {
     }
   };
 
+  // 모달 닫기 버튼
   const handleCloseModal = () => {
     setModalOpen(false);
+    setCheckedList([]);
   };
 
   //이미지 업로드 관련
@@ -149,8 +142,10 @@ function DiaryEdit() {
     setCheckedList(checkedList.filter((el) => el !== item));
   };
 
+  // 멤버 추가
   const addMemberCompleteHandler = () => {
     const diaryId = mypage.data.id;
+    setModalOpen(false);
     checkedList.map((item) => {
       axios
         .post(
@@ -158,8 +153,14 @@ function DiaryEdit() {
           {},
           { headers: { Authorization: accessToken } }
         )
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          console.log(res);
+          alert("멤버 추가 요청을 보냈습니다.");
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("이미 요청을 보냈습니다!");
+        });
     });
   };
 
@@ -216,12 +217,7 @@ function DiaryEdit() {
 
       <InputBox>
         <VscBlank className="VscBlank" />
-        <FileInput
-          type="file"
-          onChange={handleChange}
-          className="StyledInput"
-          ref={selectFile}
-        />
+        <FileInput type="file" onChange={handleChange} className="StyledInput" ref={selectFile} />
         <VscBlank className="VscBlank" />
       </InputBox>
 
@@ -284,11 +280,7 @@ function DiaryEdit() {
             </CheckedListBox>
             <div>
               {friends
-                .filter(
-                  (item) =>
-                    item.name.includes(searchInput) ||
-                    item.nickname.includes(searchInput)
-                )
+                .filter((item) => item.name.includes(searchInput) || item.nickname.includes(searchInput))
                 .map((friend) => (
                   <ListStyle
                     key={friend.id}
@@ -325,11 +317,7 @@ function DiaryEdit() {
                       checkedList={checkedList}
                       friend={friend}
                     ></CheckBox>
-                    <AlreadyMember
-                      disabled={alreadyMembersId.includes(friend.memberId)}
-                    >
-                      이미 멤버입니다
-                    </AlreadyMember>
+                    <AlreadyMember disabled={alreadyMembersId.includes(friend.memberId)}>이미 멤버입니다</AlreadyMember>
                   </ListStyle>
                 ))}
               <CompleteButtonArea>
@@ -352,10 +340,12 @@ const FriendName = styled.div`
   font-size: 16px;
   font-weight: bolder;
 `;
+
 const ImgAndName = styled.div`
   display: flex;
   flex-direction: row;
 `;
+
 const Addbutton = styled.button`
   color: gray;
   width: 100px;
@@ -395,6 +385,17 @@ const ModalContent = styled.div`
   padding-bottom: 100px;
 `;
 
+const ModalCloseButton = styled.button`
+  position: absolute;
+  right: 3%;
+  top: 3%;
+  z-index: 2;
+  border-radius: 7px;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  background-color: gray;
+`;
 const InputBox = styled.div`
   display: none;
   flex-direction: row;
@@ -515,6 +516,7 @@ const CreatedAt = styled.div`
   bottom: 14px;
   right: 14px;
 `;
+
 const SubmitButton = styled.div`
   cursor: pointer;
   display: flex;
@@ -537,8 +539,7 @@ const CheckBox = styled.div`
   display: ${({ disabled }) => (disabled ? "none" : "")};
   width: 20px;
   height: 20px;
-  background-image: url(${({ friend, checkedList }) =>
-    checkedList.includes(friend) ? checkedImg : uncheckedImg});
+  background-image: url(${({ friend, checkedList }) => (checkedList.includes(friend) ? checkedImg : uncheckedImg)});
   background-repeat: no-repeat;
   background-size: cover;
 `;
@@ -552,6 +553,19 @@ const CompleteButtonArea = styled.div`
   justify-content: center;
   margin: 10px;
 `;
+const Completebutton = styled.button`
+  color: black;
+  background-color: #e1e7ff;
+  width: 100px;
+  height: 35px;
+  border: none;
+  border-radius: 15px;
+  margin: 0px auto;
+  font-weight: 700;
+  font-size: 100%;
+  cursor: pointer;
+  margin-top: 30px;
+`;
 
 const ListStyle = styled.div`
   display: flex;
@@ -560,4 +574,9 @@ const ListStyle = styled.div`
 
 const AlreadyMember = styled.div`
   display: ${({ disabled }) => (disabled ? "" : "none")};
+`;
+const TopName = styled.div`
+  font-size: 16px;
+  font-weight: bolder;
+  margin-bottom: 10px;
 `;

@@ -27,9 +27,7 @@ function Detail() {
 
   const accessToken = localStorage.getItem("accessToken");
 
-  const { data: diaryData } = useQuery(["getDiary"], () =>
-    getDiary(diaryId, detailId, accessToken)
-  );
+  const { data: diaryData } = useQuery(["getDiary"], () => getDiary(diaryId, detailId, accessToken));
 
   const myDiary = diaryData?.data;
 
@@ -40,10 +38,7 @@ function Detail() {
   }, []);
 
   //delete
-  const { mutate: deleteDiaryMutate } = useMutation(
-    (detailId) => deleteDiary(diaryId, detailId, accessToken),
-    {}
-  );
+  const { mutate: deleteDiaryMutate } = useMutation((detailId) => deleteDiary(diaryId, detailId, accessToken), {});
 
   const navToModify = () => {
     navigate(`/drawing/${diaryId}/${detailId}`);
@@ -64,23 +59,17 @@ function Detail() {
       <StyledGobackButton onClick={() => navigate(-1)} />
       {myDiary && (
         <StyledDerailPage>
-          <GetUser
-            ProfileImg={myDiary.profileImageUrl}
-            createdAt={myDiary.createdAt}
-            nickname={myDiary.nickname}
-          />
+          <GetUser ProfileImg={myDiary.profileImageUrl} createdAt={myDiary.createdAt} nickname={myDiary.nickname} />
 
           <DiaryModalWrapper>
-            <DiaryModal
-              navToModify={navToModify}
-              onDeleteHandler={onDeleteHandler}
-              detailId={detailId}
-            />
+            <DiaryModal navToModify={navToModify} onDeleteHandler={onDeleteHandler} detailId={detailId} />
           </DiaryModalWrapper>
 
           <div>
             <StyledDetailCardWrapper>
               <StyledDetailCard>
+                <div style={{ position: "relative", top: "-10px", zIndex: 0 }}>
+                  <Thumbnail diaryId={diaryId} paperId={detailId} width={350} height={window.innerHeight} />
                 <div style={{ position: "relative", top: "-10px", zIndex: 0 }}>
                   <Thumbnail
                     diaryId={diaryId}
@@ -94,11 +83,7 @@ function Detail() {
           </div>
         </StyledDerailPage>
       )}
-      <button
-        style={{ display: "none" }}
-        ref={sheetRef}
-        onClick={() => setOpen(true)}
-      ></button>
+      <button style={{ display: "none" }} ref={sheetRef} onClick={() => setOpen(true)}></button>
       {myDiary ? (
         <BottomSheet
           open={open}
