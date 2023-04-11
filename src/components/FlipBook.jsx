@@ -12,7 +12,7 @@ const FlipBook = ({ data, diaryId }) => {
   };
 
   return (
-    <>
+    <FlipBookArea>
       <HTMLFlipBook width={300} height={500}>
         {data?.map((item, i) => (
           <InnerThumb key={i} onClick={() => goToInnerPaperDetail(item?.id)}>
@@ -25,7 +25,7 @@ const FlipBook = ({ data, diaryId }) => {
           </InnerThumb>
         ))}
       </HTMLFlipBook>
-    </>
+    </FlipBookArea>
   );
 };
 
@@ -33,4 +33,10 @@ export default FlipBook;
 
 const InnerThumb = styled.div`
   background-color: #f3f3f3;
+`;
+
+const FlipBookArea = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

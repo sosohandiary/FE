@@ -19,6 +19,7 @@ import Drawing from "./Drawing";
 import Page from "./Page";
 import DiaryEdit from "./DiaryEdit";
 import DiaryDetail from "./DiaryDetail";
+import UploadSticker from "./UploadSticker";
 
 const Router = () => {
   return (
@@ -45,6 +46,7 @@ const Router = () => {
         <Route path="/diaries/:diaryId" element={<DiaryDetail />} />
         <Route path="/diary/:diaryId" element={<Page />} />
         <Route path="/diaryedit/:diaryId" element={<DiaryEdit />} />
+        <Route path="/upload-sticker" element={<UploadSticker />} />
       </Routes>
     </BrowserRouter>
   );

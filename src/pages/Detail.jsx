@@ -81,7 +81,7 @@ function Detail() {
           <div>
             <StyledDetailCardWrapper>
               <StyledDetailCard>
-                <div style={{ position: "relative", top: "-10px" }}>
+                <div style={{ position: "relative", top: "-10px", zIndex: 0 }}>
                   <Thumbnail
                     diaryId={diaryId}
                     paperId={detailId}
@@ -101,7 +101,6 @@ function Detail() {
       ></button>
       {myDiary ? (
         <BottomSheet
-          style={{ position: "absolute", top: "100px" }}
           open={open}
           header={
             <DetailElement>
@@ -122,6 +121,7 @@ function Detail() {
           defaultSnap={({ snapPoints }) => snapPoints}
           snapPoints={({ minHeight, maxHeight }) => [60, maxHeight]}
           blocking={false}
+          style={{ height: "80px" }}
         >
           <CommentBox />
         </BottomSheet>
