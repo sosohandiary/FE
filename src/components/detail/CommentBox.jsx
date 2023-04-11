@@ -134,28 +134,32 @@ const CommentBox = () => {
     <div>
       <WholeAreaWithMargin>
         <h3>댓글</h3>
-        {mycomment?.length === 0 && <h5>"아직 댓글이 없어요"</h5>}
         <CommentsContainer>
           <SwipeableList threshold={0.5} type={ListType.IOS} disableSwipe={isEditing}>
-            {mycomment?.map((comment) => {
-              const createdAtAgo = <GetTimeAgo createdAt={comment.createdAt} />;
-              return (
-                <SwipeableListItem key={comment.commentId} trailingActions={trailingActions(comment)}>
-                  <React.Fragment key={comment.commentId}>
-                    <div>
-                      <CommentStyle>
-                        <ProfilePicSmall src={comment.commentProfileImageUrl} />
-                        <UserBox>
-                          <span>{comment.commentName}</span>
-                          <span>{createdAtAgo}</span>
-                        </UserBox>
-                      </CommentStyle>
-                      <CommentText>{comment.comment}</CommentText>
-                    </div>
-                  </React.Fragment>
-                </SwipeableListItem>
-              );
-            })}
+            {mycomment?.length === 0 ? (
+              <h5>"아직 댓글이 없어요"</h5>
+            ) : (
+              mycomment?.map((comment) => {
+                const createdAtAgo = <GetTimeAgo createdAt={comment.createdAt} />;
+
+                return (
+                  <SwipeableListItem key={comment.commentId} trailingActions={trailingActions(comment)}>
+                    <React.Fragment key={comment.commentId}>
+                      <div>
+                        <CommentStyle>
+                          <ProfilePicSmall src={comment.commentProfileImageUrl} />
+                          <UserBox>
+                            <span>{comment.commentName}</span>
+                            <span>{createdAtAgo}</span>
+                          </UserBox>
+                        </CommentStyle>
+                        <CommentText>{comment.comment}</CommentText>
+                      </div>
+                    </React.Fragment>
+                  </SwipeableListItem>
+                );
+              })
+            )}
           </SwipeableList>
         </CommentsContainer>
       </WholeAreaWithMargin>
@@ -172,7 +176,6 @@ const CommentBox = () => {
     </div>
   );
 };
-
 export default CommentBox;
 
 const IconWrapper = styled.span`
@@ -208,15 +211,14 @@ const CheckIconStyled = styled(RiCheckFill)`
 
 const CommentsContainer = styled.div`
   width: 375px;
-  height: 400px;
-  /* height: 80%; */
+  height: 100vw;
+  /* height: 400px; */
   border: none;
   padding: 10px;
-  margin-top: -25px;
+  margin-top: -20px;
   margin-bottom: -25px;
   position: relative;
-  overflow-y: scroll;
-  /* background-color: #598665; */
+  /* background-color: #c7d6ff; */
 
   h5 {
     text-align: center;
@@ -242,23 +244,13 @@ const CommentsContainer = styled.div`
   & > div {
     margin-bottom: 5px;
   }
-
-  /* Add media queries */
-  /* @media only screen and (max-width: 768px) {
-    width: 100%;
-    height: 100%;
-    margin-top: 0;
-    margin-bottom: 0;
-  } */
 `;
 
 const CommentInput = styled.input`
   font-size: 16px;
   width: 360px;
   height: 40px;
-  /* margin-top: 10px; */
   padding: 5px;
-  /* resize: none; */
   border: none;
   border-radius: 20px;
   background-color: #f1f1f1;
