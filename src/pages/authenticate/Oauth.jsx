@@ -17,7 +17,6 @@ const Oauth = () => {
           "accessToken",
           err.response.headers.authorization
         );
-        navigate("/");
       });
   }, []);
 
