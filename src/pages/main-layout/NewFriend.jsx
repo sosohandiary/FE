@@ -40,7 +40,7 @@ const NewFriend = () => {
         return [];
       }
       const res = await axios.get(
-        `${process.env.REACT_APP_BASEURL}/search?name=${searchInput}`,
+        `${process.env.REACT_APP_BASEURL}/search?nickname=${searchInput}`,
         { headers: { Authorization: accessToken } }
       );
       return res.data;
@@ -101,7 +101,7 @@ const NewFriend = () => {
                   <ProfilePicSmall src={defaultProfileImg} />
                 )}
                 <ListContentBox>
-                  <StText fontWeight='bold'>{item.name}</StText>
+                  <StText fontWeight='bold'>{item.nickname}</StText>
                   <StText overflow='hidden' textOverflow='ellipsis' whiteSpace='nowrap'>{item.statusMessage}</StText>
                 </ListContentBox>
               </ListBox>
