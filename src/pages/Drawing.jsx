@@ -36,6 +36,11 @@ import widthMediumEraser from "../assets/decoration/toolbar/widthMediumEraser.pn
 import widthLargeEraser from "../assets/decoration/toolbar/widthLargeEraser.png";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
+import { BottomSheet } from "react-spring-bottom-sheet";
+import "react-spring-bottom-sheet/dist/style.css";
+import { Global } from "@emotion/react";
+import CssBaseline from "@mui/material/CssBaseline";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 
 // <---------------스티커 크기 조절----------------->
 const ImageSticker = ({
@@ -72,8 +77,85 @@ const ImageSticker = ({
   const [imgUrl3] = useImage(
     "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1407.png"
   );
+  const [imgUrl4] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1408.png"
+  );
+  const [imgUrl5] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1409.png"
+  );
+  const [imgUrl6] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1410.png"
+  );
+  const [imgUrl7] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1411.png"
+  );
+  const [imgUrl8] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1412.png"
+  );
+  const [imgUrl9] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1413.png"
+  );
+  const [imgUrl10] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1414.png"
+  );
+  const [imgUrl11] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1415.png"
+  );
+  const [imgUrl12] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1416.png"
+  );
+  const [imgUrl13] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1417.png"
+  );
+  const [imgUrl14] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1418.png"
+  );
+  const [imgUrl15] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1419.png"
+  );
+  const [imgUrl16] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1420.png"
+  );
+  const [imgUrl17] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1421.png"
+  );
+  const [imgUrl18] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1422.png"
+  );
+  const [imgUrl19] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1423.png"
+  );
+  const [imgUrl20] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Union-1.png"
+  );
+  const [imgUrl21] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Union.png"
+  );
 
-  const imgList = [imgUrl0, imgUrl1, imgUrl2, imgUrl3];
+  const imgList = [
+    imgUrl0,
+    imgUrl1,
+    imgUrl2,
+    imgUrl3,
+    imgUrl4,
+    imgUrl5,
+    imgUrl6,
+    imgUrl7,
+    imgUrl8,
+    imgUrl9,
+    imgUrl10,
+    imgUrl11,
+    imgUrl12,
+    imgUrl13,
+    imgUrl14,
+    imgUrl15,
+    imgUrl16,
+    imgUrl17,
+    imgUrl18,
+    imgUrl19,
+    imgUrl20,
+    imgUrl21,
+  ];
 
   return (
     <React.Fragment>
@@ -160,6 +242,9 @@ const ImageSticker = ({
 
 // <---------------------------------------->
 
+// 스티커 drawer
+const drawerBleeding = 56;
+
 const Drawing = () => {
   const navigate = useNavigate();
   const [mode, setMode] = useState("TEXT");
@@ -168,6 +253,7 @@ const Drawing = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [touchStartY, setTouchStartY] = useState(0);
   const [movementY, setmovementY] = useState(0);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const isDrawing = useRef(false);
   const { diaryid, paperid } = useParams();
 
@@ -234,8 +320,8 @@ const Drawing = () => {
 
     const newSticker = {
       id: generateRandomId(),
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
+      x: 150,
+      y: 300,
       width: 100,
       height: 100,
       rotation: 0,
@@ -379,6 +465,24 @@ const Drawing = () => {
     "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1405.png",
     "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1406.png",
     "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1407.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1408.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1409.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1410.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1411.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1412.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1413.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1414.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1415.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1416.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1417.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1418.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1419.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1420.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1421.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1422.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1423.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Union-1.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Union.png",
   ];
 
   // 도화지
@@ -456,7 +560,10 @@ const Drawing = () => {
         />
         <ToolButton
           src={stickerImg}
-          onClick={() => touchAllToolbarButtonHandler("STICKER")}
+          onClick={() => {
+            setDrawerOpen(true);
+            touchAllToolbarButtonHandler("STICKER");
+          }}
         />
       </AllToolbarStyle>
       <TextToolbarStyle isOpenTextToolbar={isOpenTextToolbar}>
@@ -649,12 +756,20 @@ const DiaryBack = styled.img`
   top: 10px;
   left: 10px;
   z-index: 1;
+  width: 40px;
+  @media (min-width: 700px) {
+    width: 80px;
+  }
 `;
 const SaveButton = styled.img`
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 1;
+  width: 40px;
+  @media (min-width: 700px) {
+    width: 80px;
+  }
 `;
 
 const TextAreaStyle = styled.div`
@@ -733,7 +848,7 @@ const StickerToolbarStyle = styled.div`
   background-color: #efeeee;
   width: 100vw;
   height: ${({ isOpenStickerToolbar }) =>
-    isOpenStickerToolbar === true ? "600px" : 0};
+    isOpenStickerToolbar === true ? "110vh" : 0};
   border-radius: 25px 25px 0 0;
   padding-top: 20px;
   z-index: 10;
