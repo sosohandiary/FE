@@ -86,12 +86,26 @@ const Navigationbar = () => {
   const friendAlarmCnt = dataForFriendAlarm?.data.filter(
     (item) => item.alarm === false
   ).length;
+
+  if (isNaN(friendAlarmCnt)) {
+    friendAlarmCnt = 0;
+  }
+
   const commentAlarmCnt = dataForCommentAlarm?.data.filter(
     (item) => item.alarm === false
   ).length;
+
+  if (isNaN(commentAlarmCnt)) {
+    commentAlarmCnt = 0;
+  }
+
   const inviteAlarmCnt = dataForInviteAlarm?.data.filter(
     (item) => item.alarm === false
   ).length;
+
+  if (isNaN(inviteAlarmCnt)) {
+    inviteAlarmCnt = 0;
+  }
 
   const totalAlarmNumber = friendAlarmCnt + commentAlarmCnt + inviteAlarmCnt;
 
