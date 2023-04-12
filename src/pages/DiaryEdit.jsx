@@ -287,8 +287,7 @@ function DiaryEdit() {
                       color="primary"
                       onClick={() => {
                         onRemove(item);
-                      }}
-                    >
+                      }}>
                       <img
                         src={item.profileImageUrl}
                         style={{
@@ -321,8 +320,7 @@ function DiaryEdit() {
                       marginBottom: "8px",
                       marginLeft: "10px",
                       marginRight: "10px",
-                    }}
-                  >
+                    }}>
                     <label style={{ flex: 1 }}>
                       <ImgAndName>
                         <img
@@ -345,11 +343,9 @@ function DiaryEdit() {
                         onCheckedElement(friend);
                       }}
                       checkedList={checkedList}
-                      friend={friend}
-                    ></CheckBox>
+                      friend={friend}></CheckBox>
                     <AlreadyMember
-                      disabled={alreadyMembersId.includes(friend.memberId)}
-                    >
+                      disabled={alreadyMembersId.includes(friend.memberId)}>
                       이미 멤버입니다
                     </AlreadyMember>
                   </ListStyle>
@@ -514,6 +510,8 @@ const Card = styled.div`
   height: 180px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 13px;
+  display: flex;
+  flex-direction: row;
 `;
 
 const SideLabel = styled.div`
@@ -521,7 +519,7 @@ const SideLabel = styled.div`
   width: 15px;
   height: 180px;
   border-radius: 13px 0 0 13px;
-  position: absolute;
+  position: relative;
 `;
 
 const InnerArea = styled.div`
@@ -529,6 +527,7 @@ const InnerArea = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: relative;
 `;
 
 const Title = styled.div`
