@@ -351,7 +351,9 @@ function DiaryEdit() {
                   </ListStyle>
                 ))}
               <CompleteButtonArea>
-                <button onClick={addMemberCompleteHandler}>완료</button>
+                <Completebutton onClick={addMemberCompleteHandler}>
+                  완료
+                </Completebutton>
               </CompleteButtonArea>
             </div>
           </ModalContent>
