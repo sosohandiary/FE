@@ -97,28 +97,6 @@ const MainPage = () => {
         setIsLoadingForPrivate(false);
       });
   }, [inViewForPrivate]);
-  useEffect(() => {
-    setIsLoadingForPrivate(true);
-    axios
-      .get(
-        `${process.env.REACT_APP_BASEURL}/invite?page=${privatePage}&size=5`,
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
-      .then((res) => {
-        setIsLoadingForPrivate(false);
-
-        if (res.data === "") {
-          return;
-        }
-        setDataListForPrivate((prev) => [...prev, ...res.data.content]);
-        setPrivatePage((prev) => prev + 1);
-      })
-      .catch((err) => {
-        setIsLoadingForPrivate(false);
-      });
-  }, []);
 
   useEffect(() => {
     setIsLoadingForPublic(true);
@@ -139,25 +117,6 @@ const MainPage = () => {
         console.log(err);
       });
   }, [inViewForPublic]);
-  useEffect(() => {
-    setIsLoadingForPublic(true);
-    axios
-      .get(
-        `${process.env.REACT_APP_BASEURL}/public?page=${publicPage}&size=5`,
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
-      .then((res) => {
-        setIsLoadingForPublic(false);
-        setDataListForPublic((prev) => [...prev, ...res.data.content]);
-        setPublicPage((prev) => prev + 1);
-      })
-      .catch((err) => {
-        setIsLoadingForPublic(false);
-        console.log(err);
-      });
-  }, []);
 
   const goToDiaryDetail = (id) => {
     navigate(`/diaries/${id}`);
