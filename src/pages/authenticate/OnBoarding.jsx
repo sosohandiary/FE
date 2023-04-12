@@ -5,6 +5,10 @@ import { useDrag } from "react-use-gesture";
 import clamp from "lodash.clamp";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import logo from "../../assets/logoImg.png";
+import first from "../../assets/onboarding/first.jpg";
+import second from "../../assets/onboarding/second.jpg";
+import third from "../../assets/onboarding/third.jpg";
 
 const OnBoardingInnerHTML = ({ idx }) => {
   const navigate = useNavigate();
@@ -15,7 +19,7 @@ const OnBoardingInnerHTML = ({ idx }) => {
     case 0:
       return (
         <FlexCenter>
-          <Logo>LOGO</Logo>
+          <Logo logoUrl={logo}></Logo>
         </FlexCenter>
       );
     case 1:
@@ -26,23 +30,35 @@ const OnBoardingInnerHTML = ({ idx }) => {
             <h1>
               일상을 공유하는
               <br />
-              소소한 다이어리,
+              우리들만의 다이어리,
               <br />
-              어스
+              US
             </h1>
             <p>여러분의 소중한 일상을 담아보세요</p>
           </WelcomePhraseArea>
         </div>
       );
     case 2:
-      return <div>배너 1</div>;
+      return (
+        <BannerStyle>
+          <img width="100%" src={first} />
+          <PassageArea>문구</PassageArea>
+        </BannerStyle>
+      );
     case 3:
-      return <div>배너 2</div>;
+      return (
+        <BannerStyle>
+          <img width="100%" src={second} />
+          <PassageArea>문구</PassageArea>
+        </BannerStyle>
+      );
     case 4:
       return (
-        <div>
-          배너 3<button onClick={goToSignup}>공유 다이어리 시작하기</button>
-        </div>
+        <BannerStyle>
+          <img width="100%" src={third} />
+          <PassageArea>문구</PassageArea>
+          <button onClick={goToSignup}>공유 다이어리 시작하기</button>
+        </BannerStyle>
       );
     default:
       return;
@@ -162,11 +178,12 @@ const FlexCenter = styled.div`
 `;
 
 const Logo = styled.div`
-  background-color: gray;
+  background-image: url(${({ logoUrl }) => logoUrl});
+  background-size: cover;
+  background-position: center;
   height: 200px;
   width: 200px;
   border-radius: 25px;
-  color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -179,4 +196,18 @@ const EmptyBox = styled.div`
 
 const WelcomePhraseArea = styled.div`
   margin: 30px;
+`;
+
+const BannerStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  img {
+    margin: 0 auto;
+  }
+`;
+
+const PassageArea = styled.div`
+  margin: 20px;
 `;
