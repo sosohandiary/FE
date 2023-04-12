@@ -817,7 +817,6 @@ const TextAreaStyle = styled.div`
   background-color: "red";
   border-radius: 25px;
   background-color: rgba(200, 200, 200, 0.1);
-  background-image
   padding: 25px;
 `;
 

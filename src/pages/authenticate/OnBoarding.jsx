@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { Fragment, useRef } from "react";
 import { useSprings, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
 import { useDrag } from "react-use-gesture";
@@ -9,12 +9,15 @@ import logo from "../../assets/logoImg.png";
 import first from "../../assets/onboarding/first.jpg";
 import second from "../../assets/onboarding/second.jpg";
 import third from "../../assets/onboarding/third.jpg";
+import { MintButtonLarge } from "../../styles/Buttons";
+import { useInView } from "react-intersection-observer";
 
 const OnBoardingInnerHTML = ({ idx }) => {
   const navigate = useNavigate();
   const goToSignup = () => {
     navigate("/signup");
   };
+
   switch (idx) {
     case 0:
       return (
@@ -24,7 +27,7 @@ const OnBoardingInnerHTML = ({ idx }) => {
       );
     case 1:
       return (
-        <div>
+        <Fragment>
           <EmptyBox></EmptyBox>
           <WelcomePhraseArea>
             <h1>
@@ -36,29 +39,45 @@ const OnBoardingInnerHTML = ({ idx }) => {
             </h1>
             <p>여러분의 소중한 일상을 담아보세요</p>
           </WelcomePhraseArea>
-        </div>
+        </Fragment>
       );
     case 2:
       return (
-        <BannerStyle>
-          <img width="100%" src={first} />
-          <PassageArea>문구</PassageArea>
-        </BannerStyle>
+        <BannerArea>
+          <div></div>
+          <BannerImg src={first} />
+          <div></div>
+        </BannerArea>
       );
     case 3:
       return (
-        <BannerStyle>
-          <img width="100%" src={second} />
-          <PassageArea>문구</PassageArea>
-        </BannerStyle>
+        <BannerArea>
+          <div></div>
+          <BannerImg src={second} />
+          <div></div>
+        </BannerArea>
       );
     case 4:
       return (
-        <BannerStyle>
-          <img width="100%" src={third} />
-          <PassageArea>문구</PassageArea>
-          <button onClick={goToSignup}>공유 다이어리 시작하기</button>
-        </BannerStyle>
+        <BannerArea>
+          <div></div>
+          <BannerImg src={third} />
+          <div></div>
+          <ButtonArea>
+            <MintButtonLarge onClick={goToSignup}>회원가입</MintButtonLarge>
+          </ButtonArea>
+        </BannerArea>
+      );
+    case 5:
+      return (
+        <BannerArea>
+          <div></div>
+          <BannerImg src={third} />
+          <div></div>
+          <ButtonArea>
+            <MintButtonLarge onClick={goToSignup}>회원가입</MintButtonLarge>
+          </ButtonArea>
+        </BannerArea>
       );
     default:
       return;
@@ -71,6 +90,7 @@ const pages = [
   "https://images.pexels.com/photos/4016596/pexels-photo-4016596.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
   "https://images.pexels.com/photos/351265/pexels-photo-351265.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
   "https://images.pexels.com/photos/924675/pexels-photo-924675.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+  "",
 ];
 
 const Viewpager = () => {
@@ -195,19 +215,27 @@ const EmptyBox = styled.div`
 `;
 
 const WelcomePhraseArea = styled.div`
-  margin: 30px;
+  margin: 30px 10vw;
 `;
 
-const BannerStyle = styled.div`
+const BannerArea = styled.div`
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  img {
-    margin: 0 auto;
-  }
 `;
 
-const PassageArea = styled.div`
-  margin: 20px;
+const BannerImg = styled.img`
+  -webkit-user-drag: none;
+  width: 100%;
+`;
+const PassageArea = styled.div``;
+
+const ButtonArea = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 15vh;
 `;
