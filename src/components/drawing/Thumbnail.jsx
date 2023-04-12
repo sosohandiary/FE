@@ -98,6 +98,27 @@ const ImageSticker = ({
   const [imgUrl21] = useImage(
     "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Union.png"
   );
+  const [imgUrl22] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1426.png"
+  );
+  const [imgUrl23] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1427.png"
+  );
+  const [imgUrl24] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1428.png"
+  );
+  const [imgUrl25] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1429.png"
+  );
+  const [imgUrl26] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1430.png"
+  );
+  const [imgUrl27] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Union-1.png"
+  );
+  const [imgUrl28] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Union.png"
+  );
 
   const imgList = [
     imgUrl0,
@@ -122,6 +143,13 @@ const ImageSticker = ({
     imgUrl19,
     imgUrl20,
     imgUrl21,
+    imgUrl22,
+    imgUrl23,
+    imgUrl24,
+    imgUrl25,
+    imgUrl26,
+    imgUrl27,
+    imgUrl28,
   ];
 
   return (
