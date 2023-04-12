@@ -17,6 +17,7 @@ import Drawing from "./Drawing";
 import Page from "./Page";
 import DiaryEdit from "./DiaryEdit";
 import DiaryDetail from "./DiaryDetail";
+import AlertMessage from "../components/alert/AlertMessage";
 
 const Router = () => {
   return (
@@ -41,6 +42,7 @@ const Router = () => {
         <Route path="/diaries/:diaryId" element={<DiaryDetail />} />
         <Route path="/diary/:diaryId" element={<Page />} />
         <Route path="/diaryedit/:diaryId" element={<DiaryEdit />} />
+        <Route path="/alertmessage" element={<AlertMessage />} />
       </Routes>
     </BrowserRouter>
   );
