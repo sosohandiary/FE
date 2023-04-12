@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./authenticate/Login";
-import OtherLogin from "./authenticate/OtherLogin";
 import Profile from "./Profile";
 import Notification from "./main-layout/Notification";
 import MyPage from "./main-layout/MyPage";
@@ -34,7 +33,6 @@ const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup-success" element={<SignupSuccess />} />
-        <Route path="/otherlogin" element={<OtherLogin />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="drawing/:diaryid/:paperid" element={<Drawing />} />
         <Route path="/oauth" element={<Oauth />} />
