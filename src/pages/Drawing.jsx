@@ -848,7 +848,7 @@ const StickerToolbarStyle = styled.div`
   background-color: #efeeee;
   width: 100vw;
   height: ${({ isOpenStickerToolbar }) =>
-    isOpenStickerToolbar === true ? "110vh" : 0};
+    isOpenStickerToolbar === true ? "60vh" : 0};
   border-radius: 25px 25px 0 0;
   padding-top: 20px;
   z-index: 10;
@@ -928,7 +928,7 @@ const SubmitButton = styled.div`
   border: 1px solid rgba(0, 0, 0, 0);
   border-radius: 20px;
   background-color: #e1e7ff;
-  width: 300px;
+  width: 30vw;
   height: 50px;
   opacity: 0.8;
 `;
