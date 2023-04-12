@@ -83,7 +83,7 @@ const Navigationbar = () => {
     )
   );
 
-  const friendAlarmCnt = dataForFriendAlarm?.data.filter(
+  let friendAlarmCnt = dataForFriendAlarm?.data.filter(
     (item) => item.alarm === false
   ).length;
 
@@ -91,7 +91,7 @@ const Navigationbar = () => {
     friendAlarmCnt = 0;
   }
 
-  const commentAlarmCnt = dataForCommentAlarm?.data.filter(
+  let commentAlarmCnt = dataForCommentAlarm?.data.filter(
     (item) => item.alarm === false
   ).length;
 
@@ -99,7 +99,7 @@ const Navigationbar = () => {
     commentAlarmCnt = 0;
   }
 
-  const inviteAlarmCnt = dataForInviteAlarm?.data.filter(
+  let inviteAlarmCnt = dataForInviteAlarm?.data.filter(
     (item) => item.alarm === false
   ).length;
 
