@@ -38,6 +38,9 @@ import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import "react-spring-bottom-sheet/dist/style.css";
+import { Global } from "@emotion/react";
+import CssBaseline from "@mui/material/CssBaseline";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 
 // <---------------스티커 크기 조절----------------->
 const ImageSticker = ({
@@ -239,6 +242,9 @@ const ImageSticker = ({
 
 // <---------------------------------------->
 
+// 스티커 drawer
+const drawerBleeding = 56;
+
 const Drawing = () => {
   const navigate = useNavigate();
   const [mode, setMode] = useState("TEXT");
@@ -314,8 +320,8 @@ const Drawing = () => {
 
     const newSticker = {
       id: generateRandomId(),
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
+      x: 150,
+      y: 300,
       width: 100,
       height: 100,
       rotation: 0,
@@ -698,7 +704,7 @@ const Drawing = () => {
           ></ColorPea>
         ))}
       </DrawToolbarStyle>
-      {/* <StickerToolbarStyle
+      <StickerToolbarStyle
         isOpenStickerToolbar={isOpenStickerToolbar}
         onTouchStart={(e) => {
           setTouchStartY(e.touches[0].clientY);
@@ -738,49 +744,7 @@ const Drawing = () => {
             </Grid>
           ))}
         </Grid>
-      </StickerToolbarStyle> */}
-      <BottomSheet
-        open={drawerOpen}
-        onTouchStart={(e) => {
-          setTouchStartY(e.touches[0].clientY);
-        }}
-        onTouchMove={(e) => {
-          if (e.touches[0].clientY - touchStartY > 10) {
-            setDrawerOpen(false);
-            setIsOpenAllToolbar(true);
-          }
-        }}
-        onMouseDown={(e) => {
-          setTouchStartY(e.clientY);
-        }}
-        onMouseUp={(e) => {
-          if (e.clientY - touchStartY > 10) {
-            setDrawerOpen(false);
-            setIsOpenAllToolbar(true);
-          }
-        }}
-      >
-        <StickerTitle>스티커</StickerTitle>
-        <Grid
-          container
-          spacing={{ xs: 2, md: 3 }}
-          columns={{ xs: 6, sm: 8, md: 12 }}
-        >
-          {stickerUrlList.map((item, i) => (
-            <Grid item xs={2} sm={4} md={4} key={i}>
-              <StickerPea
-                imgUrl={item}
-                onClick={() => {
-                  addStickerButtonHandler(i);
-                  setDrawerOpen(false);
-                  setIsOpenAllToolbar(true);
-                  setDrawerOpen(false);
-                }}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      </BottomSheet>
+      </StickerToolbarStyle>
     </div>
   );
 };
@@ -884,7 +848,7 @@ const StickerToolbarStyle = styled.div`
   background-color: #efeeee;
   width: 100vw;
   height: ${({ isOpenStickerToolbar }) =>
-    isOpenStickerToolbar === true ? "600px" : 0};
+    isOpenStickerToolbar === true ? "110vh" : 0};
   border-radius: 25px 25px 0 0;
   padding-top: 20px;
   z-index: 10;
