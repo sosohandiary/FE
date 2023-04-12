@@ -15,6 +15,10 @@ import DiaryCardTopBig from "../../components/mainpage/DiaryCardTopBig";
 import { useQuery } from "react-query";
 import { getDiariesOfSelfmade } from "../../api/mainpage";
 import { getMypage, getProfile } from "../../api/mypage";
+import Spinner from "../../assets/Spinner.gif";
+import { Alert } from "antd";
+import AlertMessage from "../../components/alert/AlertMessage";
+import openAlert from "../../components/alert/AlertMessage";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -54,32 +58,13 @@ const MainPage = () => {
   //데이터 겟
   const [privatePage, setPrivatePage] = useState(0);
   const [publicPage, setPublicPage] = useState(0);
-  const [IsLoadingForSelfMadePrivate, setIsLoadingForSelfMadePrivate] =
-    useState(false);
+  useState(false);
   const [IsLoadingForPrivate, setIsLoadingForPrivate] = useState(false);
   const [IsLoadingForPublic, setIsLoadingForPublic] = useState(false);
-  const [dataListForSelfMadePrivate, setDataListForSelfMadePrivate] = useState(
-    []
-  );
+
   const [dataListForPrivate, setDataListForPrivate] = useState([]);
   const [dataListForPublic, setDataListForPublic] = useState([]);
   const [activeIdxForSelfmade, setActiveIdxForSelfmade] = useState(0);
-
-  useEffect(() => {
-    setIsLoadingForSelfMadePrivate(true);
-    axios
-      .get(`${process.env.REACT_APP_BASEURL}/private`, {
-        headers: { Authorization: accessToken },
-      })
-      .then((res) => {
-        setIsLoadingForSelfMadePrivate(false);
-        setDataListForSelfMadePrivate(res.data);
-      })
-      .catch((err) => {
-        setIsLoadingForSelfMadePrivate(false);
-        console.log(err);
-      });
-  }, []);
 
   const resForSelfmade = useQuery(["getDiariesOfSelfmade"], () => {
     return getDiariesOfSelfmade(accessToken);
@@ -134,6 +119,7 @@ const MainPage = () => {
 
   return (
     <div style={{ marginBottom: "100px" }}>
+      {/* <AlertMessage message={"message"} alertOpen={true} /> */}
       <WelcomeArea>
         <div>
           안녕하세요
@@ -187,7 +173,6 @@ const MainPage = () => {
           )}
         </Swiper>
       </SelfmadeArea>
-
       <div style={{ margin: "10px 10px 80px 10px" }}>
         <Label>초대된 다이어리</Label>
         <SwiperArea>
