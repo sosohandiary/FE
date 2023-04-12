@@ -5,7 +5,6 @@ import { VscBlank } from "react-icons/vsc";
 import defaultProfileImg from "../../assets/defaultProfileImg.jpeg";
 import { useNavigate } from "react-router-dom";
 import AlertMessage from "../../components/alert/AlertMessage";
-import AlertMessageAndNavigate from "../../components/alert/AlertMessage";
 
 const Diary = () => {
   const accessToken = window.localStorage.getItem("accessToken");
