@@ -13,6 +13,8 @@ import ellipse from "../../assets/main-page/Ellipse 111.png";
 import DiaryCard from "../../components/mainpage/DiaryCard";
 import DiaryCardTopBig from "../../components/mainpage/DiaryCardTopBig";
 import { useQuery } from "react-query";
+import { getDiariesOfSelfmade } from "../../api/mainpage";
+import { getMypage, getProfile } from "../../api/mypage";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -31,6 +33,10 @@ const MainPage = () => {
     return axios.get(`${process.env.REACT_APP_BASEURL}/mypage/profile`, {
       headers: { Authorization: accessToken },
     });
+  });
+
+  const resOfCurrentUserInfo = useQuery(["resOfCurrentUserInfo"], () => {
+    return getProfile(accessToken);
   });
 
   const curNickname = dataOfUserInfo?.data.nickname;
@@ -74,6 +80,10 @@ const MainPage = () => {
         console.log(err);
       });
   }, []);
+
+  const resForSelfmade = useQuery(["getDiariesOfSelfmade"], () => {
+    return getDiariesOfSelfmade(accessToken);
+  });
 
   useEffect(() => {
     setIsLoadingForPrivate(true);
@@ -128,10 +138,10 @@ const MainPage = () => {
         <div>
           안녕하세요
           <br />
-          {curNickname}님!
+          {resOfCurrentUserInfo.data?.data.nickname}님!
         </div>
         <CurProfileImage
-          url={curProfileImageUrl}
+          url={resOfCurrentUserInfo.data?.data.profileImageUrl}
           onClick={() => {
             navigate("/mypage");
           }}
@@ -147,7 +157,7 @@ const MainPage = () => {
           onSlideChange={(e) => setActiveIdxForSelfmade(e.activeIndex)}
           className="mySwiper"
         >
-          {dataListForSelfMadePrivate.length === 0 ? (
+          {resForSelfmade.data?.data.length === 0 ? (
             <SwiperSlide>
               <DiaryCardTopBig
                 color="purple"
@@ -159,7 +169,7 @@ const MainPage = () => {
               ></DiaryCardTopBig>
             </SwiperSlide>
           ) : (
-            dataListForSelfMadePrivate?.map((item, i) => (
+            resForSelfmade.data?.data.map((item, i) => (
               <SwiperSlide key={i} onClick={() => goToDiaryDetail(item.id)}>
                 <DiaryCardTopBig
                   color="purple"
@@ -177,10 +187,7 @@ const MainPage = () => {
           )}
         </Swiper>
       </SelfmadeArea>
-      <div style={{ display: "none" }}>
-        <button className="prev">prev</button>
-        <button className="next">next</button>
-      </div>
+
       <div style={{ margin: "10px 10px 80px 10px" }}>
         <Label>초대된 다이어리</Label>
         <SwiperArea>
