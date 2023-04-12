@@ -51,7 +51,7 @@ const Login = () => {
       .then((res) => {
         console.log(res);
         localStorage.setItem("accessToken", res.headers.authorization);
-        // navigate("/");
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);
