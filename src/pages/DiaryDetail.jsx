@@ -110,7 +110,7 @@ const DiaryDetail = () => {
         <div>
           <HeaderStyle>
             <DiaryTitle>{data[0]?.diaryTitle}</DiaryTitle>
-            {getDate(data[0]?.createdAt) ? (
+            {data[0]?.createdAt && getDate(data[0]?.createdAt) ? (
               <DiaryCreatedAt>{getDate(data[0]?.createdAt)}</DiaryCreatedAt>
             ) : (
               ""
