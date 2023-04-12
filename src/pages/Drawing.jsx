@@ -15,7 +15,7 @@ import "draft-js/dist/Draft.css";
 import { useNavigate, useParams } from "react-router-dom";
 import eraser from "../assets/decoration/toolbar/eraser.png";
 import pen from "../assets/decoration/toolbar/pen.png";
-import Grid from "@mui/material/Grid";
+// import Grid from "@mui/material/Grid";
 import bImg from "../assets/decoration/toolbar/bImg.png";
 import iImg from "../assets/decoration/toolbar/iImg.png";
 import sImg from "../assets/decoration/toolbar/sImg.png";
@@ -41,6 +41,8 @@ import "react-spring-bottom-sheet/dist/style.css";
 import { Global } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import { List } from "antd";
+import { Grid, ListItemText } from "@mui/material";
 
 // <---------------스티커 크기 조절----------------->
 const ImageSticker = ({
@@ -126,9 +128,30 @@ const ImageSticker = ({
     "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1423.png"
   );
   const [imgUrl20] = useImage(
-    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Union-1.png"
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1424.png"
   );
   const [imgUrl21] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1425.png"
+  );
+  const [imgUrl22] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1426.png"
+  );
+  const [imgUrl23] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1427.png"
+  );
+  const [imgUrl24] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1428.png"
+  );
+  const [imgUrl25] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1429.png"
+  );
+  const [imgUrl26] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1430.png"
+  );
+  const [imgUrl27] = useImage(
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Union-1.png"
+  );
+  const [imgUrl28] = useImage(
     "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Union.png"
   );
 
@@ -155,6 +178,13 @@ const ImageSticker = ({
     imgUrl19,
     imgUrl20,
     imgUrl21,
+    imgUrl22,
+    imgUrl23,
+    imgUrl24,
+    imgUrl25,
+    imgUrl26,
+    imgUrl27,
+    imgUrl28,
   ];
 
   return (
@@ -241,9 +271,6 @@ const ImageSticker = ({
 };
 
 // <---------------------------------------->
-
-// 스티커 drawer
-const drawerBleeding = 56;
 
 const Drawing = () => {
   const navigate = useNavigate();
@@ -481,6 +508,13 @@ const Drawing = () => {
     "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1421.png",
     "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1422.png",
     "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1423.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1424.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1425.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1426.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1427.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1428.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1429.png",
+    "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Group+1430.png",
     "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Union-1.png",
     "https://mysosodiary.s3.ap-northeast-2.amazonaws.com/sticker/Union.png",
   ];
@@ -729,7 +763,7 @@ const Drawing = () => {
         <Grid
           container
           spacing={{ xs: 2, md: 3 }}
-          columns={{ xs: 6, sm: 8, md: 12 }}
+          columns={{ xs: 8, sm: 8, md: 12 }}
         >
           {stickerUrlList.map((item, i) => (
             <Grid item xs={2} sm={4} md={4} key={i}>
@@ -783,6 +817,7 @@ const TextAreaStyle = styled.div`
   background-color: "red";
   border-radius: 25px;
   background-color: rgba(200, 200, 200, 0.1);
+  background-image
   padding: 25px;
 `;
 
