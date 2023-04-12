@@ -250,6 +250,6 @@ const EditorStyle = styled.div``;
 
 const StageStyle = styled.div`
   position: relative;
-  top: -90px;
-  left: -88px;
+  top: -113px;
+  left: -65px;
 `;
