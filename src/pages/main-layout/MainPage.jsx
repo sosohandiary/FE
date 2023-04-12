@@ -33,18 +33,18 @@ const MainPage = () => {
   }, []);
 
   // 로그인 유저 정보
-  const { data: dataOfUserInfo } = useQuery(["getUserInfo"], () => {
-    return axios.get(`${process.env.REACT_APP_BASEURL}/mypage/profile`, {
-      headers: { Authorization: accessToken },
-    });
-  });
+  const { data: dataOfUserInfo, isError: isErrorOfUserInfo } = useQuery(
+    ["getUserInfo"],
+    () => {
+      return axios.get(`${process.env.REACT_APP_BASEURL}/mypage/profile`, {
+        headers: { Authorization: accessToken },
+      });
+    }
+  );
 
   const resOfCurrentUserInfo = useQuery(["resOfCurrentUserInfo"], () => {
     return getProfile(accessToken);
   });
-
-  const curNickname = dataOfUserInfo?.data.nickname;
-  const curProfileImageUrl = dataOfUserInfo?.data.profileImageUrl;
 
   //무한스크롤
 
@@ -65,6 +65,9 @@ const MainPage = () => {
   const [dataListForPrivate, setDataListForPrivate] = useState([]);
   const [dataListForPublic, setDataListForPublic] = useState([]);
   const [activeIdxForSelfmade, setActiveIdxForSelfmade] = useState(0);
+  const [alertMsg, setAlertMsg] = useState("");
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertNavigateLink, setAlertNavigateLink] = useState("");
 
   const resForSelfmade = useQuery(["getDiariesOfSelfmade"], () => {
     return getDiariesOfSelfmade(accessToken);
@@ -110,6 +113,7 @@ const MainPage = () => {
       .catch((err) => {
         setIsLoadingForPublic(false);
         console.log(err);
+        navigate("/login");
       });
   }, [inViewForPublic]);
 
@@ -119,7 +123,6 @@ const MainPage = () => {
 
   return (
     <div style={{ marginBottom: "100px" }}>
-      {/* <AlertMessage message={"message"} alertOpen={true} /> */}
       <WelcomeArea>
         <div>
           안녕하세요

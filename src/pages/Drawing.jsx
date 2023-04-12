@@ -817,7 +817,6 @@ const TextAreaStyle = styled.div`
   background-color: "red";
   border-radius: 25px;
   background-color: rgba(200, 200, 200, 0.1);
-  background-image
   padding: 25px;
 `;
 
@@ -883,7 +882,7 @@ const StickerToolbarStyle = styled.div`
   background-color: #efeeee;
   width: 100vw;
   height: ${({ isOpenStickerToolbar }) =>
-    isOpenStickerToolbar === true ? "110vh" : 0};
+    isOpenStickerToolbar === true ? "60vh" : 0};
   border-radius: 25px 25px 0 0;
   padding-top: 20px;
   z-index: 10;

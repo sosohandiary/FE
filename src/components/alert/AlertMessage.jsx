@@ -26,14 +26,18 @@ const AlertMessage = ({ setAlertOpen, message, navigateLink, reload }) => {
     }
   };
 
+  const closeByKeyboard = () => {
+    handleClose();
+  };
   return (
-    <Invisible>
+    <Invisible onKeyDown={closeByKeyboard}>
       <Dialog
         open={open}
         TransitionComponent={Transition}
         keepMounted
         onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description">
+        aria-describedby="alert-dialog-slide-description"
+      >
         <TopBox>
           <VscBlank className="VscBlank" />
           <TopMent>US</TopMent>

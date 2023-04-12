@@ -17,6 +17,7 @@ const Oauth = () => {
           "accessToken",
           err.response.headers.authorization
         );
+        window.location.href = "https://us-diary.vercel.app/";
       });
   }, []);
 
