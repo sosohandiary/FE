@@ -86,12 +86,26 @@ const Navigationbar = () => {
   const friendAlarmCnt = dataForFriendAlarm?.data.filter(
     (item) => item.alarm === false
   ).length;
+
+  if (isNaN(friendAlarmCnt)) {
+    friendAlarmCnt = 0;
+  }
+
   const commentAlarmCnt = dataForCommentAlarm?.data.filter(
     (item) => item.alarm === false
   ).length;
+
+  if (isNaN(commentAlarmCnt)) {
+    commentAlarmCnt = 0;
+  }
+
   const inviteAlarmCnt = dataForInviteAlarm?.data.filter(
     (item) => item.alarm === false
   ).length;
+
+  if (isNaN(inviteAlarmCnt)) {
+    inviteAlarmCnt = 0;
+  }
 
   const totalAlarmNumber = friendAlarmCnt + commentAlarmCnt + inviteAlarmCnt;
 
@@ -105,8 +119,7 @@ const Navigationbar = () => {
         onClick={() => {
           goToPage("/");
           setNavMode("HOME");
-        }}
-      >
+        }}>
         <Button src={home} buttonType={"HOME"} navMode={navMode} />
       </div>
       <div
@@ -114,9 +127,10 @@ const Navigationbar = () => {
           goToPage("/notification");
           setNavMode("BELL");
           // checkAllAlarm();
-        }}
-      >
-        <Badge badgeContent={totalAlarmNumber} color="primary">
+        }}>
+        <Badge
+          badgeContent={isNaN(totalAlarmNumber) ? "" : totalAlarmNumber}
+          color="primary">
           <Button src={bell} buttonType={"BELL"} navMode={navMode} />
         </Badge>
       </div>
@@ -124,24 +138,21 @@ const Navigationbar = () => {
         onClick={() => {
           goToPage("/diary");
           setNavMode("PLUS");
-        }}
-      >
+        }}>
         <Button src={plus} buttonType={"PLUS"} navMode={navMode} />
       </div>
       <div
         onClick={() => {
           goToPage("/new-friend");
           setNavMode("MAGNIFIER");
-        }}
-      >
+        }}>
         <Button src={magnifier} buttonType={"MAGNIFIER"} navMode={navMode} />
       </div>
       <div
         onClick={() => {
           goToPage("/mypage");
           setNavMode("PERSON");
-        }}
-      >
+        }}>
         <Button src={person} buttonType={"PERSON"} navMode={navMode} />
       </div>
     </NavbarArea>
