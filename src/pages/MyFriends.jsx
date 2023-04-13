@@ -22,6 +22,7 @@ const MyFriends = () => {
   const [searchFriends, setSearchFriends] = useState(null);
   const [swipeOpen, setSwipeOpen] = useState(false);
   const [profileStatus, setProfileStatus] = useState(true);
+  const [notes, setNotes] = useState(true);
 
   const accessToken = localStorage.getItem("accessToken");
   const navigate = useNavigate();
@@ -42,8 +43,16 @@ const MyFriends = () => {
     }
   );
 
-  const { data: friendsCount } = useQuery(["getFriendsCount"], () =>
-    getFriendsCount(accessToken)
+  const { data: friendsCount } = useQuery(
+    ["getFriendsCount"],
+    () => getFriendsCount(accessToken),
+    {
+      onSuccess: (data) => {
+        if (data.data.myFriendCount === 0) {
+          setNotes(false);
+        }
+      },
+    }
   );
 
   const queryClient = useQueryClient();
@@ -107,9 +116,11 @@ const MyFriends = () => {
         <Label alignSelf='flex-start'>
           친구 {friendsCount?.data?.myFriendCount}
         </Label>
-        <LabelArea>
-          <div>밀어서 삭제하세요</div>
-        </LabelArea>
+        {notes && (
+          <LabelArea>
+            <div>밀어서 삭제하세요</div>
+          </LabelArea>
+        )}
 
         <SwipeableList threshold={0.5} type={ListType.IOS}>
           {sortedFriends &&
