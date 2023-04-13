@@ -90,6 +90,7 @@ function DiaryEdit() {
       } catch (error) {
         setAlertMsg("제목과 사진을 전부 수정해주세요");
         setAlertOpen(true);
+
       }
     },
     [accessToken, diaryCondition, file, mypage.data.id, navigate, title]
@@ -167,10 +168,12 @@ function DiaryEdit() {
         )
         .then((res) => {
           setAlertMsg("멤버가 추가되었습니다");
+          setCheckedList([]);
           setAlertOpen(true);
         })
         .catch((err) => {
           setAlertMsg("멤버를 추가할 수 없습니다");
+          setCheckedList([]);
           setAlertOpen(true);
         });
     });
@@ -260,7 +263,9 @@ function DiaryEdit() {
           />
         </TitleContent>
       </form>
-      <Addbutton onClick={getMyfriends}>멤버 추가</Addbutton>
+      {diaryCondition !== "PUBLIC" && (
+        <Addbutton onClick={getMyfriends}>멤버 추가</Addbutton>
+      )}
       {modalOpen && (
         <ModalWrapper>
           <ModalContent>
