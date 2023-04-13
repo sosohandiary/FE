@@ -116,7 +116,8 @@ const MainPage = () => {
   };
 
   return (
-    <div style={{ marginBottom: "100px" }}>
+    <MainContainer>
+       <div style={{ marginBottom: "100px" }}>
       <WelcomeArea>
         <div>안녕하세요</div>
         <CurProfileImage
@@ -306,10 +307,21 @@ const MainPage = () => {
         </SwiperArea>
       </div>
     </div>
+
+    </MainContainer>
+   
   );
 };
 
 export default MainPage;
+
+const MainContainer = styled.div`
+  margin: 0 auto;
+  width:400px;
+
+  border-left: 0.0625rem solid rgb(225, 226, 228);
+  border-right: 0.0625rem solid rgb(225, 226, 228);
+`;
 
 const WelcomeArea = styled.div`
   font-size: 32px;
@@ -383,7 +395,7 @@ const SelfmadeArea = styled.div`
     width: 100%;
     height: 100%;
     background-image: url(${ellipse});
-    background-size: 100vw 100%;
+    background-size: 50vw 100%;
     background-position: 0 -120px;
     background-repeat: no-repeat;
     margin-top: -10px;

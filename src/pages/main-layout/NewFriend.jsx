@@ -5,7 +5,7 @@ import styled from "styled-components";
 import debounce from "lodash.debounce";
 
 import Searchbox from "../../components/Searchbox";
-import { WholeViewWidth } from "../../styles/WholeAreaStyle";
+import { MarginAuto, WholeViewWidth } from "../../styles/WholeAreaStyle";
 import { ProfilePicSmall } from "../../components/ProfilePics";
 import defaultProfileImg from "../../assets/defaultProfileImg.jpeg";
 import addFriendButton from "../../assets/addFriendButton.png";
@@ -89,7 +89,7 @@ const NewFriend = () => {
 
   return (
     <>
-      <WholeViewWidth style={{height:"100vh"}}>
+      <WholeViewWidth style={{height:"100vh", overflow:"hidden"}}>
         <Searchbox
           placeholder='닉네임을 검색해 친구를 추가해보세요'
           onChangeInput={onChangeInput}
