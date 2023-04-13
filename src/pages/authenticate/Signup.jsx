@@ -28,7 +28,6 @@ const Signup = () => {
       .post(`${process.env.REACT_APP_BASEURL}/join`, data)
       .then(() => {
         navigate("/signup-success", { state: data.nickname });
-        window.localStorage.setItem("already signed up", true);
       })
       .catch((err) => {
         console.log(err);
