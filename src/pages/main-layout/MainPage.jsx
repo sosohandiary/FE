@@ -64,10 +64,6 @@ const MainPage = () => {
   const [dataListForPrivate, setDataListForPrivate] = useState([]);
   const [dataListForPublic, setDataListForPublic] = useState([]);
   const [activeIdxForSelfmade, setActiveIdxForSelfmade] = useState(0);
-  const [alertMsg, setAlertMsg] = useState("");
-  const [alertOpen, setAlertOpen] = useState(false);
-  const [alertNavigateLink, setAlertNavigateLink] = useState("");
-
   const resForSelfmade = useQuery(["getDiariesOfSelfmade"], () => {
     return getDiariesOfSelfmade(accessToken);
   });
