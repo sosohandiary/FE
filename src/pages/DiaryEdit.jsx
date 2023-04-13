@@ -88,7 +88,10 @@ function DiaryEdit() {
         );
         navigate(`/mypage`);
       } catch (error) {
-        console.error("다이어리 수정에 실패했습니다.", error);
+        console.error(
+          "다이어리 수정에 실패했습니다. 제목과 사진을 전부 수정해주세요.",
+          error
+        );
       }
     },
     [accessToken, diaryCondition, file, mypage.data.id, navigate, title]
@@ -169,10 +172,12 @@ function DiaryEdit() {
         )
         .then((res) => {
           setAlertMsg("멤버가 추가되었습니다");
+          setCheckedList([]);
           setAlertOpen(true);
         })
         .catch((err) => {
           setAlertMsg("멤버를 추가할 수 없습니다");
+          setCheckedList([]);
           setAlertOpen(true);
         });
     });
