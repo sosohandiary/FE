@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TitleBox from "../../components/TitleBox";
@@ -22,18 +22,23 @@ const Notification = () => {
 
   useEffect(() => {
     if (accessToken === null) {
-      navigate('/login', { replace: true });
+      navigate("/login", { replace: true });
     }
-  },[accessToken])
+  }, [accessToken]);
 
   return (
     <>
       <TitleBox />
 
       <AlarmBox>
-        <LabelArea>
-          <div>밀어서 확인하세요</div>
-        </LabelArea>
+        {dataListForCommentAlarm?.length +
+          dataListForFriendRequset?.length +
+          dataListForInviteAlarm?.length !==
+          0 && (
+          <LabelArea>
+            <div>밀어서 확인하세요</div>
+          </LabelArea>
+        )}
         {dataListForFriendRequset?.map((item, i) => (
           <AlarmList key={i} alarmType="friend" item={item} />
         ))}
