@@ -230,7 +230,7 @@ const Thumbnail = ({ diaryId, paperId, width, height }) => {
     <div>
       <StageStyle>
         <Stage
-          width={width + 88}
+          width={window.innerWidth}
           height={height + 90}
           style={{ position: "absolute", top: "0px", zIndex: "1" }}
         >
@@ -272,10 +272,24 @@ const NewPageMsgArea = styled.div`
   margin: 200px 0;
 `;
 
-const EditorStyle = styled.div``;
+const EditorStyle = styled.div`
+  .DraftEditor-editorContainer {
+    max-height: 70vh;
+    overflow-y: scroll;
+  }
+  font-size: 20px;
+  position: relative;
+  top: 0px;
+  width: 390px;
+  height: 500vh;
+  z-index: ${({ mode }) => (mode === "TEXT" ? 1 : -1)};
+  background-color: "red";
+  border-radius: 25px;
+  background-color: rgba(200, 200, 200, 0);
+`;
 
 const StageStyle = styled.div`
   position: relative;
-  top: -100px;
-  left: -215px;
+  top: -40px;
+  left: -0px;
 `;

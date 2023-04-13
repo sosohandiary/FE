@@ -566,9 +566,21 @@ const Drawing = () => {
 
   const handleBeforeInput = () => {
     const currentContent = editorState.getCurrentContent();
+    console.log(
+      currentContent.getPlainText().split("\n").length +
+        currentContent.getPlainText().length * 0.03
+    );
     const currentContentLength = currentContent.getPlainText("").length;
     const selectedTextLength = getLengthOfSelectedText();
 
+    if (
+      currentContent.getPlainText().split("\n").length +
+        currentContent.getPlainText().length * 0.03 >
+      24
+    ) {
+      alert("입력 범위를 초과하였습니다");
+      return "handled";
+    }
     if (currentContentLength - selectedTextLength > MAX_LENGTH - 1) {
       alert("1000자 이하로 입력해주세요");
 
@@ -581,6 +593,14 @@ const Drawing = () => {
     const currentContentLength = currentContent.getPlainText("").length;
     const selectedTextLength = getLengthOfSelectedText();
 
+    if (
+      currentContent.getPlainText().split("\n").length +
+        currentContent.getPlainText().length * 0.03 >
+      24
+    ) {
+      alert("입력 범위를 초과하였습니다");
+      return "handled";
+    }
     if (
       currentContentLength + pastedText.length - selectedTextLength >
       MAX_LENGTH
@@ -598,68 +618,72 @@ const Drawing = () => {
       <SaveButtonArea>
         <IoIosSave onClick={handleSave} />
       </SaveButtonArea>
-      <Stage
-        width={window.innerWidth}
-        height={window.innerHeight}
-        onMouseDown={handleMouseDown}
-        onMousemove={handleMouseMove}
-        onMouseup={handleMouseUp}
-        onTouchStart={handleMouseDown}
-        onTouchMove={handleMouseMove}
-        onTouchEnd={handleMouseUp}
-        style={{ position: "absolute", top: "40px" }}
-      >
-        <Layer>
-          {lines.map((line, i) => (
-            <Line
-              key={i}
-              points={line.points}
-              stroke={line.lineColor}
-              strokeWidth={line.lineWidth}
-              tension={0.5}
-              lineCap="round"
-              lineJoin="round"
-              globalCompositeOperation={
-                line.lineTool === "eraser" ? "destination-out" : "source-over"
-              }
-            />
-          ))}
-          {stickers.map((sticker, i) => {
-            return (
-              <ImageSticker
+      <PaperArea>
+        <Stage
+          width={375}
+          height={550}
+          onMouseDown={handleMouseDown}
+          onMousemove={handleMouseMove}
+          onMouseup={handleMouseUp}
+          onTouchStart={handleMouseDown}
+          onTouchMove={handleMouseMove}
+          onTouchEnd={handleMouseUp}
+          style={{
+            position: "absolute",
+            top: "0px",
+          }}
+        >
+          <Layer>
+            {lines.map((line, i) => (
+              <Line
                 key={i}
-                mode={mode}
-                shapeProps={sticker}
-                isSelected={sticker.id === selectedId}
-                sticker={sticker}
-                onSelect={() => {
-                  if (mode === "STICKER") {
-                    selectShape(sticker.id);
-                  }
-                }}
-                onChange={(newAttrs) => {
-                  const sticks = stickers.slice();
-                  sticks[i] = newAttrs;
-                  setStickers(sticks);
-                }}
+                points={line.points}
+                stroke={line.lineColor}
+                strokeWidth={line.lineWidth}
+                tension={0.5}
+                lineCap="round"
+                lineJoin="round"
+                globalCompositeOperation={
+                  line.lineTool === "eraser" ? "destination-out" : "source-over"
+                }
               />
-            );
-          })}
-        </Layer>
-      </Stage>
+            ))}
+            {stickers.map((sticker, i) => {
+              return (
+                <ImageSticker
+                  key={i}
+                  mode={mode}
+                  shapeProps={sticker}
+                  isSelected={sticker.id === selectedId}
+                  sticker={sticker}
+                  onSelect={() => {
+                    if (mode === "STICKER") {
+                      selectShape(sticker.id);
+                    }
+                  }}
+                  onChange={(newAttrs) => {
+                    const sticks = stickers.slice();
+                    sticks[i] = newAttrs;
+                    setStickers(sticks);
+                  }}
+                />
+              );
+            })}
+          </Layer>
+        </Stage>
+        <TextAreaStyle mode={mode}>
+          <Editor
+            editorState={editorState}
+            onChange={setEditorState}
+            onEditorStateChange={handleKeyCommand}
+            handleBeforeInput={handleBeforeInput}
+            handlePastedText={handlePastedText}
+          />
+        </TextAreaStyle>
+      </PaperArea>
       <DeleteButtonArea mode={mode}>
         <SubmitButton onClick={deleteStickerHandler}>스티커 삭제</SubmitButton>
       </DeleteButtonArea>
-      <TextAreaStyle mode={mode}>
-        <Editor
-          editorStyle={{ height: "10px" }}
-          editorState={editorState}
-          onChange={setEditorState}
-          onEditorStateChange={handleKeyCommand}
-          handleBeforeInput={handleBeforeInput}
-          handlePastedText={handlePastedText}
-        />
-      </TextAreaStyle>
       <AllToolbarStyle isOpenAllToolbar={isOpenAllToolbar}>
         <ToolButton
           src={textImg}
@@ -885,20 +909,19 @@ const SaveButton = styled.img`
 
 const TextAreaStyle = styled.div`
   .DraftEditor-editorContainer {
-    max-height: 70vh;
-    overflow: scroll;
+    max-height: 550px;
+    overflow-y: clip;
   }
   font-size: 20px;
-  position: absolute;
-  width: auto;
-  min-width: 100px;
-  max-width: 80vw;
-  margin: 40px 10vw;
+  position: relative;
+  top: 0px;
+  width: 375px;
+  height: 550px;
   z-index: ${({ mode }) => (mode === "TEXT" ? 1 : -1)};
   background-color: "red";
   border-radius: 25px;
   background-color: rgba(200, 200, 200, 0.1);
-  padding: 25px;
+  padding: 40px;
 `;
 
 const AllToolbarStyle = styled.div`
@@ -1058,4 +1081,13 @@ const SaveButtonArea = styled.div`
   @media (min-width: 700px) {
     width: 80px;
   }
+`;
+
+const PaperArea = styled.div`
+  margin-top: 30px;
+  position: relative;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  position: relative;
 `;
