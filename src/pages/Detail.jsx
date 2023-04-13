@@ -38,6 +38,8 @@ function Detail() {
 
   const myDiary = diaryData?.data;
 
+  console.log(myDiary);
+
   // 현재 로그인 유저 정보 확인 -> 모달창 권한 여부
   const { data: curUserInfo } = useQuery(["getCurUser"], () => {
     return axios.get(`${process.env.REACT_APP_BASEURL}/mypage/profile`, {
@@ -81,31 +83,29 @@ function Detail() {
       ) : (
         ""
       )}
-      <div style={{ margin: "0 auto", width: "400px" }}>
-        <StyledGobackButton onClick={() => navigate(-1)} />
-        {myDiary && (
-          <StyledDerailPage>
-            <GetUser
-              ProfileImg={myDiary.profileImageUrl}
-              createdAt={myDiary.createdAt}
-              nickname={myDiary.nickname}
-            />
-
-            {myDiary?.toMemberId.includes(curUserInfo?.data.memberId) ? (
-              <DiaryModalWrapper>
-                <DiaryModal
-                  navToModify={navToModify}
-                  onDeleteHandler={onDeleteHandler}
-                  detailId={detailId}
-                />
-              </DiaryModalWrapper>
-            ) : (
-              ""
-            )}
-
-            <div>
-              <StyledDetailCardWrapper>
-                <StyledDetailCard>
+      <StyledGobackButton onClick={() => navigate(-1)} />
+      {myDiary && (
+        <StyledDerailPage>
+          <GetUser
+            ProfileImg={myDiary.profileImageUrl}
+            createdAt={myDiary.createdAt}
+            nickname={myDiary.nickname}
+          />
+          {curUserInfo.data.memberId === diaryData?.data.authorId ? (
+            <DiaryModalWrapper>
+              <DiaryModal
+                navToModify={navToModify}
+                onDeleteHandler={onDeleteHandler}
+                detailId={detailId}
+              />
+            </DiaryModalWrapper>
+          ) : (
+            ""
+          )}
+          <div>
+            <StyledDetailCardWrapper>
+              <StyledDetailCard>
+              
                   <div
                     style={{
                       position: "relative",

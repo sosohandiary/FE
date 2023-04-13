@@ -136,7 +136,7 @@ const AlarmList = ({ item, alarmType }) => {
 
   return (
     <>
-      <SwipeableList threshold={0.5} type={ListType.IOS} fullSwipe={true}>
+      <SwipeableList threshold={0.75} type={ListType.IOS} fullSwipe={true}>
         <SwipeableListItem trailingActions={trailingActions()}>
           <AlarmUnReadCard item={item} alarmType={alarmType} />
         </SwipeableListItem>
