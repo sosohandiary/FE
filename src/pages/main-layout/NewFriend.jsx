@@ -90,7 +90,7 @@ const NewFriend = () => {
   return (
     <OuterBorderArea>
       <WholeViewWidth
-        style={{ marginTop: "-20px", paddingTop: "20px", height: "100%" }}
+        style={{ marginTop: "-20px", paddingTop: "20px", height: "100vh" }}
       >
         <Searchbox
           placeholder="닉네임을 검색해 친구를 추가해보세요"
