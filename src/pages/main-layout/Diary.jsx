@@ -17,6 +17,7 @@ const Diary = () => {
   const [alertMsg, setAlertMsg] = useState("");
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertNavigateLink, setAlertNavigateLink] = useState("");
+  const regNickname = /\s/g;
 
   useEffect(() => {
     if (accessToken === null) {
@@ -43,9 +44,10 @@ const Diary = () => {
     formData.append("img", file);
 
     const data = {
-      title: title,
+      title: title.trim(),
       diaryCondition: diaryCondition,
     };
+
     formData.append(
       "data",
       new Blob([JSON.stringify(data)], { type: "application/json" })
@@ -144,7 +146,8 @@ const Diary = () => {
             diaryCondition={diaryCondition}
             onClick={() => {
               setDiaryCondition("PUBLIC");
-            }}>
+            }}
+          >
             공개
           </SelectButtonLeft>
           <CenterColumn></CenterColumn>
@@ -152,7 +155,8 @@ const Diary = () => {
             diaryCondition={diaryCondition}
             onClick={() => {
               setDiaryCondition("PRIVATE");
-            }}>
+            }}
+          >
             비공개
           </SelectButtonRight>
         </PublicSelectBox>

@@ -65,7 +65,7 @@ function DiaryEdit() {
 
       formData.append("img", file);
 
-      const uploader = { title };
+      const uploader = { title: title.trim() };
 
       formData.append(
         "title",
