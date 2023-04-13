@@ -108,9 +108,9 @@ const AlarmList = ({ item, alarmType }) => {
       case "friend":
         return { acceptMsg: "수락", rejectMsg: "삭제" };
       case "invite":
-        return { acceptMsg: "다이어리로 가기", rejectMsg: "삭제" };
+        return { acceptMsg: "다이어리로", rejectMsg: "삭제" };
       case "comment":
-        return { acceptMsg: "다이어리로 가기", rejectMsg: "삭제" };
+        return { acceptMsg: "다이어리로", rejectMsg: "삭제" };
       default:
         return;
     }
@@ -174,5 +174,6 @@ const InnerButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50px;
+  width: 70px;
+  position: relative;
 `;
