@@ -4,6 +4,7 @@ import styled from "styled-components";
 import TitleBox from "../../components/TitleBox";
 import AlarmList from "../../components/notification/AlarmList";
 import { useSelector } from "react-redux";
+import { WholeViewWidth } from "../../styles/WholeAreaStyle";
 
 const Notification = () => {
   const accessToken = localStorage.getItem("accessToken");
@@ -28,39 +29,51 @@ const Notification = () => {
 
   return (
     <>
-      <TitleBox />
+      <WholeView>
+        <TitleBox />
 
-      <AlarmBox>
+        <AlarmBox>
         {dataListForCommentAlarm?.length +
           dataListForFriendRequset?.length +
           dataListForInviteAlarm?.length !==
           0 && (
-          <LabelArea>
-            <div>밀어서 확인하세요</div>
-          </LabelArea>
+            <LabelArea>
+              <div>밀어서 확인하세요</div>
+            </LabelArea>
         )}
-        {dataListForFriendRequset?.map((item, i) => (
-          <AlarmList key={i} alarmType="friend" item={item} />
-        ))}
-        {dataListForInviteAlarm?.map((item, i) => (
-          <AlarmList key={i} alarmType="invite" item={item} />
-        ))}
-        {dataListForCommentAlarm?.map((item, i) => (
-          <AlarmList key={i} alarmType="comment" item={item} />
-        ))}
-        {dataListForCommentAlarm?.length === 0 &&
-        dataListForFriendRequset?.length === 0 &&
-        dataListForInviteAlarm?.length === 0 ? (
-          <NoAlarm>알림이 없습니다</NoAlarm>
-        ) : (
-          ""
-        )}
-      </AlarmBox>
+          {dataListForFriendRequset?.map((item, i) => (
+            <AlarmList key={i} alarmType='friend' item={item} />
+          ))}
+          {dataListForInviteAlarm?.map((item, i) => (
+            <AlarmList key={i} alarmType='invite' item={item} />
+          ))}
+          {dataListForCommentAlarm?.map((item, i) => (
+            <AlarmList key={i} alarmType='comment' item={item} />
+          ))}
+          {dataListForCommentAlarm?.length === 0 &&
+          dataListForFriendRequset?.length === 0 &&
+          dataListForInviteAlarm?.length === 0 ? (
+            <NoAlarm>알림이 없습니다</NoAlarm>
+          ) : (
+            ""
+          )}
+        </AlarmBox>
+      </WholeView>
     </>
   );
 };
 
 export default Notification;
+
+const WholeView = styled.div`
+  width: 400px;
+  margin: 0 auto;
+  height: 100vh;
+  overflow:hidden;
+
+  border-left: 0.0625rem solid rgb(225, 226, 228);
+  border-right: 0.0625rem solid rgb(225, 226, 228);
+`;
 
 const AlarmBox = styled.div`
   background-color: white;

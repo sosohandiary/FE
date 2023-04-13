@@ -203,14 +203,21 @@ const TitleContent = styled.div`
 `;
 
 const TitleText = styled.div`
-  font-size: 120%;
+  margin-left:10px;
+  font-size: 100%;
   color: gray;
 `;
 
 const Wholebox = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 5vw;
+  /* padding: 5vw; */
+
+  border-left: 0.0625rem solid rgb(225, 226, 228);
+  border-right: 0.0625rem solid rgb(225, 226, 228);
+
+  margin: 0 auto;
+  width: 400px;
 `;
 
 const TopBox = styled.div`

@@ -91,7 +91,7 @@ function MyPage() {
   };
   return (
     <>
-      <WholeViewWidth style={{ overflow: "hidden" }}>
+      <WholeViewWidth style={{ overflow: "hidden", width: "400px" }}>
         <StArrow>
           <StyledGobackButton onClick={navToBack} />
         </StArrow>
@@ -165,7 +165,7 @@ function MyPage() {
                     </StTextBox>
                     <StTextBox>
                       <Label size="16" color="#B0B0B0">
-                        개설일: {getDate(item.createdAt)}{" "}
+                      {getDate(item.createdAt)}
                       </Label>
                     </StTextBox>
 
@@ -402,7 +402,7 @@ const LougoutBtn = styled.button`
 `;
 
 const Container = styled.div`
-  max-width: 720px;
+  max-width: 470px;
   margin: 0 auto;
 `;
 

@@ -102,7 +102,7 @@ const MyFriends = () => {
 
   return (
     <>
-      <WholeViewWidth style={{ overflow: "hidden" }}>
+      <WholeView style={{ overflow: "hidden" }}>
         <StArrow>
           <StyledGobackButton onClick={navToBack} />
         </StArrow>
@@ -121,48 +121,60 @@ const MyFriends = () => {
             <div>밀어서 삭제하세요</div>
           </LabelArea>
         )}
+        <div>
+          <SwipeableList threshold={0.5} type={ListType.IOS}>
+            {sortedFriends &&
+              searchFriends
+                ?.filter((item) => item.friendStatus === "ACCEPTED")
+                .sort(compare)
+                .map((item) => {
+                  return (
+                    <StyledSwipeableListItem
+                      key={item.memberId}
+                      trailingActions={trailingActions(item)}
+                      onSwipeOpen={() => setSwipeOpen(true)}
+                      onSwipeClose={() => setSwipeOpen(false)}
+                    >
+                      {item.friendStatus === "ACCEPTED" && (
+                        <>
+                          <div className='slide'>
+                            <ListCards>
+                              {item.profileImageUrl ? (
+                                <ProfilePicSmall src={item.profileImageUrl} />
+                              ) : (
+                                <ProfilePicSmall src={defaultProfileImg} />
+                              )}
 
-        <SwipeableList threshold={0.5} type={ListType.IOS}>
-          {sortedFriends &&
-            searchFriends
-              ?.filter((item) => item.friendStatus === "ACCEPTED")
-              .sort(compare)
-              .map((item) => {
-                return (
-                  <StyledSwipeableListItem
-                    key={item.memberId}
-                    trailingActions={trailingActions(item)}
-                    onSwipeOpen={() => setSwipeOpen(true)}
-                    onSwipeClose={() => setSwipeOpen(false)}
-                  >
-                    {item.friendStatus === "ACCEPTED" && (
-                      <>
-                        <div className='slide'>
-                          <ListCards>
-                            {item.profileImageUrl ? (
-                              <ProfilePicSmall src={item.profileImageUrl} />
-                            ) : (
-                              <ProfilePicSmall src={defaultProfileImg} />
-                            )}
-
-                            <ListContentBox>
-                              <StText fontWeight='bold'>{item.nickname}</StText>
-                              <StText>{item.statusMessage}</StText>
-                            </ListContentBox>
-                          </ListCards>
-                        </div>
-                      </>
-                    )}
-                  </StyledSwipeableListItem>
-                );
-              })}
-        </SwipeableList>
-      </WholeViewWidth>
+                              <ListContentBox>
+                                <StText fontWeight='bold'>
+                                  {item.nickname}
+                                </StText>
+                                <StText>{item.statusMessage}</StText>
+                              </ListContentBox>
+                            </ListCards>
+                          </div>
+                        </>
+                      )}
+                    </StyledSwipeableListItem>
+                  );
+                })}
+          </SwipeableList>
+        </div>
+      </WholeView>
     </>
   );
 };
 
 export default MyFriends;
+
+const WholeView = styled.div`
+  width: 400px;
+  margin: 0 auto;
+  height: 100vh;
+
+  border-left: 0.0625rem solid rgb(225, 226, 228);
+  border-right: 0.0625rem solid rgb(225, 226, 228);
+`;
 
 const StArrow = styled.div`
   margin: 0 auto;
