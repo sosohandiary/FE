@@ -5,7 +5,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper";
 import { useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -14,11 +13,8 @@ import DiaryCard from "../../components/mainpage/DiaryCard";
 import DiaryCardTopBig from "../../components/mainpage/DiaryCardTopBig";
 import { useQuery } from "react-query";
 import { getDiariesOfSelfmade } from "../../api/mainpage";
-import { getMypage, getProfile } from "../../api/mypage";
-import Spinner from "../../assets/Spinner.gif";
-import { Alert } from "antd";
-import AlertMessage from "../../components/alert/AlertMessage";
-import openAlert from "../../components/alert/AlertMessage";
+import { getProfile } from "../../api/mypage";
+import { VscBlank } from "react-icons/vsc";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -117,14 +113,18 @@ const MainPage = () => {
 
   return (
     <div style={{ marginBottom: "100px" }}>
-      <WelcomeArea>
-        <div>안녕하세요</div>
+      <TopBox>
+        <VscBlank className="VscBlank" />
         <CurProfileImage
           url={resOfCurrentUserInfo.data?.data.profileImageUrl}
           onClick={() => {
             navigate("/mypage");
-          }}
-        ></CurProfileImage>
+          }}></CurProfileImage>
+        <VscBlank className="VscBlank" />
+      </TopBox>
+      <WelcomeArea>
+        <div>안녕하세요</div>
+
         <div>
           {isNoLogin ? (
             <LoginButton onClick={goToLogin}>LOGIN</LoginButton>
@@ -141,8 +141,7 @@ const MainPage = () => {
           slidesPerView={3}
           spaceBetween={0}
           onSlideChange={(e) => setActiveIdxForSelfmade(e.activeIndex)}
-          className="mySwiper"
-        >
+          className="mySwiper">
           {isNoLogin ? (
             <SwiperSlide onClick={goToLogin}>
               <DiaryCardTopBig
@@ -151,38 +150,33 @@ const MainPage = () => {
                 activeIdxForSelfmade={activeIdxForSelfmade}
                 item={{
                   title: "로그인하기",
-                }}
-              ></DiaryCardTopBig>
+                }}></DiaryCardTopBig>
             </SwiperSlide>
           ) : resForSelfmade.data?.data.length === 0 ? (
             <SwiperSlide
               onClick={() => {
                 navigate("/diary");
-              }}
-            >
+              }}>
               <DiaryCardTopBig
                 color="purple"
                 idx={0}
                 activeIdxForSelfmade={activeIdxForSelfmade}
                 item={{
                   title: "로그인하기",
-                }}
-              ></DiaryCardTopBig>
+                }}></DiaryCardTopBig>
             </SwiperSlide>
           ) : resForSelfmade.data?.data.length === 0 ? (
             <SwiperSlide
               onClick={() => {
                 navigate("/diary");
-              }}
-            >
+              }}>
               <DiaryCardTopBig
                 color="purple"
                 idx={0}
                 activeIdxForSelfmade={activeIdxForSelfmade}
                 item={{
                   title: "다이어리 만들기",
-                }}
-              ></DiaryCardTopBig>
+                }}></DiaryCardTopBig>
             </SwiperSlide>
           ) : (
             resForSelfmade.data?.data.map((item, i) => (
@@ -194,8 +188,7 @@ const MainPage = () => {
                   item={item}
                   onClick={() => {
                     navigate("/dd");
-                  }}
-                >
+                  }}>
                   Slide {item.id}
                 </DiaryCardTopBig>
               </SwiperSlide>
@@ -212,8 +205,7 @@ const MainPage = () => {
                 key={i}
                 onClick={() => {
                   goToDiaryDetail(item.id);
-                }}
-              >
+                }}>
                 <DiaryCard item={item} color="purple" />
               </SwiperSlide>
             ))}
@@ -222,8 +214,7 @@ const MainPage = () => {
                 style={{
                   width: "100vw",
                   backgroundColor: "#e4e4e4",
-                }}
-              >
+                }}>
                 다이어리가 없습니다.
               </SwiperSlide>
             ) : (
@@ -237,8 +228,7 @@ const MainPage = () => {
             <span
               slot="wrapper-end"
               ref={refForPublic}
-              style={{ margin: "0px 10px" }}
-            >
+              style={{ margin: "0px 10px" }}>
               <Skeleton width={140} height={196} borderRadius={25} />
             </span>
             <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
@@ -257,8 +247,7 @@ const MainPage = () => {
                 key={item.id}
                 onClick={() => {
                   goToDiaryDetail(item.id);
-                }}
-              >
+                }}>
                 <DiaryCard item={item} color="purple" />
               </SwiperSlide>
             ))}
@@ -268,8 +257,7 @@ const MainPage = () => {
                   width: "100vw",
                   backgroundColor: "#e4e4e4",
                 }}
-                onClick={goToLogin}
-              >
+                onClick={goToLogin}>
                 로그인을 하고 공유 다이어리를 이용해보세요
               </SwiperSlide>
             ) : dataListForPrivate.length < 5 ? (
@@ -277,8 +265,7 @@ const MainPage = () => {
                 style={{
                   width: "100vw",
                   backgroundColor: "#e4e4e4",
-                }}
-              >
+                }}>
                 다이어리가 없습니다.
               </SwiperSlide>
             ) : (
@@ -292,8 +279,7 @@ const MainPage = () => {
             <span
               slot="wrapper-end"
               ref={refForPrivate}
-              style={{ margin: "0px 10px 0px 0px" }}
-            >
+              style={{ margin: "0px 10px 0px 0px" }}>
               <Skeleton width={140} height={196} borderRadius={25} />
             </span>
             <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
@@ -310,6 +296,19 @@ const MainPage = () => {
 };
 
 export default MainPage;
+
+const TopBox = styled.div`
+  position: absolute;
+  top: 20px;
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  .VscBlank {
+    font-size: 35px;
+  }
+`;
 
 const WelcomeArea = styled.div`
   font-size: 32px;
