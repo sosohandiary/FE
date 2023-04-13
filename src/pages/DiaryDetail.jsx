@@ -13,6 +13,7 @@ import leftArrow from "../assets/leftArrow.png";
 import FlipBook from "../components/FlipBook";
 import { Pagination } from "@mui/material";
 import AlertMessage from "../components/alert/AlertMessage";
+import { MdArrowBack } from "react-icons/md";
 
 const DiaryDetail = () => {
   const navigate = useNavigate();
@@ -80,7 +81,7 @@ const DiaryDetail = () => {
   };
 
   const goBackHandler = () => {
-    navigate("/");
+    navigate(-1);
   };
 
   const handlePagenationChange = (e, page) => {
@@ -101,9 +102,11 @@ const DiaryDetail = () => {
       ) : (
         ""
       )}
-      <div>
+      <Container>
+        <StArrow>
+          <StyledGobackButton onClick={goBackHandler} />
+        </StArrow>
         <Title>다이어리 상세보기</Title>
-        <LeftArrow src={leftArrow} onMouseDown={goBackHandler}></LeftArrow>
 
         <div>
           <HeaderStyle>
@@ -119,33 +122,56 @@ const DiaryDetail = () => {
             <div>밀어서 확인하세요</div>
           </LabelArea>
         </div>
-      </div>
 
-      <FlipStyle>
-        <FlipBook data={data} diaryId={diaryId} />
-      </FlipStyle>
-      <PaginationStyle>
-        <Pagination
-          count={pageCount}
-          color="primary"
-          onChange={handlePagenationChange}
-          page={Number(curPage) + 1}
-        />
-      </PaginationStyle>
+        <FlipStyle>
+          <FlipBook data={data} diaryId={diaryId} />
+        </FlipStyle>
+        <PaginationStyle>
+          <Pagination
+            count={pageCount}
+            color='primary'
+            onChange={handlePagenationChange}
+            page={Number(curPage) + 1}
+          />
+        </PaginationStyle>
+      </Container>
     </>
   );
 };
 
 export default DiaryDetail;
 
+const Container = styled.div`
+  margin: 0 auto;
+  width: 400px;
+
+  border-left: 0.0625rem solid rgb(225, 226, 228);
+  border-right: 0.0625rem solid rgb(225, 226, 228);
+`;
+
+const StArrow = styled.div`
+  margin: 0 auto;
+  position: relative;
+  left: 16px;
+  top: 30px;
+`;
+
+const StyledGobackButton = styled(MdArrowBack)`
+  position: absolute;
+  /* padding-top: 50px; */
+  font-size: 40px;
+  color: #adaaaa;
+  cursor: pointer;
+`;
+
 const Title = styled.div`
   font-weight: bold;
   font-size: ${({ size }) => `${size}px`};
   color: black;
+  padding-top: 30px;
+  margin-bottom: 17px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 10px;
 `;
 
 const HeaderStyle = styled.div`
@@ -157,7 +183,7 @@ const HeaderStyle = styled.div`
 `;
 
 const DiaryTitle = styled.div`
-  font-size: 30px;
+  font-size: 28px;
 `;
 
 const DiaryCreatedAt = styled.div`

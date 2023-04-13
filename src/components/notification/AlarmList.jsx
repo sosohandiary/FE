@@ -120,13 +120,13 @@ const AlarmList = ({ item, alarmType }) => {
     return (
       <TrailingActions>
         <SwipeAction destructive={true} onClick={handleAccept}>
-          <ActionContent color="blue">
+          <ActionContent background="#A1B2FA">
             <InnerButton>{getButtonMsg().acceptMsg}</InnerButton>
           </ActionContent>
         </SwipeAction>
 
         <SwipeAction destructive={true} onClick={handleDelete}>
-          <ActionContent color="red">
+          <ActionContent background="#FC9F9F">
             <InnerButton>{getButtonMsg().rejectMsg}</InnerButton>
           </ActionContent>
         </SwipeAction>
@@ -158,7 +158,7 @@ const ActionContent = styled.div`
   box-sizing: border-box;
   color: #eee;
   user-select: none;
-  background-color: ${({ color }) => color};
+  background: ${({ background }) => background};
 `;
 const Button = styled.div`
   display: flex;

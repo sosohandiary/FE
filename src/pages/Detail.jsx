@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import "react-spring-bottom-sheet/dist/style.css";
 import CommentBox from "../components/detail/CommentBox";
-import "react-spring-bottom-sheet/dist/style.css";
 import Like from "../components/detail/Like";
 import { WholeViewWidth } from "../styles/WholeAreaStyle";
 import GetUser from "../components/detail/GetUser";
@@ -106,83 +105,84 @@ function Detail() {
           <div>
             <StyledDetailCardWrapper>
               <StyledDetailCard>
-                <div
-                  style={{
-                    position: "relative",
-                    top: "-10px",
-                    zIndex: 0,
-                    width: "100%",
-                    height: "100%",
-                    margin: "10px",
+              
+                  <div
+                    style={{
+                      position: "relative",
+                      top: "-10px",
+                      zIndex: 0,
+                        width: "100%",
+                      height: "100%",
+                      margin: "10px",
                   }}
-                >
-                  <Thumbnail
-                    diaryId={diaryId}
-                    paperId={detailId}
-                    width={700}
-                    height={window.innerHeight}
-                  />
-                </div>
-              </StyledDetailCard>
-            </StyledDetailCardWrapper>
+                  >
+                    <Thumbnail
+                      diaryId={diaryId}
+                      paperId={detailId}
+                      width={700}
+                      height={window.innerHeight}
+                    />
+                  </div>
+                </StyledDetailCard>
+              </StyledDetailCardWrapper>
+            </div>
+          </StyledDerailPage>
+        )}
+        <button
+          style={{ display: "none" }}
+          ref={sheetRef}
+          onClick={() => setOpen(true)}
+        ></button>
+        {myDiary ? (
+          <StBottomSheet
+            open={open}
+            header={
+              <DetailElement>
+                <img
+                  src={CommentImage}
+                  alt='코멘트 아이콘'
+                  width='28'
+                  height='28'
+                  style={{
+                    marginRight: "5px",
+                  }}
+                />
+                {myDiary.commentCount}
+                <Like diaryData={myDiary} />
+                {myDiary.likeCount}
+              </DetailElement>
+            }
+            defaultSnap={({ snapPoints }) => snapPoints}
+            snapPoints={({ minHeight, maxHeight }) => [60, maxHeight]}
+            blocking={false}
+          >
+            <CommentBox />
+          </StBottomSheet>
+        ) : (
+          <div
+            style={{
+              marginTop: "40vh",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Spinner />
           </div>
-        </StyledDerailPage>
-      )}
-      <button
-        style={{ display: "none" }}
-        ref={sheetRef}
-        onClick={() => setOpen(true)}
-      ></button>
-      {myDiary ? (
-        <BottomSheet
-          open={open}
-          header={
-            <DetailElement>
-              <img
-                src={CommentImage}
-                alt="코멘트 아이콘"
-                width="28"
-                height="28"
-                style={{
-                  marginRight: "5px",
-                }}
-              />
-              {myDiary.commentCount}
-              <Like diaryData={myDiary} />
-              {myDiary.likeCount}
-            </DetailElement>
-          }
-          defaultSnap={({ snapPoints }) => snapPoints}
-          snapPoints={({ minHeight, maxHeight }) => [60, maxHeight]}
-          blocking={false}
-          style={{ height: "80px" }}
-        >
-          <CommentBox />
-        </BottomSheet>
-      ) : (
-        <div
-          style={{
-            marginTop: "40vh",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <Spinner />
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 }
 export default Detail;
 
 const StyledDerailPage = styled.div`
-  margin-top: 40px;
+  margin-top: 70px;
   position: relative;
 `;
 
 const StyledGobackButton = styled(MdArrowBack)`
   position: absolute;
-  top: 10px;
+  top: 30px;
   left: 50%;
   transform: translateX(-500%);
   font-size: 38px;
@@ -222,4 +222,10 @@ const DiaryModalWrapper = styled.div`
   top: 25px;
   right: 50%;
   transform: translateX(460%);
+`;
+
+const StBottomSheet = styled(BottomSheet)`
+  --rsbs-max-w: 400px;
+  --rsbs-ml: auto;
+  --rsbs-mr: auto;
 `;
