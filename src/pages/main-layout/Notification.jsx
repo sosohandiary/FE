@@ -33,9 +33,14 @@ const Notification = () => {
         <TitleBox />
 
         <AlarmBox>
-          <LabelArea>
-            <div>밀어서 확인하세요</div>
-          </LabelArea>
+        {dataListForCommentAlarm?.length +
+          dataListForFriendRequset?.length +
+          dataListForInviteAlarm?.length !==
+          0 && (
+            <LabelArea>
+              <div>밀어서 확인하세요</div>
+            </LabelArea>
+        )}
           {dataListForFriendRequset?.map((item, i) => (
             <AlarmList key={i} alarmType='friend' item={item} />
           ))}

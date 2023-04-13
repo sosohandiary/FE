@@ -38,8 +38,7 @@ function Profile() {
   const [alertNavigateLink, setAlertNavigateLink] = useState("");
   const [alertReload, setAlertReload] = useState(false);
 
-  const regNickname =
-  /^[ㄱ-ㅎㅏ-ㅣ|가-힣A-Za-z0-9!@#$%^&*()_+={}[\]\\|;:'",.<>/?]{1,7}$/;
+  const regNickname = /^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{1,9}$/;
 
   //프로필 get 해오기!!!
   const getProfile = async () => {
@@ -129,12 +128,10 @@ function Profile() {
     setNickname(e.target.value);
 
     !regNickname.test(e.target.value)
-      ? setNicknameInput("닉네임은 1-7자 이내입니다.")
+      ? setNicknameInput("2-10자 이상의 글자만 입력해주세요")
       : setNicknameInput("");
 
-    !regNickname.test(e.target.value)
-    ? setNickTest(false)
-    : setNickTest(true);
+    !regNickname.test(e.target.value) ? setNickTest(false) : setNickTest(true);
   };
 
   const navToBack = () => {
@@ -151,7 +148,8 @@ function Profile() {
   function onSubmitHandler(e) {
     e.preventDefault();
 
-    if (nickname.trim() === "" || nickname.trim().length > 7 || !nickTest) return;
+    if (nickname.trim() === "" || nickname.trim().length > 7 || !nickTest)
+      return;
 
     formData.append("img", file);
     formData.append(
@@ -223,7 +221,7 @@ function Profile() {
               />
               <Container>
                 <Content>
-                  <Label>이름(별명)</Label>
+                  <Label>닉네임</Label>
                   <IconContainer>
                     <StInput
                       type="text"
@@ -305,6 +303,7 @@ const ProfileImg = {
   borderRadius: "50%",
   width: "120px",
   height: "120px",
+  objectFit: "cover",
 };
 
 const ProfileArea = styled.div`

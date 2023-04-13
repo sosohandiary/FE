@@ -5,7 +5,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper";
 import { useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -14,11 +13,8 @@ import DiaryCard from "../../components/mainpage/DiaryCard";
 import DiaryCardTopBig from "../../components/mainpage/DiaryCardTopBig";
 import { useQuery } from "react-query";
 import { getDiariesOfSelfmade } from "../../api/mainpage";
-import { getMypage, getProfile } from "../../api/mypage";
-import Spinner from "../../assets/Spinner.gif";
-import { Alert } from "antd";
-import AlertMessage from "../../components/alert/AlertMessage";
-import openAlert from "../../components/alert/AlertMessage";
+import { getProfile } from "../../api/mypage";
+import { VscBlank } from "react-icons/vsc";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -333,6 +329,10 @@ const WelcomeArea = styled.div`
 `;
 
 const CurProfileImage = styled.div`
+  z-index: 10;
+  position: absolute;
+  top: 70px;
+  right: 23px;
   cursor: pointer;
   height: 50px;
   width: 50px;
