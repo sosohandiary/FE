@@ -52,7 +52,7 @@ const MainPage = () => {
     threshold: 0,
   });
   const { ref: refForPublic, inView: inViewForPublic } = useInView({
-    threshold: 1,
+    threshold: 0,
   });
 
   //데이터 겟
@@ -77,7 +77,7 @@ const MainPage = () => {
     setIsLoadingForPrivate(true);
     axios
       .get(
-        `${process.env.REACT_APP_BASEURL}/invite?page=${privatePage}&size=5`,
+        `${process.env.REACT_APP_BASEURL}/invite?page=${privatePage}&size=10`,
         {
           headers: { Authorization: accessToken },
         }
@@ -93,6 +93,7 @@ const MainPage = () => {
       })
       .catch((err) => {
         setIsLoadingForPrivate(false);
+        navigate("/login");
       });
   }, [inViewForPrivate]);
 
@@ -100,7 +101,7 @@ const MainPage = () => {
     setIsLoadingForPublic(true);
     axios
       .get(
-        `${process.env.REACT_APP_BASEURL}/public?page=${publicPage}&size=5`,
+        `${process.env.REACT_APP_BASEURL}/public?page=${publicPage}&size=10`,
         {
           headers: { Authorization: accessToken },
         }
@@ -112,7 +113,6 @@ const MainPage = () => {
       })
       .catch((err) => {
         setIsLoadingForPublic(false);
-        console.log(err);
         navigate("/login");
       });
   }, [inViewForPublic]);

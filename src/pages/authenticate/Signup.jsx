@@ -28,10 +28,8 @@ const Signup = () => {
       .post(`${process.env.REACT_APP_BASEURL}/join`, data)
       .then(() => {
         navigate("/signup-success", { state: data.nickname });
-        window.localStorage.setItem("already signed up", true);
       })
       .catch((err) => {
-        console.log(err);
         setAlertOpen(true);
         setAlertMsg("이미 가입되어있는 이메일입니다");
         setNoChangeForDisableSubmit(true);

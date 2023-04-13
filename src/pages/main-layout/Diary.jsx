@@ -32,8 +32,6 @@ const Diary = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    console.log("dd");
-    console.log(accessToken);
 
     const formData = new FormData();
     formData.append("img", file);
@@ -243,6 +241,8 @@ const Card = styled.div`
   height: 180px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 13px;
+  display: flex;
+  flex-direction: row;
 `;
 
 const SideLabel = styled.div`
@@ -250,7 +250,7 @@ const SideLabel = styled.div`
   width: 15px;
   height: 180px;
   border-radius: 13px 0 0 13px;
-  position: absolute;
+  position: relative;
 `;
 
 const InnerArea = styled.div`
@@ -258,6 +258,7 @@ const InnerArea = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: relative;
 `;
 
 const Title = styled.div`
@@ -319,7 +320,7 @@ const CenterColumn = styled.div`
   background-color: rgba(1, 1, 1, 0.5);
   width: 1px;
   height: 20px;
-  position: absolute;
+  position: relative;
 `;
 
 const SubmitButton = styled.div`

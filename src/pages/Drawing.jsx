@@ -43,6 +43,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { List } from "antd";
 import { Grid, ListItemText } from "@mui/material";
+import { IoIosSave } from "react-icons/io";
 
 // <---------------스티커 크기 조절----------------->
 const ImageSticker = ({
@@ -209,7 +210,6 @@ const ImageSticker = ({
         scaleX={sticker.isDragging ? 1.2 : 1}
         scaleY={sticker.isDragging ? 1.2 : 1}
         onDragStart={(e) => {
-          console.log(e.target);
           onChange({
             ...shapeProps,
             x: e.target.x(),
@@ -312,8 +312,7 @@ const Drawing = () => {
             EditorState.createWithContent(convertFromRaw(resJson.texts))
           );
         }
-      })
-      .catch((err) => console.log(err));
+      });
   }, []);
 
   // <-------------- 스티커 관련 -------------->
@@ -538,7 +537,6 @@ const Drawing = () => {
         startBlockTextLength - currentSelection.getStartOffset();
       const endSelectedTextLength = currentSelection.getEndOffset();
       const keyAfterEnd = currentContent.getKeyAfter(endKey);
-      console.log(currentSelection);
       if (isStartAndEndBlockAreTheSame) {
         length +=
           currentSelection.getEndOffset() - currentSelection.getStartOffset();
@@ -592,7 +590,10 @@ const Drawing = () => {
   return (
     <div style={{ overflow: "hidden", width: "100vw" }}>
       <DiaryBack src={diaryBack} onClick={goBackDiaryHandler} />{" "}
-      <SaveButton src={saveImg} onClick={handleSave} />
+      {/* <SaveButton src={saveImg} onClick={handleSave} /> */}
+      <SaveButtonArea>
+        <IoIosSave onClick={handleSave} />
+      </SaveButtonArea>
       <Stage
         width={window.innerWidth}
         height={window.innerHeight}
@@ -1042,4 +1043,16 @@ const SubmitButton = styled.div`
   width: 30vw;
   height: 50px;
   opacity: 0.8;
+`;
+
+const SaveButtonArea = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  width: 100px;
+  font-size: 80px;
+  @media (min-width: 700px) {
+    width: 80px;
+  }
 `;
