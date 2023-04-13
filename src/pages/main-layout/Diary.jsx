@@ -267,7 +267,8 @@ const InnerArea = styled.div`
 `;
 
 const Title = styled.div`
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: bold;
   margin: 20px 0 20px 15px;
   position: absolute;
   top: 0%;
