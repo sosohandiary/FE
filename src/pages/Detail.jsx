@@ -92,8 +92,7 @@ function Detail() {
             createdAt={myDiary.createdAt}
             nickname={myDiary.nickname}
           />
-
-          {myDiary?.toMemberId.includes(curUserInfo?.data.memberId) ? (
+          {curUserInfo.data.memberId === diaryData?.data.authorId ? (
             <DiaryModalWrapper>
               <DiaryModal
                 navToModify={navToModify}
@@ -104,7 +103,6 @@ function Detail() {
           ) : (
             ""
           )}
-
           <div>
             <StyledDetailCardWrapper>
               <StyledDetailCard>
