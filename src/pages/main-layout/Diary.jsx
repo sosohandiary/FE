@@ -101,7 +101,6 @@ const Diary = () => {
                 alt="preview"
                 src={previewImage}
                 style={{
-                  top: "145px",
                   width: "100px",
                   height: "100px",
                   borderRadius: "25px",
@@ -270,14 +269,15 @@ const InnerArea = styled.div`
 const Title = styled.div`
   font-weight: 700;
   margin: 20px 0 20px 15px;
+  position: absolute;
+  top: 0%;
 `;
 
 const ImgArea = styled.div`
   cursor: pointer;
-  height: 100px;
-  width: 100px;
   background-image: url(${({ imgSrc }) => imgSrc});
-  margin: 0 0 0 15px;
+  margin-left: 10px;
+  margin-top: 40px;
 `;
 
 const CreatedAt = styled.div`
