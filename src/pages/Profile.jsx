@@ -38,7 +38,7 @@ function Profile() {
   const [alertNavigateLink, setAlertNavigateLink] = useState("");
   const [alertReload, setAlertReload] = useState(false);
 
-  const regNickname = /^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{1,10}$/;
+  const regNickname = /^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{1,9}$/;
 
   //프로필 get 해오기!!!
   const getProfile = async () => {
@@ -128,7 +128,7 @@ function Profile() {
     setNickname(e.target.value);
 
     !regNickname.test(e.target.value)
-      ? setNicknameInput("2자 이상 입력해주세요")
+      ? setNicknameInput("2-10자 이상의 글자만 입력해주세요")
       : setNicknameInput("");
 
     !regNickname.test(e.target.value) ? setNickTest(false) : setNickTest(true);
