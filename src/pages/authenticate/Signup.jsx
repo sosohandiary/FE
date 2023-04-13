@@ -82,8 +82,8 @@ const Signup = () => {
             {...register("nickname", {
               required: "닉네임을 입력해주세요",
               pattern: {
-                value: /^[A-za-z0-9가-힣]{1,7}$/,
-                message: "1-7자의 영문, 한글, 숫자만 포함해주세요",
+                value: /^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{1,10}$/,
+                message: "2자 이상 입력해주세요",
               },
             })}
           />
