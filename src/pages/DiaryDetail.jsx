@@ -74,10 +74,8 @@ const DiaryDetail = () => {
         setAlertReload(true);
       })
       .catch((err) => {
-        if (err.response.status === 403) {
-          setAlertMsg("다이어리 멤버만 작성할 수 있습니다");
-          setAlertOpen(true);
-        }
+        setAlertMsg("다이어리 멤버만 작성할 수 있습니다");
+        setAlertOpen(true);
       });
   };
 
@@ -122,9 +120,7 @@ const DiaryDetail = () => {
           </LabelArea>
         </div>
       </div>
-      <MorePagePlease>
-        {data.length === 0 ? "페이지를 추가해주세요" : ""}
-      </MorePagePlease>
+
       <FlipStyle>
         <FlipBook data={data} diaryId={diaryId} />
       </FlipStyle>
@@ -247,6 +243,8 @@ const MorePagePlease = styled.div`
   justify-content: center;
   align-items: center;
   margin: 30px;
+  padding: 100px;
+  padding: ${({ isVisible }) => (isVisible ? 0 : "100px")};
 `;
 const LabelArea = styled.div`
   display: flex;
