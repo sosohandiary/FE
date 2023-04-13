@@ -427,13 +427,17 @@ const Drawing = () => {
 
     const sendData = { thumbnail: "dd", customJson: allJSON };
 
-    axios.patch(
-      `${process.env.REACT_APP_BASEURL}/diary/${diaryid}/detail/${paperid}`,
-      sendData,
-      {
-        headers: { Authorization: accessToken },
-      }
-    );
+    axios
+      .patch(
+        `${process.env.REACT_APP_BASEURL}/diary/${diaryid}/detail/${paperid}`,
+        sendData,
+        {
+          headers: { Authorization: accessToken },
+        }
+      )
+      .then((res) => {
+        window.location.reload();
+      });
   };
 
   //툴바 관련
@@ -881,7 +885,6 @@ const SaveButton = styled.img`
 
 const TextAreaStyle = styled.div`
   .DraftEditor-editorContainer {
-    background-color: #fff;
     max-height: 70vh;
     overflow: scroll;
   }
