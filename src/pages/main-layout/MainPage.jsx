@@ -52,7 +52,7 @@ const MainPage = () => {
     threshold: 0,
   });
   const { ref: refForPublic, inView: inViewForPublic } = useInView({
-    threshold: 1,
+    threshold: 0,
   });
 
   //데이터 겟
@@ -93,6 +93,7 @@ const MainPage = () => {
       })
       .catch((err) => {
         setIsLoadingForPrivate(false);
+        navigate("/login");
       });
   }, [inViewForPrivate]);
 
