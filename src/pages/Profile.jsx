@@ -39,7 +39,7 @@ function Profile() {
   const [alertReload, setAlertReload] = useState(false);
 
   const regNickname =
-  /^[ㄱ-ㅎㅏ-ㅣ|가-힣A-Za-z0-9!@#$%^&*()_+={}[\]\\|;:'",.<>/?]{1,7}$/;
+    /^[ㄱ-ㅎㅏ-ㅣ|가-힣A-Za-z0-9!@#$%^&*()_+={}[\]\\|;:'",.<>/?]{1,7}$/;
 
   //프로필 get 해오기!!!
   const getProfile = async () => {
@@ -132,9 +132,7 @@ function Profile() {
       ? setNicknameInput("닉네임은 1-7자 이내입니다.")
       : setNicknameInput("");
 
-    !regNickname.test(e.target.value)
-    ? setNickTest(false)
-    : setNickTest(true);
+    !regNickname.test(e.target.value) ? setNickTest(false) : setNickTest(true);
   };
 
   const navToBack = () => {
@@ -151,7 +149,8 @@ function Profile() {
   function onSubmitHandler(e) {
     e.preventDefault();
 
-    if (nickname.trim() === "" || nickname.trim().length > 7 || !nickTest) return;
+    if (nickname.trim() === "" || nickname.trim().length > 7 || !nickTest)
+      return;
 
     formData.append("img", file);
     formData.append(
@@ -305,6 +304,7 @@ const ProfileImg = {
   borderRadius: "50%",
   width: "120px",
   height: "120px",
+  objectFit: "cover",
 };
 
 const ProfileArea = styled.div`
