@@ -88,7 +88,7 @@ const NewFriend = () => {
   };
 
   return (
-    <>
+    <OuterBorderArea>
       <WholeViewWidth
         style={{ marginTop: "-20px", paddingTop: "20px", height: "100%" }}
       >
@@ -144,7 +144,7 @@ const NewFriend = () => {
         )}
         <InvisibleArea></InvisibleArea>
       </WholeViewWidth>
-    </>
+    </OuterBorderArea>
   );
 };
 
@@ -218,4 +218,10 @@ const AddButton = styled.button`
 
 const InvisibleArea = styled.div`
   height: 85px;
+`;
+
+const OuterBorderArea = styled.div`
+  border-left: 0.0625rem solid rgb(225, 226, 228);
+  border-right: 0.0625rem solid rgb(225, 226, 228);
+  min-height: 100vh;
 `;
