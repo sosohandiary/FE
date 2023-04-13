@@ -128,7 +128,7 @@ function Profile() {
     setNickname(e.target.value);
 
     !regNickname.test(e.target.value)
-      ? setNicknameInput("2-10자 이상의 글자만 입력해주세요")
+      ? setNicknameInput("2-10자의 글자만 입력해주세요")
       : setNicknameInput("");
 
     !regNickname.test(e.target.value) ? setNickTest(false) : setNickTest(true);
