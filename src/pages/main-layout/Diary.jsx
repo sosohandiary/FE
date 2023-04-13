@@ -6,13 +6,14 @@ import defaultProfileImg from "../../assets/defaultProfileImg.jpeg";
 import { useNavigate } from "react-router-dom";
 import AlertMessage from "../../components/alert/AlertMessage";
 import AlertMessageAndNavigate from "../../components/alert/AlertMessage";
+import logoGray from "../../assets/logoGray.png";
 
 const Diary = () => {
   const accessToken = window.localStorage.getItem("accessToken");
   const navigate = useNavigate();
   const [file, setFile] = useState();
   const [title, setTitle] = useState("");
-  const [previewImage, setPreviewImage] = useState(defaultProfileImg);
+  const [previewImage, setPreviewImage] = useState(logoGray);
   const [diaryCondition, setDiaryCondition] = useState("PUBLIC");
   const [alertMsg, setAlertMsg] = useState("");
   const [alertOpen, setAlertOpen] = useState(false);
@@ -106,6 +107,7 @@ const Diary = () => {
                   width: "100px",
                   height: "100px",
                   borderRadius: "25px",
+                  objectFit: "cover",
                 }}
                 onClick={imgClickHandler}
               />
@@ -207,7 +209,7 @@ const TitleContent = styled.div`
 `;
 
 const TitleText = styled.div`
-  margin-left:10px;
+  margin-left: 10px;
   font-size: 100%;
   color: gray;
 `;
