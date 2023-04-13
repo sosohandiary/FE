@@ -26,6 +26,7 @@ function Profile() {
   const [statusMessage, setStatusMessage] = useState("");
 
   const [nicknameInput, setNicknameInput] = useState("");
+  const [nickTest, setNickTest] = useState(true);
 
   const [newimage, setNewImage] = useState("");
   const [file, setFile] = useState("");
@@ -38,7 +39,7 @@ function Profile() {
   const [alertReload, setAlertReload] = useState(false);
 
   const regNickname =
-    /^[ㄱ-ㅎㅏ-ㅣ|가-힣A-Za-z0-9!@#$%^&*()_+={}[\]\\|;:'",.<>/?]{1,7}$/;
+  /^[ㄱ-ㅎㅏ-ㅣ|가-힣A-Za-z0-9!@#$%^&*()_+={}[\]\\|;:'",.<>/?]{1,7}$/;
 
   //프로필 get 해오기!!!
   const getProfile = async () => {
@@ -68,7 +69,7 @@ function Profile() {
 
   const mutation = useMutation(() => editProfile(formData, accessToken), {
     onSuccess: () => {
-      queryClient.invalidateQueries("getProfile");
+      getProfile();
     },
     onError: () => {
       setAlertMsg("프로필 변경 실패! 사진 용량이 큽니다.");
@@ -130,6 +131,10 @@ function Profile() {
     !regNickname.test(e.target.value)
       ? setNicknameInput("닉네임은 1-7자 이내입니다.")
       : setNicknameInput("");
+
+    !regNickname.test(e.target.value)
+    ? setNickTest(false)
+    : setNickTest(true);
   };
 
   const navToBack = () => {
@@ -137,7 +142,7 @@ function Profile() {
   };
 
   const data = {
-    nickname: nickname,
+    nickname: nickname.trim(),
     statusMessage: statusMessage,
   };
 
@@ -146,7 +151,7 @@ function Profile() {
   function onSubmitHandler(e) {
     e.preventDefault();
 
-    if (nickname.trim() === "" || nickname.trim().length > 7) return;
+    if (nickname.trim() === "" || nickname.trim().length > 7 || !nickTest) return;
 
     formData.append("img", file);
     formData.append(
