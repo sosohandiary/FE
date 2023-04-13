@@ -156,9 +156,9 @@ function MyPage() {
                         </StText>
                       )}
                       {item.diaryCondition === "PUBLIC" ? (
-                        <Public size="16">공유 다이어리</Public>
+                        <Public size="16">공개 다이어리</Public>
                       ) : (
-                        <Public size="16">다이어리</Public>
+                        <Public size="16">공유 다이어리</Public>
                       )}
                     </StTextBox>
                     <StTextBox>

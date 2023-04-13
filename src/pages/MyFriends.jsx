@@ -11,6 +11,7 @@ import {
 } from "react-swipeable-list";
 import "react-swipeable-list/dist/styles.css";
 
+import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
 import { getMyfriends, getFriendsCount, deleteFriend } from "../api/mypage";
 import { ProfilePicSmall } from "../components/ProfilePics";
 import { MdArrowBack } from "react-icons/md";
@@ -20,12 +21,25 @@ import Filter from "../components/mypage/Filter";
 const MyFriends = () => {
   const [searchFriends, setSearchFriends] = useState(null);
   const [swipeOpen, setSwipeOpen] = useState(false);
+  const [profileStatus, setProfileStatus] = useState(true);
 
   const accessToken = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
-  const { data: myFriends } = useQuery(["getMyFriends"], () =>
-    getMyfriends(accessToken)
+  const { data: myFriends } = useQuery(
+    ["getMyFriends"],
+    () => getMyfriends(accessToken),
+
+    {
+      onSuccess: (data) => {
+        if (Array.isArray(data)) {
+          const hasNullProfileImageUrl = data.some(
+            (friend) => friend.profileImageUrl === null
+          );
+          setProfileStatus(!hasNullProfileImageUrl);
+        }
+      },
+    }
   );
 
   const { data: friendsCount } = useQuery(["getFriendsCount"], () =>
@@ -114,7 +128,12 @@ const MyFriends = () => {
                       <>
                         <div className='slide'>
                           <ListCards>
-                            <ProfilePicSmall src={item.profileImageUrl} />
+                            {item.profileImageUrl ? (
+                              <ProfilePicSmall src={item.profileImageUrl} />
+                            ) : (
+                              <ProfilePicSmall src={defaultProfileImg} />
+                            )}
+
                             <ListContentBox>
                               <StText fontWeight='bold'>{item.nickname}</StText>
                               <StText>{item.statusMessage}</StText>
@@ -216,9 +235,9 @@ const DeleteButton = styled.button`
 `;
 
 const LabelArea = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
-margin: 10px;
-color: #c0c0c0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  color: #c0c0c0;
 `;
