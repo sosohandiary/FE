@@ -33,22 +33,22 @@ const Notification = () => {
         <TitleBox />
 
         <AlarmBox>
-        {dataListForCommentAlarm?.length +
-          dataListForFriendRequset?.length +
-          dataListForInviteAlarm?.length !==
-          0 && (
+          {dataListForCommentAlarm?.length +
+            dataListForFriendRequset?.length +
+            dataListForInviteAlarm?.length !==
+            0 && (
             <LabelArea>
               <div>밀어서 확인하세요</div>
             </LabelArea>
-        )}
+          )}
           {dataListForFriendRequset?.map((item, i) => (
-            <AlarmList key={i} alarmType='friend' item={item} />
+            <AlarmList key={i} alarmType="friend" item={item} />
           ))}
           {dataListForInviteAlarm?.map((item, i) => (
-            <AlarmList key={i} alarmType='invite' item={item} />
+            <AlarmList key={i} alarmType="invite" item={item} />
           ))}
           {dataListForCommentAlarm?.map((item, i) => (
-            <AlarmList key={i} alarmType='comment' item={item} />
+            <AlarmList key={i} alarmType="comment" item={item} />
           ))}
           {dataListForCommentAlarm?.length === 0 &&
           dataListForFriendRequset?.length === 0 &&
@@ -58,6 +58,7 @@ const Notification = () => {
             ""
           )}
         </AlarmBox>
+        <TransparentDiv></TransparentDiv>
       </WholeView>
     </>
   );
@@ -68,8 +69,6 @@ export default Notification;
 const WholeView = styled.div`
   width: 400px;
   margin: 0 auto;
-  height: 100vh;
-  overflow:hidden;
 
   border-left: 0.0625rem solid rgb(225, 226, 228);
   border-right: 0.0625rem solid rgb(225, 226, 228);
@@ -93,4 +92,9 @@ const LabelArea = styled.div`
   align-items: center;
   margin: 10px;
   color: #c0c0c0;
+`;
+
+const TransparentDiv = styled.div`
+  height: 0.01px;
+  width: 400px;
 `;
