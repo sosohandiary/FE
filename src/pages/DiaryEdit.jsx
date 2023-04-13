@@ -88,7 +88,8 @@ function DiaryEdit() {
         );
         navigate(`/mypage`);
       } catch (error) {
-        console.error("다이어리 수정에 실패했습니다.", error);
+        setAlertMsg("제목과 사진을 전부 수정해주세요");
+        setAlertOpen(true);
       }
     },
     [accessToken, diaryCondition, file, mypage.data.id, navigate, title]
@@ -108,9 +109,7 @@ function DiaryEdit() {
       );
       setFriends(res.data);
       setModalOpen(true);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   // 모달 닫기 버튼
@@ -138,7 +137,6 @@ function DiaryEdit() {
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      console.log("Enter key pressed");
     }
   };
 
@@ -186,8 +184,7 @@ function DiaryEdit() {
       })
       .then((res) => {
         setAlreadyMembersId(res.data.map((item) => item.memberId));
-      })
-      .catch((err) => console.log(err));
+      });
   };
 
   useEffect(() => {
@@ -287,7 +284,8 @@ function DiaryEdit() {
                       color="primary"
                       onClick={() => {
                         onRemove(item);
-                      }}>
+                      }}
+                    >
                       <img
                         src={item.profileImageUrl}
                         style={{
@@ -320,7 +318,8 @@ function DiaryEdit() {
                       marginBottom: "8px",
                       marginLeft: "10px",
                       marginRight: "10px",
-                    }}>
+                    }}
+                  >
                     <label style={{ flex: 1 }}>
                       <ImgAndName>
                         <img
@@ -343,9 +342,11 @@ function DiaryEdit() {
                         onCheckedElement(friend);
                       }}
                       checkedList={checkedList}
-                      friend={friend}></CheckBox>
+                      friend={friend}
+                    ></CheckBox>
                     <AlreadyMember
-                      disabled={alreadyMembersId.includes(friend.memberId)}>
+                      disabled={alreadyMembersId.includes(friend.memberId)}
+                    >
                       이미 멤버입니다
                     </AlreadyMember>
                   </ListStyle>

@@ -107,14 +107,12 @@ const MainPage = () => {
         }
       )
       .then((res) => {
-        console.log(res);
         setIsLoadingForPublic(false);
         setDataListForPublic((prev) => [...prev, ...res.data.content]);
         setPublicPage((prev) => prev + 1);
       })
       .catch((err) => {
         setIsLoadingForPublic(false);
-        console.log(err);
         navigate("/login");
       });
   }, [inViewForPublic]);
