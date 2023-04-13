@@ -81,7 +81,7 @@ const DiaryDetail = () => {
   };
 
   const goBackHandler = () => {
-    navigate("/");
+    navigate(-1);
   };
 
   const handlePagenationChange = (e, page) => {
@@ -103,7 +103,7 @@ const DiaryDetail = () => {
         ""
       )}
       <Container>
-      <StArrow>
+        <StArrow>
           <StyledGobackButton onClick={goBackHandler} />
         </StArrow>
         <Title>다이어리 상세보기</Title>
@@ -123,21 +123,17 @@ const DiaryDetail = () => {
           </LabelArea>
         </div>
 
-  
-      <FlipStyle>
-        <FlipBook data={data} diaryId={diaryId} />
-      </FlipStyle>
-      <PaginationStyle>
-        <Pagination
-          count={pageCount}
-          color="primary"
-          onChange={handlePagenationChange}
-          page={Number(curPage) + 1}
-        />
-      </PaginationStyle>
-
-
-      
+        <FlipStyle>
+          <FlipBook data={data} diaryId={diaryId} />
+        </FlipStyle>
+        <PaginationStyle>
+          <Pagination
+            count={pageCount}
+            color='primary'
+            onChange={handlePagenationChange}
+            page={Number(curPage) + 1}
+          />
+        </PaginationStyle>
       </Container>
     </>
   );
@@ -151,7 +147,7 @@ const Container = styled.div`
 
   border-left: 0.0625rem solid rgb(225, 226, 228);
   border-right: 0.0625rem solid rgb(225, 226, 228);
-`
+`;
 
 const StArrow = styled.div`
   margin: 0 auto;
@@ -167,7 +163,6 @@ const StyledGobackButton = styled(MdArrowBack)`
   color: #adaaaa;
   cursor: pointer;
 `;
-
 
 const Title = styled.div`
   font-weight: bold;
