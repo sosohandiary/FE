@@ -90,7 +90,7 @@ const LabelArea = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px;
+  margin: -10px 0 10px 0;
   color: #c0c0c0;
 `;
 

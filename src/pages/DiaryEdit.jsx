@@ -211,11 +211,10 @@ function DiaryEdit() {
         ""
       )}
       <TopBox>
-      <StArrow>
+        <StArrow>
           <StyledGobackButton onClick={navToBack} />
         </StArrow>
         <Textbox>다이어리 만들기</Textbox>
-   
       </TopBox>
       {/* <div>
         <img src={leftArrow} onClick={goBackHandler} />
@@ -392,7 +391,6 @@ const StyledGobackButton = styled(MdArrowBack)`
   cursor: pointer;
 `;
 
-
 const FriendName = styled.div`
   margin-top: 17px;
   font-size: 16px;
@@ -499,11 +497,10 @@ const TitleContent = styled.div`
 `;
 
 const TitleText = styled.div`
-margin:15px 0 0 15px;;
+  margin: 15px 0 0 15px;
   font-size: 100%;
   color: gray;
 `;
-
 
 const Wholebox = styled.div`
   display: flex;
@@ -539,14 +536,14 @@ const TopBox = styled.div`
 `;
 
 const Textbox = styled.div`
-   font-weight: bold;
+  font-weight: bold;
 
-display: flex;
-padding-top: 30px;
-margin-bottom: 27px;
-display: flex;
-justify-content: center;
-font-size:18px;
+  display: flex;
+  padding-top: 30px;
+  margin-bottom: 27px;
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
 `;
 
 const Card = styled.div`
