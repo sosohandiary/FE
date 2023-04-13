@@ -111,10 +111,10 @@ function Detail() {
                       position: "relative",
                       top: "-10px",
                       zIndex: 0,
-                      overflow: "hidden",
-                      width: "100%",
+                        width: "100%",
                       height: "100%",
-                    }}
+                      margin: "10px",
+                  }}
                   >
                     <Thumbnail
                       diaryId={diaryId}
@@ -135,8 +135,6 @@ function Detail() {
         ></button>
         {myDiary ? (
           <StBottomSheet
-            className='custom-bottom-sheet'
-            //  style={{ idth: '400px' }}>
             open={open}
             header={
               <DetailElement>
@@ -199,10 +197,12 @@ const StyledDetailCardWrapper = styled(WholeViewWidth)`
   align-items: center;
   margin-top: 30px;
   overflow: hidden;
+  border: none;
 `;
 
 const StyledDetailCard = styled.div`
   display: flex;
+  justify-content: center;
   width: 375px;
   height: 80vh;
   border: none;

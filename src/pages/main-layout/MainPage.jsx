@@ -125,9 +125,16 @@ const MainPage = () => {
             )}
           </div>
         </WelcomeArea>
-        <Label style={{ backgroundColor: "#e1e7fc", display:"flex", justifyContent:"space-between" }}>
+        <Label
+          style={{
+            backgroundColor: "#e1e7fc",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
           <div>내가 만든 다이어리</div>
-          <CurProfileImage style={{marginRight: "15px"}}
+          <CurProfileImage
+            style={{ marginRight: "15px" }}
             url={resOfCurrentUserInfo.data?.data.profileImageUrl}
             onClick={() => {
               navigate("/mypage");
@@ -141,12 +148,12 @@ const MainPage = () => {
             slidesPerView={3}
             spaceBetween={0}
             onSlideChange={(e) => setActiveIdxForSelfmade(e.activeIndex)}
-            className='mySwiper'
+            className="mySwiper"
           >
             {isNoLogin ? (
               <SwiperSlide onClick={goToLogin}>
                 <DiaryCardTopBig
-                  color='purple'
+                  color="purple"
                   idx={0}
                   activeIdxForSelfmade={activeIdxForSelfmade}
                   item={{
@@ -161,7 +168,7 @@ const MainPage = () => {
                 }}
               >
                 <DiaryCardTopBig
-                  color='purple'
+                  color="purple"
                   idx={0}
                   activeIdxForSelfmade={activeIdxForSelfmade}
                   item={{
@@ -176,7 +183,7 @@ const MainPage = () => {
                 }}
               >
                 <DiaryCardTopBig
-                  color='purple'
+                  color="purple"
                   idx={0}
                   activeIdxForSelfmade={activeIdxForSelfmade}
                   item={{
@@ -188,7 +195,7 @@ const MainPage = () => {
               resForSelfmade.data?.data.map((item, i) => (
                 <SwiperSlide key={i} onClick={() => goToDiaryDetail(item.id)}>
                   <DiaryCardTopBig
-                    color='purple'
+                    color="purple"
                     idx={i}
                     activeIdxForSelfmade={activeIdxForSelfmade}
                     item={item}
@@ -209,7 +216,7 @@ const MainPage = () => {
             <Swiper
               slidesPerView={"auto"}
               spaceBetween={20}
-              className='mySwiper'
+              className="mySwiper"
             >
               {dataListForPublic.map((item, i) => (
                 <SwiperSlide
@@ -218,14 +225,15 @@ const MainPage = () => {
                     goToDiaryDetail(item.id);
                   }}
                 >
-                  <DiaryCard item={item} color='purple' />
+                  <DiaryCard item={item} color="purple" />
                 </SwiperSlide>
               ))}
-              {dataListForPublic.length < 5 ? (
+              {dataListForPublic.length < 3 ? (
                 <SwiperSlide
                   style={{
-                    width: "100vw",
+                    width: "375px",
                     backgroundColor: "#e4e4e4",
+                    borderRadius: "25px",
                   }}
                 >
                   다이어리가 없습니다.
@@ -234,31 +242,31 @@ const MainPage = () => {
                 ""
               )}
               {IsLoadingForPublic ? (
-                <div className='swiper-lazy-preloader swiper-lazy-preloader-white'></div>
+                <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
               ) : (
                 ""
               )}
               <span
-                slot='wrapper-end'
+                slot="wrapper-end"
                 ref={refForPublic}
                 style={{ margin: "0px 10px" }}
               >
                 <Skeleton width={140} height={196} borderRadius={25} />
               </span>
-              <span slot='wrapper-end' style={{ margin: "0px 10px" }}>
+              <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
                 <Skeleton width={140} height={196} borderRadius={25} />
               </span>
-              <span slot='wrapper-end' style={{ margin: "0px 10px" }}>
+              <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
                 <Skeleton width={140} height={196} borderRadius={25} />
               </span>
             </Swiper>
-          </SwiperArea>{" "}
+          </SwiperArea>
           <Label>초대된 다이어리</Label>
           <SwiperArea>
             <Swiper
               slidesPerView={"auto"}
               spaceBetween={20}
-              className='mySwiper'
+              className="mySwiper"
             >
               {dataListForPrivate.map((item) => (
                 <SwiperSlide
@@ -267,7 +275,7 @@ const MainPage = () => {
                     goToDiaryDetail(item.id);
                   }}
                 >
-                  <DiaryCard item={item} color='purple' />
+                  <DiaryCard item={item} color="purple" />
                 </SwiperSlide>
               ))}
               {isNoLogin ? (
@@ -280,11 +288,12 @@ const MainPage = () => {
                 >
                   로그인을 하고 공유 다이어리를 이용해보세요
                 </SwiperSlide>
-              ) : dataListForPrivate.length < 5 ? (
+              ) : dataListForPrivate.length < 3 ? (
                 <SwiperSlide
                   style={{
-                    width: "100vw",
+                    width: "375px",
                     backgroundColor: "#e4e4e4",
+                    borderRadius: "25px",
                   }}
                 >
                   다이어리가 없습니다.
@@ -293,21 +302,21 @@ const MainPage = () => {
                 ""
               )}
               {IsLoadingForPrivate ? (
-                <div className='swiper-lazy-preloader swiper-lazy-preloader-white'></div>
+                <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
               ) : (
                 ""
               )}
               <span
-                slot='wrapper-end'
+                slot="wrapper-end"
                 ref={refForPrivate}
                 style={{ margin: "0px 10px 0px 0px" }}
               >
                 <Skeleton width={140} height={196} borderRadius={25} />
               </span>
-              <span slot='wrapper-end' style={{ margin: "0px 10px" }}>
+              <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
                 <Skeleton width={140} height={196} borderRadius={25} />
               </span>
-              <span slot='wrapper-end' style={{ margin: "0px 10px" }}>
+              <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
                 <Skeleton width={140} height={196} borderRadius={25} />
               </span>
             </Swiper>
@@ -405,7 +414,7 @@ const SelfmadeArea = styled.div`
     width: 100%;
     height: 100%;
     background-image: url(${ellipse});
-    background-size: 50vw 100%;
+    background-size: 100% 100%;
     background-position: 0 -120px;
     background-repeat: no-repeat;
     margin-top: -10px;

@@ -613,7 +613,7 @@ const Drawing = () => {
   // 도화지
   return (
     <div style={{ overflow: "hidden", width: "100vw" }}>
-      <DiaryBack src={diaryBack} onClick={goBackDiaryHandler} />{" "}
+      <DiaryBack src={diaryBack} onClick={goBackDiaryHandler} />
       {/* <SaveButton src={saveImg} onClick={handleSave} /> */}
       <SaveButtonArea>
         <IoIosSave onClick={handleSave} />
@@ -890,17 +890,7 @@ const DiaryBack = styled.img`
   position: absolute;
   top: 10px;
   left: 10px;
-  z-index: 1;
-  width: 40px;
-  @media (min-width: 700px) {
-    width: 80px;
-  }
-`;
-const SaveButton = styled.img`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 1;
+  z-index: 10;
   width: 40px;
   @media (min-width: 700px) {
     width: 80px;
@@ -1075,7 +1065,7 @@ const SaveButtonArea = styled.div`
   position: absolute;
   top: 10px;
   right: 10px;
-  z-index: 1;
+  z-index: 20;
   width: 100px;
   font-size: 80px;
   @media (min-width: 700px) {
