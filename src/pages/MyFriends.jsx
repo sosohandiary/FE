@@ -26,15 +26,18 @@ const MyFriends = () => {
   const accessToken = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
-  const { data: myFriends } = useQuery(["getMyFriends"], () =>
-    getMyfriends(accessToken),
+  const { data: myFriends } = useQuery(
+    ["getMyFriends"],
+    () => getMyfriends(accessToken),
 
     {
       onSuccess: (data) => {
-        const hasNullProfileImageUrl = data.some(
-          (friend) => friend.profileImageUrl === null
-        );
-        setProfileStatus(!hasNullProfileImageUrl);
+        if (Array.isArray(data)) {
+          const hasNullProfileImageUrl = data.some(
+            (friend) => friend.profileImageUrl === null
+          );
+          setProfileStatus(!hasNullProfileImageUrl);
+        }
       },
     }
   );
@@ -126,11 +129,11 @@ const MyFriends = () => {
                         <div className='slide'>
                           <ListCards>
                             {item.profileImageUrl ? (
-     <ProfilePicSmall src={item.profileImageUrl} />
+                              <ProfilePicSmall src={item.profileImageUrl} />
                             ) : (
                               <ProfilePicSmall src={defaultProfileImg} />
                             )}
-                       
+
                             <ListContentBox>
                               <StText fontWeight='bold'>{item.nickname}</StText>
                               <StText>{item.statusMessage}</StText>
@@ -232,9 +235,9 @@ const DeleteButton = styled.button`
 `;
 
 const LabelArea = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
-margin: 10px;
-color: #c0c0c0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  color: #c0c0c0;
 `;
