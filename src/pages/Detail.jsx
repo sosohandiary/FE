@@ -105,71 +105,69 @@ function Detail() {
           <div>
             <StyledDetailCardWrapper>
               <StyledDetailCard>
-              
-                  <div
-                    style={{
-                      position: "relative",
-                      top: "-10px",
-                      zIndex: 0,
-                        width: "100%",
-                      height: "100%",
-                      margin: "10px",
-                  }}
-                  >
-                    <Thumbnail
-                      diaryId={diaryId}
-                      paperId={detailId}
-                      width={700}
-                      height={window.innerHeight}
-                    />
-                  </div>
-                </StyledDetailCard>
-              </StyledDetailCardWrapper>
-            </div>
-          </StyledDerailPage>
-        )}
-        <button
-          style={{ display: "none" }}
-          ref={sheetRef}
-          onClick={() => setOpen(true)}
-        ></button>
-        {myDiary ? (
-          <StBottomSheet
-            open={open}
-            header={
-              <DetailElement>
-                <img
-                  src={CommentImage}
-                  alt='코멘트 아이콘'
-                  width='28'
-                  height='28'
+                <div
                   style={{
-                    marginRight: "5px",
+                    position: "relative",
+                    top: "-10px",
+                    zIndex: 0,
+                    width: "100%",
+                    height: "100%",
+                    margin: "10px",
                   }}
-                />
-                {myDiary.commentCount}
-                <Like diaryData={myDiary} />
-                {myDiary.likeCount}
-              </DetailElement>
-            }
-            defaultSnap={({ snapPoints }) => snapPoints}
-            snapPoints={({ minHeight, maxHeight }) => [60, maxHeight]}
-            blocking={false}
-          >
-            <CommentBox />
-          </StBottomSheet>
-        ) : (
-          <div
-            style={{
-              marginTop: "40vh",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <Spinner />
+                >
+                  <Thumbnail
+                    diaryId={diaryId}
+                    paperId={detailId}
+                    width={700}
+                    height={window.innerHeight}
+                  />
+                </div>
+              </StyledDetailCard>
+            </StyledDetailCardWrapper>
           </div>
-        )}
-      </div>
+        </StyledDerailPage>
+      )}
+      <button
+        style={{ display: "none" }}
+        ref={sheetRef}
+        onClick={() => setOpen(true)}
+      ></button>
+      {myDiary ? (
+        <StBottomSheet
+          open={open}
+          header={
+            <DetailElement>
+              <img
+                src={CommentImage}
+                alt="코멘트 아이콘"
+                width="28"
+                height="28"
+                style={{
+                  marginRight: "5px",
+                }}
+              />
+              {myDiary.commentCount}
+              <Like diaryData={myDiary} />
+              {myDiary.likeCount}
+            </DetailElement>
+          }
+          defaultSnap={({ snapPoints }) => snapPoints}
+          snapPoints={({ minHeight, maxHeight }) => [60, maxHeight]}
+          blocking={false}
+        >
+          <CommentBox />
+        </StBottomSheet>
+      ) : (
+        <div
+          style={{
+            marginTop: "40vh",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Spinner />
+        </div>
+      )}
     </>
   );
 }
