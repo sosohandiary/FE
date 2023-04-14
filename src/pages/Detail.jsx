@@ -85,11 +85,11 @@ function Detail() {
       {myDiary && (
         <StyledDerailPage>
           <GetUser
-            ProfileImg={myDiary.profileImageUrl}
-            createdAt={myDiary.createdAt}
-            nickname={myDiary.nickname}
+            ProfileImg={myDiary?.profileImageUrl}
+            createdAt={myDiary?.createdAt}
+            nickname={myDiary?.nickname}
           />
-          {curUserInfo.data?.memberId === diaryData?.data?.authorId ? (
+          {curUserInfo?.data?.memberId === diaryData?.data?.authorId ? (
             <DiaryModalWrapper>
               <DiaryModal
                 navToModify={navToModify}
