@@ -138,7 +138,7 @@ const Navigationbar = () => {
         >
           <Badge
             badgeContent={isNaN(totalAlarmNumber) ? "" : totalAlarmNumber}
-            color='primary'
+            color="primary"
           >
             <Button
               src={bell}

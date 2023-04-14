@@ -980,6 +980,7 @@ const StickerToolbarStyle = styled.div`
   border-radius: 25px 25px 0 0;
   padding-top: 20px;
   z-index: 10;
+  overflow: scroll;
 `;
 
 const ColorPea = styled.div`
@@ -1044,6 +1045,8 @@ const DeleteButtonArea = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  top: 0px;
   opacity: ${({ mode }) => (mode === "STICKER" ? "1" : "0")};
 `;
 
@@ -1059,6 +1062,8 @@ const SubmitButton = styled.div`
   width: 30vw;
   height: 50px;
   opacity: 0.8;
+  position: fixed;
+  top: 0px;
 `;
 
 const SaveButtonArea = styled.div`

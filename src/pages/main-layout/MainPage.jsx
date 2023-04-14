@@ -323,6 +323,7 @@ const MainPage = () => {
           </SwiperArea>
         </div>
       </div>
+      <InvisibleDiv></InvisibleDiv>
     </MainContainer>
   );
 };
@@ -332,6 +333,7 @@ export default MainPage;
 const MainContainer = styled.div`
   margin: 0 auto;
   width: 400px;
+  height: auto;
 
   border-left: 0.0625rem solid rgb(225, 226, 228);
   border-right: 0.0625rem solid rgb(225, 226, 228);
@@ -444,4 +446,8 @@ const LoginButton = styled.div`
   font-size: 17px;
   color: gray;
   cursor: pointer;
+`;
+
+const InvisibleDiv = styled.div`
+  height: 0.01px;
 `;
