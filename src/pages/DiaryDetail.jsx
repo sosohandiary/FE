@@ -43,7 +43,6 @@ const DiaryDetail = () => {
         headers: { Authorization: accessToken },
       })
       .then((res) => {
-        console.log(res);
         setData([...res.data]); // 객체로 반환되길래 배열로 만듬
       });
 
@@ -113,9 +112,19 @@ const DiaryDetail = () => {
               ""
             )}
           </HeaderStyle>
-          <MorePageButton onClick={newInnerPaper}>한장 더 쓰기</MorePageButton>
+
+          {data.length === 0 ? (
+            <MorePageButton onClick={newInnerPaper}>
+              작성 시작하기
+            </MorePageButton>
+          ) : (
+            <MorePageButton onClick={newInnerPaper}>
+              페이지 추가하기
+            </MorePageButton>
+          )}
+
           <LabelArea>
-            <div>다이어리를 넘겨보세요</div>
+            <div>작성을 시작해보세요!</div>
           </LabelArea>
         </div>
         <FlipStyle>

@@ -43,6 +43,11 @@ const Diary = () => {
 
     const formData = new FormData();
     formData.append("img", file);
+    if (title.trim() === "") {
+      setAlertMsg("공백은 입력할 수 없습니다");
+      setAlertOpen(true);
+      return;
+    }
 
     const data = {
       title: title.trim(),
@@ -148,18 +153,16 @@ const Diary = () => {
             diaryCondition={diaryCondition}
             onClick={() => {
               setDiaryCondition("PUBLIC");
-            }}
-          >
-            공개
+            }}>
+            전체 공개
           </SelectButtonLeft>
           <CenterColumn></CenterColumn>
           <SelectButtonRight
             diaryCondition={diaryCondition}
             onClick={() => {
               setDiaryCondition("PRIVATE");
-            }}
-          >
-            비공개
+            }}>
+            친구 공개
           </SelectButtonRight>
         </PublicSelectBox>
 
