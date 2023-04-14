@@ -415,7 +415,6 @@ const Container = styled.div`
 `;
 
 const ProfilePicture = styled.div`
-  background-color: red;
   width: 120px;
   height: 120px;
   border-radius: 50%;
