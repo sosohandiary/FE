@@ -111,7 +111,8 @@ function Detail() {
                     top: "-10px",
                     zIndex: 0,
                     width: "100%",
-                    height: "550px",
+                    height: "100%",
+                    margin: "10px",
                     overflow: "hidden",
                   }}
                 >
@@ -119,7 +120,7 @@ function Detail() {
                     diaryId={diaryId}
                     paperId={detailId}
                     width={700}
-                    height={550}
+                    height={window.innerHeight}
                   />
                 </div>
               </StyledDetailCard>
@@ -202,11 +203,12 @@ const StyledDetailCard = styled.div`
   display: flex;
   justify-content: center;
   width: 375px;
-  height: 550px;
+  height: 80vh;
   border: none;
   background-color: #f1f1f1;
   border-radius: 30px 30px 0px 0px;
   padding: 10px;
+  overflow: scroll;
 `;
 
 const DetailElement = styled.div`
