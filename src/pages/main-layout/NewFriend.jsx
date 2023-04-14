@@ -126,9 +126,9 @@ const NewFriend = () => {
                     textOverflow="ellipsis"
                     whiteSpace="nowrap"
                   >
-                    {item.statusMessage.length <= 19
-                      ? item.statusMessage
-                      : item.statusMessage.substr(0, 19) + "..."}
+                    {item?.statusMessage?.length > 13
+                      ? item?.statusMessage?.substr(0, 13) + "..."
+                      : item?.statusMessage}
                   </StText>
                 </ListContentBox>
               </ListBox>
