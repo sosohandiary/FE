@@ -19,7 +19,6 @@ const Diary = () => {
   const [alertMsg, setAlertMsg] = useState("");
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertNavigateLink, setAlertNavigateLink] = useState("");
-  const regNickname = /\s/g;
 
   useEffect(() => {
     if (accessToken === null) {
