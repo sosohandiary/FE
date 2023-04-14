@@ -47,10 +47,12 @@ const FlipBook = ({ data, diaryId }) => {
           </InnerThumb>
         ))}
       </HTMLFlipBook>
-      <ButtonArea>
-        [<span>{page + 1}</span> of
-        <span> {totalPage}</span>]
-      </ButtonArea>
+      {
+        <ButtonArea>
+          [<span>{page + 1}</span> of
+          <span> {totalPage}</span>]
+        </ButtonArea>
+      }
     </FlipBookArea>
   );
 };

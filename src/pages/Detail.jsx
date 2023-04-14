@@ -49,6 +49,7 @@ function Detail() {
 
   useEffect(() => {
     sheetRef.current.click();
+    window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   }, []);
 
   //delete
