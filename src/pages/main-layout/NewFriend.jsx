@@ -90,7 +90,7 @@ const NewFriend = () => {
   return (
     <OuterBorderArea>
       <WholeViewWidth
-        style={{ marginTop: "-20px", paddingTop: "20px", height: "100vh" }}
+        style={{ marginTop: "-20px", paddingTop: "20px", height: "auto" }}
       >
         <Searchbox
           placeholder="닉네임을 검색해 친구를 추가해보세요"
@@ -142,7 +142,7 @@ const NewFriend = () => {
         ) : (
           <TextBox>검색 결과가 없습니다.</TextBox>
         )}
-        <InvisibleArea></InvisibleArea>
+        <InvisibleDiv></InvisibleDiv>
       </WholeViewWidth>
     </OuterBorderArea>
   );
@@ -223,5 +223,9 @@ const InvisibleArea = styled.div`
 const OuterBorderArea = styled.div`
   border-left: 0.0625rem solid rgb(225, 226, 228);
   border-right: 0.0625rem solid rgb(225, 226, 228);
-  min-height: 100vh;
+  height: auto;
+`;
+
+const InvisibleDiv = styled.div`
+  height: 85px;
 `;

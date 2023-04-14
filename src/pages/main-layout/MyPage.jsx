@@ -165,7 +165,7 @@ function MyPage() {
                     </StTextBox>
                     <StTextBox>
                       <Label size="16" color="#B0B0B0">
-                      {getDate(item.createdAt)}
+                        {getDate(item.createdAt)}
                       </Label>
                     </StTextBox>
 

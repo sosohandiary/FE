@@ -230,8 +230,8 @@ const Thumbnail = ({ diaryId, paperId, width, height }) => {
     <div>
       <StageStyle>
         <Stage
-          width={window.innerWidth}
-          height={height + 90}
+          width={375}
+          height={550}
           style={{ position: "absolute", top: "0px", zIndex: "1" }}
         >
           <Layer>

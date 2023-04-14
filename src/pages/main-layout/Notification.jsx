@@ -69,6 +69,8 @@ export default Notification;
 const WholeView = styled.div`
   width: 400px;
   margin: 0 auto;
+  min-height: 100vh;
+  height: auto;
 
   border-left: 0.0625rem solid rgb(225, 226, 228);
   border-right: 0.0625rem solid rgb(225, 226, 228);
