@@ -10,6 +10,8 @@ import { ProfilePicSmall } from "../../components/ProfilePics";
 import defaultProfileImg from "../../assets/defaultProfileImg.jpeg";
 import addFriendButton from "../../assets/addFriendButton.png";
 import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useDispatch } from "react-redux";
+import { changeCurNavbarMode } from "../../contexts/curNavbarModeSlice";
 const NewFriend = () => {
   const accessToken = window.localStorage.getItem("accessToken");
 
@@ -18,12 +20,18 @@ const NewFriend = () => {
   const [profileStatus, setProfileStatus] = useState(true);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (accessToken === null) {
       navigate("/login", { replace: true });
     }
   }, [accessToken]);
+
+  // navbar 모드 변경
+  useEffect(() => {
+    dispatch(changeCurNavbarMode("MAGNIFIER"));
+  }, []);
 
   const queryClient = useQueryClient();
 

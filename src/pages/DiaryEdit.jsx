@@ -63,9 +63,15 @@ function DiaryEdit() {
   const handleClick = useCallback(
     async (e) => {
       e.preventDefault();
-      if (title === titleBeforeChange) {
+      if (title.trim() === "") {
+        setAlertMsg("공백은 입력할 수 없습니다");
+        setAlertOpen(true);
+        return;
+      }
+      if (title.trim() === titleBeforeChange) {
         setAlertMsg("제목과 사진을 전부 수정해주세요");
         setAlertOpen(true);
+        return;
       }
       const formData = new FormData();
 
@@ -181,9 +187,10 @@ function DiaryEdit() {
           setAlertMsg("멤버가 추가되었습니다");
           setCheckedList([]);
           setAlertOpen(true);
+          setAlertReload(true);
         })
         .catch((err) => {
-          setAlertMsg("멤버를 추가할 수 없습니다");
+          setAlertMsg("멤버가 8명을 초과하였습니다");
           setCheckedList([]);
           setAlertOpen(true);
         });
@@ -212,6 +219,7 @@ function DiaryEdit() {
           setAlertOpen={setAlertOpen}
           message={alertMsg}
           navigateLink={alertNavigateLink}
+          reload={alertReload}
         />
       ) : (
         ""
@@ -301,7 +309,8 @@ function DiaryEdit() {
                       color="primary"
                       onClick={() => {
                         onRemove(item);
-                      }}>
+                      }}
+                    >
                       <img
                         src={item.profileImageUrl}
                         style={{
@@ -334,7 +343,8 @@ function DiaryEdit() {
                       marginBottom: "8px",
                       marginLeft: "10px",
                       marginRight: "10px",
-                    }}>
+                    }}
+                  >
                     <label style={{ flex: 1 }}>
                       <ImgAndName>
                         <img
@@ -357,9 +367,11 @@ function DiaryEdit() {
                         onCheckedElement(friend);
                       }}
                       checkedList={checkedList}
-                      friend={friend}></CheckBox>
+                      friend={friend}
+                    ></CheckBox>
                     <AlreadyMember
-                      disabled={alreadyMembersId.includes(friend.memberId)}>
+                      disabled={alreadyMembersId.includes(friend.memberId)}
+                    >
                       이미 멤버입니다
                     </AlreadyMember>
                   </ListStyle>
