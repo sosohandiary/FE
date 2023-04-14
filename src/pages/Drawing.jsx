@@ -682,7 +682,9 @@ const Drawing = () => {
         </TextAreaStyle>
       </PaperArea>
       <DeleteButtonArea mode={mode}>
-        <SubmitButton onClick={deleteStickerHandler}>스티커 삭제</SubmitButton>
+        <SubmitButton onClick={deleteStickerHandler}>
+          선택한 스티커 삭제
+        </SubmitButton>
       </DeleteButtonArea>
       <AllToolbarStyle isOpenAllToolbar={isOpenAllToolbar}>
         <ToolButton
@@ -1070,7 +1072,7 @@ const SaveButtonArea = styled.div`
   position: absolute;
   top: 10px;
   right: 10px;
-  z-index: 20;
+  z-index: 10;
   width: 100px;
   font-size: 80px;
   @media (min-width: 700px) {

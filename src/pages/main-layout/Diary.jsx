@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import AlertMessage from "../../components/alert/AlertMessage";
 import AlertMessageAndNavigate from "../../components/alert/AlertMessage";
 import logoGray from "../../assets/logoGray.png";
+import AlertMessageConfirm from "../../components/alert/AlertMessageForDeleteDiary";
 
 const Diary = () => {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -219,6 +220,9 @@ const Wholebox = styled.div`
   display: flex;
   flex-direction: column;
   /* padding: 5vw; */
+
+  height: auto;
+  min-height: 100vh;
 
   border-left: 0.0625rem solid rgb(225, 226, 228);
   border-right: 0.0625rem solid rgb(225, 226, 228);
