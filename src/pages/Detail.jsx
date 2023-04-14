@@ -207,6 +207,7 @@ const StyledDetailCard = styled.div`
   background-color: #f1f1f1;
   border-radius: 30px 30px 0px 0px;
   padding: 10px;
+  overflow: scroll;
 `;
 
 const DetailElement = styled.div`
