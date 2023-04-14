@@ -17,6 +17,7 @@ import { getProfile } from "../../api/mypage";
 import { VscBlank } from "react-icons/vsc";
 import { useDispatch } from "react-redux";
 import { changeCurNavbarMode } from "../../contexts/curNavbarModeSlice";
+import defaultProfileImg from "../../assets/defaultProfileImg.jpeg";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -141,7 +142,11 @@ const MainPage = () => {
           <div>내가 만든 다이어리</div>
           <CurProfileImage
             style={{ marginRight: "15px" }}
-            url={resOfCurrentUserInfo.data?.data.profileImageUrl}
+            url={
+              resOfCurrentUserInfo.data?.data.profileImageUrl
+                ? resOfCurrentUserInfo.data?.data.profileImageUrl
+                : defaultProfileImg
+            }
             onClick={() => {
               navigate("/mypage");
             }}

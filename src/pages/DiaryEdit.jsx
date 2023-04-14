@@ -11,6 +11,7 @@ import uncheckedImg from "../assets/diary-edit/uncheckedImg.png";
 import { Badge } from "@mui/material";
 import { data } from "jquery";
 import AlertMessage from "../components/alert/AlertMessage";
+import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
 
 function DiaryEdit() {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -312,12 +313,17 @@ function DiaryEdit() {
                       }}
                     >
                       <img
-                        src={item.profileImageUrl}
+                        src={
+                          item.profileImageUrl
+                            ? item.profileImageUrl
+                            : defaultProfileImg
+                        }
                         style={{
                           width: "40px",
                           height: "40px",
                           borderRadius: "50%",
                           marginRight: "7px",
+                          objectFit: "cover",
                         }}
                       />
                     </Badge>
@@ -348,12 +354,17 @@ function DiaryEdit() {
                     <label style={{ flex: 1 }}>
                       <ImgAndName>
                         <img
-                          src={friend.profileImageUrl}
+                          src={
+                            friend.profileImageUrl
+                              ? friend.profileImageUrl
+                              : defaultProfileImg
+                          }
                           style={{
                             width: "50px",
                             height: "50px",
                             borderRadius: "50%",
                             marginRight: "7px",
+                            objectFit: "cover",
                           }}
                         />
                         <FriendName>
