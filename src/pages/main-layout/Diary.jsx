@@ -165,6 +165,7 @@ const Diary = () => {
 
         <SubmitButton onClick={handleClick}>생성하기</SubmitButton>
       </form>
+      <InvisibleDiv></InvisibleDiv>
     </Wholebox>
   );
 };
@@ -224,6 +225,7 @@ const Wholebox = styled.div`
 
   margin: 0 auto;
   width: 400px;
+  height: auto;
 `;
 
 const TopBox = styled.div`
@@ -349,11 +351,15 @@ const SubmitButton = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin: 100px auto 80px auto;
+  margin: 100px auto 100px auto;
   border: 1px solid rgba(0, 0, 0, 0);
   border-radius: 20px;
   background-color: #e1e7ff;
   width: 300px;
   height: 50px;
   cursor: pointer;
+`;
+
+const InvisibleDiv = styled.div`
+  height: 0.01px;
 `;

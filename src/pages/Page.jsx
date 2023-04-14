@@ -50,7 +50,7 @@ function Page() {
   };
 
   const navToBack = () => {
-    navigate('/mypage');
+    navigate("/mypage");
   };
   return (
     <Wholebox>
@@ -65,7 +65,7 @@ function Page() {
         ""
       )}
       <TopBox>
-      <StArrow>
+        <StArrow>
           <StyledGobackButton onClick={navToBack} />
         </StArrow>
         <Textbox>다이어리 상세보기</Textbox>
@@ -83,12 +83,20 @@ function Page() {
         </HeaderRightArea>
       </HeaderArea>
       <ButtonArea>
-        <Upbutton backgroundColor='#A1B2FA' color="white" onClick={handleClick}>수정하기</Upbutton>
-        <Upbutton backgroundColor='#FC9F9F' color='white' onClick={handleDelete}>삭제하기</Upbutton>
+        <Upbutton backgroundColor="#A1B2FA" color="white" onClick={handleClick}>
+          수정하기
+        </Upbutton>
+        <Upbutton
+          backgroundColor="#FC9F9F"
+          color="white"
+          onClick={handleDelete}
+        >
+          삭제하기
+        </Upbutton>
       </ButtonArea>
       {previewImage && ( // 업로드하려는 이미지를 미리 보여줌
         <img
-          alt='preview'
+          alt="preview"
           src={previewImage}
           style={{
             margin: "auto",
@@ -123,7 +131,6 @@ const Upbutton = styled.button`
   background-color: #e8fefb;
   background-color: ${(props) => props.backgroundColor};
 
-
   width: 230px;
   height: 35px;
   border: none;
@@ -139,7 +146,8 @@ const Wholebox = styled.div`
   flex-direction: column;
   /* padding: 5vw; */
 
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
 
   border-left: 0.0625rem solid rgb(225, 226, 228);
   border-right: 0.0625rem solid rgb(225, 226, 228);
@@ -177,7 +185,7 @@ const Textbox = styled.div`
   margin-bottom: 17px;
   display: flex;
   justify-content: center;
-  font-size:18px;
+  font-size: 18px;
 `;
 
 const HeaderArea = styled.div`

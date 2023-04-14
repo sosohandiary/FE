@@ -106,14 +106,14 @@ const MyFriends = () => {
         <StArrow>
           <StyledGobackButton onClick={navToBack} />
         </StArrow>
-        <Title size='18'>친구</Title>
+        <Title size="18">친구</Title>
         {/* <Searchbox placeholder='친구 검색' /> */}
         <Filter
           setCards={setSearchFriends}
           existCards={friends}
-          placeholder='닉네임을 검색해 친구를 찾아보세요'
+          placeholder="닉네임을 검색해 친구를 찾아보세요"
         />
-        <Label alignSelf='flex-start'>
+        <Label alignSelf="flex-start">
           친구 {friendsCount?.data?.myFriendCount}
         </Label>
         {notes && (
@@ -137,7 +137,7 @@ const MyFriends = () => {
                     >
                       {item.friendStatus === "ACCEPTED" && (
                         <>
-                          <div className='slide'>
+                          <div className="slide">
                             <ListCards>
                               {item.profileImageUrl ? (
                                 <ProfilePicSmall src={item.profileImageUrl} />
@@ -146,7 +146,7 @@ const MyFriends = () => {
                               )}
 
                               <ListContentBox>
-                                <StText fontWeight='bold'>
+                                <StText fontWeight="bold">
                                   {item.nickname}
                                 </StText>
                                 <StText>{item.statusMessage}</StText>
@@ -160,6 +160,7 @@ const MyFriends = () => {
                 })}
           </SwipeableList>
         </div>
+        <InvisibleDiv></InvisibleDiv>
       </WholeView>
     </>
   );
@@ -170,7 +171,9 @@ export default MyFriends;
 const WholeView = styled.div`
   width: 400px;
   margin: 0 auto;
-  height: 100vh;
+  height: auto;
+  min-height: 100vh;
+  overflow: scroll;
 
   border-left: 0.0625rem solid rgb(225, 226, 228);
   border-right: 0.0625rem solid rgb(225, 226, 228);
@@ -263,4 +266,8 @@ const LabelArea = styled.div`
   align-items: center;
   margin: 10px;
   color: #c0c0c0;
+`;
+
+const InvisibleDiv = styled.div`
+  height: 0.01px;
 `;

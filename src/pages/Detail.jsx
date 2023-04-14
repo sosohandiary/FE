@@ -32,7 +32,9 @@ function Detail() {
 
   const accessToken = localStorage.getItem("accessToken");
 
-  const { data: diaryData } = useQuery(["getDiary"], () => getDiary(diaryId, detailId, accessToken));
+  const { data: diaryData } = useQuery(["getDiary"], () =>
+    getDiary(diaryId, detailId, accessToken)
+  );
 
   const myDiary = diaryData?.data;
 
@@ -50,7 +52,10 @@ function Detail() {
   }, []);
 
   //delete
-  const { mutate: deleteDiaryMutate } = useMutation((detailId) => deleteDiary(diaryId, detailId, accessToken), {});
+  const { mutate: deleteDiaryMutate } = useMutation(
+    (detailId) => deleteDiary(diaryId, detailId, accessToken),
+    {}
+  );
 
   const navToModify = () => {
     navigate(`/drawing/${diaryId}/${detailId}`);
@@ -70,17 +75,29 @@ function Detail() {
   return (
     <>
       {alertOpen ? (
-        <AlertMessage setAlertOpen={setAlertOpen} message={alertMsg} navigateLink={alertNavigateLink} />
+        <AlertMessage
+          setAlertOpen={setAlertOpen}
+          message={alertMsg}
+          navigateLink={alertNavigateLink}
+        />
       ) : (
         ""
       )}
       <StyledGobackButton onClick={() => navigate(-1)} />
       {myDiary && (
         <StyledDerailPage>
-          <GetUser ProfileImg={myDiary?.profileImageUrl} createdAt={myDiary?.createdAt} nickname={myDiary?.nickname} />
+          <GetUser
+            ProfileImg={myDiary.profileImageUrl}
+            createdAt={myDiary.createdAt}
+            nickname={myDiary.nickname}
+          />
           {curUserInfo.data.memberId === diaryData?.data.authorId ? (
             <DiaryModalWrapper>
-              <DiaryModal navToModify={navToModify} onDeleteHandler={onDeleteHandler} detailId={detailId} />
+              <DiaryModal
+                navToModify={navToModify}
+                onDeleteHandler={onDeleteHandler}
+                detailId={detailId}
+              />
             </DiaryModalWrapper>
           ) : (
             ""
@@ -96,16 +113,26 @@ function Detail() {
                     width: "100%",
                     height: "100%",
                     margin: "10px",
+                    overflow: "hidden",
                   }}
                 >
-                  <Thumbnail diaryId={diaryId} paperId={detailId} width={700} height={window.innerHeight} />
+                  <Thumbnail
+                    diaryId={diaryId}
+                    paperId={detailId}
+                    width={700}
+                    height={window.innerHeight}
+                  />
                 </div>
               </StyledDetailCard>
             </StyledDetailCardWrapper>
           </div>
         </StyledDerailPage>
       )}
-      <button style={{ display: "none" }} ref={sheetRef} onClick={() => setOpen(true)}></button>
+      <button
+        style={{ display: "none" }}
+        ref={sheetRef}
+        onClick={() => setOpen(true)}
+      ></button>
       {myDiary ? (
         <StBottomSheet
           open={open}

@@ -419,8 +419,8 @@ const Addbutton = styled.button`
 const ModalWrapper = styled.div`
   margin: 0 auto;
   width: 400px;
-  position: fixed;
-  bottom: -2%;
+  position: absolute;
+  /* bottom: -2%; */
   /* width: 100%; */
   /* left: 0%;
   display: flex;
@@ -437,6 +437,9 @@ const ModalContent = styled.div`
   background-color: #fff;
   border-radius: 25px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+  height: 100vh;
+  overflow-y: scroll;
   /* width: 100%; */
   padding: 15px;
   border-bottom-left-radius: 0px;
@@ -507,7 +510,8 @@ const Wholebox = styled.div`
   flex-direction: column;
   /* padding: 5vw; */
 
-  height: 100vh;
+  height: auto;
+  min-height: 100vh;
 
   border-left: 0.0625rem solid rgb(225, 226, 228);
   border-right: 0.0625rem solid rgb(225, 226, 228);
@@ -628,7 +632,7 @@ const CheckedListBox = styled.div`
 const CompleteButtonArea = styled.div`
   display: flex;
   justify-content: center;
-  margin: 10px;
+  margin: 10px 10px 50px 10px;
 `;
 const Completebutton = styled.button`
   color: black;

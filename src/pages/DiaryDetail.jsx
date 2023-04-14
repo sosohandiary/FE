@@ -92,22 +92,21 @@ const DiaryDetail = () => {
 
   return (
     <>
-      {alertOpen ? (
-        <AlertMessage
-          setAlertOpen={setAlertOpen}
-          message={alertMsg}
-          navigateLink={alertNavigateLink}
-          reload={alertReload}
-        />
-      ) : (
-        ""
-      )}
       <Container>
+        {alertOpen ? (
+          <AlertMessage
+            setAlertOpen={setAlertOpen}
+            message={alertMsg}
+            navigateLink={alertNavigateLink}
+            reload={alertReload}
+          />
+        ) : (
+          ""
+        )}
         <StArrow>
           <StyledGobackButton onClick={goBackHandler} />
         </StArrow>
         <Title>다이어리 상세보기</Title>
-
         <div>
           <HeaderStyle>
             <DiaryTitle>{data[0]?.diaryTitle}</DiaryTitle>
@@ -122,18 +121,18 @@ const DiaryDetail = () => {
             <div>밀어서 확인하세요</div>
           </LabelArea>
         </div>
-
         <FlipStyle>
           <FlipBook data={data} diaryId={diaryId} />
         </FlipStyle>
         <PaginationStyle>
           <Pagination
             count={pageCount}
-            color='primary'
+            color="primary"
             onChange={handlePagenationChange}
             page={Number(curPage) + 1}
           />
         </PaginationStyle>
+        <InvisibleDiv></InvisibleDiv>
       </Container>
     </>
   );
@@ -144,6 +143,8 @@ export default DiaryDetail;
 const Container = styled.div`
   margin: 0 auto;
   width: 400px;
+  height: auto;
+  min-height: 100vh;
 
   border-left: 0.0625rem solid rgb(225, 226, 228);
   border-right: 0.0625rem solid rgb(225, 226, 228);
@@ -280,4 +281,8 @@ const LabelArea = styled.div`
   margin: -40px 0;
   width: 100%;
   height: 10px;
+`;
+
+const InvisibleDiv = styled.div`
+  height: 15px;
 `;
