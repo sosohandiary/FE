@@ -47,7 +47,6 @@ function Detail() {
 
   useEffect(() => {
     sheetRef.current.click();
-    console.log("dd");
   }, []);
 
   //delete
@@ -90,7 +89,7 @@ function Detail() {
             createdAt={myDiary.createdAt}
             nickname={myDiary.nickname}
           />
-          {curUserInfo.data.memberId === diaryData?.data?.authorId ? (
+          {curUserInfo.data?.memberId === diaryData?.data?.authorId ? (
             <DiaryModalWrapper>
               <DiaryModal
                 navToModify={navToModify}

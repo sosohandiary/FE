@@ -114,7 +114,7 @@ const DiaryDetail = () => {
           </HeaderStyle>
           <MorePageButton onClick={newInnerPaper}>한장 더 쓰기</MorePageButton>
           <LabelArea>
-            <div>다이어리를 넘겨보세요</div>
+            <div>속지를 추가해주세요</div>
           </LabelArea>
         </div>
         <FlipStyle>
