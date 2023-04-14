@@ -23,7 +23,7 @@ const FlipBook = ({ data, diaryId }) => {
       <HTMLFlipBook
         usePortrait={true}
         width={370}
-        height={600}
+        height={560}
         onFlip={onFlipHandler}
         ref={pageRef}
       >
@@ -32,7 +32,7 @@ const FlipBook = ({ data, diaryId }) => {
             <div
               style={{
                 paddingBottom: "300px",
-                height: "200px",
+                height: "260px",
                 width: "370px",
                 overflow: "hidden",
               }}
