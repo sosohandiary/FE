@@ -126,7 +126,9 @@ const NewFriend = () => {
                     textOverflow="ellipsis"
                     whiteSpace="nowrap"
                   >
-                    {item.statusMessage}
+                    {item.statusMessage.length <= 19
+                      ? item.statusMessage
+                      : item.statusMessage.substr(0, 19) + "..."}
                   </StText>
                 </ListContentBox>
               </ListBox>
@@ -192,6 +194,9 @@ const StText = styled.div`
   font-size: ${({ size }) => `${size}px`};
   font-weight: ${(props) => props.fontWeight};
   color: ${(props) => props.color};
+  /* max-width: 280px;
+  max-height: 40px;
+  overflow-y: hidden; */
 
   /* overflow: ${(props) => props.overflow};
   text-overflow: ${(props) => props.textOverflow};

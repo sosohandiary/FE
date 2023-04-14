@@ -190,7 +190,7 @@ function DiaryEdit() {
           setAlertReload(true);
         })
         .catch((err) => {
-          setAlertMsg("멤버가 8명을 초과하였습니다");
+          setAlertMsg(err.response.data.msg);
           setCheckedList([]);
           setAlertOpen(true);
         });

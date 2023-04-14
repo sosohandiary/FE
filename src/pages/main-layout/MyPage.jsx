@@ -90,7 +90,7 @@ const MyPage = () => {
   };
 
   const navToBack = () => {
-    navigate(-1);
+    navigate("/");
   };
 
   const LogoutHandler = () => {
