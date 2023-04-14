@@ -77,7 +77,7 @@ const DiaryDetail = () => {
   };
 
   const goBackHandler = () => {
-    navigate(-1);
+    navigate("/");
   };
 
   const handlePagenationChange = (e, page) => {
