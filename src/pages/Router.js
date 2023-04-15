@@ -22,7 +22,7 @@ import NotFound from "./NotFound";
 
 const Router = () => {
   const accessToken = window.localStorage.getItem("accessToken");
-  console.log("aaa");
+  console.log(accessToken);
 
   return (
     <BrowserRouter>

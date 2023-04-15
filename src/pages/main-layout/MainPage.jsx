@@ -18,6 +18,7 @@ import { VscBlank } from "react-icons/vsc";
 import { useDispatch } from "react-redux";
 import { changeCurNavbarMode } from "../../contexts/curNavbarModeSlice";
 import defaultProfileImg from "../../assets/defaultProfileImg.jpeg";
+import { isTokenNull } from "../../api/isTokenNull";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -31,7 +32,11 @@ const MainPage = () => {
 
   //비로그인 -> 로그인창으로
   const accessToken = window.localStorage.getItem("accessToken");
+  console.log(accessToken);
 
+  // if (accessToken === null) {
+  //   navigate("/login");
+  // }
   // 로그인 유저 정보
   const {
     data: dataOfUserInfo,
@@ -83,8 +88,9 @@ const MainPage = () => {
         }
       )
       .then((res) => {
-        setIsLoadingForPrivate(false);
+        console.log(res);
 
+        setIsLoadingForPrivate(false);
         if (res.data === "") {
           return;
         }
