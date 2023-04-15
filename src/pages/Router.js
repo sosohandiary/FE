@@ -19,10 +19,12 @@ import DiaryEdit from "./DiaryEdit";
 import DiaryDetail from "./DiaryDetail";
 import AlertMessage from "../components/alert/AlertMessage";
 import NotFound from "./NotFound";
+import ScrollToTop from "../utils/ScrollToTop";
 
 const Router = () => {
   return (
     <BrowserRouter>
+    <ScrollToTop/>
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<MainPage />} />
