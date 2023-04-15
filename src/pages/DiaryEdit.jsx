@@ -310,8 +310,7 @@ function DiaryEdit() {
                       color="primary"
                       onClick={() => {
                         onRemove(item);
-                      }}
-                    >
+                      }}>
                       <img
                         src={
                           item.profileImageUrl
@@ -349,8 +348,7 @@ function DiaryEdit() {
                       marginBottom: "8px",
                       marginLeft: "10px",
                       marginRight: "10px",
-                    }}
-                  >
+                    }}>
                     <label style={{ flex: 1 }}>
                       <ImgAndName>
                         <img
@@ -378,11 +376,9 @@ function DiaryEdit() {
                         onCheckedElement(friend);
                       }}
                       checkedList={checkedList}
-                      friend={friend}
-                    ></CheckBox>
+                      friend={friend}></CheckBox>
                     <AlreadyMember
-                      disabled={alreadyMembersId.includes(friend.memberId)}
-                    >
+                      disabled={alreadyMembersId.includes(friend.memberId)}>
                       이미 멤버입니다
                     </AlreadyMember>
                   </ListStyle>
