@@ -231,7 +231,6 @@ const Content = styled.div`
     right: 4%;
     border: none;
     background: none;
-    cursor: pointer;
     .TbAlertCircle {
       font-size: 145%;
       color: red;
@@ -254,4 +253,5 @@ const ValidationAlert = styled.small`
   position: relative;
   color: red;
   margin-top: -16px;
+  cursor: default;
 `;

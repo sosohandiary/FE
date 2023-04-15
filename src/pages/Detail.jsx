@@ -82,7 +82,13 @@ function Detail() {
           <GetUser ProfileImg={myDiary?.profileImageUrl} createdAt={myDiary?.createdAt} nickname={myDiary?.nickname} />
           {curUserInfo?.data?.memberId === diaryData?.data?.authorId ? (
             <DiaryModalWrapper>
-              <DiaryModal navToModify={navToModify} onDeleteHandler={onDeleteHandler} detailId={detailId} />
+              <DiaryModal
+                navToModify={navToModify}
+                onDeleteHandler={onDeleteHandler}
+                detailId={detailId}
+                customJson={myDiary?.customJson}
+              />
+
             </DiaryModalWrapper>
           ) : (
             ""
