@@ -22,6 +22,9 @@ import NotFound from "./NotFound";
 import ScrollToTop from "../utils/ScrollToTop";
 
 const Router = () => {
+  const accessToken = window.localStorage.getItem("accessToken");
+  console.log(accessToken);
+
   return (
     <BrowserRouter>
     <ScrollToTop/>

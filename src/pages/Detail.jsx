@@ -147,6 +147,7 @@ function Detail() {
                 height="28"
                 style={{
                   marginRight: "5px",
+                  objectFit: "cover",
                 }}
               />
               {myDiary.commentCount}

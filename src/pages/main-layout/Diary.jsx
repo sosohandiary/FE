@@ -146,7 +146,7 @@ const Diary = () => {
             type="text"
             value={title}
             onChange={(e) => {
-              if (e.target.value.length > 8) {
+              if (e.target.value.length > 7) {
                 setAlertMsg("7자 이하로 설정해주세요");
                 setAlertOpen(true);
                 return;
