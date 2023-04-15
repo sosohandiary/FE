@@ -10,6 +10,7 @@ import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
 import { SwipeableList, SwipeableListItem, TrailingActions, Type as ListType } from "react-swipeable-list";
 import "react-swipeable-list/dist/styles.css";
 import AlertMessageForDelComment from "../alert/AlertMessageForDelComment";
+import AlertMessage from "../alert/AlertMessage";
 
 const CommentBox = () => {
   const [comment, setComment] = useState({
@@ -20,6 +21,8 @@ const CommentBox = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [test, setTest] = useState(null);
   const [alertOpenDeleteAlert, setAlertOpenDeleteAlert] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMsg, setAlertMsg] = useState("");
 
   const queryClient = useQueryClient();
   const { detailId } = useParams();
@@ -76,9 +79,14 @@ const CommentBox = () => {
 
   const onAddHandler = (event) => {
     event.preventDefault();
-    if (comment.comment.trim() === "") {
+
+    // 댓글 입력값이 공백이거나 250자 이상인 경우 댓글을 추가하지 않음
+    if (comment.comment.trim() === "" || comment.comment.length > 250) {
+      setAlertOpen(true);
+      setAlertMsg("댓글은 250자 이하로 입력해주세요.");
       return;
     }
+
     addmutation();
     setComment({ comment: "" });
   };
@@ -188,6 +196,7 @@ const CommentBox = () => {
           }}
         />
       )}
+      {alertOpen ? <AlertMessage setAlertOpen={setAlertOpen} message={alertMsg} /> : ""}
     </div>
   );
 };
