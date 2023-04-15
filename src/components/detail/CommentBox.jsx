@@ -7,9 +7,9 @@ import { addComment, getComment, deleteComment, updatedComment } from "../../api
 import { useParams } from "react-router-dom";
 import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
-
 import { SwipeableList, SwipeableListItem, TrailingActions, Type as ListType } from "react-swipeable-list";
 import "react-swipeable-list/dist/styles.css";
+import AlertMessageForDelComment from "../alert/AlertMessageForDelComment";
 
 const CommentBox = () => {
   const [comment, setComment] = useState({
@@ -19,6 +19,7 @@ const CommentBox = () => {
   const [editingComment, setEditingComment] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [test, setTest] = useState(null);
+  const [alertOpenDeleteAlert, setAlertOpenDeleteAlert] = useState(false);
 
   const queryClient = useQueryClient();
   const { detailId } = useParams();
@@ -83,8 +84,13 @@ const CommentBox = () => {
     setComment({ comment: "" });
   };
 
+  // const onDeleteHandler = (commentId) => {
+  //   deleteCommentMutate(commentId);
+  // };
+
   const onDeleteHandler = (commentId) => {
-    deleteCommentMutate(commentId);
+    setAlertOpenDeleteAlert(true); // set the state to true
+    setTest(commentId); // set the comment id to be deleted
   };
 
   const onEditHandler = (comment) => {
@@ -177,6 +183,16 @@ const CommentBox = () => {
           onKeyPress={handleKeyDown}
         />
       </WholeAreaWithMargin>
+      {alertOpenDeleteAlert && (
+        <AlertMessageForDelComment
+          setAlertOpenDeleteAlert={setAlertOpenDeleteAlert}
+          message="댓글을 삭제하시겠습니까?"
+          onDeleteHandler={() => {
+            deleteCommentMutate(test);
+            setAlertOpenDeleteAlert(false);
+          }}
+        />
+      )}
     </div>
   );
 };
