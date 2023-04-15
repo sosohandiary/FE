@@ -5,7 +5,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ellipse from "../../assets/main-page/Ellipse 111.png";

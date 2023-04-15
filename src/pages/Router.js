@@ -21,6 +21,9 @@ import AlertMessage from "../components/alert/AlertMessage";
 import NotFound from "./NotFound";
 
 const Router = () => {
+  const accessToken = window.localStorage.getItem("accessToken");
+  console.log("aaa");
+
   return (
     <BrowserRouter>
       <Routes>
