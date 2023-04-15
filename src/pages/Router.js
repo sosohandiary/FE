@@ -18,10 +18,16 @@ import Page from "./Page";
 import DiaryEdit from "./DiaryEdit";
 import DiaryDetail from "./DiaryDetail";
 import AlertMessage from "../components/alert/AlertMessage";
+import NotFound from "./NotFound";
+import ScrollToTop from "../utils/ScrollToTop";
 
 const Router = () => {
+  const accessToken = window.localStorage.getItem("accessToken");
+  console.log(accessToken);
+
   return (
     <BrowserRouter>
+    <ScrollToTop/>
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<MainPage />} />
@@ -43,6 +49,7 @@ const Router = () => {
         <Route path="/diary/:diaryId" element={<Page />} />
         <Route path="/diaryedit/:diaryId" element={<DiaryEdit />} />
         <Route path="/alertmessage" element={<AlertMessage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

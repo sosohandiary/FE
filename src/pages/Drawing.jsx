@@ -44,6 +44,7 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { List } from "antd";
 import { Grid, ListItemText } from "@mui/material";
 import { IoIosSave } from "react-icons/io";
+import AlertMessage from "../components/alert/AlertMessage";
 
 // <---------------스티커 크기 조절----------------->
 const ImageSticker = ({
@@ -283,6 +284,12 @@ const Drawing = () => {
   const [touchStartY, setTouchStartY] = useState(0);
   const [movementY, setmovementY] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const [alertMsg, setAlertMsg] = useState("");
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertNavigateLink, setAlertNavigateLink] = useState("");
+  const [alertReload, setAlertReload] = useState(false);
+
   const isDrawing = useRef(false);
   const { diaryid, paperid } = useParams();
 
@@ -438,7 +445,10 @@ const Drawing = () => {
         }
       )
       .then((res) => {
-        window.location.reload();
+        setAlertMsg("저장완료");
+        setAlertOpen(true);
+        // window reload 꼭 필요한건지 물어보기
+        // window.location.reload();
       });
   };
 
@@ -610,6 +620,18 @@ const Drawing = () => {
   };
   // 도화지
   return (
+    <>
+        {alertOpen ? (
+        <AlertMessage
+          setAlertOpen={setAlertOpen}
+          message={alertMsg}
+          navigateLink={alertNavigateLink}
+          reload={alertReload}
+        />
+      ) : (
+        ""
+      )}
+ 
     <div style={{ overflow: "hidden", width: "100vw" }}>
       <DiaryBack src={diaryBack} onClick={goBackDiaryHandler} />
       {/* <SaveButton src={saveImg} onClick={handleSave} /> */}
@@ -882,6 +904,7 @@ const Drawing = () => {
         </Grid>
       </StickerToolbarStyle>
     </div>
+    </>
   );
 };
 

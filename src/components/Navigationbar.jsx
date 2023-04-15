@@ -22,32 +22,10 @@ const Navigationbar = () => {
   const accessToken = window.localStorage.getItem("accessToken");
   const [navMode, setNavMode] = useState("HOME");
 
-  // const location = useLocation();
-
   const { curMode } = useSelector((state) => state.curNavbarModeSlice);
   useEffect(() => {
     setNavMode(curMode);
   }, [curMode]);
-
-  // useEffect(() => {
-  //   switch (location.pathname) {
-  //     case "/notification":
-  //       setNavMode("BELL");
-  //       return;
-  //     case "diary":
-  //       setNavMode("PLUS");
-  //       return;
-  //     case "/new-friend":
-  //       setNavMode("MAGNIFIER");
-  //       return;
-  //     case "/mypage":
-  //       setNavMode("PERSON");
-  //       return;
-  //     default:
-  //       setNavMode("HOME");
-  //       return;
-  //   }
-  // }, []);
 
   const { data: dataForInviteAlarm } = useQuery(["getInviteAlarmAtNav"], () => {
     return axios.get(`${process.env.REACT_APP_BASEURL}/invite/alarm`, {
