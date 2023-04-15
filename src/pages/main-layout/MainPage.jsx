@@ -87,12 +87,9 @@ const MainPage = () => {
   useEffect(() => {
     setIsLoadingForPrivate(true);
     axios
-      .get(
-        `${process.env.REACT_APP_BASEURL}/invite?page=${privatePage}&size=10`,
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
+      .get(`${process.env.REACT_APP_BASEURL}/invite?page=${privatePage}&size=10`, {
+        headers: { Authorization: accessToken },
+      })
       .then((res) => {
         // console.log("res : ", res);
         setIsLoadingForPrivate(false);
@@ -148,15 +145,10 @@ const MainPage = () => {
             backgroundColor: "#e1e7fc",
             display: "flex",
             justifyContent: "space-between",
-<<<<<<< HEAD
-          }}>
-          <div>내가 만든 다이어리</div>
-=======
           }}
         >
           <Label style={{ marginTop: "25px" }}>내가 만든 다이어리</Label>
           <Label>내가 만든 다이어리</Label>
->>>>>>> 12e94ef318d9e79ea34b277b4734cef112f02ad1
           <CurProfileImage
             style={{ marginRight: "15px" }}
             url={
@@ -166,7 +158,8 @@ const MainPage = () => {
             }
             onClick={() => {
               navigate("/mypage");
-            }}></CurProfileImage>
+            }}
+          ></CurProfileImage>
         </Label>
         <SelfmadeArea>
           <Swiper
@@ -175,7 +168,8 @@ const MainPage = () => {
             slidesPerView={3}
             spaceBetween={0}
             onSlideChange={(e) => setActiveIdxForSelfmade(e.activeIndex)}
-            className="mySwiper">
+            className="mySwiper"
+          >
             {isNoLogin ? (
               <SwiperSlide onClick={goToLogin}>
                 <DiaryCardTopBig
@@ -192,7 +186,8 @@ const MainPage = () => {
               <SwiperSlide
                 onClick={() => {
                   navigate("/diary");
-                }}>
+                }}
+              >
                 <DiaryCardTopBig
                   color="purple"
                   idx={0}
@@ -207,7 +202,8 @@ const MainPage = () => {
               <SwiperSlide
                 onClick={() => {
                   navigate("/diary");
-                }}>
+                }}
+              >
                 <DiaryCardTopBig
                   color="purple"
                   idx={0}
@@ -228,7 +224,8 @@ const MainPage = () => {
                     item={item}
                     onClick={() => {
                       navigate("/dd");
-                    }}>
+                    }}
+                  >
                     Slide {item.id}
                   </DiaryCardTopBig>
                 </SwiperSlide>
@@ -239,16 +236,14 @@ const MainPage = () => {
         <div style={{ margin: "10px 10px 80px 10px" }}>
           <Label>공개 다이어리</Label>
           <SwiperArea>
-            <Swiper
-              slidesPerView={"auto"}
-              spaceBetween={20}
-              className="mySwiper">
+            <Swiper slidesPerView={"auto"} spaceBetween={20} className="mySwiper">
               {dataListForPublic.map((item, i) => (
                 <SwiperSlide
                   key={i}
                   onClick={() => {
                     goToDiaryDetail(item.id);
-                  }}>
+                  }}
+                >
                   <DiaryCard item={item} color="purple" />
                 </SwiperSlide>
               ))}
@@ -267,15 +262,8 @@ const MainPage = () => {
               ) : (
                 ""
               )}
-              {IsLoadingForPublic ? (
-                <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
-              ) : (
-                ""
-              )}
-              <span
-                slot="wrapper-end"
-                ref={refForPublic}
-                style={{ margin: "0px 10px" }}>
+              {IsLoadingForPublic ? <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div> : ""}
+              <span slot="wrapper-end" ref={refForPublic} style={{ margin: "0px 10px" }}>
                 <Skeleton width={140} height={196} borderRadius={25} />
               </span>
               <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
@@ -288,16 +276,14 @@ const MainPage = () => {
           </SwiperArea>
           <Label>초대된 다이어리</Label>
           <SwiperArea>
-            <Swiper
-              slidesPerView={"auto"}
-              spaceBetween={20}
-              className="mySwiper">
+            <Swiper slidesPerView={"auto"} spaceBetween={20} className="mySwiper">
               {dataListForPrivate.map((item) => (
                 <SwiperSlide
                   key={item.id}
                   onClick={() => {
                     goToDiaryDetail(item.id);
-                  }}>
+                  }}
+                >
                   <DiaryCard item={item} color="purple" />
                 </SwiperSlide>
               ))}
@@ -308,7 +294,8 @@ const MainPage = () => {
                     backgroundColor: "##e1e7fc",
                     borderRadius: "25px",
                   }}
-                  onClick={goToLogin}>
+                  onClick={goToLogin}
+                >
                   로그인을 하고 공유 다이어리를 이용해보세요
                 </SwiperSlide>
               ) : dataListForPrivate.length < 3 ? (
@@ -326,15 +313,8 @@ const MainPage = () => {
               ) : (
                 ""
               )}
-              {IsLoadingForPrivate ? (
-                <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
-              ) : (
-                ""
-              )}
-              <span
-                slot="wrapper-end"
-                ref={refForPrivate}
-                style={{ margin: "0px 10px 0px 0px" }}>
+              {IsLoadingForPrivate ? <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div> : ""}
+              <span slot="wrapper-end" ref={refForPrivate} style={{ margin: "0px 10px 0px 0px" }}>
                 <Skeleton width={140} height={196} borderRadius={25} />
               </span>
               <span slot="wrapper-end" style={{ margin: "0px 10px" }}>
@@ -424,8 +404,7 @@ const SlideOne = styled.div`
   z-index: 1;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url(${({ imageUrl }) => imageUrl});
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(${({ imageUrl }) => imageUrl});
   background-size: cover;
 `;
 
