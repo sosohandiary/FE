@@ -186,7 +186,7 @@ const DiaryTitle = styled.div`
 `;
 
 const DiaryCreatedAt = styled.div`
-  font-size: 10px;
+  font-size: 16px;
 `;
 
 const StyledPagination = styled(ReactPaginate)`
