@@ -47,6 +47,9 @@ const DiaryModal = (props) => {
             maxHeight: ITEM_HEIGHT * 4.5,
             width: "15ch",
           },
+          sx: {
+            left: "52% !important"
+          }
         }}
       >
         {options.map((option) => (

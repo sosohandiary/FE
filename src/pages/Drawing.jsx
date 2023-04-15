@@ -449,8 +449,6 @@ const Drawing = () => {
       .then((res) => {
         setAlertMsg("저장완료");
         setAlertOpen(true);
-        // window reload 꼭 필요한건지 물어보기
-        // window.location.reload();
       });
   };
 
