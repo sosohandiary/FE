@@ -388,11 +388,11 @@ function DiaryEdit() {
                   완료
                 </Completebutton>
               </CompleteButtonArea>
-              <div>-</div>
-              <div>-</div>
-              <div>-</div>
-              <div>-</div>
-              <div>-</div>
+              <TextBlank>-</TextBlank>
+              <TextBlank>-</TextBlank>
+              <TextBlank>-</TextBlank>
+              <TextBlank>-</TextBlank>
+              <TextBlank>-</TextBlank>
             </div>
           </ModalContent>
         </ModalWrapper>
@@ -403,6 +403,10 @@ function DiaryEdit() {
 }
 
 export default DiaryEdit;
+
+const TextBlank = styled.div`
+  color: transparent;
+`;
 
 const TopTopBox = styled.div`
   background-color: white;
