@@ -141,7 +141,7 @@ const MainPage = () => {
             justifyContent: "space-between",
           }}
         >
-          <div>내가 만든 다이어리</div>
+          <Label>내가 만든 다이어리</Label>
           <CurProfileImage
             style={{ marginRight: "15px" }}
             url={
