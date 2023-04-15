@@ -253,4 +253,5 @@ const ValidationAlert = styled.small`
   position: relative;
   color: red;
   margin-top: -16px;
+  cursor: default;
 `;
