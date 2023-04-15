@@ -13,8 +13,8 @@ import { data } from "jquery";
 import AlertMessage from "../components/alert/AlertMessage";
 import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
 
-import { BsCheckCircleFill, BsCircle } from "react-icons/bs";
-import { css } from "styled-components";
+import BsCheckCircleFill from "../assets/diary-edit/BsCheckCircleFill.png";
+import FaRegCircle from "../assets/diary-edit/FaRegCircle.png";
 
 function DiaryEdit() {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -313,7 +313,8 @@ function DiaryEdit() {
                       color="primary"
                       onClick={() => {
                         onRemove(item);
-                      }}>
+                      }}
+                      style={{ cursor: "pointer" }}>
                       <img
                         src={
                           item.profileImageUrl
@@ -396,7 +397,6 @@ function DiaryEdit() {
               <TextBlank>-</TextBlank>
               <TextBlank>-</TextBlank>
               <TextBlank>-</TextBlank>
-              <TextBlank>-</TextBlank>
             </div>
           </ModalContent>
         </ModalWrapper>
@@ -440,7 +440,8 @@ const CheckedListBox = styled.div`
   padding-left: 32px;
   padding-right: 10px;
   border-bottom: 1px solid #dcdcdc;
-  margin-bottom: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
 `;
 
 const MemberBox = styled.div`
@@ -449,8 +450,8 @@ const MemberBox = styled.div`
   align-items: center;
   width: 60px;
   margin: 7px;
-  margin-bottom: 10px;
 `;
+
 const StArrow = styled.div`
   position: relative;
   left: 16px;
@@ -565,13 +566,10 @@ const Wholebox = styled.div`
   display: flex;
   flex-direction: column;
   /* padding: 5vw; */
-
   height: auto;
   min-height: 100vh;
-
   border-left: 0.0625rem solid rgb(225, 226, 228);
   border-right: 0.0625rem solid rgb(225, 226, 228);
-
   margin: 0 auto;
   width: 400px;
 `;
@@ -628,6 +626,7 @@ const ImgArea = styled.div`
   margin-left: 10px;
   margin-top: 40px;
 `;
+
 const CreatedAt = styled.div`
   font-size: 10px;
   position: absolute;
@@ -658,7 +657,7 @@ const CheckBox = styled.div`
   width: 20px;
   height: 20px;
   background-image: url(${({ friend, checkedList }) =>
-    checkedList.includes(friend) ? checkedImg : uncheckedImg});
+    checkedList.includes(friend) ? BsCheckCircleFill : FaRegCircle});
   background-repeat: no-repeat;
   background-size: cover;
 `;
@@ -668,6 +667,7 @@ const CompleteButtonArea = styled.div`
   justify-content: center;
   margin: 10px 10px 50px 10px;
 `;
+
 const Completebutton = styled.button`
   color: black;
   background-color: #e1e7ff;
@@ -690,6 +690,7 @@ const ListStyle = styled.div`
 const AlreadyMember = styled.div`
   display: ${({ disabled }) => (disabled ? "" : "none")};
 `;
+
 const TopName = styled.div`
   font-size: 16px;
   font-weight: bolder;
