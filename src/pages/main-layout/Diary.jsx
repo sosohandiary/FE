@@ -77,9 +77,9 @@ const Diary = () => {
       .then((res) => {
         setAlertMsg("작성이 완료되었습니다");
         setAlertOpen(true);
-        setAlertNavigateLink("/");
+        setAlertNavigateLink(`/diaries/${res.data.id}`);
       })
-      .catch((error) => {
+      .catch((err) => {
         setAlertMsg("다이어리 표지 사진을 첨부하세요!");
         setAlertOpen(true);
       });

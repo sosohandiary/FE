@@ -99,6 +99,7 @@ function Detail() {
                 navToModify={navToModify}
                 onDeleteHandler={onDeleteHandler}
                 detailId={detailId}
+                customJson={myDiary?.customJson}
               />
             </DiaryModalWrapper>
           ) : (
