@@ -18,6 +18,7 @@ import Page from "./Page";
 import DiaryEdit from "./DiaryEdit";
 import DiaryDetail from "./DiaryDetail";
 import AlertMessage from "../components/alert/AlertMessage";
+import NotFound from "./NotFound";
 
 const Router = () => {
   return (
@@ -43,6 +44,7 @@ const Router = () => {
         <Route path="/diary/:diaryId" element={<Page />} />
         <Route path="/diaryedit/:diaryId" element={<DiaryEdit />} />
         <Route path="/alertmessage" element={<AlertMessage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
