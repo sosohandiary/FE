@@ -13,7 +13,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const AlertMessageForDeleteDiary = ({ setAlertOpenDeleteAlert, message, diaryId }) => {
+const AlertMessageForDeleteDiary = ({
+  setAlertOpenDeleteAlert,
+  message,
+  diaryId,
+}) => {
   const accessToken = window.localStorage.getItem("accessToken");
 
   const [open, setOpen] = React.useState(true);
@@ -32,7 +36,10 @@ const AlertMessageForDeleteDiary = ({ setAlertOpenDeleteAlert, message, diaryId 
           Authorization: accessToken,
         },
       };
-      await axios.delete(`${process.env.REACT_APP_BASEURL}/diary/${diaryId}`, config);
+      await axios.delete(
+        `${process.env.REACT_APP_BASEURL}/diary/${diaryId}`,
+        config
+      );
       setAlertOpen(true);
       setAlertMsg("삭제되었습니다");
     } catch (error) {
@@ -43,7 +50,15 @@ const AlertMessageForDeleteDiary = ({ setAlertOpenDeleteAlert, message, diaryId 
 
   return (
     <>
-      {alertOpen ? <AlertMessage setAlertOpen={setAlertOpen} message={alertMsg} navigateLink={"/mypage"} /> : ""}
+      {alertOpen ? (
+        <AlertMessage
+          setAlertOpen={setAlertOpen}
+          message={alertMsg}
+          navigateLink={"/mypage"}
+        />
+      ) : (
+        ""
+      )}
       <Invisible>
         <Dialog
           open={open}
