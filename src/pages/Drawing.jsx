@@ -655,7 +655,8 @@ const Drawing = () => {
             style={{
               position: "absolute",
               top: "0px",
-            }}>
+            }}
+          >
             <Layer>
               {lines.map((line, i) => (
                 <Line
@@ -794,26 +795,30 @@ const Drawing = () => {
             clickable
             place="left"
             noArrow={true}
-            style={{ backgroundColor: "rgba(150,150,150,0.5)" }}>
+            style={{ backgroundColor: "rgba(150,150,150,0.5)" }}
+          >
             <WidthArea>
               <WidthButton
                 src={widthSmall}
                 onMouseDown={() => {
                   setLineWidth(5);
                   setLineTool("pen");
-                }}></WidthButton>
+                }}
+              ></WidthButton>
               <WidthButton
                 src={widthMedium}
                 onMouseDown={() => {
                   setLineWidth(10);
                   setLineTool("pen");
-                }}></WidthButton>
+                }}
+              ></WidthButton>
               <WidthButton
                 src={widthLarge}
                 onMouseDown={() => {
                   setLineWidth(20);
                   setLineTool("pen");
-                }}></WidthButton>
+                }}
+              ></WidthButton>
             </WidthArea>
           </Tooltip>
 
@@ -831,26 +836,30 @@ const Drawing = () => {
             clickable
             place="left"
             noArrow={true}
-            style={{ backgroundColor: "rgba(150,150,150,0.5)" }}>
+            style={{ backgroundColor: "rgba(150,150,150,0.5)" }}
+          >
             <WidthArea>
               <WidthButton
                 src={widthSmallEraser}
                 onMouseDown={() => {
                   setLineWidth(5);
                   setLineTool("eraser");
-                }}></WidthButton>
+                }}
+              ></WidthButton>
               <WidthButton
                 src={widthMediumEraser}
                 onMouseDown={() => {
                   setLineWidth(10);
                   setLineTool("eraser");
-                }}></WidthButton>
+                }}
+              ></WidthButton>
               <WidthButton
                 src={widthLargeEraser}
                 onMouseDown={() => {
                   setLineWidth(20);
                   setLineTool("eraser");
-                }}></WidthButton>
+                }}
+              ></WidthButton>
             </WidthArea>
           </Tooltip>
           {colorPallette.map((item, i) => (
@@ -858,7 +867,8 @@ const Drawing = () => {
               key={i}
               color={item}
               lineColor={lineColor}
-              onClick={() => setLineColor(item)}></ColorPea>
+              onClick={() => setLineColor(item)}
+            ></ColorPea>
           ))}
         </DrawToolbarStyle>
         <StickerToolbarStyle
@@ -880,12 +890,14 @@ const Drawing = () => {
               setIsOpenStickerToolbar(false);
               setIsOpenAllToolbar(true);
             }
-          }}>
+          }}
+        >
           <StickerTitle>스티커</StickerTitle>
           <Grid
             container
             spacing={{ xs: 2, md: 2, sm: 2 }}
-            columns={{ xs: 8, sm: 8, md: 8 }}>
+            columns={{ xs: 8, sm: 8, md: 8 }}
+          >
             {stickerUrlList.map((item, i) => (
               <Grid item xs={2} sm={2} md={2} key={i}>
                 <StickerPea

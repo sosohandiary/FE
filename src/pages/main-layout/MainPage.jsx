@@ -88,8 +88,6 @@ const MainPage = () => {
         }
       )
       .then((res) => {
-        console.log(res);
-
         setIsLoadingForPrivate(false);
         if (res.data === "") {
           return;
