@@ -12,7 +12,6 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getDiary } from "../api/detail";
 import Spinner from "../styles/Spinner";
-import CommentImage from "../assets//comment.png";
 import DiaryModal from "../components/detail/DiaryModal";
 import { useMutation } from "react-query";
 import { deleteDiary } from "../api/detail";
@@ -150,12 +149,12 @@ function Detail() {
 export default Detail;
 
 const StyledDerailPage = styled.div`
-  margin-top: 70px;
+  margin-top: 20px;
   position: relative;
 `;
 
 const StyledGobackButton = styled(MdArrowBack)`
-  position: absolute;
+  position: relative;
   top: 30px;
   left: 50%;
   transform: translateX(-500%);
