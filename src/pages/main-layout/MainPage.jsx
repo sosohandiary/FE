@@ -148,7 +148,7 @@ const MainPage = () => {
           }}
         >
           <Label style={{ marginTop: "25px" }}>내가 만든 다이어리</Label>
-          <Label>내가 만든 다이어리</Label>
+
           <CurProfileImage
             style={{ marginRight: "15px" }}
             url={
