@@ -76,7 +76,6 @@ const CommentBox = () => {
 
   const onAddHandler = (event) => {
     event.preventDefault();
-    // 댓글 입력값이 공백인 경우 댓글을 추가하지 않음
     if (comment.comment.trim() === "") {
       return;
     }
@@ -84,13 +83,9 @@ const CommentBox = () => {
     setComment({ comment: "" });
   };
 
-  // const onDeleteHandler = (commentId) => {
-  //   deleteCommentMutate(commentId);
-  // };
-
   const onDeleteHandler = (commentId) => {
-    setAlertOpenDeleteAlert(true); // set the state to true
-    setTest(commentId); // set the comment id to be deleted
+    setAlertOpenDeleteAlert(true);
+    setTest(commentId);
   };
 
   const onEditHandler = (comment) => {
