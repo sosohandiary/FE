@@ -29,7 +29,7 @@ const Login = () => {
   };
 
   const goToSignup = () => {
-    navigate("/onboarding");
+    navigate("/signup");
   };
 
   //form 처리 관련
