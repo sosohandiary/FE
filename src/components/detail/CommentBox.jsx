@@ -144,9 +144,7 @@ const CommentBox = () => {
     <div>
       <WholeAreaWithMargin>
         <h3>댓글</h3>
-        <LabelArea>
-          <div>밀어서 수정/삭제 하세요</div>
-        </LabelArea>
+        <LabelArea>{mycomment?.length > 0 && <div>밀어서 수정/삭제 하세요</div>}</LabelArea>
         <CommentsContainer>
           <SwipeableList threshold={0.5} type={ListType.IOS} disableSwipe={isEditing}>
             {mycomment?.length === 0 ? (
