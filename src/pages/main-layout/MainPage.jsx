@@ -5,7 +5,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ellipse from "../../assets/main-page/Ellipse 111.png";
@@ -14,11 +14,11 @@ import DiaryCardTopBig from "../../components/mainpage/DiaryCardTopBig";
 import { useQuery } from "react-query";
 import { getDiariesOfSelfmade } from "../../api/mainpage";
 import { getProfile } from "../../api/mypage";
-import { VscBlank } from "react-icons/vsc";
 import { useDispatch } from "react-redux";
 import { changeCurNavbarMode } from "../../contexts/curNavbarModeSlice";
 import defaultProfileImg from "../../assets/defaultProfileImg.jpeg";
-import { isTokenNull } from "../../api/isTokenNull";
+import { ImQuotesLeft, ImQuotesRight } from "react-icons/im";
+import removebg from "../../assets/decoration/stickers/removebg-preview.png";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -77,6 +77,10 @@ const MainPage = () => {
   const resForSelfmade = useQuery(["getDiariesOfSelfmade"], () => {
     return getDiariesOfSelfmade(accessToken);
   });
+
+  const resizedRemovebg = new Image();
+  resizedRemovebg.src = removebg;
+  resizedRemovebg.width = 100;
 
   useEffect(() => {
     setIsLoadingForPrivate(true);
@@ -141,7 +145,7 @@ const MainPage = () => {
             justifyContent: "space-between",
           }}
         >
-          <Label>내가 만든 다이어리</Label>
+          <Label style={{ marginTop: "25px" }}>내가 만든 다이어리</Label>
           <CurProfileImage
             style={{ marginRight: "15px" }}
             url={
@@ -171,6 +175,7 @@ const MainPage = () => {
                   activeIdxForSelfmade={activeIdxForSelfmade}
                   item={{
                     title: "다이어리 만들기",
+                    img: removebg,
                   }}
                 ></DiaryCardTopBig>
               </SwiperSlide>
@@ -186,6 +191,7 @@ const MainPage = () => {
                   activeIdxForSelfmade={activeIdxForSelfmade}
                   item={{
                     title: "다이어리 만들기",
+                    img: removebg,
                   }}
                 ></DiaryCardTopBig>
               </SwiperSlide>
@@ -201,6 +207,7 @@ const MainPage = () => {
                   activeIdxForSelfmade={activeIdxForSelfmade}
                   item={{
                     title: "다이어리 만들기",
+                    img: removebg,
                   }}
                 ></DiaryCardTopBig>
               </SwiperSlide>
@@ -245,7 +252,9 @@ const MainPage = () => {
                     borderRadius: "25px",
                   }}
                 >
-                  다이어리가 없습니다.
+                  <ImQuotesLeft />
+                  &nbsp;다이어리가 없어요&nbsp;
+                  <ImQuotesRight />
                 </SwiperSlide>
               ) : (
                 ""
@@ -294,7 +303,9 @@ const MainPage = () => {
                     borderRadius: "25px",
                   }}
                 >
-                  다이어리가 없습니다.
+                  <ImQuotesLeft />
+                  &nbsp;다이어리가 없어요&nbsp;
+                  <ImQuotesRight />
                 </SwiperSlide>
               ) : (
                 ""

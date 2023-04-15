@@ -1,5 +1,4 @@
 import { purple } from "@nextui-org/react";
-import { secondsInDay } from "date-fns";
 import React from "react";
 import styled from "styled-components";
 
@@ -97,7 +96,9 @@ const CoverImg = styled.div`
   background-image: url(${({ src }) => src});
   background-size: cover;
   background-repeat: no-repeat;
-  width: ${({ idx, activeIdxForSelfmade }) => (idx === activeIdxForSelfmade ? "84px" : "60px")};
-  height: ${({ idx, activeIdxForSelfmade }) => (idx === activeIdxForSelfmade ? "84px" : "60px")};
+  width: ${({ idx, activeIdxForSelfmade }) => (idx === activeIdxForSelfmade ? "94px" : "60px")};
+  height: ${({ idx, activeIdxForSelfmade }) => (idx === activeIdxForSelfmade ? "94px" : "60px")};
   margin-left: 15px;
+  border-radius: 10px;
+  margin-bottom: -10px;
 `;
