@@ -13,6 +13,9 @@ import { data } from "jquery";
 import AlertMessage from "../components/alert/AlertMessage";
 import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
 
+import { BsCheckCircleFill, BsCircle } from "react-icons/bs";
+import { css } from "styled-components";
+
 function DiaryEdit() {
   const accessToken = window.localStorage.getItem("accessToken");
   const location = useLocation();
@@ -393,6 +396,7 @@ function DiaryEdit() {
               <TextBlank>-</TextBlank>
               <TextBlank>-</TextBlank>
               <TextBlank>-</TextBlank>
+              <TextBlank>-</TextBlank>
             </div>
           </ModalContent>
         </ModalWrapper>
@@ -436,6 +440,7 @@ const CheckedListBox = styled.div`
   padding-left: 32px;
   padding-right: 10px;
   border-bottom: 1px solid #dcdcdc;
+  margin-bottom: 10px;
 `;
 
 const MemberBox = styled.div`
@@ -444,6 +449,7 @@ const MemberBox = styled.div`
   align-items: center;
   width: 60px;
   margin: 7px;
+  margin-bottom: 10px;
 `;
 const StArrow = styled.div`
   position: relative;
