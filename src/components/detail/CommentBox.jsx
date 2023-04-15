@@ -83,7 +83,7 @@ const CommentBox = () => {
     // 댓글 입력값이 공백이거나 250자 이상인 경우 댓글을 추가하지 않음
     if (comment.comment.trim() === "" || comment.comment.length > 250) {
       setAlertOpen(true);
-      setAlertMsg("댓글은 250자 이하로 입력해주세요.");
+      setAlertMsg("250자 이하로 입력해주세요.");
       return;
     }
 
