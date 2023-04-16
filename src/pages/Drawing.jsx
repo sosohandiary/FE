@@ -580,6 +580,7 @@ const Drawing = () => {
     const currentContentLength = currentContent.getPlainText("").length;
     const selectedTextLength = getLengthOfSelectedText();
 
+    console.log(currentContent.getPlainText().split("\n"));
     if (
       currentContent.getPlainText().split("\n").length +
         currentContent
@@ -587,7 +588,7 @@ const Drawing = () => {
           .split("\n")
           .reduce(
             (acc, cur) => {
-              if (cur.length > 35) acc += Math.floor(cur.length / 35);
+              if (cur.length > 21) acc += Math.floor(cur.length / 21);
               return Number(acc);
             },
             [0]
@@ -616,7 +617,7 @@ const Drawing = () => {
           .split("\n")
           .reduce(
             (acc, cur) => {
-              if (cur.length > 35) acc += Math.floor(cur.length / 35);
+              if (cur.length > 21) acc += Math.floor(cur.length / 21);
               return Number(acc);
             },
             [0]
