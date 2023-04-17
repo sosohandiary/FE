@@ -386,8 +386,8 @@ const SwiperArea = styled.div`
     object-fit: cover;
   }
   .swiper-slide {
-    height: 196px;
-    width: 140px;
+    height: 180px;
+    width: 135px;
   }
 `;
 
