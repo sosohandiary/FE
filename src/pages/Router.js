@@ -8,7 +8,6 @@ import SignupSuccess from "./authenticate/SignupSuccess";
 import Oauth from "./authenticate/Oauth";
 import Detail from "./Detail";
 import MyFriends from "./MyFriends";
-import OnBoarding from "./authenticate/OnBoarding";
 import MainPage from "./main-layout/MainPage";
 import NewFriend from "./main-layout/NewFriend";
 import Diary from "./main-layout/Diary";
@@ -22,12 +21,9 @@ import NotFound from "./NotFound";
 import ScrollToTop from "../utils/ScrollToTop";
 
 const Router = () => {
-  const accessToken = window.localStorage.getItem("accessToken");
-  console.log(accessToken);
-
   return (
     <BrowserRouter>
-    <ScrollToTop/>
+      <ScrollToTop />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<MainPage />} />
@@ -36,7 +32,6 @@ const Router = () => {
           <Route path="/new-friend" element={<NewFriend />} />
           <Route path="/mypage" element={<MyPage />} />
         </Route>
-        <Route path="/onboarding" element={<OnBoarding />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup-success" element={<SignupSuccess />} />

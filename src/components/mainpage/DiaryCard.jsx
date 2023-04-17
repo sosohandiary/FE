@@ -5,7 +5,7 @@ const DiaryCard = ({ item, color }) => {
   const getColorCode = (color = purple) => {
     switch (color) {
       case "purple":
-        return "#E0C7FF";
+        return "#f7e8ec";
       case "green":
         return "#B5FFB4";
       case "pink":
@@ -74,6 +74,7 @@ const ImgArea = styled.div`
   width: 100px;
   background-image: url(${({ imgSrc }) => imgSrc});
   background-size: cover;
+  border-radius: 10px;
   margin: 0 0 0 15px;
 `;
 

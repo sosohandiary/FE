@@ -15,7 +15,6 @@ import "draft-js/dist/Draft.css";
 import { useNavigate, useParams } from "react-router-dom";
 import eraser from "../assets/decoration/toolbar/eraser.png";
 import pen from "../assets/decoration/toolbar/pen.png";
-// import Grid from "@mui/material/Grid";
 import bImg from "../assets/decoration/toolbar/bImg.png";
 import iImg from "../assets/decoration/toolbar/iImg.png";
 import sImg from "../assets/decoration/toolbar/sImg.png";
@@ -581,10 +580,20 @@ const Drawing = () => {
     const currentContentLength = currentContent.getPlainText("").length;
     const selectedTextLength = getLengthOfSelectedText();
 
+    console.log(currentContent.getPlainText().split("\n"));
     if (
       currentContent.getPlainText().split("\n").length +
-        currentContent.getPlainText().length * 0.03 >
-      24
+        currentContent
+          .getPlainText()
+          .split("\n")
+          .reduce(
+            (acc, cur) => {
+              if (cur.length > 21) acc += Math.floor(cur.length / 21);
+              return Number(acc);
+            },
+            [0]
+          ) >
+      25
     ) {
       alert("입력 범위를 초과하였습니다");
       return "handled";
@@ -603,8 +612,17 @@ const Drawing = () => {
 
     if (
       currentContent.getPlainText().split("\n").length +
-        currentContent.getPlainText().length * 0.03 >
-      24
+        currentContent
+          .getPlainText()
+          .split("\n")
+          .reduce(
+            (acc, cur) => {
+              if (cur.length > 21) acc += Math.floor(cur.length / 21);
+              return Number(acc);
+            },
+            [0]
+          ) >
+      25
     ) {
       alert("입력 범위를 초과하였습니다");
       return "handled";
@@ -655,7 +673,8 @@ const Drawing = () => {
             style={{
               position: "absolute",
               top: "0px",
-            }}>
+            }}
+          >
             <Layer>
               {lines.map((line, i) => (
                 <Line
@@ -742,30 +761,35 @@ const Drawing = () => {
               setIsOpenAllToolbar(true);
               setMode("TEXT");
             }}
+            style={{ cursor: "pointer" }}
           />
           <ToolButton
             src={uImg}
             width="40px"
             height="40px"
             onMouseDown={() => handleTogggleClick("UNDERLINE")}
+            style={{ cursor: "pointer" }}
           />
           <ToolButton
             src={sImg}
             width="40px"
             height="40px"
             onMouseDown={() => handleTogggleClick("STRIKETHROUGH")}
+            style={{ cursor: "pointer" }}
           />
           <ToolButton
             src={iImg}
             width="40px"
             height="40px"
             onMouseDown={() => handleTogggleClick("ITALIC")}
+            style={{ cursor: "pointer" }}
           />
           <ToolButton
             src={bImg}
             width="40px"
             height="40px"
             onMouseDown={() => handleTogggleClick("BOLD")}
+            style={{ cursor: "pointer" }}
           />
         </TextToolbarStyle>
         <DrawToolbarStyle isOpenDrawToolbar={isOpenDrawToolbar}>
@@ -773,7 +797,7 @@ const Drawing = () => {
             src={backImg}
             width="25px"
             height="35px"
-            style={{ marginRight: "40px" }}
+            style={{ marginRight: "40px", cursor: "pointer" }}
             onClick={() => {
               setIsOpenDrawToolbar(false);
               setIsOpenAllToolbar(true);
@@ -787,6 +811,7 @@ const Drawing = () => {
               onClick={() => {
                 setLineTool("pen");
               }}
+              style={{ cursor: "pointer" }}
             />
           </a>
           <Tooltip
@@ -794,26 +819,33 @@ const Drawing = () => {
             clickable
             place="left"
             noArrow={true}
-            style={{ backgroundColor: "rgba(150,150,150,0.5)" }}>
+            style={{ backgroundColor: "rgba(150,150,150,0.5)" }}
+          >
             <WidthArea>
               <WidthButton
                 src={widthSmall}
                 onMouseDown={() => {
                   setLineWidth(5);
                   setLineTool("pen");
-                }}></WidthButton>
+                }}
+                style={{ cursor: "pointer" }}
+              ></WidthButton>
               <WidthButton
                 src={widthMedium}
                 onMouseDown={() => {
                   setLineWidth(10);
                   setLineTool("pen");
-                }}></WidthButton>
+                }}
+                style={{ cursor: "pointer" }}
+              ></WidthButton>
               <WidthButton
                 src={widthLarge}
                 onMouseDown={() => {
                   setLineWidth(20);
                   setLineTool("pen");
-                }}></WidthButton>
+                }}
+                style={{ cursor: "pointer" }}
+              ></WidthButton>
             </WidthArea>
           </Tooltip>
 
@@ -824,6 +856,7 @@ const Drawing = () => {
               onClick={() => {
                 setLineTool("eraser");
               }}
+              style={{ cursor: "pointer" }}
             />
           </a>
           <Tooltip
@@ -831,26 +864,34 @@ const Drawing = () => {
             clickable
             place="left"
             noArrow={true}
-            style={{ backgroundColor: "rgba(150,150,150,0.5)" }}>
+            style={{ backgroundColor: "rgba(150,150,150,0.5)" }}
+          >
             <WidthArea>
               <WidthButton
                 src={widthSmallEraser}
                 onMouseDown={() => {
                   setLineWidth(5);
                   setLineTool("eraser");
-                }}></WidthButton>
+                }}
+                style={{ cursor: "pointer" }}
+              ></WidthButton>
               <WidthButton
                 src={widthMediumEraser}
                 onMouseDown={() => {
                   setLineWidth(10);
                   setLineTool("eraser");
-                }}></WidthButton>
+                }}
+                style={{ cursor: "pointer" }}
+              ></WidthButton>
               <WidthButton
                 src={widthLargeEraser}
                 onMouseDown={() => {
                   setLineWidth(20);
                   setLineTool("eraser");
-                }}></WidthButton>
+                }}
+                style={{ cursor: "pointer" }}
+                s
+              ></WidthButton>
             </WidthArea>
           </Tooltip>
           {colorPallette.map((item, i) => (
@@ -858,7 +899,9 @@ const Drawing = () => {
               key={i}
               color={item}
               lineColor={lineColor}
-              onClick={() => setLineColor(item)}></ColorPea>
+              onClick={() => setLineColor(item)}
+              style={{ cursor: "pointer" }}
+            ></ColorPea>
           ))}
         </DrawToolbarStyle>
         <StickerToolbarStyle
@@ -880,12 +923,14 @@ const Drawing = () => {
               setIsOpenStickerToolbar(false);
               setIsOpenAllToolbar(true);
             }
-          }}>
+          }}
+        >
           <StickerTitle>스티커</StickerTitle>
           <Grid
             container
             spacing={{ xs: 2, md: 2, sm: 2 }}
-            columns={{ xs: 8, sm: 8, md: 8 }}>
+            columns={{ xs: 8, sm: 8, md: 8 }}
+          >
             {stickerUrlList.map((item, i) => (
               <Grid item xs={2} sm={2} md={2} key={i}>
                 <StickerPea
@@ -895,6 +940,7 @@ const Drawing = () => {
                     setIsOpenStickerToolbar(false);
                     setIsOpenAllToolbar(true);
                   }}
+                  style={{ cursor: "pointer" }}
                 />
               </Grid>
             ))}

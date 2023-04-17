@@ -12,13 +12,14 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getDiary } from "../api/detail";
 import Spinner from "../styles/Spinner";
-import CommentImage from "../assets//comment.png";
 import DiaryModal from "../components/detail/DiaryModal";
 import { useMutation } from "react-query";
 import { deleteDiary } from "../api/detail";
 import Thumbnail from "../components/drawing/Thumbnail";
 import axios from "axios";
 import AlertMessage from "../components/alert/AlertMessage";
+import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
+import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
 
 function Detail() {
   const navigate = useNavigate();
@@ -32,7 +33,9 @@ function Detail() {
 
   const accessToken = localStorage.getItem("accessToken");
 
-  const { data: diaryData } = useQuery(["getDiary"], () => getDiary(diaryId, detailId, accessToken));
+  const { data: diaryData } = useQuery(["getDiary"], () =>
+    getDiary(diaryId, detailId, accessToken)
+  );
 
   const myDiary = diaryData?.data;
 
@@ -52,7 +55,10 @@ function Detail() {
   }, []);
 
   //delete
-  const { mutate: deleteDiaryMutate } = useMutation((detailId) => deleteDiary(diaryId, detailId, accessToken), {});
+  const { mutate: deleteDiaryMutate } = useMutation(
+    (detailId) => deleteDiary(diaryId, detailId, accessToken),
+    {}
+  );
 
   const navToModify = () => {
     navigate(`/drawing/${diaryId}/${detailId}`);
@@ -72,14 +78,26 @@ function Detail() {
   return (
     <>
       {alertOpen ? (
-        <AlertMessage setAlertOpen={setAlertOpen} message={alertMsg} navigateLink={alertNavigateLink} />
+        <AlertMessage
+          setAlertOpen={setAlertOpen}
+          message={alertMsg}
+          navigateLink={alertNavigateLink}
+        />
       ) : (
         ""
       )}
       <StyledGobackButton onClick={() => navigate(`/diaries/${diaryId}`)} />
       {myDiary && (
         <StyledDerailPage>
-          <GetUser ProfileImg={myDiary?.profileImageUrl} createdAt={myDiary?.createdAt} nickname={myDiary?.nickname} />
+          <GetUser
+            ProfileImg={
+              myDiary?.profileImageUrl
+                ? myDiary.profileImageUrl
+                : defaultProfileImg
+            }
+            createdAt={myDiary?.createdAt}
+            nickname={myDiary?.nickname}
+          />
           {curUserInfo?.data?.memberId === diaryData?.data?.authorId ? (
             <DiaryModalWrapper>
               <DiaryModal
@@ -88,7 +106,6 @@ function Detail() {
                 detailId={detailId}
                 customJson={myDiary?.customJson}
               />
-
             </DiaryModalWrapper>
           ) : (
             ""
@@ -106,29 +123,31 @@ function Detail() {
                     margin: "10px",
                   }}
                 >
-                  <Thumbnail diaryId={diaryId} paperId={detailId} width={700} height={window.innerHeight} />
+                  <Thumbnail
+                    diaryId={diaryId}
+                    paperId={detailId}
+                    width={700}
+                    height={window.innerHeight}
+                  />
                 </div>
               </StyledDetailCard>
             </StyledDetailCardWrapper>
           </div>
         </StyledDerailPage>
       )}
-      <button style={{ display: "none" }} ref={sheetRef} onClick={() => setOpen(true)}></button>
+      <button
+        style={{ display: "none" }}
+        ref={sheetRef}
+        onClick={() => setOpen(true)}
+      ></button>
       {myDiary ? (
         <StBottomSheet
           open={open}
           scrollLocking={false}
           header={
             <DetailElement>
-              <img
-                src={CommentImage}
-                alt="코멘트 아이콘"
-                width="28"
-                height="28"
-                style={{
-                  marginRight: "5px",
-                  objectFit: "cover",
-                }}
+              <IoChatbubbleEllipsesSharp
+                style={{ fontSize: "28px", color: "#b4d0f5", marginRight: "5" }}
               />
               {myDiary.commentCount}
               <Like diaryData={myDiary} />
@@ -158,12 +177,12 @@ function Detail() {
 export default Detail;
 
 const StyledDerailPage = styled.div`
-  margin-top: 70px;
+  margin-top: 20px;
   position: relative;
 `;
 
 const StyledGobackButton = styled(MdArrowBack)`
-  position: absolute;
+  position: relative;
   top: 30px;
   left: 50%;
   transform: translateX(-500%);

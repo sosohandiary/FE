@@ -1,5 +1,4 @@
 import { purple } from "@nextui-org/react";
-import { secondsInDay } from "date-fns";
 import React from "react";
 import styled from "styled-components";
 
@@ -7,7 +6,7 @@ const DiaryCardTopBig = ({ item, color, idx, activeIdxForSelfmade }) => {
   const getColorCode = (color = purple) => {
     switch (color) {
       case "purple":
-        return "#E0C7FF";
+        return "#fff5c7";
       case "green":
         return "#B5FFB4";
       case "pink":
@@ -63,7 +62,7 @@ const Card = styled.div`
     idx === activeIdxForSelfmade ? "196px" : "140px"};
   width: ${({ idx, activeIdxForSelfmade }) =>
     idx === activeIdxForSelfmade ? "140px" : "100px"};
-  border-radius: 25px;
+  /* border-radius: 25px; */
   margin-bottom: ${({ idx, activeIdxForSelfmade }) =>
     idx === activeIdxForSelfmade
       ? "0px"
@@ -113,8 +112,10 @@ const CoverImg = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   width: ${({ idx, activeIdxForSelfmade }) =>
-    idx === activeIdxForSelfmade ? "84px" : "60px"};
+    idx === activeIdxForSelfmade ? "94px" : "60px"};
   height: ${({ idx, activeIdxForSelfmade }) =>
-    idx === activeIdxForSelfmade ? "84px" : "60px"};
+    idx === activeIdxForSelfmade ? "94px" : "60px"};
   margin-left: 15px;
+  border-radius: 10px;
+  margin-bottom: -10px;
 `;
