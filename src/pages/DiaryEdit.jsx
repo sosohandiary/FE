@@ -4,14 +4,13 @@ import axios from "axios";
 import { MdArrowBack } from "react-icons/md";
 import { VscBlank } from "react-icons/vsc";
 import { useLocation, useNavigate } from "react-router-dom";
-import leftArrow from "../assets/leftArrow.png";
 import Searchbox from "../components/Searchbox";
-import checkedImg from "../assets/diary-edit/checkedImg.png";
-import uncheckedImg from "../assets/diary-edit/uncheckedImg.png";
 import { Badge } from "@mui/material";
 import { data } from "jquery";
 import AlertMessage from "../components/alert/AlertMessage";
 import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
+import BsCheckCircleFill from "../assets/diary-edit/BsCheckCircleFill.png";
+import FaRegCircle from "../assets/diary-edit/FaRegCircle.png";
 
 function DiaryEdit() {
   const accessToken = window.localStorage.getItem("accessToken");
@@ -306,6 +305,9 @@ function DiaryEdit() {
                 return (
                   <MemberBox key={i}>
                     <Badge
+                      style={{
+                        cursor: "pointer",
+                      }}
                       badgeContent="-"
                       color="primary"
                       onClick={() => {
@@ -393,11 +395,12 @@ function DiaryEdit() {
               <TextBlank>-</TextBlank>
               <TextBlank>-</TextBlank>
               <TextBlank>-</TextBlank>
+              <TextBlank>-</TextBlank>
             </div>
           </ModalContent>
         </ModalWrapper>
       )}
-      <SubmitButton onClick={handleClick}>생성하기</SubmitButton>
+      <SubmitButton onClick={handleClick}>완료</SubmitButton>
     </Wholebox>
   );
 }
@@ -435,6 +438,8 @@ const CheckedListBox = styled.div`
   flex-wrap: wrap;
   padding-left: 32px;
   padding-right: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
   border-bottom: 1px solid #dcdcdc;
 `;
 
@@ -654,7 +659,7 @@ const CheckBox = styled.div`
   width: 20px;
   height: 20px;
   background-image: url(${({ friend, checkedList }) =>
-    checkedList.includes(friend) ? checkedImg : uncheckedImg});
+    checkedList.includes(friend) ? BsCheckCircleFill : FaRegCircle});
   background-repeat: no-repeat;
   background-size: cover;
 `;
