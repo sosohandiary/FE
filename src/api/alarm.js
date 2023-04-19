@@ -1,19 +1,19 @@
 import axios from "axios";
 
-export const getInviteAlarm = (accessToken) => {
+export const axiosInviteAlarm = (accessToken) => {
   return axios.get(`${process.env.REACT_APP_BASEURL}/invite/alarm`, {
     headers: { Authorization: accessToken },
   });
 };
 
-export const getFriendRequests = (accessToken) => {
+export const axiosFriendRequests = (accessToken) => {
   return axios.get(`${process.env.REACT_APP_BASEURL}/friend/request`, {
     headers: { Authorization: accessToken },
   });
 };
 
-export const getCommentAlarm = (accessToken) => {
-  return axios.get(`${process.env.REACT_APP_BASEURL}/friend/request`, {
+export const axiosCommentAlarm = (accessToken) => {
+  return axios.get(`${process.env.REACT_APP_BASEURL}/comment/alarm`, {
     headers: { Authorization: accessToken },
   });
 };

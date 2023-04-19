@@ -72,11 +72,11 @@ const DiaryDetail = () => {
         <Title>다이어리 상세보기</Title>
         <div>
           <HeaderStyle>
-            <DiaryTitle>{dataOfInnerPaper?.data[0].diaryTitle}</DiaryTitle>
-            {dataOfInnerPaper?.data[0].createdAt &&
-            getDate(dataOfInnerPaper?.data[0].createdAt) ? (
+            <DiaryTitle>{dataOfInnerPaper?.data[0]?.diaryTitle}</DiaryTitle>
+            {dataOfInnerPaper?.data[0]?.createdAt &&
+            getDate(dataOfInnerPaper?.data[0]?.createdAt) ? (
               <DiaryCreatedAt>
-                {getDate(dataOfInnerPaper?.data[0].createdAt)}
+                {getDate(dataOfInnerPaper?.data[0]?.createdAt)}
               </DiaryCreatedAt>
             ) : (
               ""

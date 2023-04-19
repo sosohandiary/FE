@@ -6,6 +6,8 @@ import axios from "axios";
 import { Editor, EditorState, convertFromRaw } from "draft-js";
 import "draft-js/dist/Draft.css";
 import "react-tooltip/dist/react-tooltip.css";
+import { useQuery, useQueryClient } from "react-query";
+import { getInnerPaper, getThumbnail } from "../../api/diary";
 
 // <---------------스티커 크기 조절----------------->
 const ImageSticker = ({ shapeProps, isSelected, sticker }) => {
@@ -172,7 +174,8 @@ const ImageSticker = ({ shapeProps, isSelected, sticker }) => {
 
 // <---------------------------------------->
 
-const Thumbnail = ({ diaryId, paperId, width, height }) => {
+const Thumbnail = ({ diaryId, paperId }) => {
+  const queryClient = useQueryClient();
   const [lines, setLines] = useState([]);
   const [stickers, setStickers] = useState([]);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());

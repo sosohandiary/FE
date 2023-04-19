@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import home from "../assets/navbar/home.png";
 import bell from "../assets/navbar/bell.png";
 import magnifier from "../assets/navbar/magnifier.png";
@@ -14,7 +14,12 @@ import {
   getFriendAlarm,
   getInviteAlarm,
 } from "../contexts/alarmSlice";
-import { getFriendRequests } from "../api/alarm";
+import {
+  axiosCommentAlarm,
+  axiosFriendRequests,
+  axiosInviteAlarm,
+} from "../api/alarm";
+import { cacheTime, staleTime } from "../constants/staleAndCacheTime";
 
 const Navigationbar = () => {
   const navigate = useNavigate();
@@ -27,33 +32,17 @@ const Navigationbar = () => {
     setNavMode(curMode);
   }, [curMode]);
 
-  const { data: dataForInviteAlarm } = useQuery(["getInviteAlarm"], () => {
-    getInviteAlarm(accessToken);
+  const { data: dataForInviteAlarm } = useQuery(["axiosInviteAlarm"], () => {
+    return axiosInviteAlarm(accessToken);
   });
 
-  const { data: dataForFriendAlarm } = useQuery(["getFriendRequests"], () => {
-    getFriendRequests(accessToken);
+  const { data: dataForFriendAlarm } = useQuery(["axiosFriendRequests"], () => {
+    return axiosFriendRequests(accessToken);
   });
 
-  const { data: dataForCommentAlarm } = useQuery(["getCommentAlarm"], () => {
-    getCommentAlarm(accessToken);
+  const { data: dataForCommentAlarm } = useQuery(["axiosCommentAlarm"], () => {
+    return axiosCommentAlarm(accessToken);
   });
-
-  dispatch(
-    getCommentAlarm(
-      dataForCommentAlarm?.data.filter((item) => item.alarm === false)
-    )
-  );
-  dispatch(
-    getFriendAlarm(
-      dataForFriendAlarm?.data.filter((item) => item.alarm === false)
-    )
-  );
-  dispatch(
-    getInviteAlarm(
-      dataForInviteAlarm?.data.filter((item) => item.alarm === false)
-    )
-  );
 
   let friendAlarmCnt = dataForFriendAlarm?.data.filter(
     (item) => item.alarm === false

@@ -89,17 +89,14 @@ const AlarmUnreadTextBox = styled.div`
 const AlarmArea = styled.div`
   display: flex;
   flex-direction: row;
-  background-color: ${({ alarm }) =>
-    alarm === false
-      ? "rgba(224, 237, 251, 0.89)"
-      : "rgba(227, 239, 251, 0.45)"};
+  background-color: rgba(224, 237, 251, 0.89);
   border-bottom: 1px solid #38383818;
   width: 100%;
   height: 80px;
   .TbBellRingingFilled {
     font-size: 30px;
     margin: 10px 10px 10px 20px;
-    color: ${({ alarm }) => (alarm === false ? "#FFD88C" : "#C6C5C3")};
+    color: #ffd88c;
   }
 `;
 

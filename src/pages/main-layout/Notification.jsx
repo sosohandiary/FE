@@ -1,23 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TitleBox from "../../components/TitleBox";
 import AlarmList from "../../components/notification/AlarmList";
 import { useDispatch, useSelector } from "react-redux";
 import { changeCurNavbarMode } from "../../contexts/curNavbarModeSlice";
+import { useQuery } from "react-query";
+import {
+  axiosCommentAlarm,
+  axiosFriendRequests,
+  axiosInviteAlarm,
+} from "../../api/alarm";
+import { staleTime, cacheTime } from "../../constants/staleAndCacheTime";
 
 const Notification = () => {
   const accessToken = localStorage.getItem("accessToken");
-
-  const alarmStore = useSelector((state) => state.alarmSlice);
-
-  const dataListForFriendRequset = alarmStore.friend;
-  const dataListForInviteAlarm = alarmStore.invite?.filter(
-    (item) => item.alarm === false
-  );
-  const dataListForCommentAlarm = alarmStore.comment?.filter(
-    (item) => item.alarm === false
-  );
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -33,17 +30,29 @@ const Notification = () => {
     dispatch(changeCurNavbarMode("BELL"));
   }, []);
 
-  // const { data: dataForInviteAlarm } = useQuery(["getInviteAlarm"], () => {
-  //   getInviteAlarm(accessToken);
-  // });
+  const { data: dataForInviteAlarm } = useQuery(["axiosInviteAlarm"], () => {
+    return axiosInviteAlarm(accessToken);
+  });
 
-  // const { data: dataForFriendAlarm } = useQuery(["getFriendRequests"], () => {
-  //   getFriendRequests(accessToken);
-  // });
+  const { data: dataForFriendAlarm } = useQuery(["axiosFriendRequests"], () => {
+    return axiosFriendRequests(accessToken);
+  });
 
-  // const { data: dataForCommentAlarm } = useQuery(["getCommentAlarm"], () => {
-  //   getCommentAlarm(accessToken);
-  // });
+  const { data: dataForCommentAlarm } = useQuery(
+    ["axiosCommentAlarm"],
+    () => {
+      return axiosCommentAlarm(accessToken);
+    },
+    { staleTime: staleTime, cacheTime: cacheTime }
+  );
+
+  const dataListForFriendRequset = dataForFriendAlarm?.data;
+  const dataListForInviteAlarm = dataForInviteAlarm?.data.filter(
+    (item) => item.alarm === false
+  );
+  const dataListForCommentAlarm = dataForCommentAlarm?.data.filter(
+    (item) => item.alarm === false
+  );
 
   return (
     <>

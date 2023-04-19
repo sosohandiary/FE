@@ -275,7 +275,6 @@ const Drawing = () => {
   const [lines, setLines] = useState([]);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [touchStartY, setTouchStartY] = useState(0);
-  const [movementY, setmovementY] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const [alertMsg, setAlertMsg] = useState("");
