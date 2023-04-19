@@ -19,7 +19,7 @@ import DiaryDetail from "./DiaryDetail";
 import AlertMessage from "../components/alert/AlertMessage";
 import NotFound from "./NotFound";
 import ScrollToTop from "../utils/ScrollToTop";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const Router = () => {
   const [accessToken, setAccessToken] = useState(

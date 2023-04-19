@@ -20,6 +20,7 @@ import axios from "axios";
 import AlertMessage from "../components/alert/AlertMessage";
 import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
 import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
+import { getProfile } from "../api/mypage";
 
 function Detail() {
   const navigate = useNavigate();
@@ -40,15 +41,9 @@ function Detail() {
   const myDiary = diaryData?.data;
 
   // 현재 로그인 유저 정보 확인 -> 모달창 권한 여부
-  const { data: curUserInfo } = useQuery(["getCurUser"], () => {
-    return axios
-      .get(`${process.env.REACT_APP_BASEURL}/mypage/profile`, {
-        headers: { Authorization: accessToken },
-      })
-      .catch((err) => {
-        navigate("/login");
-      });
-  });
+  const { data: curUserInfo } = useQuery(["getProfile"], () =>
+    getProfile(accessToken)
+  );
 
   useEffect(() => {
     sheetRef.current.click();

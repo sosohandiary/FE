@@ -14,6 +14,8 @@ import FlipBook from "../components/FlipBook";
 import { Pagination } from "@mui/material";
 import AlertMessage from "../components/alert/AlertMessage";
 import { MdArrowBack } from "react-icons/md";
+import { useMutation, useQuery } from "react-query";
+import { getInnerPaper, postInnerPaper } from "../api/diary";
 
 const DiaryDetail = () => {
   const navigate = useNavigate();
@@ -37,44 +39,21 @@ const DiaryDetail = () => {
   const accessToken = window.localStorage.getItem("accessToken");
 
   //속지 조회
-  const fetchData = async (page) => {
-    const response = await axios
-      .get(`${process.env.REACT_APP_BASEURL}/diary/${diaryId}/detail`, {
-        headers: { Authorization: accessToken },
-      })
-      .then((res) => {
-        setData([...res.data]); // 객체로 반환되길래 배열로 만듬
-      });
+  const { data: dataOfInnerPaper } = useQuery(["getInnerPaper"], () =>
+    getInnerPaper(accessToken, diaryId)
+  );
 
-    return response;
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const newInnerPaper = () => {
-    axios
-      .post(
-        `${process.env.REACT_APP_BASEURL}/diary/${diaryId}/detail`,
-        {
-          customJson: "",
-          content: "",
-        },
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
-      .then((res) => {
-        setAlertMsg("한 장이 추가되었습니다");
-        setAlertOpen(true);
-        setAlertReload(true);
-      })
-      .catch((err) => {
-        setAlertMsg("다이어리 멤버만 작성할 수 있습니다");
-        setAlertOpen(true);
-      });
-  };
+  const { mutate } = useMutation(() => postInnerPaper(accessToken, diaryId), {
+    onSuccess: () => {
+      setAlertMsg("한 장이 추가되었습니다");
+      setAlertOpen(true);
+      setAlertReload(true);
+    },
+    onError: () => {
+      setAlertMsg("다이어리 멤버만 작성할 수 있습니다");
+      setAlertOpen(true);
+    },
+  });
 
   const goBackHandler = () => {
     navigate("/");
@@ -113,14 +92,10 @@ const DiaryDetail = () => {
             )}
           </HeaderStyle>
 
-          {data.length === 0 ? (
-            <MorePageButton onClick={newInnerPaper}>
-              작성 시작하기
-            </MorePageButton>
+          {dataOfInnerPaper?.data.length === 0 ? (
+            <MorePageButton onClick={mutate}>작성 시작하기</MorePageButton>
           ) : (
-            <MorePageButton onClick={newInnerPaper}>
-              페이지 추가하기
-            </MorePageButton>
+            <MorePageButton onClick={mutate}>페이지 추가하기</MorePageButton>
           )}
 
           <LabelArea>
@@ -128,7 +103,7 @@ const DiaryDetail = () => {
           </LabelArea>
         </div>
         <FlipStyle>
-          <FlipBook data={data} diaryId={diaryId} />
+          <FlipBook data={dataOfInnerPaper?.data} diaryId={diaryId} />
         </FlipStyle>
         <InvisibleDiv></InvisibleDiv>
       </Container>

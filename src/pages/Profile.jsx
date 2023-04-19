@@ -70,6 +70,7 @@ function Profile() {
     onSuccess: () => {
       getProfile();
       navigate("/mypage");
+      queryClient.invalidateQueries("getProfile");
     },
     onError: (data) => {
       setAlertMsg("프로필 변경 실패!");

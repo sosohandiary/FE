@@ -12,7 +12,7 @@ const FlipBook = ({ data, diaryId }) => {
   };
 
   const [page, setPage] = useState(0);
-  const totalPage = data.length;
+  const totalPage = data?.length;
   const pageRef = useRef();
 
   const onFlipHandler = (e) => {

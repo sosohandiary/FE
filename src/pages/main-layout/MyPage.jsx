@@ -20,6 +20,7 @@ import { useDispatch } from "react-redux";
 import { changeCurNavbarMode } from "../../contexts/curNavbarModeSlice";
 
 import { FaUserFriends, FaGlobeAmericas } from "react-icons/fa";
+import { cacheTime, staleTime } from "../../constants/staleAndCacheTime";
 
 const MyPage = () => {
   const accessToken = localStorage.getItem("accessToken");
@@ -46,7 +47,14 @@ const MyPage = () => {
 
   const { data: profileData } = useQuery(
     ["getProfile"],
-    () => getProfile(accessToken),
+    () => {
+      console.log("GET Profile in MyPage");
+      return getProfile(accessToken);
+    },
+    {
+      staleTime,
+      cacheTime,
+    },
     {
       onSuccess: (data) => {
         if (data.data.profileImageUrl === null) {
@@ -184,7 +192,8 @@ const MyPage = () => {
                     </StTextBox>
 
                     <ConfirmButton
-                      onClick={() => navToModifyCover(item.id, index)}>
+                      onClick={() => navToModifyCover(item.id, index)}
+                    >
                       <IoIosArrowForward size={28} color="#A1B2FA" />
                     </ConfirmButton>
                   </DiaryCards>

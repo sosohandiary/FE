@@ -280,7 +280,6 @@ const EditorStyle = styled.div`
       background-color: transparent;
     }
   }
-  overflow: hidden;
   font-size: 20px;
   position: relative;
   top: 0px;
