@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import React from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Stage, Layer, Line, Transformer, Image } from "react-konva";
 import useImage from "use-image";
@@ -20,32 +19,25 @@ import iImg from "../assets/decoration/toolbar/iImg.png";
 import sImg from "../assets/decoration/toolbar/sImg.png";
 import uImg from "../assets/decoration/toolbar/uImg.png";
 import drawImg from "../assets/decoration/toolbar/drawImg.png";
-import saveImg from "../assets/decoration/toolbar/saveImg.png";
 import stickerImg from "../assets/decoration/toolbar/stickerImg.png";
 import textImg from "../assets/decoration/toolbar/textImg.png";
-import diaryBack from "../assets/decoration/diaryBack.png";
 import widthLarge from "../assets/decoration/toolbar/widthLarge.png";
 import widthMedium from "../assets/decoration/toolbar/widthMedium.png";
 import widthSmall from "../assets/decoration/toolbar/widthSmall.png";
 import backImg from "../assets/decoration/toolbar/backImg.png";
-import backImg2 from "../assets/decoration/toolbar/backImg2.png";
-import download from "../assets/decoration/toolbar/download.png";
 import widthSmallEraser from "../assets/decoration/toolbar/widthSmallEraser.png";
 import widthMediumEraser from "../assets/decoration/toolbar/widthMediumEraser.png";
 import widthLargeEraser from "../assets/decoration/toolbar/widthLargeEraser.png";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
-import { BottomSheet } from "react-spring-bottom-sheet";
 import "react-spring-bottom-sheet/dist/style.css";
-import { Global } from "@emotion/react";
-import CssBaseline from "@mui/material/CssBaseline";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import { List } from "antd";
-import { Grid, ListItemText } from "@mui/material";
+import { Grid } from "@mui/material";
 import { BiSave } from "react-icons/bi";
 import { IoIosArrowBack } from "react-icons/io";
 
 import AlertMessage from "../components/alert/AlertMessage";
+import { patchDrawing } from "../api/diary";
+import { useMutation } from "react-query";
 
 // <---------------스티커 크기 조절----------------->
 const ImageSticker = ({
@@ -191,7 +183,7 @@ const ImageSticker = ({
   ];
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Image
         image={imgList[sticker.stickerUrlNum]}
         key={sticker.id}
@@ -270,7 +262,7 @@ const ImageSticker = ({
           }}
         />
       )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 
@@ -330,7 +322,7 @@ const Drawing = () => {
   const [stickers, setStickers] = useState([]);
 
   // 변형할 것 선택 관련
-  const [selectedId, selectShape] = React.useState(null);
+  const [selectedId, selectShape] = useState(null);
 
   // 스티커 추가 관련
   const addStickerButtonHandler = (num) => {
@@ -423,10 +415,12 @@ const Drawing = () => {
     setEditorState(RichUtils.toggleInlineStyle(editorState, inlineStyle));
   };
 
-  const handleSave = () => {
-    const data = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
-    // localStorage.setItem(TEXT_EDITOR_ITEM, data);
+  // 저장 관련
 
+  const { mutate } = useMutation((drawingData) =>
+    patchDrawing(accessToken, diaryid, paperid, drawingData)
+  );
+  const handleSave = () => {
     const allData = {
       stickers,
       lines,
@@ -435,20 +429,14 @@ const Drawing = () => {
 
     const allJSON = JSON.stringify(allData);
 
-    const sendData = { thumbnail: "dd", customJson: allJSON };
+    const sendData = { thumbnail: "none", customJson: allJSON };
 
-    axios
-      .patch(
-        `${process.env.REACT_APP_BASEURL}/diary/${diaryid}/detail/${paperid}`,
-        sendData,
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
-      .then((res) => {
+    mutate(sendData, {
+      onSuccess: () => {
         setAlertMsg("저장완료");
         setAlertOpen(true);
-      });
+      },
+    });
   };
 
   //툴바 관련
@@ -494,7 +482,7 @@ const Drawing = () => {
   ];
 
   const goBackDiaryHandler = () => {
-    navigate(-1);
+    navigate(`/diaries/${diaryid}/${paperid}`);
   };
 
   const deleteStickerHandler = () => {

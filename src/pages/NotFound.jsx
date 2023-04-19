@@ -1,7 +1,5 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import error4041 from "../assets/error4041.png";
 import error4042 from "../assets/error4042.png";
 
 const NotFound = () => {

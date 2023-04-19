@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 import {
   useLocation,
   useNavigate,
@@ -9,16 +8,14 @@ import {
 import styled from "styled-components";
 import ReactPaginate from "react-paginate";
 import { getDate } from "../utils/getDate";
-import leftArrow from "../assets/leftArrow.png";
 import FlipBook from "../components/FlipBook";
-import { Pagination } from "@mui/material";
 import AlertMessage from "../components/alert/AlertMessage";
 import { MdArrowBack } from "react-icons/md";
+import { useMutation, useQuery } from "react-query";
+import { getInnerPaper, postInnerPaper } from "../api/diary";
 
 const DiaryDetail = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
-  const [pageCount, setPageCount] = useState(0);
   const [alertMsg, setAlertMsg] = useState("");
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertNavigateLink, setAlertNavigateLink] = useState("");
@@ -26,7 +23,6 @@ const DiaryDetail = () => {
 
   const { diaryId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const curPage = searchParams.get("page");
 
   const location = useLocation();
   if (location.state === "needReload") {
@@ -37,53 +33,24 @@ const DiaryDetail = () => {
   const accessToken = window.localStorage.getItem("accessToken");
 
   //속지 조회
-  const fetchData = async (page) => {
-    const response = await axios
-      .get(`${process.env.REACT_APP_BASEURL}/diary/${diaryId}/detail`, {
-        headers: { Authorization: accessToken },
-      })
-      .then((res) => {
-        setData([...res.data]); // 객체로 반환되길래 배열로 만듬
-      });
+  const { data: dataOfInnerPaper } = useQuery(["getInnerPaper"], () =>
+    getInnerPaper(accessToken, diaryId)
+  );
 
-    return response;
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const newInnerPaper = () => {
-    axios
-      .post(
-        `${process.env.REACT_APP_BASEURL}/diary/${diaryId}/detail`,
-        {
-          customJson: "",
-          content: "",
-        },
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
-      .then((res) => {
-        setAlertMsg("한 장이 추가되었습니다");
-        setAlertOpen(true);
-        setAlertReload(true);
-      })
-      .catch((err) => {
-        setAlertMsg("다이어리 멤버만 작성할 수 있습니다");
-        setAlertOpen(true);
-      });
-  };
+  const { mutate } = useMutation(() => postInnerPaper(accessToken, diaryId), {
+    onSuccess: () => {
+      setAlertMsg("한 장이 추가되었습니다");
+      setAlertOpen(true);
+      setAlertReload(true);
+    },
+    onError: () => {
+      setAlertMsg("다이어리 멤버만 작성할 수 있습니다");
+      setAlertOpen(true);
+    },
+  });
 
   const goBackHandler = () => {
     navigate("/");
-  };
-
-  const handlePagenationChange = (e, page) => {
-    searchParams.set("page", page - 1);
-    setSearchParams(searchParams);
-    window.location.reload();
   };
 
   return (
@@ -105,22 +72,21 @@ const DiaryDetail = () => {
         <Title>다이어리 상세보기</Title>
         <div>
           <HeaderStyle>
-            <DiaryTitle>{data[0]?.diaryTitle}</DiaryTitle>
-            {data[0]?.createdAt && getDate(data[0]?.createdAt) ? (
-              <DiaryCreatedAt>{getDate(data[0]?.createdAt)}</DiaryCreatedAt>
+            <DiaryTitle>{dataOfInnerPaper?.data[0].diaryTitle}</DiaryTitle>
+            {dataOfInnerPaper?.data[0].createdAt &&
+            getDate(dataOfInnerPaper?.data[0].createdAt) ? (
+              <DiaryCreatedAt>
+                {getDate(dataOfInnerPaper?.data[0].createdAt)}
+              </DiaryCreatedAt>
             ) : (
               ""
             )}
           </HeaderStyle>
 
-          {data.length === 0 ? (
-            <MorePageButton onClick={newInnerPaper}>
-              작성 시작하기
-            </MorePageButton>
+          {dataOfInnerPaper?.data.length === 0 ? (
+            <MorePageButton onClick={mutate}>작성 시작하기</MorePageButton>
           ) : (
-            <MorePageButton onClick={newInnerPaper}>
-              페이지 추가하기
-            </MorePageButton>
+            <MorePageButton onClick={mutate}>페이지 추가하기</MorePageButton>
           )}
 
           <LabelArea>
@@ -128,7 +94,7 @@ const DiaryDetail = () => {
           </LabelArea>
         </div>
         <FlipStyle>
-          <FlipBook data={data} diaryId={diaryId} />
+          <FlipBook data={dataOfInnerPaper?.data} diaryId={diaryId} />
         </FlipStyle>
         <InvisibleDiv></InvisibleDiv>
       </Container>
@@ -189,46 +155,6 @@ const DiaryCreatedAt = styled.div`
   font-size: 10px;
 `;
 
-const StyledPagination = styled(ReactPaginate)`
-  position: relative;
-  margin-top: 60px;
-  display: flex;
-  justify-content: center;
-  & li {
-    display: inline-block;
-    margin-right: 10px;
-    cursor: pointer;
-    padding: 5px 10px;
-    border: none;
-    &.active {
-      background-color: #007bff;
-      color: #fff;
-      border-color: #007bff;
-    }
-  }
-
-  & a {
-    display: inline-block;
-    padding: 5px 10px;
-    /* border: 1px solid #ccc; */
-    /* border-radius: 3px; */
-    color: #007bff;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: black;
-    &:hover {
-      background-color: #007bff;
-      color: #fff;
-      border-color: #007bff;
-    }
-  }
-  & .disabled {
-    color: #ccc;
-    cursor: not-allowed;
-    border-color: #ccc;
-  }
-`;
-
 const MorePageButton = styled.div`
   display: flex;
   justify-content: center;
@@ -243,34 +169,12 @@ const MorePageButton = styled.div`
   z-index: 10;
 `;
 
-const LeftArrow = styled.img`
-  margin-left: 20px;
-  width: 20px;
-  position: absolute;
-  top: 50px;
-  z-index: 11;
-`;
-
-const PaginationStyle = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const FlipStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const MorePagePlease = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 30px;
-  padding: 100px;
-  padding: ${({ isVisible }) => (isVisible ? 0 : "100px")};
-`;
 const LabelArea = styled.div`
   display: flex;
   justify-content: center;

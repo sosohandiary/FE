@@ -1,8 +1,6 @@
-import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import { GrayButtonSmall, MintButtonSmall } from "../../styles/Buttons";
-
 
 const DeleteAccount = ({
   isOpen,
@@ -26,15 +24,15 @@ const DeleteAccount = ({
         <StText>
           <h2>{title}</h2>
           <p>
-            회원 탈퇴 시 계정 정보 및 {nickname}님의 추억들이
-            삭제되어 복구가 불가해요
+            회원 탈퇴 시 계정 정보 및 {nickname}님의 추억들이 삭제되어 복구가
+            불가해요
           </p>
         </StText>
         <StButtonBox>
-          <MintButtonSmall boderRight='1px solid' onClick={onClose}>
-           취소
+          <MintButtonSmall boderRight="1px solid" onClick={onClose}>
+            취소
           </MintButtonSmall>
-          <GrayButtonSmall color='#00b49b' onClick={handleConfirmClick}>
+          <GrayButtonSmall color="#00b49b" onClick={handleConfirmClick}>
             탈퇴하기
           </GrayButtonSmall>
         </StButtonBox>
@@ -71,13 +69,11 @@ const StyledModalContent = styled.div`
   /* 태블릿 기기(768px ~ 992px)에 대한 스타일 */
   @media only screen and (min-width: 768px) and (max-width: 992px) {
     max-width: 40%;
-
   }
 
   /* 데스크톱 기기(992px 이상)에 대한 스타일 */
   @media only screen and (min-width: 992px) {
     max-width: 30%;
-
   }
 `;
 
@@ -85,7 +81,7 @@ const StText = styled.div`
   padding: 36px 18px 21px;
 
   text-align: center;
-  h2{
+  h2 {
     margin-top: 0;
     margin-bottom: 10px;
   }
@@ -97,8 +93,6 @@ const StButtonBox = styled.div`
   border-top-color: #ecf0f2; */
   text-align: center;
 `;
-
-
 
 const StButton = styled.div`
   margin-top: 10px;

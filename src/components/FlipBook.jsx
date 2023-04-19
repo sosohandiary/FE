@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import HTMLFlipBook from "react-pageflip";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -12,7 +12,7 @@ const FlipBook = ({ data, diaryId }) => {
   };
 
   const [page, setPage] = useState(0);
-  const totalPage = data.length;
+  const totalPage = data?.length;
   const pageRef = useRef();
 
   const onFlipHandler = (e) => {

@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TitleBox from "../../components/TitleBox";
 import AlarmList from "../../components/notification/AlarmList";
 import { useDispatch, useSelector } from "react-redux";
-import { WholeViewWidth } from "../../styles/WholeAreaStyle";
 import { changeCurNavbarMode } from "../../contexts/curNavbarModeSlice";
 
 const Notification = () => {
@@ -33,6 +32,18 @@ const Notification = () => {
   useEffect(() => {
     dispatch(changeCurNavbarMode("BELL"));
   }, []);
+
+  // const { data: dataForInviteAlarm } = useQuery(["getInviteAlarm"], () => {
+  //   getInviteAlarm(accessToken);
+  // });
+
+  // const { data: dataForFriendAlarm } = useQuery(["getFriendRequests"], () => {
+  //   getFriendRequests(accessToken);
+  // });
+
+  // const { data: dataForCommentAlarm } = useQuery(["getCommentAlarm"], () => {
+  //   getCommentAlarm(accessToken);
+  // });
 
   return (
     <>

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import kakaoLoginImage from "../../assets//kakao_login_medium_wide.png";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { kakaoLoginApi } from "../../api/kakaoLogin";
 import { disableColor, subColor1 } from "../../constants/colorPalette";
 import { useForm } from "react-hook-form";
@@ -11,17 +11,13 @@ import {
 } from "../../styles/Buttons";
 import { HiOutlineXCircle } from "react-icons/hi";
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import AlertMessage from "../../components/alert/AlertMessage";
 import logoImg from "../../assets/logoImg.png";
 
 const Login = ({ setAccessToken }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const alreadySignedUp = window.localStorage.getItem("already signed up");
   const [alertMsg, setAlertMsg] = useState("");
   const [alertOpen, setAlertOpen] = useState(false);
-  const [alertNavigateLink, setAlertNavigateLink] = useState("");
 
   const kakaoLoginButtonHandler = () => {
     kakaoLoginApi();
@@ -56,11 +52,7 @@ const Login = ({ setAccessToken }) => {
   return (
     <WholeArea>
       {alertOpen ? (
-        <AlertMessage
-          setAlertOpen={setAlertOpen}
-          message={alertMsg}
-          navigateLink={alertNavigateLink}
-        />
+        <AlertMessage setAlertOpen={setAlertOpen} message={alertMsg} />
       ) : (
         ""
       )}

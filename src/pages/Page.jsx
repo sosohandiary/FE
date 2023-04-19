@@ -1,19 +1,19 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { VscBlank } from "react-icons/vsc";
 import { MdArrowBack } from "react-icons/md";
 import AlertMessage from "../components/alert/AlertMessage";
 import { getDate } from "../utils/getDate";
-import AlertMessageConfirm from "../components/alert/AlertMessageForDeleteDiary";
 import AlertMessageForDeleteDiary from "../components/alert/AlertMessageForDeleteDiary";
+import { useQueryClient } from "react-query";
 
 function Page() {
   const accessToken = window.localStorage.getItem("accessToken");
   const location = useLocation();
   const mypage = location.state;
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [previewImage, setPreviewImage] = useState(mypage?.data?.img);
   const [alertMsg, setAlertMsg] = useState("");
   const [alertMsgOfDelete, setAlertMsgOfDelete] = useState("");
@@ -48,6 +48,7 @@ function Page() {
       navigate("/mypage");
       setAlertOpenDeleteAlert(false);
       setAlertOpen(false);
+      queryClient.invalidateQueries("getDiariesOfSelfmade");
     } catch (error) {
       setAlertMsg("다이어리 삭제에 실패했습니다");
       setAlertOpen(true);
@@ -107,7 +108,8 @@ function Page() {
           onClick={() => {
             setAlertOpenDeleteAlert(true);
             setAlertMsgOfDelete("다이어리를 삭제하시겠습니까?");
-          }}>
+          }}
+        >
           삭제
         </Upbutton>
       </ButtonArea>

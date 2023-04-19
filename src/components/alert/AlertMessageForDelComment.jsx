@@ -1,4 +1,3 @@
-import * as React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -6,14 +5,18 @@ import Slide from "@mui/material/Slide";
 import styled from "styled-components";
 import { VscBlank } from "react-icons/vsc";
 import AlertMessage from "./AlertMessage";
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const AlertMessageForDelComment = ({ setAlertOpenDeleteAlert, message, onDeleteHandler }) => {
-  const [open, setOpen] = React.useState(true);
+const AlertMessageForDelComment = ({
+  setAlertOpenDeleteAlert,
+  message,
+  onDeleteHandler,
+}) => {
+  const [open, setOpen] = useState(true);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
 
@@ -24,7 +27,11 @@ const AlertMessageForDelComment = ({ setAlertOpenDeleteAlert, message, onDeleteH
 
   return (
     <>
-      {alertOpen ? <AlertMessage setAlertOpen={setAlertOpen} message={alertMsg} /> : ""}
+      {alertOpen ? (
+        <AlertMessage setAlertOpen={setAlertOpen} message={alertMsg} />
+      ) : (
+        ""
+      )}
       <Invisible>
         <Dialog
           open={open}

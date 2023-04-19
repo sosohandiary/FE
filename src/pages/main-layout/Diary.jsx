@@ -1,20 +1,19 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { VscBlank } from "react-icons/vsc";
-import defaultProfileImg from "../../assets/defaultProfileImg.jpeg";
 import { useNavigate } from "react-router-dom";
 import AlertMessage from "../../components/alert/AlertMessage";
-import AlertMessageAndNavigate from "../../components/alert/AlertMessage";
 import logoGray from "../../assets/logoGray.png";
-import AlertMessageConfirm from "../../components/alert/AlertMessageForDeleteDiary";
 import { useDispatch } from "react-redux";
 import { changeCurNavbarMode } from "../../contexts/curNavbarModeSlice";
+import { postNewDiary } from "../../api/diary";
+import { useMutation, useQueryClient } from "react-query";
 
 const Diary = () => {
   const accessToken = window.localStorage.getItem("accessToken");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   const [file, setFile] = useState();
   const [title, setTitle] = useState("");
   const [previewImage, setPreviewImage] = useState(logoGray);
@@ -34,9 +33,9 @@ const Diary = () => {
     dispatch(changeCurNavbarMode("PLUS"));
   }, []);
 
-  const handleConditionChange = (event) => {
-    setDiaryCondition(event.target.value);
-  };
+  const { mutate: mutateNewDiary } = useMutation((formData) => {
+    return postNewDiary(accessToken, formData);
+  });
 
   const handleChange = (e) => {
     if (e.target.files === null) return;
@@ -67,22 +66,18 @@ const Diary = () => {
       new Blob([JSON.stringify(data)], { type: "application/json" })
     );
 
-    axios
-      .post(`${process.env.REACT_APP_BASEURL}/diary`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: accessToken,
-        },
-      })
-      .then((res) => {
+    mutateNewDiary(formData, {
+      onSuccess: (data) => {
         setAlertMsg("작성이 완료되었습니다");
         setAlertOpen(true);
-        setAlertNavigateLink(`/diaries/${res.data.id}`);
-      })
-      .catch((err) => {
+        setAlertNavigateLink(`/diaries/${data.data.id}`);
+        queryClient.invalidateQueries("getDiariesOfSelfmade");
+      },
+      onError: () => {
         setAlertMsg("다이어리 표지 사진을 첨부하세요!");
         setAlertOpen(true);
-      });
+      },
+    });
   };
 
   //이미지 업로드 관련

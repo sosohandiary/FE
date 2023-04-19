@@ -1,12 +1,7 @@
-import React from "react";
 import styled from "styled-components";
 import { TbBellRingingFilled } from "react-icons/tb";
-import axios from "axios";
-import { useMutation } from "react-query";
 
 const AlarmUnReadCard = ({ alarmType, item }) => {
-  const accessToken = window.localStorage.getItem("accessToken");
-
   const getTitleAndDesc = () => {
     switch (alarmType) {
       case "friend":

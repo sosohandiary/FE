@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { TbAlertCircle } from "react-icons/tb";
 import { useNavigate } from "react-router";
@@ -14,8 +14,6 @@ const Signup = () => {
   const navigate = useNavigate();
   const [alertMsg, setAlertMsg] = useState("");
   const [alertOpen, setAlertOpen] = useState(false);
-  const [noChangeForDisableSubmit, setNoChangeForDisableSubmit] =
-    useState(false);
 
   // form 관련
   const {
@@ -34,7 +32,6 @@ const Signup = () => {
       .catch((err) => {
         setAlertOpen(true);
         setAlertMsg("이미 가입되어있는 이메일입니다");
-        setNoChangeForDisableSubmit(true);
       });
   };
 

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { MdArrowBack } from "react-icons/md";
@@ -6,19 +6,19 @@ import { VscBlank } from "react-icons/vsc";
 import { useLocation, useNavigate } from "react-router-dom";
 import Searchbox from "../components/Searchbox";
 import { Badge } from "@mui/material";
-import { data } from "jquery";
 import AlertMessage from "../components/alert/AlertMessage";
 import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
 import BsCheckCircleFill from "../assets/diary-edit/BsCheckCircleFill.png";
 import FaRegCircle from "../assets/diary-edit/FaRegCircle.png";
 import { MdClose } from "react-icons/md";
+import { useQueryClient } from "react-query";
 
 function DiaryEdit() {
   const accessToken = window.localStorage.getItem("accessToken");
   const location = useLocation();
   const mypage = location.state;
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
   const [file, setFile] = useState();
   const [title, setTitle] = useState(mypage?.data?.title);
   const titleBeforeChange = mypage?.data?.title;
@@ -30,11 +30,6 @@ function DiaryEdit() {
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertNavigateLink, setAlertNavigateLink] = useState("");
   const [alertReload, setAlertReload] = useState(false);
-
-  // 공개 비공개 바꾸는거
-  const handleConditionChange = (event) => {
-    setDiaryCondition(event.target.value);
-  };
 
   // 이미지 파일 올리는 거
   const handleChange = useCallback((e) => {
@@ -102,6 +97,7 @@ function DiaryEdit() {
         setAlertMsg("수정이 완료되었습니다");
         setAlertOpen(true);
         setAlertNavigateLink("/mypage");
+        queryClient.invalidateQueries("getDiariesOfSelfmade");
       } catch (error) {
         setAlertMsg("제목과 사진을 전부 수정해주세요");
         setAlertOpen(true);
@@ -313,7 +309,8 @@ function DiaryEdit() {
                       color="primary"
                       onClick={() => {
                         onRemove(item);
-                      }}>
+                      }}
+                    >
                       <img
                         src={
                           item.profileImageUrl
@@ -351,7 +348,8 @@ function DiaryEdit() {
                       marginBottom: "8px",
                       marginLeft: "10px",
                       marginRight: "10px",
-                    }}>
+                    }}
+                  >
                     <label style={{ flex: 1 }}>
                       <ImgAndName>
                         <img
@@ -379,9 +377,11 @@ function DiaryEdit() {
                         onCheckedElement(friend);
                       }}
                       checkedList={checkedList}
-                      friend={friend}></CheckBox>
+                      friend={friend}
+                    ></CheckBox>
                     <AlreadyMember
-                      disabled={alreadyMembersId.includes(friend.memberId)}>
+                      disabled={alreadyMembersId.includes(friend.memberId)}
+                    >
                       이미 멤버입니다
                     </AlreadyMember>
                   </ListStyle>

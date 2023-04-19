@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { MintButtonLarge } from "../../styles/Buttons";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
-import logoImg from "../../assets/logoImg.png";
 import signupSuccess from "../../assets/onboarding/signupSuccess.png";
 
 const SignupSuccess = () => {

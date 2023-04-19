@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { MdArrowBack, MdOutlineClose } from "react-icons/md";
+import { MdArrowBack } from "react-icons/md";
 import { VscBlank } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 

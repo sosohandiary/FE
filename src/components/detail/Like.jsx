@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import styled, { css } from "styled-components";
-import { likePost, getDiary } from "../../api/detail";
+import { likePost } from "../../api/detail";
 import { useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
 
@@ -12,11 +12,14 @@ function Like({ diaryData }) {
 
   const [isLiked, setIsLiked] = useState(false);
 
-  const { mutate: likeMutation } = useMutation(() => likePost(detailId, accessToken), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("getDiary");
-    },
-  });
+  const { mutate: likeMutation } = useMutation(
+    () => likePost(detailId, accessToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("getDiary");
+      },
+    }
+  );
 
   useEffect(() => {
     if (diaryData?.likeStatus) {

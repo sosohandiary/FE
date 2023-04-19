@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import styled from "styled-components";
@@ -10,9 +10,8 @@ import {
   getDiaryCount,
 } from "../../api/mypage";
 import { getDate } from "../../utils/getDate";
-import { WholeArea, WholeViewWidth } from "../../styles/WholeAreaStyle";
+import { WholeViewWidth } from "../../styles/WholeAreaStyle";
 import defaultProfileImg from "../../assets/defaultProfileImg.jpeg";
-import { ProfilePicLarge } from "../../components/ProfilePics";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdArrowBack } from "react-icons/md";
 import Navigationbar from "../../components/Navigationbar";
@@ -20,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { changeCurNavbarMode } from "../../contexts/curNavbarModeSlice";
 
 import { FaUserFriends, FaGlobeAmericas } from "react-icons/fa";
+import { cacheTime, staleTime } from "../../constants/staleAndCacheTime";
 
 const MyPage = () => {
   const accessToken = localStorage.getItem("accessToken");
@@ -46,7 +46,14 @@ const MyPage = () => {
 
   const { data: profileData } = useQuery(
     ["getProfile"],
-    () => getProfile(accessToken),
+    () => {
+      console.log("GET Profile in MyPage");
+      return getProfile(accessToken);
+    },
+    {
+      staleTime,
+      cacheTime,
+    },
     {
       onSuccess: (data) => {
         if (data.data.profileImageUrl === null) {
@@ -184,7 +191,8 @@ const MyPage = () => {
                     </StTextBox>
 
                     <ConfirmButton
-                      onClick={() => navToModifyCover(item.id, index)}>
+                      onClick={() => navToModifyCover(item.id, index)}
+                    >
                       <IoIosArrowForward size={28} color="#A1B2FA" />
                     </ConfirmButton>
                   </DiaryCards>
