@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import "react-spring-bottom-sheet/dist/style.css";
 import CommentBox from "../components/detail/CommentBox";
@@ -16,7 +16,6 @@ import DiaryModal from "../components/detail/DiaryModal";
 import { useMutation } from "react-query";
 import { deleteDiary } from "../api/detail";
 import Thumbnail from "../components/drawing/Thumbnail";
-import axios from "axios";
 import AlertMessage from "../components/alert/AlertMessage";
 import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
 import defaultProfileImg from "../assets/defaultProfileImg.jpeg";

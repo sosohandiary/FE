@@ -1,14 +1,11 @@
-import { OmitProps } from "antd/es/transfer/ListBody";
 import axios from "axios";
 import React, { useEffect } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 
 const Oauth = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const code = searchParams.get("code");
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     axios

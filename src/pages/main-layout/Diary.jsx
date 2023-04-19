@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { VscBlank } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import AlertMessage from "../../components/alert/AlertMessage";

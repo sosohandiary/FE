@@ -1,17 +1,15 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
-import Navigationbar from "../components/Navigationbar";
 import { SlMagnifier } from "react-icons/sl";
 import { MdOutlineCancel } from "react-icons/md";
 
-function Searchbox({placeholder, onChangeInput, onKeyPress, setSearchInput}) {
-
+function Searchbox({ placeholder, onChangeInput, onKeyPress, setSearchInput }) {
   const inputRef = useRef();
 
   const clearButtonHandler = () => {
     inputRef.current.value = "";
-    setSearchInput(inputRef.current.value)
-  }
+    setSearchInput(inputRef.current.value);
+  };
 
   return (
     <>
@@ -29,10 +27,11 @@ function Searchbox({placeholder, onChangeInput, onKeyPress, setSearchInput}) {
               ref={inputRef}
             />
           </SearchStyle>
-          <ClearButton onClick={clearButtonHandler}><MdOutlineCancel className='MdOutlineCancel' /></ClearButton>
+          <ClearButton onClick={clearButtonHandler}>
+            <MdOutlineCancel className="MdOutlineCancel" />
+          </ClearButton>
         </SearchStyleBox>
       </SearchTotalBox>
-
     </>
   );
 }
@@ -50,7 +49,7 @@ const SearchStyleBox = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 95%;
-  background-color: #E8E8E8;
+  background-color: #e8e8e8;
   border: none;
   border-radius: 20px;
   padding: 12px 15px 12px 15px;
@@ -78,7 +77,6 @@ const Searchinput = styled.input`
   background-color: transparent;
   border: none;
   width: 100%;
-
 `;
 
 const ClearButton = styled.button`

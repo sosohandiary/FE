@@ -15,7 +15,6 @@ import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
 import { getMyfriends, getFriendsCount, deleteFriend } from "../api/mypage";
 import { ProfilePicSmall } from "../components/ProfilePics";
 import { MdArrowBack } from "react-icons/md";
-import { WholeViewWidth } from "../styles/WholeAreaStyle";
 import Filter from "../components/mypage/Filter";
 
 const MyFriends = () => {

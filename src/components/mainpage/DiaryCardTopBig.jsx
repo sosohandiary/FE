@@ -1,5 +1,4 @@
 import { purple } from "@nextui-org/react";
-import React from "react";
 import styled from "styled-components";
 
 const DiaryCardTopBig = ({ item, color, idx, activeIdxForSelfmade }) => {
@@ -22,14 +21,16 @@ const DiaryCardTopBig = ({ item, color, idx, activeIdxForSelfmade }) => {
       <SideLabel
         colorCode={colorCode}
         idx={idx}
-        activeIdxForSelfmade={activeIdxForSelfmade}></SideLabel>
+        activeIdxForSelfmade={activeIdxForSelfmade}
+      ></SideLabel>
       <div
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
-        }}>
+        }}
+      >
         <Title idx={idx} activeIdxForSelfmade={activeIdxForSelfmade}>
           {item?.title}
         </Title>

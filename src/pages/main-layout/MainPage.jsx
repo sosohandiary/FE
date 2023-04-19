@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import "swiper/css";
 import "swiper/css/pagination";
 import { useInView } from "react-intersection-observer";
@@ -203,6 +202,7 @@ const MainPage = () => {
                   onClick={() => {
                     goToDiaryDetail(item.id);
                   }}
+                  style={{ backgroundColor: "transparent" }}
                 >
                   <DiaryCard item={item} color="purple" />
                 </SwiperSlide>
@@ -249,6 +249,7 @@ const MainPage = () => {
                   onClick={() => {
                     goToDiaryDetail(item.id);
                   }}
+                  style={{ backgroundColor: "transparent" }}
                 >
                   <DiaryCard item={item} color="purple" />
                 </SwiperSlide>

@@ -1,12 +1,10 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { VscBlank } from "react-icons/vsc";
 import { MdArrowBack } from "react-icons/md";
 import AlertMessage from "../components/alert/AlertMessage";
 import { getDate } from "../utils/getDate";
-import AlertMessageConfirm from "../components/alert/AlertMessageForDeleteDiary";
 import AlertMessageForDeleteDiary from "../components/alert/AlertMessageForDeleteDiary";
 import { useQueryClient } from "react-query";
 

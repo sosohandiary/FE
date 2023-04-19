@@ -5,7 +5,7 @@ import styled from "styled-components";
 import debounce from "lodash.debounce";
 
 import Searchbox from "../../components/Searchbox";
-import { MarginAuto, WholeViewWidth } from "../../styles/WholeAreaStyle";
+import { WholeViewWidth } from "../../styles/WholeAreaStyle";
 import { ProfilePicSmall } from "../../components/ProfilePics";
 import defaultProfileImg from "../../assets/defaultProfileImg.jpeg";
 import addFriendButton from "../../assets/addFriendButton.png";

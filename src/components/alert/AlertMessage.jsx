@@ -1,4 +1,3 @@
-import * as React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -6,14 +5,15 @@ import Slide from "@mui/material/Slide";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { VscBlank } from "react-icons/vsc";
+import { forwardRef, useState } from "react";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const AlertMessage = ({ setAlertOpen, message, navigateLink, reload }) => {
   const navigate = useNavigate();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
 
   const handleClose = () => {
     setOpen(false);

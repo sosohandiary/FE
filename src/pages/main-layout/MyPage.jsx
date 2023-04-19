@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import styled from "styled-components";
@@ -10,9 +10,8 @@ import {
   getDiaryCount,
 } from "../../api/mypage";
 import { getDate } from "../../utils/getDate";
-import { WholeArea, WholeViewWidth } from "../../styles/WholeAreaStyle";
+import { WholeViewWidth } from "../../styles/WholeAreaStyle";
 import defaultProfileImg from "../../assets/defaultProfileImg.jpeg";
-import { ProfilePicLarge } from "../../components/ProfilePics";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdArrowBack } from "react-icons/md";
 import Navigationbar from "../../components/Navigationbar";

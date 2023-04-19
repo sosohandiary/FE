@@ -1,13 +1,28 @@
-import React, { useState } from "react";
+import { Fragment, useState } from "react";
 import styled from "styled-components";
 import { ProfilePicSmall } from "../ProfilePics";
-import { RiPencilFill, RiDeleteBin6Fill, RiCheckFill, RiCloseFill } from "react-icons/ri";
+import {
+  RiPencilFill,
+  RiDeleteBin6Fill,
+  RiCheckFill,
+  RiCloseFill,
+} from "react-icons/ri";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { addComment, getComment, deleteComment, updatedComment } from "../../api/detail";
+import {
+  addComment,
+  getComment,
+  deleteComment,
+  updatedComment,
+} from "../../api/detail";
 import { useParams } from "react-router-dom";
 import GetTimeAgo from "../GetTimeAgo";
 import { WholeAreaWithMargin } from "../../styles/WholeAreaStyle";
-import { SwipeableList, SwipeableListItem, TrailingActions, Type as ListType } from "react-swipeable-list";
+import {
+  SwipeableList,
+  SwipeableListItem,
+  TrailingActions,
+  Type as ListType,
+} from "react-swipeable-list";
 import "react-swipeable-list/dist/styles.css";
 import AlertMessageForDelComment from "../alert/AlertMessageForDelComment";
 import AlertMessage from "../alert/AlertMessage";
@@ -29,26 +44,34 @@ const CommentBox = () => {
   const accessToken = localStorage.getItem("accessToken");
 
   // get
-  const { data: commentData } = useQuery(["getComment"], () => getComment(detailId, accessToken));
+  const { data: commentData } = useQuery(["getComment"], () =>
+    getComment(detailId, accessToken)
+  );
   const mycomment = commentData?.data;
 
   // <----Mutation----> //
 
   //add
-  const { mutate: addmutation } = useMutation(() => addComment(detailId, comment, accessToken), {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries("getComment");
-      queryClient.invalidateQueries("getDiary");
-    },
-  });
+  const { mutate: addmutation } = useMutation(
+    () => addComment(detailId, comment, accessToken),
+    {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries("getComment");
+        queryClient.invalidateQueries("getDiary");
+      },
+    }
+  );
 
   //delete
-  const { mutate: deleteCommentMutate } = useMutation((commentId) => deleteComment(detailId, commentId, accessToken), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("getComment");
-      queryClient.invalidateQueries("getDiary");
-    },
-  });
+  const { mutate: deleteCommentMutate } = useMutation(
+    (commentId) => deleteComment(detailId, commentId, accessToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("getComment");
+        queryClient.invalidateQueries("getDiary");
+      },
+    }
+  );
 
   //edit
   const { mutate: updatedCommentMutate } = useMutation(
@@ -144,21 +167,34 @@ const CommentBox = () => {
     <div>
       <WholeAreaWithMargin>
         <h3>댓글</h3>
-        <LabelArea>{mycomment?.length > 0 && <div>밀어서 수정/삭제 하세요</div>}</LabelArea>
+        <LabelArea>
+          {mycomment?.length > 0 && <div>밀어서 수정/삭제 하세요</div>}
+        </LabelArea>
         <CommentsContainer>
-          <SwipeableList threshold={0.5} type={ListType.IOS} disableSwipe={isEditing}>
+          <SwipeableList
+            threshold={0.5}
+            type={ListType.IOS}
+            disableSwipe={isEditing}
+          >
             {mycomment?.length === 0 ? (
               <h5>"아직 댓글이 없어요"</h5>
             ) : (
               mycomment?.map((comment) => {
-                const createdAtAgo = <GetTimeAgo createdAt={comment.createdAt} />;
+                const createdAtAgo = (
+                  <GetTimeAgo createdAt={comment.createdAt} />
+                );
 
                 return (
-                  <SwipeableListItem key={comment.commentId} trailingActions={trailingActions(comment)}>
-                    <React.Fragment key={comment.commentId}>
+                  <SwipeableListItem
+                    key={comment.commentId}
+                    trailingActions={trailingActions(comment)}
+                  >
+                    <Fragment key={comment.commentId}>
                       <div>
                         <CommentStyle>
-                          <ProfilePicSmall src={comment.commentProfileImageUrl} />
+                          <ProfilePicSmall
+                            src={comment.commentProfileImageUrl}
+                          />
                           <UserBox>
                             <span>{comment.commentName}</span>
                             <span>{createdAtAgo}</span>
@@ -166,7 +202,7 @@ const CommentBox = () => {
                         </CommentStyle>
                         <CommentText>{comment.comment}</CommentText>
                       </div>
-                    </React.Fragment>
+                    </Fragment>
                   </SwipeableListItem>
                 );
               })
@@ -194,7 +230,11 @@ const CommentBox = () => {
           }}
         />
       )}
-      {alertOpen ? <AlertMessage setAlertOpen={setAlertOpen} message={alertMsg} /> : ""}
+      {alertOpen ? (
+        <AlertMessage setAlertOpen={setAlertOpen} message={alertMsg} />
+      ) : (
+        ""
+      )}
     </div>
   );
 };

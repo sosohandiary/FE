@@ -1,23 +1,14 @@
-import { useEffect, useRef, useState } from "react";
-import React from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { Stage, Layer, Line, Transformer, Image } from "react-konva";
+import { Stage, Layer, Line, Image } from "react-konva";
 import useImage from "use-image";
 import axios from "axios";
 import { Editor, EditorState, convertFromRaw } from "draft-js";
 import "draft-js/dist/Draft.css";
 import "react-tooltip/dist/react-tooltip.css";
-import ReactPaginate from "react-paginate";
 
 // <---------------스티커 크기 조절----------------->
-const ImageSticker = ({
-  shapeProps,
-  isSelected,
-  onSelect,
-  onChange,
-  sticker,
-  mode,
-}) => {
+const ImageSticker = ({ shapeProps, isSelected, sticker }) => {
   // <--------------->
   const shapeRef = useRef();
   const trRef = useRef();
@@ -153,7 +144,7 @@ const ImageSticker = ({
   ];
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Image
         image={imgList[sticker.stickerUrlNum]}
         key={sticker.id}
@@ -175,7 +166,7 @@ const ImageSticker = ({
         ref={shapeRef}
         {...shapeProps}
       />
-    </React.Fragment>
+    </Fragment>
   );
 };
 
@@ -258,7 +249,7 @@ const Thumbnail = ({ diaryId, paperId, width, height }) => {
         </Stage>
       </StageStyle>
       <EditorStyle>
-        <Editor editorState={editorState} onChange={setEditorState} />
+        <Editor editorState={editorState} />
       </EditorStyle>
     </div>
   );

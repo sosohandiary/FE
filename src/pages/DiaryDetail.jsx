@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 import {
   useLocation,
   useNavigate,
@@ -9,9 +8,7 @@ import {
 import styled from "styled-components";
 import ReactPaginate from "react-paginate";
 import { getDate } from "../utils/getDate";
-import leftArrow from "../assets/leftArrow.png";
 import FlipBook from "../components/FlipBook";
-import { Pagination } from "@mui/material";
 import AlertMessage from "../components/alert/AlertMessage";
 import { MdArrowBack } from "react-icons/md";
 import { useMutation, useQuery } from "react-query";
@@ -19,8 +16,6 @@ import { getInnerPaper, postInnerPaper } from "../api/diary";
 
 const DiaryDetail = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
-  const [pageCount, setPageCount] = useState(0);
   const [alertMsg, setAlertMsg] = useState("");
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertNavigateLink, setAlertNavigateLink] = useState("");
@@ -28,7 +23,6 @@ const DiaryDetail = () => {
 
   const { diaryId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const curPage = searchParams.get("page");
 
   const location = useLocation();
   if (location.state === "needReload") {
@@ -59,12 +53,6 @@ const DiaryDetail = () => {
     navigate("/");
   };
 
-  const handlePagenationChange = (e, page) => {
-    searchParams.set("page", page - 1);
-    setSearchParams(searchParams);
-    window.location.reload();
-  };
-
   return (
     <>
       <Container>
@@ -84,9 +72,12 @@ const DiaryDetail = () => {
         <Title>다이어리 상세보기</Title>
         <div>
           <HeaderStyle>
-            <DiaryTitle>{data[0]?.diaryTitle}</DiaryTitle>
-            {data[0]?.createdAt && getDate(data[0]?.createdAt) ? (
-              <DiaryCreatedAt>{getDate(data[0]?.createdAt)}</DiaryCreatedAt>
+            <DiaryTitle>{dataOfInnerPaper?.data[0].diaryTitle}</DiaryTitle>
+            {dataOfInnerPaper?.data[0].createdAt &&
+            getDate(dataOfInnerPaper?.data[0].createdAt) ? (
+              <DiaryCreatedAt>
+                {getDate(dataOfInnerPaper?.data[0].createdAt)}
+              </DiaryCreatedAt>
             ) : (
               ""
             )}
@@ -164,46 +155,6 @@ const DiaryCreatedAt = styled.div`
   font-size: 10px;
 `;
 
-const StyledPagination = styled(ReactPaginate)`
-  position: relative;
-  margin-top: 60px;
-  display: flex;
-  justify-content: center;
-  & li {
-    display: inline-block;
-    margin-right: 10px;
-    cursor: pointer;
-    padding: 5px 10px;
-    border: none;
-    &.active {
-      background-color: #007bff;
-      color: #fff;
-      border-color: #007bff;
-    }
-  }
-
-  & a {
-    display: inline-block;
-    padding: 5px 10px;
-    /* border: 1px solid #ccc; */
-    /* border-radius: 3px; */
-    color: #007bff;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: black;
-    &:hover {
-      background-color: #007bff;
-      color: #fff;
-      border-color: #007bff;
-    }
-  }
-  & .disabled {
-    color: #ccc;
-    cursor: not-allowed;
-    border-color: #ccc;
-  }
-`;
-
 const MorePageButton = styled.div`
   display: flex;
   justify-content: center;
@@ -218,34 +169,12 @@ const MorePageButton = styled.div`
   z-index: 10;
 `;
 
-const LeftArrow = styled.img`
-  margin-left: 20px;
-  width: 20px;
-  position: absolute;
-  top: 50px;
-  z-index: 11;
-`;
-
-const PaginationStyle = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const FlipStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const MorePagePlease = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 30px;
-  padding: 100px;
-  padding: ${({ isVisible }) => (isVisible ? 0 : "100px")};
-`;
 const LabelArea = styled.div`
   display: flex;
   justify-content: center;

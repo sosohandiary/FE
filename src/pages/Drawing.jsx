@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import React from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Stage, Layer, Line, Transformer, Image } from "react-konva";
 import useImage from "use-image";
@@ -184,7 +183,7 @@ const ImageSticker = ({
   ];
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Image
         image={imgList[sticker.stickerUrlNum]}
         key={sticker.id}
@@ -263,7 +262,7 @@ const ImageSticker = ({
           }}
         />
       )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 
@@ -323,7 +322,7 @@ const Drawing = () => {
   const [stickers, setStickers] = useState([]);
 
   // 변형할 것 선택 관련
-  const [selectedId, selectShape] = React.useState(null);
+  const [selectedId, selectShape] = useState(null);
 
   // 스티커 추가 관련
   const addStickerButtonHandler = (num) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import home from "../assets/navbar/home.png";
@@ -8,19 +8,13 @@ import person from "../assets/navbar/person.png";
 import plus from "../assets/navbar/plus.png";
 import { Badge } from "@mui/material";
 import { useQuery } from "react-query";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getCommentAlarm,
   getFriendAlarm,
   getInviteAlarm,
 } from "../contexts/alarmSlice";
-import {
-  axiosCommentAlarm,
-  axiosFriendRequests,
-  axiosInviteAlarm,
-  getFriendRequests,
-} from "../api/alarm";
+import { getFriendRequests } from "../api/alarm";
 
 const Navigationbar = () => {
   const navigate = useNavigate();

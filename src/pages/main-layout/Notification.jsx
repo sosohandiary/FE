@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TitleBox from "../../components/TitleBox";
 import AlarmList from "../../components/notification/AlarmList";
 import { useDispatch, useSelector } from "react-redux";
-import { WholeViewWidth } from "../../styles/WholeAreaStyle";
 import { changeCurNavbarMode } from "../../contexts/curNavbarModeSlice";
-import { useQuery } from "react-query";
-import { getCommentAlarm, getInviteAlarm } from "../../contexts/alarmSlice";
-import { getFriendRequests } from "../../api/alarm";
 
 const Notification = () => {
   const accessToken = localStorage.getItem("accessToken");

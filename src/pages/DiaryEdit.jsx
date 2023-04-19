@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { MdArrowBack } from "react-icons/md";
@@ -6,7 +6,6 @@ import { VscBlank } from "react-icons/vsc";
 import { useLocation, useNavigate } from "react-router-dom";
 import Searchbox from "../components/Searchbox";
 import { Badge } from "@mui/material";
-import { data } from "jquery";
 import AlertMessage from "../components/alert/AlertMessage";
 import defaultProfileImg from "../assets/defaultProfileImg.jpeg";
 import BsCheckCircleFill from "../assets/diary-edit/BsCheckCircleFill.png";
@@ -31,11 +30,6 @@ function DiaryEdit() {
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertNavigateLink, setAlertNavigateLink] = useState("");
   const [alertReload, setAlertReload] = useState(false);
-
-  // 공개 비공개 바꾸는거
-  const handleConditionChange = (event) => {
-    setDiaryCondition(event.target.value);
-  };
 
   // 이미지 파일 올리는 거
   const handleChange = useCallback((e) => {
