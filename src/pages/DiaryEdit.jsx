@@ -656,11 +656,6 @@ const SubmitButton = styled.div`
   height: 50px;
 `;
 
-const FriendListArea = styled.li`
-  display: flex;
-  align-items: center;
-`;
-
 const CheckBox = styled.div`
   display: ${({ disabled }) => (disabled ? "none" : "")};
   width: 20px;
@@ -699,10 +694,4 @@ const ListStyle = styled.div`
 
 const AlreadyMember = styled.div`
   display: ${({ disabled }) => (disabled ? "" : "none")};
-`;
-
-const TopName = styled.div`
-  font-size: 16px;
-  font-weight: bolder;
-  margin-bottom: 10px;
 `;

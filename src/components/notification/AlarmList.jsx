@@ -11,57 +11,68 @@ import styled from "styled-components";
 import AlarmUnReadCard from "./AlarmUnReadCard";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "react-query";
+import {
+  acceptFriendAlarm,
+  deleteCommentAlarm,
+  deleteFriendAlarm,
+  deleteInviteAlarm,
+} from "../../api/alarm";
 
 const AlarmList = ({ item, alarmType }) => {
   const navigate = useNavigate();
   const accessToken = window.localStorage.getItem("accessToken");
+  const queryClient = useQueryClient();
 
-  const acceptFriend = (id) => {
-    axios
-      .put(
-        `${process.env.REACT_APP_BASEURL}/friend/request/accept/${id}`,
-        {},
-        {
-          headers: { Authorization: accessToken },
-        }
-      )
-      .then((res) => {});
-  };
+  const { mutate: mutateDeleteFriendAlarm } = useMutation(
+    (friendListId) => deleteFriendAlarm(accessToken, friendListId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("axiosFriendRequests");
+      },
+    }
+  );
+  const { mutate: mutateDeleteInviteAlarm } = useMutation(
+    (inviteId) => deleteInviteAlarm(accessToken, inviteId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("axiosInviteAlarm");
+      },
+    }
+  );
+  const { mutate: mutateDeleteCommentAlarm } = useMutation(
+    (commentId) => deleteCommentAlarm(accessToken, commentId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("axiosCommentAlarm");
+      },
+    }
+  );
+  const { mutate: mutateAcceptFriendAlarm } = useMutation(
+    (id) => acceptFriendAlarm(accessToken, id),
+    {
+      onSuccess: (id) => {
+        mutateDeleteFriendAlarm(id);
+      },
+    }
+  );
 
   const handleAccept = () => {
     switch (alarmType) {
       case "friend":
-        axios
-          .patch(
-            `${process.env.REACT_APP_BASEURL}/friend/request/read/${item.friendListId}`,
-            {},
-            { headers: { Authorization: accessToken } }
-          )
-          .then((res) => {
-            acceptFriend(item?.friendListId);
-          });
+        mutateAcceptFriendAlarm(item?.friendListId);
       case "invite":
-        return axios
-          .patch(
-            `${process.env.REACT_APP_BASEURL}/invite/alarm/read/${item.inviteId}`,
-            {},
-            { headers: { Authorization: accessToken } }
-          )
-          .then((res) => {
+        mutateDeleteInviteAlarm(item?.inviteId, {
+          onSuccess: () => {
             navigate(`/diaries/${item.inviteId}`);
-            handleDelete();
-          });
+          },
+        });
       case "comment":
-        return axios
-          .patch(
-            `${process.env.REACT_APP_BASEURL}/comment/alarm/${item.commentId}?page=0`,
-            {},
-            { headers: { Authorization: accessToken } }
-          )
-          .then((res) => {
+        mutateDeleteCommentAlarm(item?.commentId, {
+          onSuccess: () => {
             navigate(`/diaries/${item.diaryId}/${item.diaryDetailId}`);
-            handleDelete();
-          });
+          },
+        });
       default:
         return;
     }
@@ -70,29 +81,11 @@ const AlarmList = ({ item, alarmType }) => {
   const handleDelete = () => {
     switch (alarmType) {
       case "friend":
-        return axios
-          .patch(
-            `${process.env.REACT_APP_BASEURL}/friend/request/read/${item.friendListId}`,
-            {},
-            { headers: { Authorization: accessToken } }
-          )
-          .then((res) => {});
+        mutateDeleteFriendAlarm(item.friendListId);
       case "invite":
-        return axios
-          .patch(
-            `${process.env.REACT_APP_BASEURL}/invite/alarm/read/${item.inviteId}`,
-            {},
-            { headers: { Authorization: accessToken } }
-          )
-          .then((res) => {});
+        mutateDeleteInviteAlarm(item.inviteId);
       case "comment":
-        return axios
-          .patch(
-            `${process.env.REACT_APP_BASEURL}/comment/alarm/${item.commentId}`,
-            {},
-            { headers: { Authorization: accessToken } }
-          )
-          .then((res) => {});
+        mutateDeleteCommentAlarm(item.commentId);
       default:
         return;
     }
@@ -154,15 +147,6 @@ const ActionContent = styled.div`
   color: #eee;
   user-select: none;
   background: ${({ background }) => background};
-`;
-const Button = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 70px;
-  height: 100%;
-  background-color: ${({ color }) => (color === "red" ? "red" : "blue")};
-  vertical-align: center;
 `;
 
 const InnerButton = styled.div`

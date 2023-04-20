@@ -942,17 +942,6 @@ const Drawing = () => {
 
 export default Drawing;
 
-const DiaryBack = styled.img`
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 10;
-  width: 40px;
-  @media (min-width: 700px) {
-    width: 80px;
-  }
-`;
-
 const TextAreaStyle = styled.div`
   .DraftEditor-editorContainer {
     max-height: 550px;

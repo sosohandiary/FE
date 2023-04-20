@@ -41,9 +41,10 @@ const Notification = () => {
   const { data: dataForCommentAlarm } = useQuery(
     ["axiosCommentAlarm"],
     () => {
+      console.log("dd");
       return axiosCommentAlarm(accessToken);
     },
-    { staleTime: staleTime, cacheTime: cacheTime }
+    { staleTime, cacheTime }
   );
 
   const dataListForFriendRequset = dataForFriendAlarm?.data;

@@ -358,19 +358,6 @@ const Label = styled.div`
   font-weight: 800;
 `;
 
-const SlideOne = styled.div`
-  border-radius: 25px;
-  font-weight: 700;
-  font-size: 10px;
-  color: #fff;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url(${({ imageUrl }) => imageUrl});
-  background-size: cover;
-`;
-
 const SelfmadeArea = styled.div`
   .swiper {
     width: 100%;
@@ -397,15 +384,6 @@ const SelfmadeArea = styled.div`
     height: 100%;
     object-fit: cover;
   }
-`;
-
-const LoginButton = styled.div`
-  border-radius: 25px;
-  box-shadow: 30px;
-  padding: 5px;
-  font-size: 17px;
-  color: gray;
-  cursor: pointer;
 `;
 
 const InvisibleDiv = styled.div`

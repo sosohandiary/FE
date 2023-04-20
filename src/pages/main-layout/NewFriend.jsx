@@ -229,10 +229,6 @@ const AddButton = styled.button`
   gap: 5px;
 `;
 
-const InvisibleArea = styled.div`
-  height: 85px;
-`;
-
 const OuterBorderArea = styled.div`
   border-left: 0.0625rem solid rgb(225, 226, 228);
   border-right: 0.0625rem solid rgb(225, 226, 228);

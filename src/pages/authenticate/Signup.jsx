@@ -251,15 +251,6 @@ const Content = styled.div`
   }
 `;
 
-const ContentGender = styled(Content)`
-  display: flex;
-  justify-content: flex-end;
-  position: relative;
-  div {
-    top: -10px;
-  }
-`;
-
 const ValidationAlert = styled.small`
   display: flex;
   justify-content: center;

@@ -168,29 +168,6 @@ const LoginForm = styled.form`
   margin-bottom: 12px;
 `;
 
-const SubmitButtonStyle = styled.div`
-  background-color: rgb(${subColor1});
-  width: 300px;
-  height: 45px;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 700;
-
-  input {
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-    background: none;
-    color: black;
-    border: none;
-    padding: 0;
-    font: inherit;
-    outline: inherit;
-  }
-`;
-
 const Underline = styled.div`
   border-bottom: 1px solid rgb(222, 222, 222);
 `;
